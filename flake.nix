@@ -25,10 +25,10 @@
         { system, config }:
         nameValuePair name ({ ... }: {
           imports = [
-            # (import ./home/config)
-            # (import ./home/modules)
-            # (import ./home/profiles)
-            # (import ./home/users)
+            (import ./home/configs)
+            (import ./home/modules)
+            (import ./home/profiles)
+            (import ./home/users)
             (import config)
           ];
 
