@@ -3,14 +3,14 @@
 
   inputs = rec {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    # flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, ... }@inputs:
+  outputs = { self, ... } @ inputs:
     with builtins;
     with inputs.nixpkgs.lib;
     let
@@ -40,12 +40,11 @@
         });
 
       mkHomeManagerHostConfiguration = name:
-        { system, config }:
+        { system }:
         nameValuePair name (inputs.home-manager.lib.homeManagerConfiguration {
           inherit system;
           configuration = { ... }: {
-            imports = [ self.homeManagerConfigurations."${name}" ];
-
+            imports = [ self.internal.homeManagerConfigurations."${name}" ];
             nixpkgs = { config = import ./nix/config.nix; };
           };
 
@@ -58,21 +57,21 @@
         });
 
     in {
-      homeManagerConfigurations = mapAttrs' mkHomeManagerConfiguration {
-        wsl = {
-          system = "x86_64-linux";
-          config = ./home/hosts/wsl.nix;
+      internal = {
+        # Attribute set of hostnames to home-manager modules with the entire configuration for
+        # that host - consumed by the home-manager NixOS module for that host (if it exists)
+        # or by `mkHomeManagerHostConfiguration` for home-manager-only hosts.
+        homeManagerConfigurations = mapAttrs' mkHomeManagerConfiguration {
+          wsl = { system = "x86_64-linux"; config = ./home/hosts/wsl.nix; };
         };
+
+        homeConfiguration = forEachSystem (system: {
+          wsl = mkHomeManagerHostConfiguration "wsl" { inherit system; };
+        });
       };
 
-      homeConfiguration = forEachSystem (system: {
-        wsl = mkHomeManagerHostConfiguration "wsl" {
-          inherit system;
-          inherit config;
-        };
-      });
+      wsl = self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
 
-      wsl =
-        inputs.self.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
+      defaultPackage.x86_64-linux = self.wsl;
     };
 }
