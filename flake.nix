@@ -3,7 +3,6 @@
 
   inputs = rec {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,10 +24,7 @@
         { system, config }:
         nameValuePair name ({ ... }: {
           imports = [
-            (import ./home/configs)
-            (import ./home/modules)
             (import ./home/profiles)
-            (import ./home/users)
             (import config)
           ];
 
