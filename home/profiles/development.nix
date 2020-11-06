@@ -14,5 +14,9 @@ in
       # Codebase statistics.
       tokei
     ];
+
+    # nyx.configs = {
+    #   starship.enable = true;
+    # };
   };
 }
