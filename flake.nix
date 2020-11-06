@@ -9,7 +9,7 @@
     };
   };
 
-  outputs = { self, ... } @ inputs:
+  outputs = { self, ... }@inputs:
     with builtins;
     with inputs.nixpkgs.lib;
     let
@@ -24,12 +24,15 @@
         { system, config }:
         nameValuePair name ({ ... }: {
           imports = [
+            (import ./home/aspects)
             (import ./home/profiles)
             (import config)
           ];
 
           # For compat with nix-shell, nix-build, etc
           home.file."nixpkgs".source = inputs.nixpkgs;
+          systemd.user.sessionVariables."NIX_PATH" =
+            mkForce "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
 
           # Use the same nix config
           xdg.configFile."nixpkgs/config.nix".source = ./nix/config.nix;
@@ -58,7 +61,10 @@
         # that host - consumed by the home-manager NixOS module for that host (if it exists)
         # or by `mkHomeManagerHostConfiguration` for home-manager-only hosts.
         homeManagerConfigurations = mapAttrs' mkHomeManagerConfiguration {
-          wsl = { system = "x86_64-linux"; config = ./home/hosts/wsl.nix; };
+          wsl = {
+            system = "x86_64-linux";
+            config = ./home/hosts/wsl.nix;
+          };
         };
 
         homeConfiguration = forEachSystem (system: {
@@ -66,7 +72,15 @@
         });
       };
 
-      wsl = self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
+      devShell = forEachSystem (system:
+        with pkgsBySystem."${system}";
+        mkShell {
+          name = "nyx";
+          buildInputs = [ git-crypt ];
+        });
+
+      wsl =
+        self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
 
       defaultPackage.x86_64-linux = self.wsl;
     };
