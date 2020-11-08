@@ -11,6 +11,6 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.lf ];
-    xdg.configFile."lf".source = ../dots/.config/lf;
+    xdg.configFile."lf".source = ../files/.config/lf;
   };
 }

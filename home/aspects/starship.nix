@@ -16,6 +16,6 @@ in
       package = pkgs.starship;
     };
 
-    xdg.configFile."starship".source = ../dots/.config/starship;
+    xdg.configFile."starship".source = ../files/.config/starship;
   };
 }
