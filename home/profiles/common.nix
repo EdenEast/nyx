@@ -91,6 +91,7 @@ in
     nyx.configs = {
       starship.enable = true;
       lf.enable = true;
+      git.enable = true;
     };
   };
 }

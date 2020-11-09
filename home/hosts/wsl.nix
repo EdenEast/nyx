@@ -2,8 +2,14 @@
 
 {
   home.stateVersion = "20.09";
+
   nyx = {
-    configs = {};
+    configs = {
+      git = {
+        userName = "James Simpson";
+        userEmail = "edeofest@gmail.com";
+      };
+    };
     profiles = {
       development.enable = true;
     };

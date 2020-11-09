@@ -1,0 +1,137 @@
+#!/bin/bash
+
+#
+# ─── HELP ───────────────────────────────────────────────────────────────────────
+#
+
+function help()
+{
+    cat << 'EOF'
+Usage: git author <command>
+Manipulations git based on authors
+Commands:
+  list - List commits based on authors
+  help - Display this help message
+EOF
+}
+
+#
+# ─── LIST ───────────────────────────────────────────────────────────────────────
+#
+
+function list()
+{
+    function usage()
+    {
+    cat << 'EOF'
+Usage: list [options]
+list information based on authors
+Options:
+  -c, --committer   Collect and show committer identities instead of authors
+  -e, --email       Show the email address of each author
+  -n, --number      Sort output according to the number of commits per author instead of author alphabetic order
+  -s, --summery     Suppress commit description and provide a commit count summary only
+
+  -h, --help        Show this help message
+EOF
+    }
+
+    function parse_args()
+    {
+        git_args=()
+        while [ $# -gt 0 ] ; do
+            case "$1" in
+                -h|--help)     usage ; exit 0 ;;
+                -c|--commiter) git_args+=("-c") ;;
+                -e|--email)    git_args+=("-e") ;;
+                -n|--number)   git_args+=("-n") ;;
+                -s|--summery)  git_args+=("-s") ;;
+                *) echo "Invalid option $1" ; usage ; exit 1 ;;
+            esac
+            shift
+        done
+    }
+
+    parse_args "$@"
+    git shortlog ${git_args[@]}
+}
+
+#
+# ─── REPLACE ────────────────────────────────────────────────────────────────────
+#
+    
+function replace()
+{
+    function usage()
+    {
+    cat << 'EOF'
+Usage: replace [options] commit-hash 
+Replace the old author's name with a new one
+Options:
+  -a, --author Author to be replaced with
+EOF
+    }
+
+    function parse_args()
+    {
+        git_args=()
+        positional=()
+        while [ $# -gt 0 ] ; do
+            case "$1" in
+                -h|--help) usage ; exit 0 ;;
+                -a|--author) shift ; author_name="$1" ;;
+                -*) echo "Invalid option $1" ; usage ; exit 1 ;;
+                *) positional+=("$1")
+            esac
+            shift
+        done
+    }
+
+    parse_args "$@"
+
+    # check to see if there is a commit_hash passed in
+    commit_hash="${positional[0]}"
+    [ -z $commit_hash ] && echo "Error: no commit hash passed" && usage && exit 1
+
+    # https://stackoverflow.com/a/28845565
+    starting_commit_hash=$(git rev-parse HEAD)
+
+    # checkout the commit in question
+    git checkout $commit_hash 1>/dev/null
+    
+    # replace the author
+    [ -z $author_name ] && git commit --amend --reset-author || git commit --amend --author "$author_name"
+    
+    # save the new hash
+    new_commit_hash=$(git rev-parse HEAD)
+
+    # check back to the commit hash we started from
+    git checkout $starting_commit_hash 1>/dev/null
+
+    # replace the old commit with the new one
+    git replace $commit_hash $new_commit_hash
+
+    # rewrite all future commits based on the replacement
+    git filter-branch -- --all
+
+    # remove the replacement
+    git replace -d $commit_hash
+}
+
+#
+# ─── MAIN ───────────────────────────────────────────────────────────────────────
+#
+
+    
+function main()
+{
+    [[ $1 =~ ^(list|replace|help)$ ]] && {
+        cmd=$1 ; shift
+        "$cmd" "$@"
+    } || {
+        help
+    }
+    return  0
+}
+
+main "$@"
