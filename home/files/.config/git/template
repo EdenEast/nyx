@@ -1,0 +1,11 @@
+# <type>: (If applied, this commit will...) ---->|
+
+
+# Explain why this change is being made ------------------------------>|
+
+
+# Type can be
+#    feat     (new feature)      | fix   (bug fix)
+#    refactor (refactoring code) | style (formatting, missing semi colons, etc;)
+#    docs     (changes to docs)  | test  (adding or refactoring tests)
+#    chore    (grunt tasks etc)
