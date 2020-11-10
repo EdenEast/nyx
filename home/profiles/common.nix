@@ -92,6 +92,7 @@ in
       starship.enable = true;
       lf.enable = true;
       git.enable = true;
+      xdg.enable = true;
     };
   };
 }
