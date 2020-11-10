@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.nyx.configs.starship;
+  cfg = config.nyx.aspects.starship;
 in
 {
-  options.nyx.configs.starship = {
+  options.nyx.aspects.starship = {
     enable = mkEnableOption "starship configuration";
   };
 

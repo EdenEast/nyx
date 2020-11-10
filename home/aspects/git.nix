@@ -2,7 +2,7 @@
 
 with lib;
 let
-  cfg = config.nyx.configs.git;
+  cfg = config.nyx.aspects.git;
 
   signModule = types.submodule {
     options = {
@@ -27,7 +27,7 @@ let
   };
 in
 {
-  options.nyx.configs.git = {
+  options.nyx.aspects.git = {
     enable = mkEnableOption "git configuration";
 
     minimal = mkOption {

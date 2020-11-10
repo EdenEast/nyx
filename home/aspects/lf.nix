@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.nyx.configs.lf;
+  cfg = config.nyx.aspects.lf;
 in
 {
-  options.nyx.configs.lf = {
+  options.nyx.aspects.lf = {
     enable = mkEnableOption "lf configuration";
   };
 

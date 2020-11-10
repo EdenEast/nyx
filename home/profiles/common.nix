@@ -88,7 +88,7 @@ in
     # Install man output for any Nix packages.
     programs.man.enable = true;
 
-    nyx.configs = {
+    nyx.aspects = {
       starship.enable = true;
       lf.enable = true;
       git.enable = true;
