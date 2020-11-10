@@ -15,7 +15,7 @@ in
       tokei
     ];
 
-    nyx.configs = {
+    nyx.aspects = {
       fzf.enable = true;
     };
   };

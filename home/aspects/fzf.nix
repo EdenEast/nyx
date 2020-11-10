@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.nyx.configs.fzf;
+  cfg = config.nyx.aspects.fzf;
 in
 {
-  options.nyx.configs.fzf = {
+  options.nyx.aspects.fzf = {
     enable = mkEnableOption "fzf configuration";
   };
 

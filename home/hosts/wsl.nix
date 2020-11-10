@@ -4,7 +4,7 @@
   home.stateVersion = "20.09";
 
   nyx = {
-    configs = {
+    aspects = {
       git = {
         userName = "James Simpson";
         userEmail = "edeofest@gmail.com";
