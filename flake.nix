@@ -1,10 +1,19 @@
 {
   description = "Eden's home configuration";
 
-  inputs = rec {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = "master";
+    };
+
     home-manager = {
-      url = "github:nix-community/home-manager";
+      type = "github";
+      owner = "nix-community";
+      repo = "home-manager";
+      ref = "master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
