@@ -85,7 +85,10 @@
         with pkgsBySystem."${system}";
         mkShell {
           name = "nyx";
-          buildInputs = [ git-crypt ];
+          buildInputs = [
+            git-crypt
+            gnumake
+          ];
         });
 
       wsl =
