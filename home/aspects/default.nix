@@ -2,9 +2,10 @@
 
 {
   imports = [
-    ./starship.nix
-    ./lf.nix
+    ./fzf.nix
     ./git.nix
+    ./lf.nix
+    ./starship.nix
   ];
 }
 
