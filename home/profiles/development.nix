@@ -15,8 +15,8 @@ in
       tokei
     ];
 
-    # nyx.configs = {
-    #   starship.enable = true;
-    # };
+    nyx.configs = {
+      fzf.enable = true;
+    };
   };
 }
