@@ -33,14 +33,10 @@ in
     home.file.".profile".source = ../files/.profile;
 
     xdg.configFile."shell".source = ../files/.config/shell;
-
     xdg.dataFile."bash/bashrc".text = ''
         ${cfg.initExtra}
     '';
-
     xdg.dataFile."bash/profile".text = ''
-        . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
-
         ${cfg.profileExtra}
     '';
   };

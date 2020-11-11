@@ -7,6 +7,10 @@
 # ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚══════╝
 #
 
+# if nix is installed then source profile
+[[ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]] && . $HOME/.nix-profile/etc/profile.d/nix.sh
+[[ -f $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ]] && . $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+
 [[ -d $HOME/.config/shell/login ]] && {
     for rc in $HOME/.config/shell/login/*.sh; do
         source $rc
