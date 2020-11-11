@@ -19,7 +19,6 @@
   };
 
   outputs = { self, ... }@inputs:
-    with builtins;
     with inputs.nixpkgs.lib;
     let
       forEachSystem = genAttrs [ "x86_64-linux" "aarch64-linux" ];
@@ -45,6 +44,33 @@
 
           # Use the same nix config
           xdg.configFile."nixpkgs/config.nix".source = ./nix/config.nix;
+
+          # Re-expose self and nixpkgs as flakes.
+          xdg.configFile."nix/registry.json".text = builtins.toJSON {
+            version = 2;
+            flakes =
+              let
+                toInput = input:
+                  {
+                    type = "path";
+                    path = input.outPath;
+                  } // (
+                    filterAttrs
+                      (n: _: n == "lastModified" || n == "rev" || n == "revCount" || n == "narHash")
+                      input
+                  );
+              in
+              [
+                {
+                  from = { id = "self"; type = "indirect"; };
+                  to = toInput inputs.self;
+                }
+                {
+                  from = { id = "nixpkgs"; type = "indirect"; };
+                  to = toInput inputs.nixpkgs;
+                }
+              ];
+          };
         });
 
       mkHomeManagerHostConfiguration = name:
@@ -53,7 +79,9 @@
           inherit system;
           configuration = { ... }: {
             imports = [ self.internal.homeManagerConfigurations."${name}" ];
-            nixpkgs = { config = import ./nix/config.nix; };
+            nixpkgs = {
+              config = import ./nix/config.nix;
+            };
           };
 
           # TODO: Use nyx.users to set this depending of the host that was configured
@@ -89,7 +117,8 @@
             git-crypt
             gnumake
           ];
-        });
+        }
+      );
 
       wsl =
         self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
