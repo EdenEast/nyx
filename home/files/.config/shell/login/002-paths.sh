@@ -49,11 +49,6 @@ function main() {
 
 main
 
-# source ~/.config/git/comp to add completion to custom git comands
-for sh in ~/.config/git/comp/*.sh; do
-    source $sh
-done
-
 unset contains_path
 unset prepend_path
 unset append_path
