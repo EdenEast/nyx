@@ -12,6 +12,6 @@
     path = ~/.local/share/git/config
 
 [commit]
-    template = ./template
+    template = ~/.config/git/template
 
 # vim: ft=gitconfig:
