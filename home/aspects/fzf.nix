@@ -10,6 +10,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.fzf.enable = true;
+    home.packages = [ pkgs.fzf ];
+
+    nyx.aspects.bash.initExtra = ''
+      if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
+        . ${pkgs.fzf}/share/fzf/completion.bash
+        . ${pkgs.fzf}/share/fzf/key-bindings.bash
+      fi
+    '';
   };
 }
