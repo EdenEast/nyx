@@ -1,0 +1,375 @@
+# vim: ft=sh:
+
+# choose what mode the prompt is output as.
+# `left` is just the left prompt with no right prompt. Uses PROMPT_COMPONENTS
+# `split` is the left and right prompt outputs. Uses PROMPT_LCOMPONENTS and PROMPT_RCOMPONENTS
+# options are left or split
+PROMPT_MODE=${PROMPT_MODE:-split}
+PROMPT_NO_INFO_LINE=${PROMPT_NO_INFO_LINE:-false}
+PROMPT_OK_COLOR=${PROMPT_OK_COLOR:-$CL_GREEN}
+PROMPT_ERR_COLOR=${PROMPT_ERR_COLOR:-$CL_RED}
+
+PROMPT_DIR_COLOR=${PROMPT_DIR_COLOR:-$CL_BLACK}
+PROMPT_PATH_SEP_COLOR=${PROMPT_PATH_SEP_COLOR:-$CL_RESET}
+
+PROMPT_INFO_COLOR=${PROMPT_INFO_COLOR:-$CL_BLACK}
+PROMPT_USER_COLOR=${PROMPT_USER_COLOR:-$CL_BLUE}
+
+PROMPT_USER_CHAR="${PROMPT_USER_CHAR:-λ}"
+PROMPT_INPUT_CHAR="${PROMPT_INPUT_CHAR:-›}"
+PROMPT_CWD_SEGMENT_COUNT=${PROMPT_CWD_SEGMENT_COUNT:-2}
+PROMPT_TRAILING_SPACE=${PROMPT_TRAILING_SPACE:-true}
+
+PROMPT_GIT_SHOW_DIRTY_STATE=${PROMPT_GIT_SHOW_DIRTY_STATE:-false}
+PROMPT_GIT_BRANCH_COLOR=${PROMPT_GIT_BRANCH_COLOR:-$CL_YELLOW}
+PROMPT_GIT_REBASE_COLOR=${PROMPT_GIT_REBASE_COLOR:-$CL_CYAN}
+PROMPT_GIT_REBASE_COUNT_COLOR=${PROMPT_GIT_REBASE_COUNT_COLOR:-$CL_BLUE}
+
+pmt_component_default=(pmt_status pmt_cwd pmt_git pmt_input)
+pmt_lcomponent_default=(pmt_status pmt_user pmt_input)
+pmt_rcomponent_default=(pmt_cwd pmt_git)
+pmt_infoline_component_default=(pmt_uhp pmt_pwd pmt_files)
+
+PROMPT_COMPONENTS=${PROMPT_COMPONENTS:-${pmt_component_default[@]}}
+PROMPT_LCOMPONENTS=${PROMPT_LCOMPONENTS:-${pmt_lcomponent_default[@]}}
+PROMPT_RCOMPONENTS=${PROMPT_RCOMPONENTS:-${pmt_rcomponent_default[@]}}
+PROMPT_INFOLINE_COMPONENTS=${PROMPT_INFOLINE_COMPONENTS:-${pmt_infoline_component_default[@]}}
+
+unset pmt_component_default
+unset pmt_lcomponent_default
+unset pmt_rcomponent_default
+unset pmt_infoline_component_default
+
+#
+# Components
+#
+
+function pmt_status()
+{
+    local uchar="$PROMPT_USER_CHAR"
+    local c="$(esc_color $PROMPT_OK_COLOR)"
+    local r="$(esc_color $CL_RESET)"
+    [[ "$PROMPT_LAST_ERROR" -ne 0 ]] && c="$(esc_color $PROMPT_ERR_COLOR)"
+
+    echo "$c$uchar$r"
+}
+
+function pmt_user()
+{
+    local c=$(esc_color $PROMPT_USER_COLOR)
+    local r=$(esc_color $CL_RESET)
+
+    if [[ -n $SSH_CONNECTION ]]; then
+        me="\u@\h"
+    elif [[ $LOGNAME != $USER ]]; then
+        me='\u'
+    fi
+
+    [[ -n $me ]] && echo "$c$me$r:"
+}
+
+function pmt_input()
+{
+    # local c="$(esc_color $PROMPT_INPUT_CHAR)"
+    local r="$(esc_color $CL_RESET)"
+    echo "$r$PROMPT_INPUT_CHAR"
+}
+
+function pmt_name()
+{
+    local c=$(esc_color $PROMPT_USER_COLOR)
+    local r=$(esc_color $CL_RESET)
+    echo "$c$(whoami)$r"
+}
+
+function pmt_pwd()
+{
+    local c=$(esc_color $PROMPT_INFO_COLOR)
+    local r=$(esc_color $CL_RESET)
+    local cwd=${PWD/$HOME/\~}
+    OLD_IFS=$IFS
+    IFS='/' cwd=($cwd)
+    IFS=$OLD_IFS
+
+    local result=""
+    for i in ${cwd[@]} ; do
+        [[ -z $first ]] && result="$c$i" || result="$result$r/$c$i"
+        first=true
+    done
+
+    echo $result
+    # echo $cwd
+}
+
+function pmt_uhp
+{
+    local user_name=$(whoami)
+    # local host_name=$(hostname -s) # some reason -s is not suppored on all hostname
+    local host_name=$(hostname)
+    local c=$(esc_color $PROMPT_INFO_COLOR)
+    local r=$(esc_color $CL_RESET)
+
+    echo "$c$user_name$r@$c$host_name$r"
+}
+
+function pmt_files()
+{
+    local dh=$(find $PWD -maxdepth 1 -type d -name ".*" -print | sed -n '$=')
+    local dv=$(find $PWD -maxdepth 1 -type d -not -name ".*" -print | sed -n '$=')
+    local fh=$(find $PWD -maxdepth 1 -type f -name ".*" -print | sed -n '$=')
+    local fv=$(find $PWD -maxdepth 1 -type f -not -name ".*" -print | sed -n '$=')
+
+    dh=${dh:-0}
+    dv=${dv:-0}
+    fh=${fh:-0}
+    fv=${fv:-0}
+
+    local c=$(esc_color $PROMPT_INFO_COLOR)
+    local r=$(esc_color $CL_RESET)
+
+    local output="$r["
+    [ -n $dv ] && output="$output ${c}dv$r(${c}$dv$r)"
+    [ -n $dh ] && output="$output ${c}dh$r(${c}$dh$r)"
+    [ -n $dv ] && output="$output ${c}fv$r(${c}$fv$r)"
+    [ -n $dh ] && output="$output ${c}fh$r(${c}$fh$r)"
+    output="$output $r]"
+    echo $output
+}
+
+function pmt_cwd()
+{
+    local dir_col=$(esc_color $PROMPT_DIR_COLOR)
+    local sep_col=$(esc_color $PROMPT_PATH_SEP_COLOR)
+    local r=$(esc_color $CL_RESET)
+
+    local segments=${PROMPT_CWD_SEGMENT_COUNT}
+    [[ "$segments" -le 0 ]] && segments=1
+
+    # store pwd and change $HOME to ~
+    local cwd=${PWD/$HOME/\~}
+    OLD_IFS=$IFS
+    IFS='/' cwd=($cwd)
+    IFS=$OLD_IFS
+
+    local dir_size=${#cwd[@]}
+
+    local result=""
+    [[ $dir_size -ge $segments ]] && {
+        local diff=$(($dir_size - $segments))
+        for ((i=${#cwd[@]}-1; i>=$diff; i--)) ; do
+            [[ -z $first ]] && result="${cwd[$i]}" || result="$dir_col${cwd[$i]}$sep_col/$dir_col$result"
+            first=true
+        done
+    } || {
+        result=$dir_col$cwd
+    }
+    echo $result$r
+}
+
+function pmt_jobs()
+{
+    local count=$(jobs | sed -n '$=')
+    [[ $count -gt 0 ]] && echo "$count&"
+}
+
+function __git_eread()
+{
+    local f="$1"
+    shift
+    test -r "$f" && read "$@" <"$f"
+}
+
+function pmt_git()
+{
+    # setting the local colors
+    local crs=$(esc_color $CL_RESET)
+    local cbr=$(esc_color $PROMPT_GIT_BRANCH_COLOR)
+    local crb=$(esc_color $PROMPT_GIT_REBASE_COLOR)
+    local ccrb=$(esc_color $PROMPT_GIT_REBASE_COUNT_COLOR)
+
+    local repo_info rev_parse_exit_code
+    repo_info="$(git rev-parse --git-dir --is-inside-git-dir \
+        --is-bare-repository --is-inside-work-tree \
+        --short HEAD 2>/dev/null)"
+    rev_parse_exit_code="$?"
+
+    [[ -z "$repo_info" ]] && return $exit;
+
+    local short_sha=""
+    [[ "$rev_parse_exit_code" = "0" ]] && {
+        short_sha="${repo_info##*$'\n'}"
+        repo_info="${repo_info%$'\n'*}"
+    }
+
+    local inside_worktree="${repo_info##*$'\n'}"
+    repo_info="${repo_info%$'\n'*}"
+
+    local bare_repo="${repo_info##*$'\n'}"
+    repo_info="${repo_info%$'\n'*}"
+
+    local inside_gitdir="${repo_info##*$'\n'}" # are we inside of the .git folder
+    local g="${repo_info%$'\n'*}" # .git directory
+
+    [ "true" = "$inside_worktree" ] &&
+        [ "$(git config --bool bash.hideIfPwdIgnored)" != "false" ] &&
+        git check-ignore -q . &&
+        return $exit
+
+    local r=""    # rebase info
+    local b=""    # branch info
+    local step=""
+    local total=""
+    if [ -d "$g/rebase-merge" ]; then
+        __git_eread "$g/rebase-merge/head-name" b
+        __git_eread "$g/rebase-merge/msgnum" step
+        __git_eread "$g/rebase-merge/end" total
+        if [ -f "$g/rebase-merge/interactive" ]; then
+            r="$crs|${crb}REBASE-i"
+        else
+            r="$crs|${crb}REBASE-m"
+        fi
+    else
+        if [ -d "$g/rebase-apply" ]; then
+            __git_eread "$g/rebase-apply/next" step
+            __git_eread "$g/rebase-apply/last" total
+            if [ -f "$g/rebase-apply/rebasing" ]; then
+                __git_eread "$g/rebase-apply/head-name" b
+                r="$crs|${crb}REBASE"
+            elif [ -f "$g/rebase-apply/applying" ]; then
+                r="$crs|${crb}AM"
+            else
+                r="$crs|${crb}AM$crs/${crb}REBASE"
+            fi
+        elif [ -f "$g/MERGE_HEAD" ]; then
+            r="$crs|${crb}MERGING"
+        elif [ -f "$g/CHERRY_PICK_HEAD" ]; then
+            r="$crs|${crb}CHERRY-PICKING"
+        elif [ -f "$g/REVERT_HEAD" ]; then
+            r="$crs|${crb}REVERTING"
+        elif [ -f "$g/BISECT_LOG" ]; then
+            r="$crs|${crb}BISECTING"
+        fi
+
+        if [ -n "$b" ]; then
+            :
+        elif [ -h "$g/HEAD" ]; then
+            # symlink symbolic ref
+            b="$(git symbolic-ref HEAD 2>/dev/null)"
+        else
+            local head=""
+            if ! __git_eread "$g/HEAD" head; then
+                return $exit
+            fi
+            # is it a symbolic ref?
+            b="${head#ref: }"
+            if [ "$head" = "$b" ]; then
+                detached=yes
+                b="$(
+                case "${GIT_PS1_DESCRIBE_STYLE-}" in
+                (contains)
+                    git describe --contains HEAD ;;
+                (branch)
+                    git describe --contains --all HEAD ;;
+                (tag)
+                    git describe --tags HEAD ;;
+                (describe)
+                    git describe HEAD ;;
+                (* | default)
+                    git describe --tags --exact-match HEAD ;;
+                esac 2>/dev/null)" ||
+
+                b="$short_sha..."
+                b="($b)"
+            fi
+        fi
+    fi
+
+    if [ -n "$step" ] && [ -n "$total" ]; then
+        r="$r $ccrb$step$crs/$ccrb$total"
+    fi
+
+    [ $"inside_gitdir" = "true" ] && {
+        [ "$bare_repo" = "true" ] && c="BARE" || c=".GITDIR"
+    }
+
+    b=$cbr${b##refs/heads/}
+
+    local gitstring="$b$r$crs"
+    echo $gitstring
+}
+
+#
+# Magic enter components
+#
+
+function pmt_me_ls()
+{
+    # there has to be something for darwin because --color does not work
+    ls -C -F --color=always -w $COLUMNS
+}
+
+#
+# Wrappers and utils
+#
+
+function _pmt_wrap()
+{
+    local input=("$@")
+    local arr=()
+    local cmd_out=""
+    local cmd
+    for cmd in ${input[@]} ; do
+        cmd_out="$(eval "$cmd")"
+        [[ -n "$cmd_out" ]] && arr+=($cmd_out)
+    done
+
+    echo "${arr[@]}"
+}
+
+function _check_blank_line()
+{
+    local last_command="$(history 1)"
+    local result=false
+    [[ "$_CHECK_BANK_PREVIOUS_LINE" = "$last_command" ]] && result=true
+    export _CHECK_BANK_PREVIOUS_LINE="$last_command"
+    export _CHECK_BLANK_RESULT=$result
+}
+
+function _build_info_line()
+{
+    local line_output=$(_pmt_wrap ${PROMPT_INFOLINE_COMPONENTS[@]})
+    line_output=${line_output//\\\[/}
+    line_output=${line_output//\\\]/}
+    [[ -n $line_output ]] && echo $line_output
+}
+
+function _build_prompt()
+{
+    [ $PROMPT_NO_INFO_LINE = "false" ] && {
+        _check_blank_line
+        [[ $_CHECK_BLANK_RESULT = "true" ]]  && _build_info_line
+    }
+
+    if [ $PROMPT_MODE = 'split' ]; then
+        local left_prompt=$(_pmt_wrap ${PROMPT_LCOMPONENTS[@]})
+        local right_prompt=$(_pmt_wrap ${PROMPT_RCOMPONENTS[@]})
+
+        # strip out the escape color sequences to get an accuate count of the right prompt chars
+        local right_stripped=$(sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" <<<"$right_prompt")
+
+        local save_cursor='\e[s' # Save cursor position
+        local reset_cursor='\e[u' # Restore cursor position to save point
+
+        [[ $PROMPT_TRAILING_SPACE ]] && trailing_space=" "
+        PS1="\[${save_cursor}\e[${COLUMNS}C\e[${#right_stripped}D${right_prompt}${reset_cursor}\]${left_prompt}$trailing_space"
+    elif [ $PROMPT_MODE = 'left' ]; then
+        [[ $PROMPT_TRAILING_SPACE ]] && trailing_space=" "
+        local prompt_output=$(_pmt_wrap ${PROMPT_COMPONENTS})
+        PS1="${prompt_output}${trailing_space}"
+    else
+        echo 'Unrecognised $PROMPT_MODE! Options: `left` `split`'
+    fi
+}
+
+PROMPT_COMMAND=_build_prompt
+

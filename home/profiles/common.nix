@@ -89,9 +89,10 @@ in
     programs.man.enable = true;
 
     nyx.aspects = {
-      starship.enable = true;
-      lf.enable = true;
+      bash.enable = true;
       git.enable = true;
+      lf.enable = true;
+      starship.enable = true;
       xdg.enable = true;
     };
   };
