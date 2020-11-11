@@ -2,6 +2,9 @@
 build:
 	nix build --experimental-features 'nix-command flakes'
 
+install: build
+	[ -f ./result/activate ] && ./result/activate
+
 check:
 	nix flake check --experimental-features 'nix-command flakes'
 
