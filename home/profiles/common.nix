@@ -53,6 +53,8 @@ in
         exa
         # cat alternative.
         bat
+        # sed alternative
+        sd
         # GnuPG
         gnupg
         # A command-line tool to generate, analyze, convert and manipulate colors.
