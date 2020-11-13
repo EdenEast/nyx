@@ -79,6 +79,8 @@
           inherit system;
           configuration = { ... }: {
             imports = [ self.internal.homeManagerConfigurations."${name}" ];
+
+            xdg.configFile."nix/nix.conf".text = "experimental-features = nix-command flakes";
             nixpkgs = {
               config = import ./nix/config.nix;
             };
