@@ -16,6 +16,14 @@
       ref = "master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixpkgs-mozilla = {
+      type = "github";
+      owner = "mozilla";
+      repo = "nixpkgs-mozilla";
+      ref = "master";
+      flake = false;
+    };
   };
 
   outputs = { self, ... }@inputs:
@@ -26,6 +34,7 @@
         import inputs.nixpkgs {
           inherit system;
           config = import ./nix/config.nix;
+          overlays = self.internal.overlays."${system}";
         });
 
       mkHomeManagerConfiguration = name:
@@ -83,8 +92,14 @@
             xdg.configFile."nix/nix.conf".text = "experimental-features = nix-command flakes";
             nixpkgs = {
               config = import ./nix/config.nix;
+              overlays = self.internal.overlays."${system}";
             };
           };
+
+          # Overlays consumed by the home-manager/NixOS configuration.
+          overlays = forEachSystem (system: [
+            (import inputs.nixpkgs-mozilla)
+          ]);
 
           # TODO: Use nyx.users to set this depending of the host that was configured
           # username = config.nyx.users.username;
