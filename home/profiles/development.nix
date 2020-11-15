@@ -17,6 +17,7 @@ in
 
     nyx.aspects = {
       fzf.enable = true;
+      keybase.enable = true;
     };
   };
 }
