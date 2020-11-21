@@ -96,11 +96,6 @@
             };
           };
 
-          # Overlays consumed by the home-manager/NixOS configuration.
-          overlays = forEachSystem (system: [
-            (import inputs.nixpkgs-mozilla)
-          ]);
-
           # TODO: Use nyx.users to set this depending of the host that was configured
           # username = config.nyx.users.username;
           # homeDirectory = config.nyx.users.homeDirectory;
@@ -124,6 +119,11 @@
         homeConfiguration = forEachSystem (system: {
           wsl = mkHomeManagerHostConfiguration "wsl" { inherit system; };
         });
+
+        # Overlays consumed by the home-manager/NixOS configuration.
+        overlays = forEachSystem (system: [
+          (import inputs.nixpkgs-mozilla)
+        ]);
       };
 
       devShell = forEachSystem (system:
