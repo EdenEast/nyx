@@ -83,7 +83,7 @@ in
     in total;
 
     xdg.configFile."git".source = ../files/.config/git;
-    xdg.dataFile."git/config".text = let
+    xdg.dataFile."git/nyx-gen".text = let
       userSection = if (cfg.userName != null && cfg.userEmail != null) then ''
         [user]
         name = ${cfg.userName}
