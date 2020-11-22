@@ -12,6 +12,7 @@
     };
     profiles = {
       development.enable = true;
+      extended.enable = true;
     };
   };
 }

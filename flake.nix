@@ -110,6 +110,11 @@
         # that host - consumed by the home-manager NixOS module for that host (if it exists)
         # or by `mkHomeManagerHostConfiguration` for home-manager-only hosts.
         homeManagerConfigurations = mapAttrs' mkHomeManagerConfiguration {
+          minimal = {
+            system = "x86_64-linux";
+            config = ./home/hosts/minimal.nix;
+          };
+
           wsl = {
             system = "x86_64-linux";
             config = ./home/hosts/wsl.nix;
@@ -117,6 +122,7 @@
         };
 
         homeConfiguration = forEachSystem (system: {
+          minimal = mkHomeManagerHostConfiguration "minimal" { inherit system; };
           wsl = mkHomeManagerHostConfiguration "wsl" { inherit system; };
         });
 
@@ -139,9 +145,9 @@
         }
       );
 
-      wsl =
-        self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
+      minimal = self.internal.homeConfiguration.x86_64-linux.minimal.value.activationPackage;
+      wsl = self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
 
-      defaultPackage.x86_64-linux = self.wsl;
+      defaultPackage.x86_64-linux = self.minimal;
     };
 }

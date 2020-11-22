@@ -6,7 +6,7 @@ let
 in
 {
   options.nyx.profiles.common = {
-    enable = mkEnableOption "common configurations";
+    enable = mkEnableOption "common profilej";
   };
 
   config = mkIf cfg.enable {
@@ -27,14 +27,6 @@ in
         tree
         # Interactive process viewer.
         htop
-        # Top-like I/O monitor.
-        iotop
-        # Power consumption and management diagnosis tool.
-        powertop
-        # Bandwidth monitor and rate estimator.
-        bmon
-        # Dump traffic on a network.
-        tcpdump
         # Compress/uncompress `.zip` files.
         unzip
         zip
@@ -53,35 +45,19 @@ in
         exa
         # cat alternative.
         bat
-        # sed alternative
-        sd
-        # GnuPG
-        gnupg
-        # A command-line tool to generate, analyze, convert and manipulate colors.
-        pastel
-        # Tool for indexing, slicing, analyzing, splitting and joining CSV files.
-        xsv
         # Simple, fast and user-friendly alternative to find.
         fd
+        # sed alternative
+        sd
         # More intuitive du.
         du-dust
-        # Command line image viewer
-        viu
-        # Tool for discovering and probing hosts on a computer network
-        arping
+        # GnuPG
+        gnupg
         # Visualize Nix gc-roots to delete to free space.
         nix-du
-        # Recover dead disks :(
-        ddrescue
         # Encrypted files in Git repositories
         git-crypt
-        # Keybase
-        keybase
-        # Hosted binary caches
-        cachix
       ];
-
-      # sessionVariables = { };
     };
 
     # Install home-manager manpages.
@@ -93,7 +69,6 @@ in
     nyx.aspects = {
       bash.enable = true;
       git.enable = true;
-      lf.enable = true;
       starship.enable = true;
       xdg.enable = true;
     };
