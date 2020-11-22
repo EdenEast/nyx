@@ -133,6 +133,8 @@
           buildInputs = [
             git-crypt
             gnumake
+            nixfmt
+            fd
           ];
         }
       );

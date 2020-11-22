@@ -12,4 +12,5 @@ update:
 	nix flake update --recreate-lock-file --experimental-features 'nix-command flakes'
 
 fmt:
-	nixfmt *.nix **/*.nix **/**/*.nix
+	fd --type f --extension nix --exec nixfmt {}
+	# nixfmt *.nix **/*.nix **/**/*.nix
