@@ -138,7 +138,7 @@
           name = "nyx";
           buildInputs = [
             git-crypt
-            gnumake
+            just
             nixfmt
             fd
           ];
