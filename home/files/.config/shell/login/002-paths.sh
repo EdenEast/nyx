@@ -1,11 +1,7 @@
 
 function contains_path() {
-    IFS=":" read -ra arr <<< "$PATH"
-    for i in "${arr[@]}"; do
-        [[ $i = $1 ]] && return 0
-    done
-
-    return 1
+    # https://stackoverflow.com/a/1397020
+    [[ ":$PATH:" == *":$1:"* ]] && return 0 || return 1
 }
 
 function append_path() {
@@ -20,7 +16,6 @@ function prepend_path() {
         [[ -z $PATH ]] && PATH="$1" || PATH="$1:$PATH"
     }
 }
-
 
 function main() {
     # save default path and clear path variable
@@ -39,9 +34,12 @@ function main() {
 
 
     # adding system path back
-    IFS=":" read -ra arr <<< "$system_path"
-    for i in "${arr[@]}"; do
-        append_path "$i"
+    # Ending solution from https://stackoverflow.com/a/15988793
+    while [ "$system_path" ]; do
+        iter=${system_path%%:*}
+        append_path "$iter"
+        # If one element is left then set system_path to empty else delete the first element and loop again
+        [ "$system_path" = "$iter" ] && system_path='' || system_path="${system_path#*:}"
     done
 
     export PATH=$PATH
