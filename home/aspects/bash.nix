@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.nyx.aspects.bash;
-in
-{
+let cfg = config.nyx.aspects.bash;
+in {
   options.nyx.aspects.bash = {
     enable = mkEnableOption "bash configuration";
 
@@ -34,10 +32,10 @@ in
 
     xdg.configFile."shell".source = ../files/.config/shell;
     xdg.dataFile."bash/bashrc".text = ''
-        ${cfg.initExtra}
+      ${cfg.initExtra}
     '';
     xdg.dataFile."bash/profile".text = ''
-        ${cfg.profileExtra}
+      ${cfg.profileExtra}
     '';
   };
 }

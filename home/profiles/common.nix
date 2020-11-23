@@ -1,13 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.nyx.profiles.common;
-in
-{
-  options.nyx.profiles.common = {
-    enable = mkEnableOption "common profilej";
-  };
+let cfg = config.nyx.profiles.common;
+in {
+  options.nyx.profiles.common = { enable = mkEnableOption "common profilej"; };
 
   config = mkIf cfg.enable {
     home = {

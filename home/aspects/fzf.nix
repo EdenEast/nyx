@@ -1,13 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.nyx.aspects.fzf;
-in
-{
-  options.nyx.aspects.fzf = {
-    enable = mkEnableOption "fzf configuration";
-  };
+let cfg = config.nyx.aspects.fzf;
+in {
+  options.nyx.aspects.fzf = { enable = mkEnableOption "fzf configuration"; };
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.fzf ];
