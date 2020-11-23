@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.nyx.aspects.starship;
-in
-{
+let cfg = config.nyx.aspects.starship;
+in {
   options.nyx.aspects.starship = {
     enable = mkEnableOption "starship configuration";
   };

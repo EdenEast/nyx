@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.nyx.profiles.extended;
-in
-{
+let cfg = config.nyx.profiles.extended;
+in {
   options.nyx.profiles.extended = {
     enable = mkEnableOption "extended profile";
   };
@@ -37,8 +35,6 @@ in
       ];
     };
 
-    nyx.aspects = {
-      lf.enable = true;
-    };
+    nyx.aspects = { lf.enable = true; };
   };
 }

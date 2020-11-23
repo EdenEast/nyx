@@ -57,28 +57,30 @@
           # Re-expose self and nixpkgs as flakes.
           xdg.configFile."nix/registry.json".text = builtins.toJSON {
             version = 2;
-            flakes =
-              let
-                toInput = input:
-                  {
-                    type = "path";
-                    path = input.outPath;
-                  } // (
-                    filterAttrs
-                      (n: _: n == "lastModified" || n == "rev" || n == "revCount" || n == "narHash")
-                      input
-                  );
-              in
-              [
+            flakes = let
+              toInput = input:
                 {
-                  from = { id = "self"; type = "indirect"; };
-                  to = toInput inputs.self;
-                }
-                {
-                  from = { id = "nixpkgs"; type = "indirect"; };
-                  to = toInput inputs.nixpkgs;
-                }
-              ];
+                  type = "path";
+                  path = input.outPath;
+                } // (filterAttrs (n: _:
+                  n == "lastModified" || n == "rev" || n == "revCount" || n
+                  == "narHash") input);
+            in [
+              {
+                from = {
+                  id = "self";
+                  type = "indirect";
+                };
+                to = toInput inputs.self;
+              }
+              {
+                from = {
+                  id = "nixpkgs";
+                  type = "indirect";
+                };
+                to = toInput inputs.nixpkgs;
+              }
+            ];
           };
         });
 
@@ -89,7 +91,8 @@
           configuration = { ... }: {
             imports = [ self.internal.homeManagerConfigurations."${name}" ];
 
-            xdg.configFile."nix/nix.conf".text = "experimental-features = nix-command flakes";
+            xdg.configFile."nix/nix.conf".text =
+              "experimental-features = nix-command flakes";
             nixpkgs = {
               config = import ./nix/config.nix;
               overlays = self.internal.overlays."${system}";
@@ -122,31 +125,26 @@
         };
 
         homeConfiguration = forEachSystem (system: {
-          minimal = mkHomeManagerHostConfiguration "minimal" { inherit system; };
+          minimal =
+            mkHomeManagerHostConfiguration "minimal" { inherit system; };
           wsl = mkHomeManagerHostConfiguration "wsl" { inherit system; };
         });
 
         # Overlays consumed by the home-manager/NixOS configuration.
-        overlays = forEachSystem (system: [
-          (import inputs.nixpkgs-mozilla)
-        ]);
+        overlays = forEachSystem (system: [ (import inputs.nixpkgs-mozilla) ]);
       };
 
       devShell = forEachSystem (system:
         with pkgsBySystem."${system}";
         mkShell {
           name = "nyx";
-          buildInputs = [
-            git-crypt
-            just
-            nixfmt
-            fd
-          ];
-        }
-      );
+          buildInputs = [ git-crypt just nixfmt fd ];
+        });
 
-      minimal = self.internal.homeConfiguration.x86_64-linux.minimal.value.activationPackage;
-      wsl = self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
+      minimal =
+        self.internal.homeConfiguration.x86_64-linux.minimal.value.activationPackage;
+      wsl =
+        self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
 
       defaultPackage.x86_64-linux = self.minimal;
     };

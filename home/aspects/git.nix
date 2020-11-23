@@ -25,8 +25,7 @@ let
       };
     };
   };
-in
-{
+in {
   options.nyx.aspects.git = {
     enable = mkEnableOption "git configuration";
 
@@ -56,31 +55,31 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.sessionPath = [
-      "${config.xdg.configHome}/git/bin"
-    ];
+    home.sessionPath = [ "${config.xdg.configHome}/git/bin" ];
 
     home.sessionVariables = {
-      GIT_PAGER = if cfg.minimal then "less" else "delta --dark --theme TwoDark";
+      GIT_PAGER =
+        if cfg.minimal then "less" else "delta --dark --theme TwoDark";
     };
 
     home.packages = with pkgs;
-    let
-      minimal = [ git ];
+      let
+        minimal = [ git ];
 
-      extra = if !cfg.minimal then [
-        git-lfs
-        gitAndTools.delta
-        gitAndTools.gh
-        gitAndTools.git-crypt
-        gitAndTools.git-open
-        gitAndTools.grv
-        gitAndTools.hub
-        gitAndTools.tig
-      ] else [];
+        extra = if !cfg.minimal then [
+          git-lfs
+          gitAndTools.delta
+          gitAndTools.gh
+          gitAndTools.git-crypt
+          gitAndTools.git-open
+          gitAndTools.grv
+          gitAndTools.hub
+          gitAndTools.tig
+        ] else
+          [ ];
 
-      total = minimal ++ extra;
-    in total;
+        total = minimal ++ extra;
+      in total;
 
     xdg.configFile."git".source = ../files/.config/git;
     xdg.dataFile."git/nyx-gen".text = let
@@ -88,7 +87,8 @@ in
         [user]
         name = ${cfg.userName}
         email = ${cfg.userEmail}
-      '' else "";
+      '' else
+        "";
 
       signingSection = if (cfg.signing != null) then ''
         [user]
@@ -99,7 +99,8 @@ in
 
         [gpg]
         program = ${cfg.signing.gpgPath}
-      '' else "";
+      '' else
+        "";
 
     in ''
       ${userSection}
