@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.nyx.aspects.zoxide;
 in {
-  options.nyx.aspects.zoxide= {
+  options.nyx.aspects.zoxide = {
     enable = mkEnableOption "zoxide configuration";
   };
 

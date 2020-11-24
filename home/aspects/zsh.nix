@@ -45,7 +45,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ zsh ] ++ optional cfg.enableCompletion nix-zsh-completions;
+    home.packages = with pkgs;
+      [ zsh ] ++ optional cfg.enableCompletion nix-zsh-completions;
     home.file.".zshenv".source = ../files/.zshenv;
     xdg.configFile."zsh".source = ../files/.config/zsh;
 
