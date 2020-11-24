@@ -1,0 +1,25 @@
+theme_arc: &theme_arc
+  primary:
+    background: '0x3f424a'
+    foreground: '0xf8f8f8'
+  normal:
+    black:   '0x3f3f3f'
+    red:     '0xac3c3c'
+    green:   '0x60b48a'
+    yellow:  '0xdfaf8f'
+    blue:    '0x506070'
+    magenta: '0xdc8cc3'
+    cyan:    '0x8cd0d3'
+    white:   '0xdcdccc'
+  bright:
+    black:   '0x79a9ff'
+    red:     '0xda6e6e'
+    green:   '0xc3bf9f'
+    yellow:  '0xf0dfaf'
+    blue:    '0x94bff3'
+    magenta: '0xec93d3'
+    cyan:    '0x93e0e3'
+    white:   '0xf8f8ff'
+
+colors:
+  *theme_arc
