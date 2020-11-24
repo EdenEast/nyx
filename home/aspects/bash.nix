@@ -28,6 +28,7 @@ in {
   config = mkIf cfg.enable {
     home.file.".bash_profile".source = ../files/.bash_profile;
     home.file.".bashrc".source = ../files/.bashrc;
+    home.file.".inputrc".source = ../files/.inputrc;
     home.file.".profile".source = ../files/.profile;
 
     xdg.configFile."shell".source = ../files/.config/shell;
