@@ -1,0 +1,25 @@
+theme_skyfall: &theme_skyfall
+  primary:
+    background: '0x282f37'
+    foreground: '0xf1fcf9'
+  normal:
+    black:   '0x20262c'
+    red:     '0xdb86ba'
+    green:   '0x74dd91'
+    yellow:  '0xe49186'
+    blue:    '0x75dbe1'
+    magenta: '0xb4a1db'
+    cyan:    '0x9ee9ea'
+    white:   '0xf1fcf9'
+  bright:
+    black:   '0x465463'
+    red:     '0xd04e9d'
+    green:   '0x4bc66d'
+    yellow:  '0xdb695b'
+    blue:    '0x3dbac2'
+    magenta: '0x825ece'
+    cyan:    '0x62cdcd'
+    white:   '0xe0e5e5'
+
+colors:
+  *theme_skyfall
