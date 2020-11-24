@@ -8,6 +8,7 @@
     ./keybase.nix
     ./lf.nix
     ./starship.nix
+    ./tmux.nix
     ./xdg.nix
     ./zoxide.nix
     ./zsh.nix
