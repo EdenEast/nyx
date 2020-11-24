@@ -9,3 +9,4 @@ export REPO_LOCAL_PATH="$HOME/.local/share/repo"
 # make yadm conform to $XDG_* paths
 export YADM_DIR="$XDG_CONFIG_HOME/yadm"
 
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
