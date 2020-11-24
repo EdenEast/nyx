@@ -35,6 +35,9 @@ in {
       ];
     };
 
-    nyx.aspects = { lf.enable = true; };
+    nyx.aspects = {
+      lf.enable = true;
+      zsh.enable = true;
+    };
   };
 }

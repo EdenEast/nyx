@@ -1,8 +1,3 @@
-# if repo is installed then soure the work script
-[[ -x "$(command -v repo)" ]] && {
-    [ -x "$(command -v fzf)" ] && eval "$(repo init bash --fzf)" || eval "$(repo init bash)"
-}
-
 # if sccache is installed add that as a rustc wrapper
 [[ -x "$(command -v sccache)" ]] && {
     export RUSTC_WRAPPER="sccache"
@@ -13,7 +8,6 @@
 [[ -x "$(command -v zoxide)" ]] && {
     export _ZO_DATA="$HOME/.cache/zoxide/data"
     mkdir -p $HOME/.cache/zoxide
-    eval "$(zoxide init bash)"
 }
 
 # if git-delta is installed then use this as the git pager

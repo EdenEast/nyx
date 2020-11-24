@@ -9,6 +9,7 @@
     ./lf.nix
     ./starship.nix
     ./xdg.nix
+    ./zsh.nix
   ];
 }
 
