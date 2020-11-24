@@ -37,6 +37,7 @@ in {
 
     nyx.aspects = {
       lf.enable = true;
+      zoxide.enable = true;
       zsh.enable = true;
     };
   };
