@@ -8,6 +8,7 @@
     ./git.nix
     ./keybase.nix
     ./lf.nix
+    ./ssh.nix
     ./starship.nix
     ./tmux.nix
     ./xdg.nix
