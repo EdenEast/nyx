@@ -1,9 +1,9 @@
 { config, lib, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.xdg;
+let cfg = config.nyx.aspects.shell.xdg;
 in {
-  options.nyx.aspects.xdg.enable = mkEnableOption "xdg configuration";
+  options.nyx.aspects.shell.xdg.enable = mkEnableOption "xdg configuration";
 
   config = mkIf cfg.enable {
     xdg = {

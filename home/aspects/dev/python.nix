@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.python;
+let cfg = config.nyx.aspects.dev.python;
 in {
-  options.nyx.aspects.python.enable = mkEnableOption "python configuration";
+  options.nyx.aspects.dev.python.enable = mkEnableOption "python configuration";
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

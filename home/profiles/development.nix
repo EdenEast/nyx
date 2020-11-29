@@ -19,13 +19,13 @@ in {
     ];
 
     nyx.aspects = {
-      cc.enable = true;
-      direnv.enable = true;
-      keybase.enable = true;
-      lua.enable = true;
-      node.enable = true;
-      python.enable = true;
-      rust.enable = true;
+      dev.cc.enable = true;
+      dev.lua.enable = true;
+      dev.node.enable = true;
+      dev.python.enable = true;
+      dev.rust.enable = true;
+      shell.direnv.enable = true;
+      shell.keybase.enable = true;
     };
   };
 }

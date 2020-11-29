@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.zoxide;
+let cfg = config.nyx.aspects.shell.zoxide;
 in {
-  options.nyx.aspects.zoxide = {
+  options.nyx.aspects.shell.zoxide = {
     enable = mkEnableOption "zoxide configuration";
   };
 

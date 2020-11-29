@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.zsh;
+let cfg = config.nyx.aspects.shell.zsh;
 in {
-  options.nyx.aspects.zsh = {
+  options.nyx.aspects.shell.zsh = {
     enable = mkEnableOption "zsh configuration";
 
     enableCompletion = mkOption {
@@ -47,8 +47,8 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs;
       [ zsh ] ++ optional cfg.enableCompletion nix-zsh-completions;
-    home.file.".zshenv".source = ../files/.zshenv;
-    xdg.configFile."zsh".source = ../files/.config/zsh;
+    home.file.".zshenv".source = ../../files/.zshenv;
+    xdg.configFile."zsh".source = ../../files/.config/zsh;
 
     xdg.dataFile."zsh/zshrc".text = ''
       ${cfg.initExtra}
