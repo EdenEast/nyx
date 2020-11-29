@@ -18,8 +18,9 @@ in {
 
     nyx.aspects = {
       cc.enable = true;
-      rust.enable = true;
       keybase.enable = true;
+      node.enable = true;
+      rust.enable = true;
     };
   };
 }
