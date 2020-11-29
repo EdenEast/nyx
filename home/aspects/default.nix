@@ -6,6 +6,7 @@
     ./bash.nix
     ./fzf.nix
     ./git.nix
+    ./gnupg.nix
     ./keybase.nix
     ./lf.nix
     ./ssh.nix
