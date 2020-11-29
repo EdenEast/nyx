@@ -11,9 +11,7 @@ in {
 
       controlMaster = "auto";
       controlPath = "~/.ssh/sockets/%r@%h-%p";
-      extraOptionOverrides = {
-        "Include" = "~/.ssh/config.local";
-      };
+      extraOptionOverrides = { "Include" = "~/.ssh/config.local"; };
       hashKnownHosts = true;
     };
   };

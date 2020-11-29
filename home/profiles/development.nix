@@ -15,6 +15,7 @@ in {
     ];
 
     nyx.aspects = {
+      cc.enable = true;
       rust.enable = true;
       keybase.enable = true;
     };
