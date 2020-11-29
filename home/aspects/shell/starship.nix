@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.starship;
+let cfg = config.nyx.aspects.shell.starship;
 in {
-  options.nyx.aspects.starship = {
+  options.nyx.aspects.shell.starship = {
     enable = mkEnableOption "starship configuration";
   };
 
@@ -15,6 +15,6 @@ in {
       package = pkgs.starship;
     };
 
-    xdg.configFile."starship".source = ../files/.config/starship;
+    xdg.configFile."starship".source = ../../files/.config/starship;
   };
 }

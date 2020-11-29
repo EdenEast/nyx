@@ -36,11 +36,11 @@ in {
     };
 
     nyx.aspects = {
-      fzf.enable = true;
-      lf.enable = true;
-      tmux.enable = true;
-      zoxide.enable = true;
-      zsh.enable = true;
+      shell.fzf.enable = true;
+      shell.lf.enable = true;
+      shell.tmux.enable = true;
+      shell.zoxide.enable = true;
+      shell.zsh.enable = true;
     };
   };
 }

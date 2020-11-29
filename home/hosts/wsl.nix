@@ -5,7 +5,7 @@
 
   nyx = {
     aspects = {
-      git = {
+      shell.git = {
         userName = "James Simpson";
         userEmail = "edeofest@gmail.com";
       };

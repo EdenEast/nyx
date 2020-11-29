@@ -7,8 +7,8 @@ in {
 
   config = mkIf cfg.enable {
     nyx.aspects = {
-      alacritty.enable = true;
-      discord.enable = true;
+      app.alacritty.enable = true;
+      app.discord.enable = true;
     };
   };
 }

@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.bash;
+let cfg = config.nyx.aspects.shell.bash;
 in {
-  options.nyx.aspects.bash = {
+  options.nyx.aspects.shell.bash = {
     enable = mkEnableOption "bash configuration";
 
     profileExtra = mkOption {
@@ -26,12 +26,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.file.".bash_profile".source = ../files/.bash_profile;
-    home.file.".bashrc".source = ../files/.bashrc;
-    home.file.".inputrc".source = ../files/.inputrc;
-    home.file.".profile".source = ../files/.profile;
+    home.file.".bash_profile".source = ../../files/.bash_profile;
+    home.file.".bashrc".source = ../../files/.bashrc;
+    home.file.".inputrc".source = ../../files/.inputrc;
+    home.file.".profile".source = ../../files/.profile;
 
-    xdg.configFile."shell".source = ../files/.config/shell;
+    xdg.configFile."shell".source = ../../files/.config/shell;
     xdg.dataFile."bash/bashrc".text = ''
       ${cfg.initExtra}
     '';

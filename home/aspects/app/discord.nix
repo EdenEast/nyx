@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.discord;
+let cfg = config.nyx.aspects.app.discord;
 in {
-  options.nyx.aspects.discord = { enable = mkEnableOption "discord app"; };
+  options.nyx.aspects.app.discord = { enable = mkEnableOption "discord app"; };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs;

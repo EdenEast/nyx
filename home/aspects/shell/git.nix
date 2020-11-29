@@ -2,7 +2,7 @@
 
 with lib;
 let
-  cfg = config.nyx.aspects.git;
+  cfg = config.nyx.aspects.shell.git;
 
   signModule = types.submodule {
     options = {
@@ -26,7 +26,7 @@ let
     };
   };
 in {
-  options.nyx.aspects.git = {
+  options.nyx.aspects.shell.git = {
     enable = mkEnableOption "git configuration";
 
     minimal = mkOption {
@@ -74,14 +74,14 @@ in {
           gitAndTools.grv
           gitAndTools.hub
           gitAndTools.tig
-          (mkIf config.nyx.aspects.gnupg.enable gitAndTools.git-crypt)
+          (mkIf config.nyx.aspects.shell.gnupg.enable gitAndTools.git-crypt)
         ] else
           [ ];
 
         total = minimal ++ extra;
       in total;
 
-    xdg.configFile."git".source = ../files/.config/git;
+    xdg.configFile."git".source = ../../files/.config/git;
     xdg.dataFile."git/nyx-gen".text = let
       userSection = if (cfg.userName != null && cfg.userEmail != null) then ''
         [user]

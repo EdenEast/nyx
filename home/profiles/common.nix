@@ -63,12 +63,12 @@ in {
     programs.man.enable = true;
 
     nyx.aspects = {
-      bash.enable = true;
-      git.enable = true;
-      gnupg.enable = true;
-      ssh.enable = true;
-      starship.enable = true;
-      xdg.enable = true;
+      shell.bash.enable = true;
+      shell.git.enable = true;
+      shell.gnupg.enable = true;
+      shell.ssh.enable = true;
+      shell.starship.enable = true;
+      shell.xdg.enable = true;
     };
   };
 }

@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.rust;
+let cfg = config.nyx.aspects.dev.rust;
 in {
-  options.nyx.aspects.rust = { enable = mkEnableOption "rust configuration"; };
+  options.nyx.aspects.dev.rust = { enable = mkEnableOption "rust configuration"; };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

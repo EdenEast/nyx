@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.node;
+let cfg = config.nyx.aspects.dev.node;
 in {
-  options.nyx.aspects.node.enable = mkEnableOption "node configuration";
+  options.nyx.aspects.dev.node.enable = mkEnableOption "node configuration";
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ nodejs yarn ];

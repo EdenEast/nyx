@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.ssh;
+let cfg = config.nyx.aspects.shell.ssh;
 in {
-  options.nyx.aspects.ssh = { enable = mkEnableOption "ssh configuration"; };
+  options.nyx.aspects.shell.ssh = { enable = mkEnableOption "ssh configuration"; };
 
   config = mkIf cfg.enable {
     programs.ssh = {

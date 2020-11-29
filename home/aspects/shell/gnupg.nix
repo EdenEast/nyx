@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.gnupg;
+let cfg = config.nyx.aspects.shell.gnupg;
 in {
-  options.nyx.aspects.gnupg = {
+  options.nyx.aspects.shell.gnupg = {
     enable = mkEnableOption "gnupg configuration";
   };
 
