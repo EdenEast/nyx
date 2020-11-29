@@ -5,6 +5,7 @@
     ./app
     ./dev
     ./bash.nix
+    ./direnv.nix
     ./fzf.nix
     ./git.nix
     ./gnupg.nix
