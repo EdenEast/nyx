@@ -15,7 +15,7 @@ in {
     ];
 
     nyx.aspects = {
-      fzf.enable = true;
+      rust.enable = true;
       keybase.enable = true;
     };
   };

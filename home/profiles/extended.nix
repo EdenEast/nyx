@@ -36,6 +36,7 @@ in {
     };
 
     nyx.aspects = {
+      fzf.enable = true;
       lf.enable = true;
       tmux.enable = true;
       zoxide.enable = true;
