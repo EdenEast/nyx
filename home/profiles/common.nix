@@ -65,6 +65,7 @@ in {
     nyx.aspects = {
       bash.enable = true;
       git.enable = true;
+      gnupg.enable = true;
       ssh.enable = true;
       starship.enable = true;
       xdg.enable = true;
