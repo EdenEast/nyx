@@ -19,6 +19,7 @@ in {
     nyx.aspects = {
       cc.enable = true;
       keybase.enable = true;
+      lua.enable = true;
       node.enable = true;
       python.enable = true;
       rust.enable = true;
