@@ -20,6 +20,7 @@ in {
       cc.enable = true;
       keybase.enable = true;
       node.enable = true;
+      python.enable = true;
       rust.enable = true;
     };
   };
