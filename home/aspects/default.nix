@@ -2,8 +2,8 @@
 
 {
   imports = [
+    ./app
     ./dev
-    ./alacritty.nix
     ./bash.nix
     ./fzf.nix
     ./git.nix
