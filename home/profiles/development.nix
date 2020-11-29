@@ -12,6 +12,8 @@ in {
       hyperfine
       # Codebase statistics.
       tokei
+      # Shell script analysis tool
+      shellcheck
     ];
 
     nyx.aspects = {
