@@ -70,11 +70,11 @@ in {
           git-lfs
           gitAndTools.delta
           gitAndTools.gh
-          gitAndTools.git-crypt
           gitAndTools.git-open
           gitAndTools.grv
           gitAndTools.hub
           gitAndTools.tig
+          (mkIf config.nyx.aspects.gnupg.enable gitAndTools.git-crypt)
         ] else
           [ ];
 
