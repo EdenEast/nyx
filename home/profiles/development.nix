@@ -10,10 +10,12 @@ in {
     home.packages = with pkgs; [
       # Benchmarking.
       hyperfine
-      # Codebase statistics.
-      tokei
+      # Just a command runner
+      just
       # Shell script analysis tool
       shellcheck
+      # Codebase statistics.
+      tokei
     ];
 
     nyx.aspects = {
