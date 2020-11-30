@@ -3,7 +3,9 @@
 with lib;
 let cfg = config.nyx.aspects.shell.tmux;
 in {
-  options.nyx.aspects.shell.tmux = { enable = mkEnableOption "tmux configuration"; };
+  options.nyx.aspects.shell.tmux = {
+    enable = mkEnableOption "tmux configuration";
+  };
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.tmux ];

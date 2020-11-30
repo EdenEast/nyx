@@ -3,7 +3,9 @@
 with lib;
 let cfg = config.nyx.aspects.shell.lf;
 in {
-  options.nyx.aspects.shell.lf = { enable = mkEnableOption "lf configuration"; };
+  options.nyx.aspects.shell.lf = {
+    enable = mkEnableOption "lf configuration";
+  };
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.lf ];
