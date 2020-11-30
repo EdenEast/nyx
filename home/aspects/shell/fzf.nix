@@ -3,7 +3,9 @@
 with lib;
 let cfg = config.nyx.aspects.shell.fzf;
 in {
-  options.nyx.aspects.shell.fzf = { enable = mkEnableOption "fzf configuration"; };
+  options.nyx.aspects.shell.fzf = {
+    enable = mkEnableOption "fzf configuration";
+  };
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.fzf ];

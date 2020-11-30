@@ -3,7 +3,9 @@
 with lib;
 let cfg = config.nyx.aspects.dev.cc;
 in {
-  options.nyx.aspects.dev.cc = { enable = mkEnableOption "c/c++ configuration"; };
+  options.nyx.aspects.dev.cc = {
+    enable = mkEnableOption "c/c++ configuration";
+  };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
