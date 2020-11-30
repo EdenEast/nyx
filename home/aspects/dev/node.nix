@@ -1,7 +1,11 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.aspects.dev.node;
+let
+  cfg = config.nyx.aspects.dev.node;
+  configHome = config.xdg.configHome;
+  dataHome = config.xdg.dataHome;
+  cacheHome = config.xdg.cacheHome;
 in {
   options.nyx.aspects.dev.node.enable = mkEnableOption "node configuration";
 
@@ -9,18 +13,19 @@ in {
     home.packages = with pkgs; [ nodejs yarn ];
 
     home.sessionVariables = {
-      NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/config";
-      NPM_CONFIG_CACHE = "$XDG_CACHE_HOME/npm";
-      PM_CONFIG_TMP = "$XDG_RUNTIME_DIR/npm";
-      NPM_CONFIG_PREFIX = "$XDG_CACHE_HOME/npm";
-      NODE_REPL_HISTORY = "$XDG_CACHE_HOME/node/repl_history";
+      NPM_CONFIG_USERCONFIG = "${configHome}/npm/config";
+      NPM_CONFIG_CACHE = "${configHome}/npm";
+      PM_CONFIG_TMP = "${cacheHome}/tmp/npm";
+      NPM_CONFIG_PREFIX = "${dataHome}/npm";
+      NODE_REPL_HISTORY = "${cacheHome}/node/repl_history";
     };
 
     xdg.configFile."npm/config".text = ''
-      cache=$XDG_CACHE_HOME/npm
-      prefix=$XDG_DATA_HOME/npm
+      cache=${cacheHome}/npm
+      prefix=${dataHome}/npm
     '';
 
-    home.sessionPath = [ "$(yarn global bin)" ];
+    # npm and yarn will install into this location
+    home.sessionPath = [ "${dataHome}/npm/bin" ];
   };
 }
