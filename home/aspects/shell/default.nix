@@ -9,6 +9,7 @@
     ./gnupg.nix
     ./keybase.nix
     ./lf.nix
+    ./neovim.nix
     ./ssh.nix
     ./starship.nix
     ./tmux.nix
