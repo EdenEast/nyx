@@ -14,4 +14,5 @@ works on both nixos and non nixos systems. It is well structured and easy to und
 
 - [davidtwco](https://github.com/davidtwco/veritas)
 - [hlissner](https://github.com/hlissner/dotfiles)
+- [colemickens](https://github.com/colemickens/nixcfg)
 
