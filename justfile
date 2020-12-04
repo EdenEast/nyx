@@ -1,3 +1,7 @@
+# Export env var
+export USER := env_var("USER")
+export HOME := env_var("HOME")
+
 default-target := "${NYX_DEFAULT_TARGET:-minimal}"
 expflags := "--experimental-features 'nix-command flakes'"
 input-all := "all"
