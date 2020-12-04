@@ -132,6 +132,7 @@
 
         # Overlays consumed by the home-manager/NixOS configuration.
         overlays = forEachSystem (system: [
+          (import ./nix/overlays/alacritty)
           (import ./nix/overlays/neovim)
           (import inputs.nixpkgs-mozilla)
         ]);
