@@ -15,6 +15,10 @@ in {
       rust-analyzer
       # ccache with Cloud Storage
       sccache
+
+      # Needed by a lot of crates
+      openssl
+      pkgconfig
     ];
 
     home = {
