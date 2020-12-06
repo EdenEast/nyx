@@ -20,6 +20,7 @@ in {
 
     nyx.aspects = {
       dev.cc.enable = true;
+      dev.go.enable = true;
       dev.lua.enable = true;
       dev.node.enable = true;
       dev.python.enable = true;
