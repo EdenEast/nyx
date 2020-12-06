@@ -132,6 +132,7 @@
 
         # Overlays consumed by the home-manager/NixOS configuration.
         overlays = forEachSystem (system: [
+          (self.overlay."${system}")
           (import ./nix/overlays/alacritty)
           (import ./nix/overlays/neovim)
           (import inputs.nixpkgs-mozilla)
@@ -144,6 +145,12 @@
           name = "nyx";
           buildInputs = [ git-crypt just nixfmt fd ];
         });
+
+      overlay = forEachSystem (system: _: _: self.packages."${system}");
+
+      packages = forEachSystem (system:
+        let pkgs = pkgsBySystem."${system}";
+        in { repo = pkgs.callPackage ./nix/pkgs/repo { }; });
 
       minimal =
         self.internal.homeConfiguration.x86_64-linux.minimal.value.activationPackage;
