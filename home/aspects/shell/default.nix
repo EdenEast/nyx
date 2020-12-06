@@ -10,6 +10,7 @@
     ./keybase.nix
     ./lf.nix
     ./neovim.nix
+    ./repo.nix
     ./ssh.nix
     ./starship.nix
     ./tmux.nix
