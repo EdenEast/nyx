@@ -18,7 +18,7 @@ in {
 
       # Needed by a lot of crates
       openssl
-      pkgconfig
+      pkg-config
     ];
 
     home = {
