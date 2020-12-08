@@ -56,6 +56,9 @@ in {
       ];
     };
 
+    # Manage home-manager with home-manager (inception)
+    programs.home-manager.enable = true;
+
     # Install home-manager manpages.
     manual.manpages.enable = true;
 
