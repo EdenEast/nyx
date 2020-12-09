@@ -17,7 +17,8 @@
     done
 }
 
-[[ -f $HOME/.local/share/bash/profile ]] && . $HOME/.local/share/bash/profile
+[[ -f $HOME/.local/share/bash/nyx_profile ]] && . $HOME/.local/share/bash/nyx_profile
+[[ -f $HOME/.local/share/bash/profile ]]     && . $HOME/.local/share/bash/profile
 
 # lauch x server when logging in to tty1
 [[ "$(tty)" = "/dev/tty1" ]] && {
