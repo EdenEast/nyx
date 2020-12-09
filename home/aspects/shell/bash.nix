@@ -32,10 +32,14 @@ in {
     home.file.".profile".source = ../../files/.profile;
 
     xdg.configFile."shell".source = ../../files/.config/shell;
-    xdg.dataFile."bash/bashrc".text = ''
+    xdg.dataFile."bash/nyx_bashrc".text = ''
+      # auto genreated by nyx
+
       ${cfg.initExtra}
     '';
-    xdg.dataFile."bash/profile".text = ''
+    xdg.dataFile."bash/nyx_profile".text = ''
+      # auto genreated by nyx
+
       ${cfg.profileExtra}
     '';
   };

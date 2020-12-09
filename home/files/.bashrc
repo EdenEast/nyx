@@ -23,4 +23,5 @@
     done
 }
 
-[[ -f $HOME/.local/share/bash/bashrc ]] && . $HOME/.local/share/bash/bashrc
+[[ -f $HOME/.local/share/bash/nyx_bashrc ]] && . $HOME/.local/share/bash/nyx_bashrc
+[[ -f $HOME/.local/share/bash/bashrc ]]     && . $HOME/.local/share/bash/bashrc
