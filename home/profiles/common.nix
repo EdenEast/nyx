@@ -39,8 +39,6 @@ in {
         ripgrep
         # ls alternative.
         exa
-        # cat alternative.
-        bat
         # Simple, fast and user-friendly alternative to find.
         fd
         # sed alternative
@@ -67,6 +65,7 @@ in {
 
     nyx.aspects = {
       shell.bash.enable = true;
+      shell.bat.enable = true;
       shell.git.enable = true;
       shell.gnupg.enable = true;
       shell.neovim.enable = true;
