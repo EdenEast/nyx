@@ -12,9 +12,6 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
     export VISUAL="vim"
 }
 
-# pager and less
-[[ -n "$(command -v bat)" ]] && export PAGER="bat" || export PAGER="less"
-
 # filename (if known), line number if known, falling back to percent if known,
 # falling back to byte offset, falling back to dash
 export LESSPROMPT='?f%f .?ltLine %lt:?pt%pt\%:?btByte %bt:-...'
