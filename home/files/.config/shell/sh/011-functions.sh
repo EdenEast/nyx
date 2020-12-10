@@ -126,6 +126,58 @@ function extract()
     fi
 }
 
+# GIT Wrapper function
+#
+# Wrapper function around git to add extra functionality and the `root` command.
+# The root command requires to be a shell function as you cannot change the shell's
+# directory without it.
+#
+# USAGE:
+#        - `git`              = `git status` ; if help message is required use `git help`
+#        - `git root`         = cd to repository root
+#        - `git root ARGS...` = eval ARGS from root ; eg: `git root ls`
+#        - `git ARGS...`      = default behaviour of git ; acts like default `git` command
+function git()
+{
+    if [ $# -eq 0 ]; then
+        command git status -s
+    elif [ "$1" = "root" ]; then
+        # we are in the git-root command
+        shift
+        local root
+
+        # check if inside a .git directory or barre repository
+        if [ "$(command git rev-parse --is-inside-git-dir 2> /dev/null)" = true ]; then
+            if [ "$(command git rev-parse --is-bare-repository)" = true ]; then
+                # we are in a bare repository get the abs git-dir
+                root="$(command git rev-parse --absolute-git-dir)"
+            else
+                # this should be good enough. GIT_DIR might be outside of the working tree
+                # see https://stackoverflow.com/a/38852055/2103996
+                root="$(command git --rev-parse --git-dir)/.."
+            fi
+        else
+            # git +2.13.0
+            root="$(command git rev-parse --show-superproject-working-tree 2> /dev/null)"
+            [ -z "$root" ] && root="$(command git rev-parse --show-toplevel 2> /dev/null)"
+        fi
+
+        # if still not root then set to current dir
+        [ -z "$root" ] && root=.
+
+
+        # cd and exec arguments if there are any
+        if [ $# -eq 0 ]; then
+            cd "$root"
+        else
+            (cd "$root" && eval "$@")
+        fi
+    else
+        # reqular git
+        command git "$@"
+    fi
+}
+
 function history()
 {
     local DEFAULT=100
