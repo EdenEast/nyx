@@ -1,6 +1,6 @@
 # if sccache is installed add that as a rustc wrapper
 [[ -x "$(command -v sccache)" ]] && {
-    export RUSTC_WRAPPER="sccache"
+    # export RUSTC_WRAPPER="sccache"
     export SCCACHE_DIR="$HOME/.cache/sccache"
 }
 
