@@ -27,6 +27,7 @@ in {
       dev.rust.enable = true;
       shell.direnv.enable = true;
       shell.keybase.enable = true;
+      shell.lorri.enable = true;
     };
   };
 }
