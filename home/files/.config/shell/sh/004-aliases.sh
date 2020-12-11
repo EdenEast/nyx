@@ -5,7 +5,7 @@ alias cd..='cd ..'
 # quick shortcuts
 alias c=cargo
 alias e=$EDITOR
-alias g=git
+alias g=git && __git_complete g __git_main
 alias m=make
 alias t=tmux
 alias v=vim

@@ -101,5 +101,9 @@ in {
       ${userSection}
       ${signingSection}
     '';
+
+    nyx.aspects.shell.bash.profileExtra = ''
+      source "${pkgs.git}/share/bash-completion/completions/git"
+    '';
   };
 }
