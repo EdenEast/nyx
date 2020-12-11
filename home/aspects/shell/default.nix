@@ -10,6 +10,7 @@
     ./gnupg.nix
     ./keybase.nix
     ./lf.nix
+    ./lorri.nix
     ./neovim.nix
     ./repo.nix
     ./ssh.nix
