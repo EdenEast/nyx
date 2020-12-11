@@ -1,1 +1,1 @@
-setlocal noexpandtab
+setlocal expandtab
