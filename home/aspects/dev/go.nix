@@ -6,13 +6,18 @@ in {
   options.nyx.aspects.dev.go = { enable = mkEnableOption "go configuration"; };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      go
-      # linters and static analysis
-      go-tools
-    ];
+    home = {
+      packages = with pkgs; [
+        go
+        # linters and static analysis
+        go-tools
+      ];
 
-    home = { };
+      sessionVariables = {
+        GOPATH = "${config.xdg.dataHome}/go";
+        GOBIN = "${config.xdg.dataHome}/go/bin";
+      };
+    };
   };
 }
 
