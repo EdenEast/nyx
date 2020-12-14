@@ -104,6 +104,7 @@ in {
 
     nyx.aspects.shell.bash.profileExtra = ''
       source "${pkgs.git}/share/bash-completion/completions/git"
+      __git_complete g __git_main
     '';
   };
 }
