@@ -36,6 +36,14 @@ use {
   }
 }
 
+-- Trying: preview markdown in neovim buffer
+use {
+  'npxbr/glow.nvim',
+  run = function() vim.cmd([[:GlowInstall]]) end,
+  ft = {'markdown', 'vimwiki'},
+  cmd = { 'Glow' },
+}
+
 -- Extend rust syntax support
 use {
   'arzg/vim-rust-syntax-ext',
