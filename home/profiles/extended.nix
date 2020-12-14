@@ -35,6 +35,7 @@ in {
 
     nyx.aspects = {
       shell.fzf.enable = true;
+      shell.glow.enable = true;
       shell.keybase.enable = true;
       shell.lf.enable = true;
       shell.repo.enable = true;

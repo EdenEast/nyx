@@ -7,6 +7,7 @@
     ./direnv.nix
     ./fzf.nix
     ./git.nix
+    ./glow.nix
     ./gnupg.nix
     ./keybase.nix
     ./lf.nix
