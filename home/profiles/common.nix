@@ -43,6 +43,8 @@ in {
         fd
         # sed alternative
         sd
+        # terminal based markdown reader
+        glow
         # More intuitive du.
         du-dust
         # GnuPG

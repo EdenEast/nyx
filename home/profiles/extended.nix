@@ -28,8 +28,6 @@ in {
         arping
         # Recover dead disks :(
         ddrescue
-        # Keybase
-        keybase
         # Hosted binary caches
         cachix
       ];
@@ -37,6 +35,7 @@ in {
 
     nyx.aspects = {
       shell.fzf.enable = true;
+      shell.keybase.enable = true;
       shell.lf.enable = true;
       shell.repo.enable = true;
       shell.tmux.enable = true;
