@@ -139,12 +139,19 @@ function extract()
 #        - `git ARGS...`      = default behaviour of git ; acts like default `git` command
 function git()
 {
-    local git_cmd
-    if command -v hub &> /dev/null; then
-        git_cmd=hub
-    else
-        git_cmd=git
-    fi
+    # Reference on returning string from bash function https://stackoverflow.com/a/14541533
+    function get_cmd() { # output_var
+        local _out=$1
+
+        function cmd_or_default() { # cmd
+            hash $1 2> /dev/null && eval "$_out=\$1" || eval "$_out=git"
+        }
+
+        local remote=$(command git ls-remote --get-url)
+
+        # If the default remote is a gitlab url then use `lab` as default git wrapper else use hub
+        [[ "$remote" =~ gitlab.*\.[org|com] ]] && cmd_or_default lab || cmd_or_default hub
+    }
 
     if [ $# -eq 0 ]; then
         command git status -s
@@ -172,7 +179,6 @@ function git()
         # if still not root then set to current dir
         [ -z "$root" ] && root=.
 
-
         # cd and exec arguments if there are any
         if [ $# -eq 0 ]; then
             cd "$root"
@@ -181,7 +187,8 @@ function git()
         fi
     else
         # reqular git
-        echo "cmd: $git_cmd"
+        local git_cmd
+        get_cmd git_cmd
         command $git_cmd "$@"
     fi
 }

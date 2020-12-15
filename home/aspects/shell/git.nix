@@ -68,6 +68,7 @@ in {
           gitAndTools.git-open
           gitAndTools.grv
           gitAndTools.hub
+          gitAndTools.lab
           gitAndTools.tig
           (mkIf config.nyx.aspects.shell.gnupg.enable gitAndTools.git-crypt)
         ] else
