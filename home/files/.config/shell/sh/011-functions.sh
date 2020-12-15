@@ -139,6 +139,13 @@ function extract()
 #        - `git ARGS...`      = default behaviour of git ; acts like default `git` command
 function git()
 {
+    local git_cmd
+    if command -v hub &> /dev/null; then
+        git_cmd=hub
+    else
+        git_cmd=git
+    fi
+
     if [ $# -eq 0 ]; then
         command git status -s
     elif [ "$1" = "root" ]; then
@@ -174,7 +181,8 @@ function git()
         fi
     else
         # reqular git
-        command git "$@"
+        echo "cmd: $git_cmd"
+        command $git_cmd "$@"
     fi
 }
 
