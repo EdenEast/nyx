@@ -147,7 +147,7 @@ function git()
             hash $1 2> /dev/null && eval "$_out=\$1" || eval "$_out=git"
         }
 
-        local remote=$(command git ls-remote --get-url)
+        local remote=$(command git ls-remote --get-url 2>/dev/null)
 
         # If the default remote is a gitlab url then use `lab` as default git wrapper else use hub
         [[ "$remote" =~ gitlab.*\.[org|com] ]] && cmd_or_default lab || cmd_or_default hub
