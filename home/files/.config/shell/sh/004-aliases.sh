@@ -6,6 +6,7 @@ alias cd..='cd ..'
 alias c=cargo
 alias e=$EDITOR
 alias g=git
+alias j=just
 alias m=make
 alias t=tmux
 alias v=vim
