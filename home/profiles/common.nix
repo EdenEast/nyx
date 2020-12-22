@@ -45,8 +45,6 @@ in {
         sd
         # More intuitive du.
         du-dust
-        # GnuPG
-        gnupg
         # Visualize Nix gc-roots to delete to free space.
         nix-du
         # Encrypted files in Git repositories
@@ -67,9 +65,9 @@ in {
       shell.bash.enable = true;
       shell.bat.enable = true;
       shell.git.enable = true;
-      shell.gnupg.enable = true;
+      # shell.gnupg.enable = true;
       shell.neovim.enable = true;
-      shell.ssh.enable = true;
+      # shell.ssh.enable = true;
       shell.starship.enable = true;
       shell.xdg.enable = true;
     };
