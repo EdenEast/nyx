@@ -150,7 +150,11 @@ function git()
         local remote=$(command git ls-remote --get-url 2>/dev/null)
 
         # If the default remote is a gitlab url then use `lab` as default git wrapper else use hub
-        [[ "$remote" =~ gitlab.*\.[org|com] ]] && cmd_or_default lab || cmd_or_default hub
+        if [[ "$remote" =~ gitlab.*\.[org|com] ]]; then
+            cmd_or_default lab
+        else
+            cmd_or_default hub
+        fi
     }
 
     if [ $# -eq 0 ]; then
