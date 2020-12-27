@@ -1,31 +1,29 @@
 # Installation
 
-## Wsl on Windows
+## Wsl2 on Windows
 
 - Install wsl2 by following the [documentation](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-  - Currently I use Ubuntu as the distribution to install as it is the most supported
+  - Currently I use Ubuntu or Debian as they are the distributions most supported by wsl
 - Install Alacritty
-  - Currently Alacritty landed configuration import support but it only handles absolute paths that
-    exist. This does not work well for dotfiles that are tracked in source control and used my
-    multiple systems. I have a fork of Alacritty that supports optional imports and expanded `~`.
-    Current [fork branch](https://github.com/EdenEast/alacritty/tree/import-improvement)
-- Symlink `%APPLOCALDATA%\alacritty` to `~/.config/alacritty`. In
-  `~/.local/share/alacritty/config.yml` add the following:
+  - My current configuration will work with the next minor version `v0.7.0`. For now alacritty
+    needs to be built from master
+  - Symlink `%APPLOCALDATA%\alacritty` to somewhere where nyx is cloned on windows
+      `home/files/.config/alacritty`. Add the following to `~/.local/share/alacritty/config.yml`
 
 ```yml
   # Wsl2
   shell:
-    program: C:/Windows/System32/bash.exe
-    args:
-      - --login
-      - -i
+    program: C:/Windows/System32/wsl.exe
 
   working_directory: %USERPROFILE%
 ```
 
-- Launch alacritty and execute the following steps:
+Launch alacritty and execute the following steps:
 
 ```bash
+# In case base install does not come with curl and xz-utils to open tar files from nix install
+sudo apt install curl xz-utils
+
 # Install nix
 sh <(curl -L https://nixos.org/nix/install)
 
@@ -33,15 +31,19 @@ sh <(curl -L https://nixos.org/nix/install)
 . ~/.nix-profile/etc/profile.d/nix.sh
 
 # Create a temp nix shell that contains packages needed to clone and build the flake
-nix-shell -p git nixFlake gnumake
+nix-shell -p git nixFlakes just
+
+# Make .local directory just in case
+mkdir -p ~/.local && cd ~/.local
 
 # Clone nyx into a directory
 git clone https://github.com/edeneast/nyx && cd nyx
 
-# Build flake with make
-make
+# Depending on what output target you want to default this system to build set the default target in
+# a .env file
+echo "NYX_DEFAULT_TARGET=wsl" > .env
 
-# Activate the built flake
-./result/activate
+# Build flake with just and install the results
+just install
 ```
 
