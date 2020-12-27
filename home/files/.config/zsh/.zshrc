@@ -24,5 +24,5 @@ if [[ -d $HOME/.config/shell/zsh ]]; then
 fi
 
 
-[[ -f $HOME/.local/share/zsh/zprofile ]] && . $HOME/.local/share/zsh/zprofile
+[[ -f $HOME/.local/share/zsh/zshrc ]] && . $HOME/.local/share/zsh/zshrc
 
