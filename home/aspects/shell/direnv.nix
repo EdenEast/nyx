@@ -8,7 +8,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ direnv ];
+    home.packages = with pkgs; [ direnv nix-direnv ];
 
     nyx.aspects.shell.bash.initExtra =
       mkIf config.nyx.aspects.shell.bash.enable ''
