@@ -135,7 +135,6 @@
           (self.overlay."${system}")
           (import ./nix/overlays/alacritty)
           (import ./nix/overlays/neovim)
-          (import ./nix/overlays/sccache)
           (import inputs.nixpkgs-mozilla)
         ]);
       };
