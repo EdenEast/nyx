@@ -144,7 +144,7 @@
         with pkgsBySystem."${system}";
         mkShell {
           name = "nyx";
-          buildInputs = [ git-crypt just nixfmt fd ];
+          buildInputs = [ git-crypt just nixfmt fd nix-prefetch-git nix-prefetch-github ];
         });
 
       overlay = forEachSystem (system: _: _: self.packages."${system}");
