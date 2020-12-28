@@ -7,7 +7,5 @@ in {
     enable = mkEnableOption "lorri configuration";
   };
 
-  config = mkIf cfg.enable {
-    services.lorri.enable = true;
-  };
+  config = mkIf cfg.enable { services.lorri.enable = true; };
 }
