@@ -24,6 +24,14 @@
       ref = "master";
       flake = false;
     };
+
+    flake-compat = {
+      type = "github";
+      owner = "edolstra";
+      repo = "flake-compat";
+      ref = "master";
+      flake = false;
+    };
   };
 
   outputs = { self, ... }@inputs:
@@ -144,7 +152,8 @@
         with pkgsBySystem."${system}";
         mkShell {
           name = "nyx";
-          buildInputs = [ git-crypt just nixfmt fd nix-prefetch-git nix-prefetch-github ];
+          buildInputs =
+            [ git-crypt just nixfmt fd nix-prefetch-git nix-prefetch-github ];
         });
 
       overlay = forEachSystem (system: _: _: self.packages."${system}");
