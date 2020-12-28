@@ -134,6 +134,7 @@
         overlays = forEachSystem (system: [
           (self.overlay."${system}")
           (import ./nix/overlays/alacritty)
+          (import ./nix/overlays/git-open)
           (import ./nix/overlays/neovim)
           (import inputs.nixpkgs-mozilla)
         ]);
