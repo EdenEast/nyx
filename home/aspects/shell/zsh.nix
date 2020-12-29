@@ -123,7 +123,7 @@ in {
     }
 
     {
-      xdg.dataFile."zsh/zshrc".text = ''
+      xdg.dataFile."zsh/nyx_zshrc".text = ''
         ${cfg.initExtra}
 
         ${concatStrings (map (plugin: ''
@@ -141,11 +141,11 @@ in {
     }
 
     (mkIf (cfg.profileExtra != "") {
-      xdg.dataFile."zsh/zprofile".text = cfg.profileExtra;
+      xdg.dataFile."zsh/nyx_zprofile".text = cfg.profileExtra;
     })
 
     (mkIf (cfg.envExtra != "") {
-      xdg.dataFile."zsh/zshenv".text = cfg.envExtra;
+      xdg.dataFile."zsh/nyx_zshenv".text = cfg.envExtra;
     })
 
     (mkIf (cfg.plugins != [ ]) {
