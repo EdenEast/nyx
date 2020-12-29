@@ -26,3 +26,7 @@ fi
 
 [[ -f $HOME/.local/share/zsh/zshrc ]] && . $HOME/.local/share/zsh/zshrc
 
+# Sourcing this after all local zsh files as this might have syntax highlighting
+# which must be the last line in the source file
+[[ -f $HOME/.local/share/zsh/nyx_zshrc ]] && . $HOME/.local/share/zsh/nyx_zshrc
+

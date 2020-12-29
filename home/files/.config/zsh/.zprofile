@@ -18,5 +18,6 @@ if [ -d $HOME/.config/shell/login ]; then
     done
 fi
 
+[[ -f $HOME/.local/share/zsh/nyx_zprofile ]] && . $HOME/.local/share/zsh/nyx_zprofile
 [[ -f $HOME/.local/share/zsh/zprofile ]] && . $HOME/.local/share/zsh/zprofile
 
