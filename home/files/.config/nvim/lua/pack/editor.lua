@@ -2,8 +2,8 @@ local use = require('packer').use
 
 -- Pairs
 -- use 'doums/coBra'
--- use 'tmsvg/pear-tree'
-use 'jiangmiao/auto-pairs'
+use 'tmsvg/pear-tree'
+-- use 'jiangmiao/auto-pairs'
 
 -- Enhanced search
 use 'markonm/traces.vim'
