@@ -25,7 +25,7 @@ alias jt=just
 alias psake='powershell -c Invoke-Psake'
 
 # default command flags
-[[ -n "$(command -v bat)" ]] && alias bat='bat --terminal-width $(tput cols)'
+[[ -n "$(command -v bat)" ]] && alias cat=bat
 alias df="df -Tha --total"
 alias egrep='egrep --color=auto'
 alias grep='grep --color=auto'
