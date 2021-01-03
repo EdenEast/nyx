@@ -74,6 +74,10 @@ use {
   end,
 }
 
+use {
+  'christoomey/vim-tmux-navigator'
+}
+
 -- Toggle terminal
 use {
   'akinsho/nvim-toggleterm.lua'
