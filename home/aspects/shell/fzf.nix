@@ -42,11 +42,11 @@ in {
 
     nyx.aspects.shell.bash.profileExtra =
       mkIf config.nyx.aspects.shell.bash.enable ''
-          ${optionalString (cfg.useDefaultFd) ''
-            export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
-            export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-            export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
-          ''}
+        ${optionalString (cfg.useDefaultFd) ''
+          export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+          export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+          export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
+        ''}
       '';
 
     nyx.aspects.shell.zsh.initExtra =
@@ -65,11 +65,11 @@ in {
 
     nyx.aspects.shell.zsh.profileExtra =
       mkIf config.nyx.aspects.shell.zsh.enable ''
-          ${optionalString (cfg.useDefaultFd) ''
-            export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
-            export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-            export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
-          ''}
+        ${optionalString (cfg.useDefaultFd) ''
+          export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+          export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+          export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
+        ''}
       '';
   };
 }
