@@ -160,7 +160,11 @@
 
       packages = forEachSystem (system:
         let pkgs = pkgsBySystem."${system}";
-        in { repo = pkgs.callPackage ./nix/pkgs/repo { }; });
+        in {
+          repo = pkgs.callPackage ./nix/pkgs/repo { };
+          cargo-whatfeatures =
+            pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
+        });
 
       minimal =
         self.internal.homeConfiguration.x86_64-linux.minimal.value.activationPackage;
