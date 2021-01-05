@@ -161,10 +161,10 @@
       packages = forEachSystem (system:
         let pkgs = pkgsBySystem."${system}";
         in {
-          cargo-whatfeatures =
-            pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
+          cargo-whatfeatures = pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
           cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
           repo = pkgs.callPackage ./nix/pkgs/repo { };
+          lookatme = pkgs.callPackage ./nix/pkgs/lookatme { };
         });
 
       minimal =
