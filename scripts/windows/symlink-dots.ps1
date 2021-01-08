@@ -34,7 +34,7 @@ function HandleSymlink([string]$path, [string]$target) {
         $parent = [System.Io.Path]::GetDirectoryName($path)
         [System.Io.Directory]::CreateDirectory($parent) | Out-Null
 
-        New-Item -ItemType SymbolicLink -Path $path -Target $target | Out-Null
+        New-Item -ItemType SymbolicLink -Path "$path" -Target "$target" | Out-Null
         if ($?) { Write-Host "Symlink $path -> $target" }
     }
 }
@@ -62,4 +62,9 @@ HandleSymlink $AlacrittySource $AlacrittyTarget
 $NvimSource = [IO.Path]::Combine($AppLocal, 'nvim')
 $NvimTarget = [IO.Path]::Combine($ConfigHome, 'nvim')
 HandleSymlink $NvimSource $NvimTarget
+
+# Autohotkey caps remap to ctrl/escape
+$AutohotkeySource = [IO.Path]::Combine($AppRoaming, "Microsoft", "Windows", "Start Menu", "Programs", "Startup", "caps-to-ctrl+esc.ahk")
+$AutohotkeyTarget = [IO.Path]::Combine($NyxRootDir, "scripts", "windows", "caps-to-ctrl+esc.ahk")
+HandleSymlink $AutohotkeySource $AutohotkeyTarget
 
