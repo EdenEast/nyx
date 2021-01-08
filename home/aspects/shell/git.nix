@@ -65,6 +65,7 @@ in {
           git-lfs
           gitAndTools.delta
           gitAndTools.gh
+          gitAndTools.git-filter-repo
           gitAndTools.git-open
           gitAndTools.grv
           gitAndTools.hub
