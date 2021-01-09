@@ -1,5 +1,10 @@
 # Behaviour -------------------------------------------------------------------
 
+# Preview program path
+set previewer ~/.config/lf/scripts/preview
+set cleaner ~/.config/lf/scripts/clear
+# set previewer ~/.local/share/lf/preview
+
 # Show hidden files and folders by default
 set hidden true
 

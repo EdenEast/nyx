@@ -20,6 +20,10 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ] ++ additionalPkgs;
-    xdg.configFile."lf".source = ../../files/.config/lf;
+    xdg.configFile."lf" = {
+      source = ../../files/.config/lf;
+      executable = true;
+      recursive = true;
+    };
   };
 }
