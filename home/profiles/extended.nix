@@ -30,8 +30,6 @@ in {
         ddrescue
         # Hosted binary caches
         cachix
-        # Interactive terminal markdown presentation
-        lookatme
       ];
     };
 
