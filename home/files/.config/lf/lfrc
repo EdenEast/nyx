@@ -5,41 +5,14 @@
 #
 # https://godoc.org/github.com/gokcehan/lf
 
-set ifs "\n"
-
-# Appearance
-set tabstop 4
-set hidden true
-
-# Behaviour
-set preview true
-set findlen 2
-set ignorecase true
-set smartcase true
-
-# cmd open ${{
-#     case $(file --mime-type "$f" -bL) in
-#         text/*|application/json) $EDITOR "$f";;
-#   image/*) feh -g 1280x720 --scale-down "$f" &;;
-#   video/*) mpv "$f" --quiet > /dev/null & ;;
-#   application/pdf) zathura "$f" & ;;
-#         *) xdg-open "$f" &;;
-#     esac
-# }}
-
-# cmd extract ${{
-#   case $f in
-#     *.bz2) tar -xjvf $f ;;
-#     *.gz) tar -xvf $f ;;
-#     *.xz) tar -xf $f ;;
-#     *.tar) tar -xvf $f ;;
-#     *.7z|*.zip) 7z x $f ;;
-#     *.rar) unrar x $f ;;
-#     *) echo "File type not supported" ;;
-#   esac
-# }}
+# Load sub-config files
+source ~/.config/lf/settings
+source ~/.config/lf/commands
+source ~/.config/lf/mappings
 
 # Resources/Examples
+#
 # https://github.com/p-kolacz/.dotfiles/tree/92b72e6/lf/.config/lf
+# https://github.com/sarrost/dotfiles/tree/3775a66/dotfiles/lf/.config/lf
 
-# vim: filetype=vim commentstring=#%s
+# vim: filetype=conf
