@@ -1,0 +1,52 @@
+# How to open files
+cmd open ${{
+    case $(file --mime-type "$f" -b) in
+        text/*) nvim $fx ;;
+        video/*) mpv $fx ;;
+        application/pdf) zathura "$fx" ;;
+        *) for f in $fx; do
+                xdg-open "$f" &>/dev/null &
+            done ;;
+    esac
+}}
+
+# FZF
+cmd fzf ${{
+    DIR=$(fd -t d | fzf)
+    [ -z "$DIR" ] || lf -remote "send $id cd '$DIR'"
+}}
+cmd fzf-home ${{
+    DIR=$(fd -t d . $HOME | fzf)
+    [ -z "$DIR" ] || lf -remote "send $id cd '$DIR'"
+}}
+
+# Trash items
+cmd trash &{{
+    load=$(lf -remote 'load')
+    list=$(echo "$load" | sed '1d')
+    if [ -z "$list" ]; then
+        lf -remote "send $id echo 'No files in buffer.'"
+    else
+        lf -remote "send $id echo 'Trashing files...'"
+        trash-put $list
+        lf -remote 'send load'
+        lf -remote 'send clear'
+        lf -remote "send $id reload"
+        lf -remote "send $id echo 'Trashing files... Done.'"
+    fi
+}}
+
+cmd clear-wrapper :{{
+    clear
+    echo 'Cleared buffer.'
+}}
+
+# Rename files using editor
+cmd vi-rename ${{
+    vimv $fx
+    lf -remote "send $id echo '$(cat /tmp/.vimv-latest)'"
+    lf -remote 'send load'
+    lf -remote 'send clear'
+}}
+
+# vim: filetype=conf
