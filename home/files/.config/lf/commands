@@ -1,3 +1,15 @@
+# How to open files
+cmd open ${{
+    case $(file --mime-type "$f" -b) in
+        text/*) nvim $fx ;;
+        video/*) mpv $fx ;;
+        application/pdf) zathura "$fx" ;;
+        *) for f in $fx; do
+                xdg-open "$f" &>/dev/null &
+            done ;;
+    esac
+}}
+
 # FZF
 cmd fzf ${{
     DIR=$(fd -t d | fzf)
