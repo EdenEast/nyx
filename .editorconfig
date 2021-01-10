@@ -9,7 +9,7 @@ insert_final_newline = true
 tab_width = 4
 trim_trailing_whitespace = true
 
-[*.nix]
+[*.{bash,lua,md,nix,sh,vim,zsh}]
 indent_size = 2
 
 [Makefile]
