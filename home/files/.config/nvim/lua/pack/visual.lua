@@ -12,6 +12,8 @@ use {
 use 'Yggdroot/indentLine'
 use {'liuchengxu/vim-which-key', cmd = 'WhichKey'}
 
+use 'junegunn/vim-peekaboo' -- Preview window for registers
+
 -- Start page
 use {
   'glepnir/dashboard-nvim',
