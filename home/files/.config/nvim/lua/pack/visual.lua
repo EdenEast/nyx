@@ -14,6 +14,13 @@ use {'liuchengxu/vim-which-key', cmd = 'WhichKey'}
 
 use 'junegunn/vim-peekaboo' -- Preview window for registers
 
+use {
+  'psliwka/vim-smoothie', -- Smooth scrolling
+  config = function()
+    vim.g.smoothie_base_speed = 15
+  end,
+}
+
 -- Start page
 use {
   'glepnir/dashboard-nvim',
