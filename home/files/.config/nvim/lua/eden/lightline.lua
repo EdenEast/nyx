@@ -11,7 +11,7 @@ local function setup()
       right = {
         { 'lineinfo', 'percent' },
         { 'lspstatus', 'cocstatus'},
-        { 'filetype' },
+        { 'method', 'filetype' },
       }
     },
     component = {
@@ -23,9 +23,10 @@ local function setup()
       linter_errors = 'error',
     },
     component_function = {
-      filename = 'eden#lightline#filename',
-      readonly = 'eden#lightline#read_only',
-      fugitive = 'eden#lightline#fugitive',
+      filename  = 'eden#lightline#filename',
+      readonly  = 'eden#lightline#read_only',
+      fugitive  = 'eden#lightline#fugitive',
+      method    = 'eden#lightline#vista_nearest_func',
       cocstatus = 'coc#status',
       lspstatus = 'eden#lightline#lsp',
       currentfunction = 'CocCurrentFunction',

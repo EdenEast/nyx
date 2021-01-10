@@ -21,3 +21,7 @@ function! eden#lightline#lsp() abort
 
   return ''
 endfunction
+
+function! eden#lightline#vista_nearest_func() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
