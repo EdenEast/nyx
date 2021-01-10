@@ -21,6 +21,12 @@ use {
   end,
 }
 
+-- Vista
+use {
+  'liuchengxu/vista.vim',
+  -- cmd = 'Vista',
+}
+
 -- Start page
 use {
   'glepnir/dashboard-nvim',
