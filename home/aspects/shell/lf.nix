@@ -3,9 +3,10 @@
 with lib;
 let
   cfg = config.nyx.aspects.shell.lf;
-  additionalPkgs = with pkgs; [
-    vimv # Batch rename files with vim
-  ];
+  additionalPkgs = with pkgs;
+    [
+      vimv # Batch rename files with vim
+    ];
 in {
   options.nyx.aspects.shell.lf = {
     enable = mkEnableOption "lf configuration";
