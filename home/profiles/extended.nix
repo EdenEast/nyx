@@ -34,6 +34,7 @@ in {
     };
 
     nyx.aspects = {
+      shell.broot.enable = true;
       shell.fzf.enable = true;
       shell.glow.enable = true;
       shell.keybase.enable = true;
