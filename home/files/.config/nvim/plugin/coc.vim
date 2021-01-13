@@ -16,6 +16,7 @@ let g:coc_global_extensions  = [
       \ 'coc-json',
       \ 'coc-markdownlint',
       \ 'coc-marketplace',
+      \ 'coc-omnisharp',
       \ 'coc-rust-analyzer',
       \ 'coc-snippets',
       \ 'coc-tslint',
