@@ -1,5 +1,10 @@
-" Use surround.vim keymappings instead of the default for sandwich.
-" This is required as there are conflicts with other optional plugins like vim-sneak
+" Note: This is in the plugin folder instead of the after as sandwich and sneak
+" have some issues integrating. Sandwich overrides the sneak mapping. I want to
+" remap sandwich keys to vim-surround keys before the after mappings are applied
+" for vim-sneak.
+"
+" Use surround.vim keymappings instead of the default for sandwich. This is
+" required as there are conflicts with other optional plugins like vim-sneak
 "
 " https://github.com/machakann/vim-sandwich/wiki/Introduce-vim-surround-keymappings
 runtime macros/sandwich/keymap/surround.vim
