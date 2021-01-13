@@ -1,6 +1,7 @@
 local use = require('packer').use
 
 use 'tpope/vim-commentary'        -- Language agnostic comment motions
+use 'justinmk/vim-sneak'          -- Jump to any location specified by two characters
 use 'junegunn/vim-easy-align'
 use 'machakann/vim-sandwich'      -- Search/select/edit sandwiched textobjects (surrond)
 use 'christoomey/vim-sort-motion'
