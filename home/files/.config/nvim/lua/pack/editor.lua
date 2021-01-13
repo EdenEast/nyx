@@ -19,6 +19,9 @@ use {
   end
 }
 
+-- snippets
+use 'honza/vim-snippets'
+
 -- editorconfig integration
 use {
   'editorconfig/editorconfig-vim',
