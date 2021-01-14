@@ -281,24 +281,38 @@ function tmux()
     # Check for .tmux file (poor man's Tmuxinator).
     if [ -x .tmux ]; then
         echo "the .tmux file exists"
-        # Prompt the first time we see a given .tmux file before running it.
 
-        local DIGEST="$(openssl sha -sha512 .tmux)"
-        if ! grep -q "$DIGEST" ~/.tmux.digests 2> /dev/null; then
+        local DIGEST="$(openssl dgst -sha512 .tmux)"
+        local TMUX_CACHE_DST=~/.cache/tmux/digests
+        [[ ! -f $TMUX_CACHE_DST ]] && {
+            mkdir -p $(dirname $TMUX_CACHE_DST)
+            touch $TMUX_CACHE_DST
+        }
+
+        # Prompt the first time we see a given .tmux file before running it.
+        if ! grep -q "$DIGEST" $TMUX_CACHE_DST 2> /dev/null; then
             cat .tmux
-            read -n 1 -r -p \
-                'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
             echo
-            if [[ $REPLY =~ ^[Tt]$ ]]; then
-                echo "$DIGEST" >> ~/.tmux.digests
+
+            # I only care about zsh and bash
+            # https://stackoverflow.com/a/11097703
+            local current_shell="$(ps -p $$ -ocomm=)"
+            if [[ "$current_shell" = "bash" ]]; then
+                read -n 1 -p "REPLY?Trust and execute [y/N]: "
+            elif [[ "$current_shell" = "zsh" ]]; then
+                read -q "REPLY?Trust and execute [y/N]: "
+            fi
+
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                echo "$DIGEST" >> $TMUX_CACHE_DST
                 ./.tmux
-                return
             fi
         else
             echo "tmux session exists attaching to it"
             ./.tmux
-            return
         fi
+
+        return
     fi
 
     # Attach to existing session, or create one, based on current directory.
