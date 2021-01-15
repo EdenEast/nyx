@@ -22,6 +22,9 @@ use {
 -- snippets
 use 'honza/vim-snippets'
 
+-- yoink
+use 'svermeulen/vim-yoink'
+
 -- editorconfig integration
 use {
   'editorconfig/editorconfig-vim',
