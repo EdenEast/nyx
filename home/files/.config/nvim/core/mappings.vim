@@ -68,6 +68,14 @@ let g:which_key_map.b.O = 'force only'
 nnoremap [b :bprevious<cr>
 nnoremap ]b :bNext<cr>
 
+" Jump list -------------------------------------------------------------------
+" Because currently in alacritty we cannot tell the difference between <tab> and
+" <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
+"
+" https://vi.stackexchange.com/a/23344
+nnoremap <m-i> <c-i>
+nnoremap <m-o> <c-o>
+
 " Tabs ------------------------------------------------------------------------
 nnoremap [t :tabprevious<cr>
 nnoremap ]t :tabNext<cr>
