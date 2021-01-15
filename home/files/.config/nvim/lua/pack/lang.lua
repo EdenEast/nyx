@@ -59,5 +59,5 @@ use {
 -- Just file
 use {
   'vmchale/just-vim',
-  ft = { 'just' }
+  -- ft = { 'just' }
 }
