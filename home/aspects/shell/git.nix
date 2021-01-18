@@ -78,7 +78,12 @@ in {
         total = minimal ++ extra;
       in total;
 
-    xdg.configFile."git".source = ../../files/.config/git;
+    xdg.configFile."git" = {
+      source = ../../files/.config/git;
+      executable = true;
+      recursive = true;
+    };
+
     xdg.dataFile."git/nyx-gen".text = let
       userSection = if (cfg.userName != null && cfg.userEmail != null) then ''
         [user]
