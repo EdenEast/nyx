@@ -8,6 +8,8 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      # Generation of executables
+      gnumake
       # Benchmarking.
       hyperfine
       # Just a command runner
