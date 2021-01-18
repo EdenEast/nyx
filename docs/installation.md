@@ -30,8 +30,11 @@ sh <(curl -L https://nixos.org/nix/install)
 # Source nix-profile
 . ~/.nix-profile/etc/profile.d/nix.sh
 
+# Install experimental flake support for the system
+nix-env -iA nixpkgs.nixFlakes
+
 # Create a temp nix shell that contains packages needed to clone and build the flake
-nix-shell -p git nixFlakes just
+nix-shell -p git just
 
 # Make .local directory just in case
 mkdir -p ~/.local && cd ~/.local
