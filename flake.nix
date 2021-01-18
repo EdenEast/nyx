@@ -141,7 +141,6 @@
         # Overlays consumed by the home-manager/NixOS configuration.
         overlays = forEachSystem (system: [
           (self.overlay."${system}")
-          (import ./nix/overlays/alacritty)
           (import ./nix/overlays/git-open)
           (import ./nix/overlays/neovim)
           (import inputs.nixpkgs-mozilla)
