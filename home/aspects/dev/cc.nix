@@ -26,6 +26,7 @@ in {
       gdb
       # curses frontnend to gdb
       # cgdb
+      gnumake
     ];
   };
 }
