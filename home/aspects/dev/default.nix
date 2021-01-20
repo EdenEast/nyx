@@ -3,6 +3,7 @@
 {
   imports = [
     ./cc.nix
+    ./dhall.nix
     ./go.nix
     ./lua.nix
     ./nix.nix
