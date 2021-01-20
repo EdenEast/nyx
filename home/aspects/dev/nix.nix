@@ -15,6 +15,8 @@ in {
       nix-prefetch-git
       # Source hash for github
       nix-prefetch-github
+      # Current wip lsp for nix
+      rnix-lsp
     ];
   };
 }
