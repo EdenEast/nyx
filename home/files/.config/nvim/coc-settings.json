@@ -35,5 +35,13 @@
         "line-length": false,
         "MD033": false,
         "MD024": false
+    },
+    "languageserver": {
+        "dhall": {
+            "command": "dhall-lsp-server",
+            "filetypes": [
+            "dhall"
+            ]
+        }
     }
 }
