@@ -46,6 +46,7 @@ $ConfigHome = Join-Path -Path $HOME -ChildPath .config
 $LocalHome = Join-Path -Path $HOME -ChildPath .local
 $AppRoaming = $env:APPDATA;
 $AppLocal = $env:LOCALAPPDATA;
+$StartupDir = [IO.Path]::Combine($AppRoaming, "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
 
 $NyxDotHome = [IO.Path]::Combine($NyxRootDir, 'home', 'files')
 foreach ($child in Get-ChildItem -Path $NyxDotHome -Force) {
@@ -64,7 +65,12 @@ $NvimTarget = [IO.Path]::Combine($ConfigHome, 'nvim')
 HandleSymlink $NvimSource $NvimTarget
 
 # Autohotkey caps remap to ctrl/escape
-$AutohotkeySource = [IO.Path]::Combine($AppRoaming, "Microsoft", "Windows", "Start Menu", "Programs", "Startup", "caps-to-ctrl+esc.ahk")
+$AutohotkeySource = [IO.Path]::Combine($StartupDir, "caps-to-ctrl+esc.ahk")
 $AutohotkeyTarget = [IO.Path]::Combine($NyxRootDir, "scripts", "windows", "caps-to-ctrl+esc.ahk")
 HandleSymlink $AutohotkeySource $AutohotkeyTarget
+
+# KMonad settings on startup
+$KMonadSource = [IO.Path]::Combine($StartupDir, "kmonad-startup.ps1")
+$KMonadTarget = [IO.Path]::Combine($NyxRootDir, "scripts", "windows", "kmonad-startup.ps1")
+HandleSymlink $KMonadSource $KMonadTarget
 
