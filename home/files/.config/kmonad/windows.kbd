@@ -46,15 +46,15 @@
 )
 
 (defalias
-  mea (tap-hold-next-release 200 a lmet)
-  als (tap-hold-next-release 200 s lalt)
-  sfd (tap-hold-next-release 200 d lsft)
-  ctf (tap-hold-next-release 200 f lctl)
+  mea (tap-hold-next-release 250 a lmet)
+  als (tap-hold-next-release 220 s lalt)
+  sfd (tap-hold-next-release 220 d lsft)
+  ctf (tap-hold-next-release 220 f lctl)
 
-  ctj (tap-hold-next-release 200 j lctl)
-  sfk (tap-hold-next-release 200 k lsft)
-  all (tap-hold-next-release 200 l lalt)
-  me; (tap-hold-next-release 200 ; lmet)
+  ctj (tap-hold-next-release 220 j lctl)
+  sfk (tap-hold-next-release 220 k lsft)
+  all (tap-hold-next-release 220 l lalt)
+  me; (tap-hold-next-release 250 ; lmet)
 )
 
 (deflayer qwerty-hr
@@ -67,14 +67,14 @@
 )
 
 (defalias
-  alr (tap-hold-next-release 200 r lalt)
-  sfs (tap-hold-next-release 200 s lsft)
-  ctt (tap-hold-next-release 200 t lctl)
+  alr (tap-hold-next-release 250 r lalt)
+  sfs (tap-hold-next-release 220 s lsft)
+  ctt (tap-hold-next-release 220 t lctl)
 
-  ctn (tap-hold-next-release 200 n lctl)
-  sfe (tap-hold-next-release 200 e lsft)
-  ali (tap-hold-next-release 200 i lalt)
-  meo (tap-hold-next-release 200 o lmet)
+  ctn (tap-hold-next-release 220 n lctl)
+  sfe (tap-hold-next-release 220 e lsft)
+  ali (tap-hold-next-release 220 i lalt)
+  meo (tap-hold-next-release 250 o lmet)
 )
 
 (deflayer colemak-dh
@@ -90,7 +90,7 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _
+  XX   _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _                    _
   _    _    _              _              _    _    _    _               _    _    _
 )
