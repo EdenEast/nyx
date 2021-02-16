@@ -43,6 +43,9 @@ let g:which_key_map.w = 'write'
 nnoremap <leader>q :<c-u>q<cr>
 let g:which_key_map.q = 'quit'
 
+nnoremap <leader>x :<c-u>x<cr>
+let g:which_key_map.x = 'write + quit'
+
 " Buffers ---------------------------------------------------------------------
 nnoremap <leader>bw :w<cr>
 let g:which_key_map.b.w = 'write'
