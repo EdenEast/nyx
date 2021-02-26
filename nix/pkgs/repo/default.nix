@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, openssl, pkg-config }:
+{ lib, fetchFromGitHub, rustPlatform, openssl, pkg-config }:
 
 rustPlatform.buildRustPackage rec {
   pname = "repo";
@@ -17,11 +17,10 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "sha256-eM862A//UpvSxu1Ij9gy52qr10RhTNq3eN9qnHA4Bss=";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Repository management system";
     homepage = "https://github.com/EdenEast/repo";
     license = licenses.mit;
-    maintainers = with maintainers; [ edeneast ];
     platforms = platforms.all;
   };
 }
