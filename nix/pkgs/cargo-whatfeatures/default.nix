@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, openssl, pkgconfig }:
+{ lib, rustPlatform, fetchFromGitHub, openssl, pkgconfig }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-whatfeatures";
@@ -17,10 +17,9 @@ rustPlatform.buildRustPackage rec {
 
   buildInputs = [ openssl ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "List features for a specific crate";
     homepage = "https://github.com/museun/cargo-whatfeatures";
     license = licenses.mit;
-    maintainers = with maintainers; [ edeneast ];
   };
 }

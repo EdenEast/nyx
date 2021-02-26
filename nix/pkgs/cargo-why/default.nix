@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-why";
@@ -15,10 +15,9 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "sha256-43/VxTrFxlyGgDnxu9+/9bg9Buqzd/XPajnKxhf7d/w=";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "List features for a specific crate";
     homepage = "https://github.com/museun/cargo-whatfeatures";
     license = licenses.mit;
-    maintainers = with maintainers; [ edeneast ];
   };
 }
