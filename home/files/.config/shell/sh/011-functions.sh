@@ -265,6 +265,20 @@ function rgl()
 
 function tmux()
 {
+    # Checking if the first argument passed to tmux is either `a` or `at`. If this is the case then will use fzf to list
+    # all tmux current sessions and attach to the one selected
+    if [ "$1" = "a" ] || [ "$1" = "at" ]; then
+        num_sessions="$(tmux list-sessions | wc -l)"
+        if [ "$num_sessions" = "1" ]; then
+            session="$(tmux list-sessions | awk '{ print substr( $1, 1, length($1)-1) }')"
+        else
+            session="$(tmux list-sessions | fzf | awk '{ print substr( $1, 1, length($1)-1 ) }')"
+        fi
+
+        tmux attach-session -t "${session}"
+        return
+    fi
+
     # Make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
     # (Inspired by: https://gist.github.com/lann/6771001)
     local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
