@@ -2,8 +2,8 @@ self: super:
 
 let
   branch = "nightly";
-  rev = "02a3c417945e7b7fc781906a78acbf88bd44c971";
-  sha256 = "3sSRuFF5Vy131D7WjuzzIAxG5JHb1tBzsCXfsJ9L5po=";
+  rev = "314b222c25f1f21713082d3cb17f5fa442a8b3ec";
+  sha256 = "sha256-5Y7AYNyLTsmAXVo6dQlDAId2HWdQQRQlPPFUpKKK85Y=";
 in {
   neovim-unwrapped = super.neovim-unwrapped.overrideAttrs (old: rec {
     version = "0.5.0-${branch}";
