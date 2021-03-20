@@ -27,6 +27,8 @@ in {
       # curses frontnend to gdb
       # cgdb
       gnumake
+      # Faster build system to make
+      ninja
     ];
   };
 }
