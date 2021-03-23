@@ -46,3 +46,17 @@ use {
   config = function() require'eden/lightline'.setup() end,
 }
 
+use {
+  'akinsho/nvim-bufferline.lua',
+  requires = {'kyazdani42/nvim-web-devicons'},
+  config = function()
+    require('bufferline').setup{
+      options = {
+        modified_icon = '✥',
+        buffer_close_icon = 'x',
+        mappings = true,
+        always_show_bufferline = false,
+      }
+    }
+  end,
+}
