@@ -23,3 +23,9 @@ let g:which_key_map.g.p = 'push'
 " Magit
 nnoremap <silent> <leader>gg :Magit<cr>
 let g:which_key_map.g.p = 'magit'
+
+" git-messenger
+let g:git_messenger_no_default_mapping = 0
+
+nnoremap <silent> <leader>gm <Plug>(git-messenger)
+let g:which_key_map.g.p = 'show-commit'
