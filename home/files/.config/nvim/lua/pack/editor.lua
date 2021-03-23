@@ -95,5 +95,11 @@ use {
   cmd = { 'HelpfulVersion' },
 }
 
+use { 'gyim/vim-boxdraw' }
+
+-- Editor integration for neuron: https://github.com/srid/neuron
+-- Uses style of notes (https://neuron.zettel.page/zettelkasten)
+use { 'fiatjaf/neuron.vim' }
+
 -- maybe?
 -- use 'nanotee/zoxide.vim'
