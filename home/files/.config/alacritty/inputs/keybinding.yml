@@ -181,6 +181,9 @@
 # in the order they were defined in.
 
 key_bindings:
+  # Setting the key combo Control-Space to something that I can use in neovim
+  - { key: Space,     mods: Control,             chars: "\x00" }
+
   - { key: Paste,                                action: Paste          }
   - { key: Copy,                                 action: Copy           }
   # - { key: L,         mods: Control,             action: ClearLogNotice }
