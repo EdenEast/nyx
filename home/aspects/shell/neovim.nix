@@ -8,7 +8,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ neovim ];
+    home.packages = with pkgs; [ neovim-unwrapped ];
     xdg.configFile."nvim".source = ../../files/.config/nvim;
   };
 }
