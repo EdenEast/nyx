@@ -41,7 +41,7 @@ function autocmd.init()
     };
 
     yank = {
-      {"TextYankPost", [[* silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=300})]]};
+      {"TextYankPost", '*', [[silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=300})]]};
     };
 
     whitespace = {
