@@ -7,5 +7,6 @@
 -- ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝
 --
 
-require('eden.first')
+require('core')
+-- require('eden.first')
 
