@@ -8,5 +8,4 @@
 --
 
 require('core')
--- require('eden.first')
 

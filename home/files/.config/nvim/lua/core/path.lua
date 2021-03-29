@@ -16,6 +16,11 @@ path.create = function(path)
 	end
 end
 
+path.exists = function(path)
+  local state =  vim.loop.fs_stat(path)
+  return not (state == nil)
+end
+
 local emplace = function(tbl, value)
   local exists = false
   for _, v in ipairs(tbl) do

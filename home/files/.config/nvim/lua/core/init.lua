@@ -50,6 +50,7 @@ local load_core = function()
 
   require('core.options').init()
   require('core.event').init()
+  require('core.theme').init()
 
 end
 
