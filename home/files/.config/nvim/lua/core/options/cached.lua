@@ -13,7 +13,7 @@ path.create(view)
 
 local cached = {
   backupdir = backup,
-  dir       = swap,
+  directory = swap,
   undodir   = undo,
   undofile  = true,
   viewdir   = view
