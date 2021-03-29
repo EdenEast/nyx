@@ -12,7 +12,6 @@ let g:coc_global_extensions  = [
       \ 'coc-cmake',
       \ 'coc-eslint',
       \ 'coc-explorer',
-      \ 'coc-git',
       \ 'coc-github',
       \ 'coc-go',
       \ 'coc-json',
