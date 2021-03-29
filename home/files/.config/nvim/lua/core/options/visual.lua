@@ -35,13 +35,12 @@ local visual = {
   shortmess = util.join(shortmess, ''),
   showbreak = '↳ ',                -- downwards arrow with tip rightwards(U+21B3, UTF-8: E2 86 B3)
   showcmd = false,                 -- dont show extra info at end of command line
-  showmode = true,                 -- this should be the default
+  showmode = false,                -- I have a status line for this
   synmaxcol = 200,                 -- dont bother syntax highlighting long lines
   title = true,                    -- the title of the window to 'titlestring'
   ttyfast = true,                  -- let vim know that I am using a fast term
   virtualedit = 'block',           -- allow cursor to move where there is no text in visual block mode
-  visualbell = false,
-  t_vb = ',',                      -- stop beeping for non-error errors, please god
+  visualbell = false,              -- stop beeping for non-error errors, please god
 }
 
 return visual

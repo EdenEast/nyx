@@ -1,18 +1,25 @@
-local fo = vim.o.formatoptions
-local keyword = vim.o.iskeyword
+local util = require('core.util')
+
+local formatopts = {
+  vim.o.formatoptions,
+  'j',                  -- remove comment leader when joning comments
+  'n',                  -- smart auto indenting inside numbered lists
+}
+
+local keywords = {
+  vim.o.iskeyword,
+  '-',                  -- treat - seperated words as a word object
+  '_',                  -- treat _ seperated words as a word object
+}
 
 local edit = {
   autoindent    = true,                -- maintain indent of current line
   backspace     = 'indent,start,eol',  -- allow unrestricted backspaceing in insert mode
   clipboard     = 'unnamedplus',       -- use '+' register for all yanks, and deletes
   expandtab     = true,                -- always use spaces instead of tabs
-  formatoptions = fo
-              .. 'j'                   -- remove comment leader when joning comments
-              .. 'n',                  -- smart auto indenting inside numbered lists
+  formatoptions = util.join(formatopts, ''),
   hidden        = true,                -- allows you to hide buffers with unsaved changes without being prompted
-  iskeyword     = keyword
-              .. '-'                   -- treat - seperated words as a word object
-              .. '_',                  -- treat _ seperated words as a word object
+  iskeyword     = util.join(keywords, ','),
   linebreak     = true,                -- wrap long lines at characters in 'breakat'
   modelines     = 5,                   -- scan this many lines looking for modeline
   mouse         = 'a',                 -- automatically enable mouse usage
