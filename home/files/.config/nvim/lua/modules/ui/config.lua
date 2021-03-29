@@ -66,16 +66,16 @@ function config.gitsigns()
 end
 
 function config.bufferline()
-  local nmap = require('core.util').nmap
+  local nnoremap = vim.keymap.nnoremap
 
-  nmap(']b', ':BufferLineCycleNext<cr>')
-  nmap('[b', ':BufferLineCyclePrev<cr>')
+  nnoremap { ']b', ':BufferLineCycleNext<cr>' }
+  nnoremap { '[b', ':BufferLineCyclePrev<cr>' }
 
-  nmap('<leader>bl', ':BufferLineMoveNext<cr>')
-  nmap('<leader>bh', ':BufferLineMovePrev<cr>')
+  nnoremap { '<leader>bl', ':BufferLineMoveNext<cr>' }
+  nnoremap { '<leader>bh', ':BufferLineMovePrev<cr>' }
 
-  nmap('<leader>be', ':BufferLineSortByExtension<CR><cr>')
-  nmap('<leader>bd', ':BufferLineSortByDirectory<cr>')
+  nnoremap { '<leader>be', ':BufferLineSortByExtension<CR><cr>' }
+  nnoremap { '<leader>bd', ':BufferLineSortByDirectory<cr>' }
 
   require('bufferline').setup{
     options = {

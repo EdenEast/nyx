@@ -1,53 +1,47 @@
 local config = {}
 
 function config.mkpreview()
-  local nmap = require('core.util').nmap
-
   vim.g.mkdp_auto_close = 0
   vim.g.mkdp_echo_preview_url = 1
 
-  nmap('<leader>tp', ':MarkdownPreviewToggle<cr>')
+  vim.keymap.nnoremap { '<leader>tp', ':MarkdownPreviewToggle<cr>' }
 end
 
 function config.preview_mkdown()
-  local nmap = require('core.util').nmap
-
   vim.g.preview_markdown_parser = 'glow'
   vim.g.preview_markdown_vertical = 1
   vim.g.preview_markdown_auto_update = 1
 
-  nmap('<leader>tm', ':PreviewMarkdown<cr>')
+  vim.keymap.noremap { '<leader>tm', ':PreviewMarkdown<cr>' }
 end
 
 function config.glow()
-  local nmap = require('core.util').nmap
-
-  nmap('<leader>tg', ':Glow<cr>')
+  vim.keymap.nnoremap { '<leader>tg', ':Glow<cr>' }
 end
 
 function config.fugitive()
-  local nmap = require('core.util').nmap
+  local nnoremap = vim.keymap.nnoremap
 
   -- Stage current file
-  nmap('<leader>ga', ':Git add %:p<cr>')
+  nnoremap { '<leader>ga', ':Git add %:p<cr>' }
 
   -- Diff current file
-  nmap('<leader>gd', ':Gdiffsplit<cr>')
+  nnoremap { '<leader>gd', ':Gdiffsplit<cr>' }
 
   -- Create a git commit from staged changes
-  nmap('<leader>gc', ':Git commit<cr>')
+  nnoremap { '<leader>gc', ':Git commit<cr>' }
 
   -- Blame each line in file
-  nmap('<leader>gb', ':Git blame<cr>')
+  nnoremap { '<leader>gb', ':Git blame<cr>' }
 end
 
 function config.messenger()
-  local nmap = require('core.util').nmap
 
   vim.g.git_messenger_no_default_mapping = false
 
   -- Show commit message for current line
-  nmap('<leader>gm', '<Plug>(git-messenger)')
+  vim.keymap.nnoremap { '<leader>gm', '<Plug>(git-messenger)' }
+
 end
 
 function config.committia()

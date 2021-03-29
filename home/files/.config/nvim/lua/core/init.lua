@@ -48,11 +48,16 @@ local load_core = function()
   pack.ensure_plugins()
   pack.init_commands()
 
-  require('core.options').init()
-  require('core.event').init()
   require('core.theme').init()
 
-  require('keymap')
+  -- Load keymap in vim.keymap
+  require('core.keymap')
+
+  require('core.options').init()
+  require('core.event').init()
+
+
+  require('user.keymap')
 end
 
 load_core()
