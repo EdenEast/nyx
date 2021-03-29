@@ -17,7 +17,7 @@ end
 function autocmd.init()
   local definitions = {
     packer = {
-      {"BufWritePost",string.format("%s/lua/modules/*.lua","lua require('core.pack').auto_compile()", global.confighome)};
+      {"BufWritePost", string.format("%s/lua/modules/*.lua", global.confighome), "lua require('core.pack').auto_compile()"};
     },
 
     bufs = {
@@ -58,7 +58,7 @@ function autocmd.init()
       {'BufEnter,FocusGained,InsertLeave', '*', 'set relativenumber'};
       {'BufLeave,FocusLost,InsertEnter', '*', 'set norelativenumber'};
     };
-  }
+  };
 
   autocmd.create_augroups(definitions)
 end
