@@ -1,7 +1,8 @@
 local ui = {}
 local conf = require('modules.ui.config')
 
--- Themes
+-- Themes -----------------------------------------------------------------------------------------
+
 ui['glepnir/zephyr-nvim'] = { }
 ui['arzg/vim-colors-xcode'] = { }
 ui['sainnhe/gruvbox-material'] = {
@@ -10,9 +11,13 @@ ui['sainnhe/gruvbox-material'] = {
   end
 }
 
-
 ui['mhinz/vim-startify'] = {
-  config = conf.startify
+  cond = 'not vim.g.started_by_firenvim',
+  config = conf.startify,
+}
+
+ui['Yggdroot/indentLine'] = {
+  config = conf.indentline,
 }
 
 return ui

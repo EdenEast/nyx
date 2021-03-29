@@ -10,6 +10,26 @@ function config.startify()
   false)
 end
 
-config.startify()
+function config.indentline()
+ -- vim.g.indentLine_char = '│'  -- U+2502
+ -- vim.g.indentLine_char = '┆'  -- U+2506
+ vim.g.indentLine_char = '┊'  -- U+250A
+
+ vim.g.indentLine_enabled = 1
+ vim.g.indentLine_concealcursor = 'niv'
+ vim.g.indentLine_showFirstIndentLevel = 0
+ vim.g.indentLine_fileTypeExclude = {
+  'defx',
+  'denite',
+  'startify',
+  'dashboard',
+  'tagbar',
+  'vista_kind',
+  'vista',
+  'Help',
+  'term',
+  'toggerm',
+ }
+end
 
 return config
