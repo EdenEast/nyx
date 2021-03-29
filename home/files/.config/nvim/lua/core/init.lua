@@ -49,6 +49,7 @@ local load_core = function()
   pack.init_commands()
 
   require('core.options').init()
+  require('core.event').init()
 
 end
 
