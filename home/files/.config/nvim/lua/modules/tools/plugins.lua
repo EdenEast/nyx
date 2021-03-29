@@ -7,10 +7,13 @@ tools['iamcco/markdown-preview.nvim'] = {
   run = function() vim.fn['mkdp#util#install']() end,
   ft = {'markdown', 'vimwiki'},
   cmd = { 'MarkdownPreview', 'MarkdownPreviewToggle' },
-  config = {
-    function()
-    end,
-  }
+  config = conf.mkpreview,
+}
+
+tools['skanehira/preview-markdown.vim'] = {
+  ft = {'markdown', 'vimwiki'},
+  cmd = {'PreviewMarkdown'},
+  config = conf.preview_mkdown,
 }
 
 -- Preview markdown directly in neovim

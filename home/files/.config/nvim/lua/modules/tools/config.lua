@@ -1,12 +1,22 @@
 local config = {}
 
-function config.glow()
+function config.mkpreview()
   local nmap = require('core.util').nmap
 
   vim.g.mkdp_auto_close = 0
   vim.g.mkdp_echo_preview_url = 1
 
   nmap('<leader>tp', ':MarkdownPreviewToggle<cr>')
+end
+
+function config.preview_mkdown()
+  local nmap = require('core.util').nmap
+
+  vim.g.preview_markdown_parser = 'glow'
+  vim.g.preview_markdown_vertical = 1
+  vim.g.preview_markdown_auto_update = 1
+
+  nmap('<leader>tm', ':PreviewMarkdown<cr>')
 end
 
 function config.glow()
