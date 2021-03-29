@@ -22,6 +22,10 @@ ui['mhinz/vim-startify'] = {
   config = conf.startify,
 }
 
+ui['glepnir/galaxyline.nvim'] = {
+  config = [[require('modules.ui.galaxyline')]],
+}
+
 ui['Yggdroot/indentLine'] = {
   config = conf.indentline,
 }
