@@ -1,5 +1,20 @@
 local config = {}
 
+function config.glow()
+  local nmap = require('core.util').nmap
+
+  vim.g.mkdp_auto_close = 0
+  vim.g.mkdp_echo_preview_url = 1
+
+  nmap('<leader>tp', ':MarkdownPreviewToggle<cr>')
+end
+
+function config.glow()
+  local nmap = require('core.util').nmap
+
+  nmap('<leader>tg', ':Glow<cr>')
+end
+
 function config.fugitive()
   local nmap = require('core.util').nmap
 

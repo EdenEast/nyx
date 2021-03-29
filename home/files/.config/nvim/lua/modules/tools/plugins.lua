@@ -1,8 +1,28 @@
 local tools = {}
 local conf = require('modules.tools.config')
 
--- Git integrations -------------------------------------------------------------------------------
+-- Markdown utilities -----------------------------------------------------------------------------
+-- Preview markdown files in browser
+tools['iamcco/markdown-preview.nvim'] = {
+  run = function() vim.fn['mkdp#util#install']() end,
+  ft = {'markdown', 'vimwiki'},
+  cmd = { 'MarkdownPreview', 'MarkdownPreviewToggle' },
+  config = {
+    function()
+    end,
+  }
+}
 
+-- Preview markdown directly in neovim
+-- NOTE: Trying
+tools['npxbr/glow.nvim'] = {
+  run = function() vim.cmd([[:GlowInstall]]) end,
+  ft = {'markdown', 'vimwiki'},
+  cmd = {'Glow'},
+  config = conf.glow,
+}
+
+-- Git integrations -------------------------------------------------------------------------------
 -- The wrapper around git
 tools['tpope/vim-fugitive'] = {
   config = conf.fugitive,
@@ -25,5 +45,6 @@ tools['pwntester/octo.nvim'] = {
   cmd = {'Octo'},
   diable = true, -- TODO: configure
 }
+
 
 return tools
