@@ -1,4 +1,3 @@
-
 local global = require('core.global')
 local path = require('core.path')
 
@@ -28,7 +27,8 @@ function Packer:load_plugins()
 
   local plugin_files = get_plugins()
   for _, mod in ipairs(plugin_files) do
-    local repos = require(mod:sub(0,#mod-4))
+    local reqpath = mod:sub(0,#mod-4)
+    local repos = require(reqpath)
     for repo, conf in pairs(repos) do
       self.repos[#self.repos+1] = vim.tbl_extend('force', {repo}, conf)
     end
@@ -89,6 +89,12 @@ local plugins = setmetatable({}, {
 
 function plugins.ensure_plugins()
   Packer:ensure_plugins()
+end
+
+function plugins.reload_plugins()
+  Packer:load_packer()
+  packer.install()
+  packer.compile()
 end
 
 function plugins.auto_compile()
