@@ -3,7 +3,13 @@ local conf = require('modules.ui.config')
 
 -- Themes -----------------------------------------------------------------------------------------
 
+-- Treesitter supported themes
 ui['glepnir/zephyr-nvim'] = { }
+ui['vigoux/oak'] = { }
+ui['yonlu/omni.vim'] = { }
+ui['savq/melange'] = { }
+
+-- Non treesitter supported themes
 ui['arzg/vim-colors-xcode'] = { }
 ui['sainnhe/gruvbox-material'] = {
   config = function()
