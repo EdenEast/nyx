@@ -46,5 +46,10 @@ tools['pwntester/octo.nvim'] = {
   diable = true, -- TODO: configure
 }
 
+-- Profiling
+tools['tweekmonster/startuptime.vim'] = {
+  cmd = {'StartupTime'}
+}
+
 
 return tools
