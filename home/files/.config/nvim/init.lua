@@ -7,5 +7,8 @@
 -- ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝
 --
 
+-- Toggle if I am using coc or nvimlsp
+vim.g.eden_nvimlsp = false
+
 require('core')
 

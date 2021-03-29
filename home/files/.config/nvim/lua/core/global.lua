@@ -15,6 +15,11 @@ function global:load_variables()
 	self.confighome = home .. sep .. '.config' .. sep .. 'nvim'
 	self.datahome   = home .. sep .. '.local' .. sep .. 'share' .. sep .. 'nvim'
 	self.cachehome  = home .. sep .. '.cache' .. sep .. 'nvim'
+
+	vim.g.home       = self.home
+	vim.g.confighome = self.confighome
+	vim.g.datahome   = self.datahome
+	vim.g.cachehome  = self.cachehome
 end
 
 global:load_variables()
