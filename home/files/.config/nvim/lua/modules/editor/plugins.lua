@@ -1,6 +1,8 @@
 local editor = {}
 local conf = require('modules.editor.config')
 
+-- TODO: Look into
+-- editor['windwp/nvim-autopairs'] = {}
 editor['tmsvg/pear-tree'] = {
   config = conf.peartree,
 }
