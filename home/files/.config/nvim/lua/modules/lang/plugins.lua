@@ -3,7 +3,7 @@ local conf = require('modules.lang.config')
 
 lang['nvim-treesitter/nvim-treesitter'] = {
   event = 'BufRead',
-  run = function() vim.cmd [[TSUpdate]] end,
+  run = ':TSUpdate',
   config = conf.nvim_treesitter,
 }
 
