@@ -24,6 +24,10 @@ tools['npxbr/glow.nvim'] = {
 
 tools['gyim/vim-boxdraw'] = { }
 
+-- Editor integration for neuron: https://github.com/srid/neuron
+-- Uses style of notes (https://neuron.zettel.page/zettelkasten)
+tools['fiatjaf/neuron.vim'] = { }
+
 -- Git integrations -------------------------------------------------------------------------------
 -- The wrapper around git
 tools['tpope/vim-fugitive'] = {
