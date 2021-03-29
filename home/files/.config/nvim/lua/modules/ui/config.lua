@@ -65,4 +65,26 @@ function config.gitsigns()
   }
 end
 
+function config.bufferline()
+  local nmap = require('core.util').nmap
+
+  nmap(']b', ':BufferLineCycleNext<cr>')
+  nmap('[b', ':BufferLineCyclePrev<cr>')
+
+  nmap('<leader>bl', ':BufferLineMoveNext<cr>')
+  nmap('<leader>bh', ':BufferLineMovePrev<cr>')
+
+  nmap('<leader>be', ':BufferLineSortByExtension<CR><cr>')
+  nmap('<leader>bd', ':BufferLineSortByDirectory<cr>')
+
+  require('bufferline').setup{
+    options = {
+      modified_icon = '✥',
+      buffer_close_icon = 'x',
+      mappings = true,
+      always_show_bufferline = false,
+    }
+  }
+end
+
 return config
