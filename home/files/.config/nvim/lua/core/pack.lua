@@ -7,7 +7,8 @@ local fn,api,el = vim.fn,vim.api,vim.loop;
 local packer = nil
 local module_path = path.join({global.confighome, 'lua', 'modules'})
 local packer_compiled = path.join({global.datahome, 'plugin', 'packer_compiled.vim'})
-local packpath = path.join({global.cachehome, 'site', 'pack', 'packer'})
+local package_root = path.join({global.cachehome, 'site', 'pack'})
+local packpath = path.join({package_root, 'packer'})
 
 local Packer = {}
 Packer.__index = Packer
@@ -42,6 +43,7 @@ function Packer:load_packer()
 
   packer.init({
     compile_path = packer_compiled,
+    package_root = package_root,
     git = { clone_timeout = 120 },
     disable_commands = true
   })
@@ -91,7 +93,7 @@ end
 
 function plugins.auto_compile()
   local file = vim.fn.expand('%:p')
-  if file:match(modules_dir) then
+  if file:match(module_path) then
     plugins.clean()
     plugins.compile()
   end
