@@ -61,3 +61,4 @@ nmap('<c-l>', '<c-w>l')
 -- Exec current file
 nmap('<F1>', ":lua require('core.util').exec_file()<cr>")
 nmap('<F2>', ":lua require('core.util').open_url_under_cursor()<cr>")
+nmap('<F3>', ":lua require('core.pack').reload_plugins()<cr>")
