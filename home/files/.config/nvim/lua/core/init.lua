@@ -52,6 +52,7 @@ local load_core = function()
   require('core.event').init()
   require('core.theme').init()
 
+  require('keymap')
 end
 
 load_core()
