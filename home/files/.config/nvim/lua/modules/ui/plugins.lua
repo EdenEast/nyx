@@ -26,4 +26,11 @@ ui['Yggdroot/indentLine'] = {
   config = conf.indentline,
 }
 
+
+ui['lewis6991/gitsigns.nvim'] = {
+  event = {'BufReadPre','BufNewFile'},
+  config = conf.gitsigns,
+  requires = {'nvim-lua/plenary.nvim', opt=true}
+}
+
 return ui
