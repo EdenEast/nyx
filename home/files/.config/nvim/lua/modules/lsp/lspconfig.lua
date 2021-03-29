@@ -47,8 +47,8 @@ local enhance_init = function(client)
 end
 
 local enhance_attach = function(client,bufnr)
-  local util = require('core.util')
-  local nmap = util.nmap
+  local nnoremap = vim.keymap.nnoremap
+  local xnoremap = vim.keymap.xnoremap
   local opts = { buffer = true }
 
   local caps = client.resolved_capabilities
@@ -58,44 +58,44 @@ local enhance_attach = function(client,bufnr)
   -- end
 
   if caps.hover then
-    nmap('K', [[:Lspsaga hover_doc<CR>]], opts)
-    nmap('<c-f>', [[:lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]], opts)
-    nmap('<c-b>', [[:lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]], opts)
+    nnoremap { 'K', [[:Lspsaga hover_doc<CR>]], opts }
+    nnoremap { '<c-f>', [[:lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]], opts }
+    nnoremap { '<c-b>', [[:lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]], opts }
   end
 
   if caps.signature_help then
-    nmap('gs', [[<Cmd>Lspsaga signature_help<CR>]], opts)
+    nnoremap { 'gs', [[<Cmd>Lspsaga signature_help<CR>]], opts }
   end
 
   if caps.find_references then
-    nmap('gr', [[<cmd>Lspsaga lsp_finder<cr>]], opts)
+    nnoremap { 'gr', [[<cmd>Lspsaga lsp_finder<cr>]], opts }
   end
 
   if caps.code_action then
-    nmap('ga', [[<cmd>Lspsaga code_action<cr>]], opts)
-    xmap('ga', [[<cmd>Lspsaga range_code_action<cr>]], opts)
+    nnoremap { 'ga', [[<cmd>Lspsaga code_action<cr>]], opts }
+    xnoremap { 'ga', [[<cmd>Lspsaga range_code_action<cr>]], opts }
   end
 
   if caps.rename then
-    nmap('<Leader>cr', [[<Cmd>Lspsaga rename<CR>]], opts)
+    nnoremap { '<Leader>cr', [[<Cmd>Lspsaga rename<CR>]], opts }
   end
 
   if caps.goto_definition then
-    nmap('gd', [[<Cmd>Lspsaga preview_definition<CR>]], opts)
+    nnoremap { 'gd', [[<Cmd>Lspsaga preview_definition<CR>]], opts }
   end
 
   if caps.type_definition then
-    nmap('gy', [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]], opts)
+    nnoremap { 'gy', [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]], opts }
   end
 
   if caps.implementation then
-    nmap('gi', [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], opts)
+    nnoremap { 'gi', [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], opts }
   end
 
   -- Diagnostics are prob always avalible
-  nmap('<Leader>ce', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], opts)
-  nmap(']e', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], opts)
-  nmap('[e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], opts)
+  nnoremap { '<Leader>ce', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], opts }
+  nnoremap { ']e', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], opts }
+  nnoremap { '[e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], opts }
 
   api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 

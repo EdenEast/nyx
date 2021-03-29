@@ -1,5 +1,4 @@
-local util = require('core.util')
-local nmap = util.nmap
+local nnoremap = vim.keymap.nnoremap
 
 if vim.fn.executable('fd') then
   vim.api.nvim_command([[ let $FZF_DEFAULT_COMMAND = 'fd --type f --follow --hidden --exclude ".git/*"' ]])
@@ -9,12 +8,12 @@ elseif vim.fn.executable('rg') then
 end
 
 
-nmap('<leader>fd', ':<c-u>Files!<cr>')
-nmap('<leader>fg', ':<c-u>GFiles!<cr>')
-nmap('<leader>fc', ':<c-u>Commands<cr>')
-nmap('<leader>fh', ':<c-u>Helptags<cr>')
-nmap('<leader>fH', ':<c-u>History<cr>')
+nnoremap { '<leader>fd', ':<c-u>Files!<cr>' }
+nnoremap { '<leader>fg', ':<c-u>GFiles!<cr>' }
+nnoremap { '<leader>fc', ':<c-u>Commands<cr>' }
+nnoremap { '<leader>fh', ':<c-u>Helptags<cr>' }
+nnoremap { '<leader>fH', ':<c-u>History<cr>' }
 
-nmap('//', ':<c-u>BLines!<cr>')
-nmap('??', ':<c-u>Rg!<cr>')
+nnoremap { '//', ':<c-u>BLines!<cr>' }
+nnoremap { '??', ':<c-u>Rg!<cr>' }
 
