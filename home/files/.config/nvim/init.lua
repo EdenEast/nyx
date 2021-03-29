@@ -8,7 +8,7 @@
 --
 
 -- Toggle if I am using coc or nvimlsp
-vim.g.eden_nvimlsp = false
+vim.g.eden_nvimlsp = true
 
 require('core')
 
