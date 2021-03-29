@@ -98,6 +98,10 @@ util.tmap = function(lhs, rhs, opts)
   return util.map('t', lhs, rhs, opts)
 end
 
+util.omap = function(lhs, rhs, opts)
+  return util.map('o', lhs, rhs, opts)
+end
+
 util.cmap = function(lhs, rhs)
   -- { silent } need to be false to work
   return util.map('c', lhs, rhs, { silent = false })
