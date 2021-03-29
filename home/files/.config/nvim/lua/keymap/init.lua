@@ -14,7 +14,7 @@ nmap('k', 'gk')
 -- index finger, having a 'nav' layer helpr with navigation
 map('', '<left>',  'h', {})
 map('', '<down>',  'j', {})
-map('', '<up>', '   k', {})
+map('', '<up>',    'k', {})
 map('', '<right>', 'l', {})
 
 -- Map Y to be the same as D and C
