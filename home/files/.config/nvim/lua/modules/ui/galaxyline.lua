@@ -4,6 +4,22 @@ local condition = require('galaxyline.condition')
 local gls = gl.section
 gl.short_line_list = {'NvimTree','vista','dbui','packer'}
 
+local lsp_status = function()
+  local has_status, status = pcall(require, 'lsp-status')
+  if not has_status then
+    return ''
+  end
+
+  local cnt = 0
+  for _ in pairs(vim.lsp.buf_get_clients()) do
+    cnt = cnt + 1
+  end
+  if cnt > 0 then
+    return ' ' .. status.status()
+  end
+  return ''
+end
+
 gls.left[1] = {
   RainbowRed = {
     provider = function() return '▊ ' end,
@@ -114,6 +130,12 @@ gls.mid[1] = {
     highlight = {colors.yellow,colors.bg,'bold'}
   }
 }
+gls.mid[2] = {
+  ShowLspStatus = {
+    provider = lsp_status,
+    highlight = {colors.fg,colors.bg,'bold'},
+  }
+}
 
 gls.right[1] = {
   FileEncode = {
@@ -208,3 +230,12 @@ gls.short_line_right[1] = {
     highlight = {colors.fg,colors.bg}
   }
 }
+
+
+-- Resources and references
+--
+-- https://github.com/siduck76/neovim-dots/blob/b095b88/lua/bufferline/lua.lua
+--     https://user-images.githubusercontent.com/59060246/111605841-a1250b80-87fc-11eb-8806-1d376a584bc8.png
+--
+-- https://github.com/kraftwerk28/dotfiles/blob/fabd201/.config/nvim/lua/cfg/galaxyline.lua
+--     https://user-images.githubusercontent.com/31807671/106526997-39865b80-64ef-11eb-86d0-13280afeb069.png

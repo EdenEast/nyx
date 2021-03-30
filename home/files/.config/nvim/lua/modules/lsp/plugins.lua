@@ -17,6 +17,7 @@ lsp['neovim/nvim-lspconfig'] = {
   config = conf.nvim_lsp,
   requires = {
     {'nvim-lua/lsp_extensions.nvim', opt = true},
+    {'nvim-lua/lsp-status.nvim', opt = true},
     {'onsails/lspkind-nvim', opt = true},
   },
 }
