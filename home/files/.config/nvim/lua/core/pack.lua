@@ -72,8 +72,27 @@ function Packer:ensure_plugins()
       assert('make packer compile dir failed')
     end)
 
+    -- If packer_compiled exists but packer plugin does not then the cache was
+    -- deleted and needs to be resynced. Kill the compiled file and have it regenerate
+    if vim.fn.exists(packer_compiled) then
+      vim.cmd(string.format("call delete('%s')", packer_compiled))
+    end
+
+
     self:load_packer()
+
+    vim.g.packer_finished_installing = false
+    packer.on_complete = function()
+      vim.g.packer_finished_installing = true
+
+      -- Fire the packer compelte event just like the normal packer hook would do
+      vim.cmd [[doautocmd User PackerComplete]]
+    end
+
     packer.install()
+
+    -- Wait 60 seconds or until packer packer_finished_installing
+    vim.wait(60000, function() return vim.g.packer_finished_installing end, 300)
     packer.compile()
   end
 end

@@ -19,7 +19,7 @@ tools['skanehira/preview-markdown.vim'] = {
 -- Preview markdown directly in neovim
 -- NOTE: Trying
 tools['npxbr/glow.nvim'] = {
-  run = function() vim.cmd([[:GlowInstall]]) end,
+  -- run = function() vim.cmd([[:GlowInstall]]) end,
   ft = {'markdown', 'vimwiki'},
   cmd = {'Glow'},
   config = conf.glow,
