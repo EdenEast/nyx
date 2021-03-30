@@ -1,4 +1,7 @@
-local imap = require('core.util').imap
+local inoremap = vim.keymap.inoremap
+local snoremap = vim.keymap.snoremap
+
+vim.opt.completeopt = "menuone,noselect"
 
 local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -19,8 +22,6 @@ end
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-n>"
-  elseif vim.fn.call("vsnip#available", {1}) == 1 then
-    return t "<Plug>(vsnip-expand-or-jump)"
   elseif check_back_space() then
     return t "<Tab>"
   else
@@ -30,8 +31,6 @@ end
 _G.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-p>"
-  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
   else
     return t "<S-Tab>"
   end
@@ -43,7 +42,6 @@ require'compe'.setup {
   debug = false;
   min_length = 1;
   preselect = 'always';
-  allow_prefix_unmatch = false;
   source = {
     path = true;
     buffer = true;
@@ -57,11 +55,24 @@ require'compe'.setup {
   };
 }
 
-vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<cr>')", {expr = true})
+inoremap { '<C-Space>', [[compe#complete()]], expr = true }
+inoremap { '<CR>',      [[compe#confirm('<CR>')]], expr = true }
+inoremap { '<C-Space>', [[compe#complete()]], expr = true, buffer = true }
+inoremap { '<CR>',      [[compe#confirm('<CR>')]], expr = true, buffer = true }
 
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+inoremap { '<Tab>', [[vim:lua.tab_complete()]], expr = true }
+snoremap { '<Tab>', [[vim:lua.tab_complete()]], expr = true }
+inoremap { '<S-Tab>', [[vim:lua.s_tab_complete()]], expr = true }
+snoremap { '<S-Tab>', [[vim:lua.s_tab_complete()]], expr = true }
+
+-- vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", {expr = true})
+-- vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<cr>')", {expr = true})
+-- vim.api.nvim_buf_set_keymap(0, "i", "<C-Space>", "compe#complete()", {expr = true})
+-- vim.api.nvim_buf_set_keymap(0, "i", "<CR>", "compe#confirm('<cr>')", {expr = true})
+
+-- vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+-- vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+-- vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+-- vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
 

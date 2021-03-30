@@ -4,6 +4,7 @@ local conf = require('modules.lsp.config')
 -- CoC --------------------------------------------------------------------------------------------
 
 lsp['neoclide/coc.nvim'] = {
+  disable = not vim.g.eden_nvimlsp,
   branch = 'release',
   opt = true,
 }
@@ -11,21 +12,25 @@ lsp['neoclide/coc.nvim'] = {
 -- Nvim Lsp ---------------------------------------------------------------------------------------
 
 lsp['neovim/nvim-lspconfig'] = {
+  disable = not vim.g.eden_nvimlsp,
+  event = 'BufReadPre',
   config = conf.nvim_lsp,
 }
 
 lsp['glepnir/lspsaga.nvim'] = {
-  requires = {'nvim-lspconfig'},
+  disable = not vim.g.eden_nvimlsp,
+  cmd = 'Lspsaga',
 }
 
 lsp['hrsh7th/nvim-compe'] = {
+  disable = not vim.g.eden_nvimlsp,
+  event = 'InsertEnter',
   config = conf.nvim_compe,
-  requires = {'nvim-lspconfig'},
 }
 
 lsp['onsails/lspkind-nvim'] = {
-  config = [[require('lspkind').init()]],
-  requires = {'nvim-lspconfig'},
+  disable = not vim.g.eden_nvimlsp,
+  opt = true,
 }
 
 return lsp

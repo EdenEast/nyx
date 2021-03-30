@@ -9,3 +9,4 @@ function config.nvim_compe()
 end
 
 return config
+
