@@ -53,10 +53,12 @@ local load_core = function()
   -- Load keymap in vim.keymap
   require('core.keymap')
 
-  require('core.options').init()
+  -- Load opt into vim.opt
+  require('core.options')
   require('core.event').init()
 
-
+  -- load base neovim user configuration
+  require('user.options')
   require('user.keymap')
 end
 
