@@ -32,6 +32,32 @@ function config.indentline()
  }
 end
 
+function config.vista()
+  local nnoremap = vim.keymap.nnoremap
+
+  -- Use coc as the backend
+  if vim.g.eden_nvimlsp then
+    vim.g.vista_default_executive = 'nvim_lsp'
+  else
+    vim.g.vista_default_executive = 'coc'
+  end
+
+  -- Enable fzf preview with vista
+  vim.g.vista_fzf_preview = {'right:50%'}
+
+  -- Keep original g:fzf_colors when using fzf
+  vim.g.vista_keep_fzf_colors = 1
+
+  -- Make vista sidebar slightly bigger default '30'
+  vim.g.vista_sidebar_width = 40
+
+  nnoremap { '<leader>tv',':<c-u>Vista!!<cr>' }
+  nnoremap { '<leader>fv', ':<c-u>Vista finder<cr>' }
+
+  -- Map / in vista buffer to search with fzf
+  -- vim.cmd([[autocmd FileType vista,vista_kind nnoremap <buffer><silent> / :<c-u>call vista#finder#fzf#Run()<CR>]]
+end
+
 function config.gitsigns()
   if not packer_plugins['plenary.nvim'].loaded then
     vim.cmd [[packadd plenary.nvim]]
