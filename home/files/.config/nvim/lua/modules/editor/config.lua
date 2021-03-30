@@ -1,11 +1,7 @@
 local config = {}
 
-function config.peartree()
-  -- I get disorented when the closing brace does not get inserted
-  vim.g.pear_tree_repeatable_expand = false
-  vim.g.pear_tree_smart_openers = true
-  vim.g.pear_tree_smart_closers = true
-  vim.g.pear_tree_smart_backspace = true
+function config.nvim_autopairs()
+  require('nvim-autopairs').setup()
 end
 
 function config.nvim_colorizer()

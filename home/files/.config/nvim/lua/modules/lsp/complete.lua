@@ -1,5 +1,5 @@
 local inoremap = vim.keymap.inoremap
-local snoremap = vim.keymap.snoremap
+local npairs = require('nvim-autopairs')
 
 vim.opt.completeopt = "menuone,noselect"
 
@@ -19,7 +19,7 @@ end
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
+_G.complete_tab = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-n>"
   elseif check_back_space() then
@@ -28,11 +28,26 @@ _G.tab_complete = function()
     return vim.fn['compe#complete']()
   end
 end
-_G.s_tab_complete = function()
+_G.complete_s_tab = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-p>"
   else
     return t "<S-Tab>"
+  end
+end
+_G.complete_confirm = function()
+  if vim.fn.pumvisible() ~= 0  then
+    if vim.fn.complete_info()["selected"] ~= -1 then
+      vim.fn["compe#confirm"]()
+      return npairs.esc("<c-y>")
+    else
+      vim.defer_fn(function()
+        vim.fn["compe#confirm"]("<cr>")
+      end, 20)
+      return npairs.esc("<c-n>")
+    end
+  else
+    return npairs.check_break_line_char()
   end
 end
 
@@ -55,24 +70,11 @@ require'compe'.setup {
   };
 }
 
-inoremap { '<C-Space>', [[compe#complete()]], expr = true }
-inoremap { '<CR>',      [[compe#confirm('<CR>')]], expr = true }
-inoremap { '<C-Space>', [[compe#complete()]], expr = true, buffer = true }
-inoremap { '<CR>',      [[compe#confirm('<CR>')]], expr = true, buffer = true }
+inoremap { "<Tab>",   "v:lua.complete_tab()",   expr=true }
+inoremap { "<Tab>",   "v:lua.complete_tab()",   expr=true }
+inoremap { "<S-Tab>", "v:lua.complete_s_tab()", expr=true }
+inoremap { "<S-Tab>", "v:lua.complete_s_tab()", expr=true }
 
-inoremap { '<Tab>', [[vim:lua.tab_complete()]], expr = true }
-snoremap { '<Tab>', [[vim:lua.tab_complete()]], expr = true }
-inoremap { '<S-Tab>', [[vim:lua.s_tab_complete()]], expr = true }
-snoremap { '<S-Tab>', [[vim:lua.s_tab_complete()]], expr = true }
-
--- vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", {expr = true})
--- vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<cr>')", {expr = true})
--- vim.api.nvim_buf_set_keymap(0, "i", "<C-Space>", "compe#complete()", {expr = true})
--- vim.api.nvim_buf_set_keymap(0, "i", "<CR>", "compe#confirm('<cr>')", {expr = true})
-
--- vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
--- vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
--- vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
--- vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-
+inoremap { '<C-Space>', [[compe#complete()]],         expr=true }
+inoremap { '<cr>',      [[v:lua.complete_confirm()]], expr=true }
 
