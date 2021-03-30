@@ -1,4 +1,4 @@
-if g:eden_nvimlsp == v:true
+if get(g:, 'eden_nvimlsp', v:true) == v:true
   finish
 endif
 
