@@ -12,9 +12,14 @@ local pack_add = function(packs)
   end
 end
 
-pack_add({'lsp_extensions.nvim', 'lsp-status.nvim', 'lspkind-nvim'})
+pack_add({'lsp_extensions.nvim', 'lsp-status.nvim', 'lspsaga.nvim', 'lspkind-nvim'})
 
 require('lspkind').init()
+
+local saga = require('lspsaga')
+saga.init_lsp_saga({
+  code_action_icon = '💡'
+})
 
 local status = require('modules.lsp.status')
 status.activate()
@@ -34,13 +39,15 @@ local enhance_attach = function(client, bufnr)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
+  nnoremap { 'K',     [[<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>]], silent=true }
+  nnoremap { '<c-f>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]], silent=true }
+  nnoremap { '<c-b>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]], silent=true }
+
   inoremap { '<c-s>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent=true }
-  nnoremap { 'K',     [[<cmd>lua vim.lsp.buf.hover()<cr>]], silent=true }
   nnoremap { 'gD',    [[<cmd>lua vim.lsp.buf.declaration()<cr>]], silent=true }
   nnoremap { 'gi',    [[<cmd>lua vim.lsp.buf.implementation()<cr>]], silent=true }
   nnoremap { 'gy',    [[<cmd>lua vim.lsp.buf.type_definition()<cr>]], silent=true }
-  nnoremap { 'ga',    [[<cmd>lua vim.lsp.buf.code_action()<cr>]], silent=true }
-
+  nnoremap { 'ga',    [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent=true }
 
   if has_tscope then
     nnoremap { 'gd', [[<cmd>Telescope lsp_definitions<cr>]], silent=true }
@@ -51,8 +58,8 @@ local enhance_attach = function(client, bufnr)
   end
 
   nnoremap { '[e', [[<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>]], silent=true }
-  vim.which_prev['e'] = 'diagnostic'
   nnoremap { ']e', [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]], silent=true }
+  vim.which_prev['e'] = 'diagnostic'
   vim.which_next['e'] = 'diagnostic'
 
   if has_tscope then
@@ -71,7 +78,7 @@ local enhance_attach = function(client, bufnr)
   end
 
   if caps.rename then
-    nnoremap { '<leader>cn', [[<cmd>lua vim.lsp.buf.rename()<cr>]], silent=true }
+    nnoremap { '<leader>cn', [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent=true }
     vim.which_leader['c'].n = 'rename'
   end
 
