@@ -59,4 +59,13 @@ ui['akinsho/nvim-bufferline.lua'] = {
   requires = {'kyazdani42/nvim-web-devicons'}
 }
 
+ui['kyazdani42/nvim-tree.lua'] = {
+  config = conf.nvim_tree,
+  requires = {'kyazdani42/nvim-web-devicons'},
+  -- NOTE: Currently there is an issue with the ordering of whichkey and opt loading on cmd.
+  -- WhichKey will load before this one will register and not showup.
+  -- Have to find a solution.
+  -- cmd = {'NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile'},
+}
+
 return ui
