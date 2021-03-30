@@ -10,6 +10,7 @@ local theme = {}
 local event_group = {
   theme = {
     {'ColorScheme', '*', [[lua require('core.theme').hook()]]};
+    {'User', 'PackerComplete', [[lua require('core.theme').reload()]]}
   }
 }
 
@@ -21,11 +22,22 @@ end
 
 theme.init = function()
   if not vim.g.colors_name then
-    local scheme = (path.exists(cache)) and vim.fn.readfile(cache)[1] or default
-    vim.cmd('colorscheme ' .. scheme)
+    theme.reload()
   end
 
   augroup(event_group)
+end
+
+theme.reload = function()
+  local scheme = (path.exists(cache)) and vim.fn.readfile(cache)[1] or default
+  theme.set(scheme)
+end
+
+theme.set = function(scheme)
+  local installed_schemes = vim.fn['getcompletion']('', 'color')
+  if vim.tbl_contains(installed_schemes, scheme) then
+    vim.cmd('colorscheme ' .. scheme)
+  end
 end
 
 return theme
