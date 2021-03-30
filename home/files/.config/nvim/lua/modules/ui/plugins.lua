@@ -26,6 +26,19 @@ ui['glepnir/galaxyline.nvim'] = {
   config = [[require('modules.ui.galaxyline')]],
 }
 
+ui['liuchengxu/vim-which-key'] = {
+  config = conf.whichkey,
+  cmd = {'WhichKey', 'WhichKeyVisual'},
+  keys = {
+    {'n', '<leader>'},
+    {'v', '<leader>'},
+    {'n', '<localleader>'},
+    {'v', '<localleader>'},
+    {'n', '['},
+    {'n', ']'},
+  }
+}
+
 ui['Yggdroot/indentLine'] = {
   config = conf.indentline,
 }

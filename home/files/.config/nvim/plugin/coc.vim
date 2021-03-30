@@ -108,9 +108,13 @@ omap af <Plug>(coc-funcobj-a)
 
 " Navigation --------------------------------------------------------------------------------------
 nmap <silent> ]a :<c-u>CocNext<cr>
+lua vim.which_next['a'] = 'action'
 nmap <silent> [a :<c-u>CocPrev<cr>
+lua vim.which_prev['a'] = 'action'
 nmap <silent> ]e <Plug>(coc-diagnostic-next)
+lua vim.which_next['e'] = 'diagnostic'
 nmap <silent> [e <Plug>(coc-diagnostic-prev)
+lua vim.which_prev['e'] = 'diagnostic'
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -135,23 +139,25 @@ endfunction
 " Note the nmap is a motion
 nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
 xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+lua vim.which_leader['c'].a = 'code-action'
 
 " Coc and Clap ------------------------------------------------------------------------------------
 nmap <silent> <leader>ce :<C-u>CocList diagnostics<cr>
-" let g:which_key_map.c.e = 'Lsp Show Diagnostics'
+lua vim.which_leader['c'].e = 'list-diagnostics'
 
 nmap <silent> <leader>co :<C-u>CocList outline<cr>
-" let g:which_key_map.c.o = 'Lsp Show Outline'
+lua vim.which_leader['c'].o = 'show-outline'
 
 " TODO: find somewhere to put Clap coc_services coc_symbols coc_outline
 
 " Code actions ------------------------------------------------------------------------------------
 nmap <leader>cn <Plug>(coc-rename)
-" let g:which_key_map.c.n = 'rename'
+lua vim.which_leader['c'].n = 'rename'
 
 nmap <leader>cf <Plug>(coc-format-selected)
 vmap <leader>cf <Plug>(coc-format-selected)
-" let g:which_key_map.c.f = 'format'
+lua vim.which_leader['c'].f = 'format'
 
 nmap <leader>cF <Plug>(coc-fix-current)
+lua vim.which_leader['c'].F = 'fix'
 " let g:which_key_map.c.F = 'fix'

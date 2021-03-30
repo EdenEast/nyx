@@ -38,6 +38,23 @@ local leader_map = function()
   vim.api.nvim_set_keymap('x', ' ', '', {noremap = true})
   vim.api.nvim_set_keymap('n', ',', '', {noremap = true})
   vim.api.nvim_set_keymap('x', ',', '', {noremap = true})
+
+  -- Defining the maps for whichkey to use when it is loaded here
+  -- so that it can be populated.
+  vim.which_leader = {
+    b = { name = '+buffer' },
+    c = { name = '+code' },
+    f = { name = '+find' },
+    g = { name = '+git' },
+    t = { name = '+toggle' },
+  }
+  vim.which_localleader = {}
+  vim.which_prev = {
+    name = '+previous'
+  }
+  vim.which_next = {
+    name = '+next'
+  }
 end
 
 local load_core = function()
