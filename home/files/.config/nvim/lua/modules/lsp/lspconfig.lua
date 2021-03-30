@@ -11,9 +11,12 @@ local pack_add = function(packs)
   end
 end
 
-pack_add({'lsp_extensions.nvim', 'lspkind-nvim'})
+pack_add({'lsp_extensions.nvim', 'lsp-status.nvim', 'lspkind-nvim'})
 
 require('lspkind').init()
+
+local status = require('modules.lsp.status')
+status.activate()
 
 local enhance_init = function(client)
   client.config.flags = client.config.flags or {}
@@ -24,6 +27,8 @@ local enhance_attach = function(client, bufnr)
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
   local nnoremap = vim.keymap.nnoremap
   local caps = client.resolved_capabilities
+
+  status.on_attach(client)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -71,7 +76,7 @@ local enhance_attach = function(client, bufnr)
 end
 
 -- Setting up for each language server
-local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach }
+local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach, capabilities = status.capabilities }
 local servers = {
   bashls = {},
   rust_analyzer = {},
@@ -82,3 +87,11 @@ for server, config in pairs(servers) do
   nvim_lsp[server].setup(vim.tbl_deep_extend('force', default_lsp_config, config))
 end
 
+
+-- Resources and references
+--
+-- https://github.com/tjdevries/config_manager/blob/cabdd4b/xdg_config/nvim/lua/tj/lsp/init.lua
+-- https://github.com/glepnir/nvim/blob/ea9db6b/lua/modules/completion/lspconfig.lua
+-- https://github.com/richban/.dotfiles/blob/cbedd1b/dotfiles/config/nvim/lua/rb/lsp/settings.lua
+-- https://github.com/klooj/nvimrc-lua/blob/18fff4c/lua/ploog/lsp_config.lua
+--
