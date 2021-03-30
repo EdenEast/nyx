@@ -69,5 +69,7 @@ tools['tweekmonster/startuptime.vim'] = {
   cmd = {'StartupTime'}
 }
 
+-- Tmux integration
+tools['christoomey/vim-tmux-navigator'] = { }
 
 return tools
