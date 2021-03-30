@@ -40,6 +40,9 @@ vim.which_leader['w'] = 'write-file'
 nnoremap { '<leader>q', [[:<c-u>q<cr>]] }
 vim.which_leader['q'] = 'quit-file'
 
+nnoremap { '<leader>tn', function() require('core.util').toggle_numbers() end }
+vim.which_leader['n'] = 'line-number'
+
 -- Jump list -------------------------------------------------------------------
 -- Because currently in alacritty we cannot tell the difference between <tab>
 -- and <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
