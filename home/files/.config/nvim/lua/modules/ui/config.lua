@@ -10,6 +10,35 @@ function config.startify()
   false)
 end
 
+function config.whichkey()
+  local nnoremap = vim.keymap.nnoremap
+  local vnoremap = vim.keymap.vnoremap
+
+  vim.opt.timeoutlen = 300
+
+  -- Hide status line on which key
+  vim.cmd([[
+      autocmd! FileType which_key
+      autocmd  FileType which_key set laststatus=0 noshowmode noruler
+      \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
+  ]])
+
+  -- Register which_keymaps defined on load
+  vim.fn['which_key#register']('<Space>', vim.which_leader)
+  vim.fn['which_key#register'](',', vim.which_localleader)
+  vim.fn['which_key#register']('[', vim.which_prev)
+  vim.fn['which_key#register'](']', vim.which_next)
+
+  nnoremap { '<leader>', [[:WhichKey '<Space>'<cr>]], silent = true }
+  vnoremap { '<leader>', [[:WhichKeyVisual '<Space>'<cr>]], silent = true }
+
+  nnoremap { '<localleader>', [[:WhichKey ','<cr>]], silent = true }
+  vnoremap { '<localleader>', [[:WhichKeyVisual ','<cr>]], silent = true }
+
+  nnoremap { '[', [[:WhichKey '['<cr>]], silent = true }
+  nnoremap { ']', [[:WhichKey ']'<cr>]], silent = true }
+end
+
 function config.indentline()
  -- vim.g.indentLine_char = '│'  -- U+2502
  -- vim.g.indentLine_char = '┆'  -- U+2506
@@ -52,7 +81,9 @@ function config.vista()
   vim.g.vista_sidebar_width = 40
 
   nnoremap { '<leader>tv',':<c-u>Vista!!<cr>' }
+  vim.which_leader['t'].v = 'vista'
   nnoremap { '<leader>fv', ':<c-u>Vista finder<cr>' }
+  vim.which_leader['f'].v = 'vista'
 
   -- Map / in vista buffer to search with fzf
   -- vim.cmd([[autocmd FileType vista,vista_kind nnoremap <buffer><silent> / :<c-u>call vista#finder#fzf#Run()<CR>]]
@@ -89,19 +120,40 @@ function config.gitsigns()
        ['x ih'] = ':<C-U>lua require"gitsigns".text_object()<CR>'
      },
   }
+
+  vim.which_leader['g'].h = {
+    name = '+hunk',
+    b = 'blame',
+    p = 'preview',
+    r = 'reset',
+    s = 'stage',
+    u = 'unstage',
+  }
+
+  vim.which_prev['g'] = 'git-hunk'
+  vim.which_next['g'] = 'git-hunk'
 end
 
 function config.bufferline()
   local nnoremap = vim.keymap.nnoremap
 
-  nnoremap { ']b', ':BufferLineCycleNext<cr>' }
-  nnoremap { '[b', ':BufferLineCyclePrev<cr>' }
+  nnoremap { ']b', ':BufferLineCycleNext<cr>', silent = true }
+  vim.which_next['b'] = 'buffer'
 
-  nnoremap { '<leader>bl', ':BufferLineMoveNext<cr>' }
-  nnoremap { '<leader>bh', ':BufferLineMovePrev<cr>' }
+  nnoremap { '[b', ':BufferLineCyclePrev<cr>', silent = true }
+  vim.which_prev['b'] = 'buffer'
 
-  nnoremap { '<leader>be', ':BufferLineSortByExtension<CR><cr>' }
-  nnoremap { '<leader>bd', ':BufferLineSortByDirectory<cr>' }
+  nnoremap { '<leader>bl', ':BufferLineMoveNext<cr>', silent = true }
+  vim.which_leader['b'].l = 'next'
+
+  nnoremap { '<leader>bh', ':BufferLineMovePrev<cr>', silent = true }
+  vim.which_leader['b'].h = 'prev'
+
+  nnoremap { '<leader>be', ':BufferLineSortByExtension<CR><cr>', silent = true }
+  vim.which_leader['b'].e = 'sort-extension'
+
+  nnoremap { '<leader>bd', ':BufferLineSortByDirectory<cr>', silent = true }
+  vim.which_leader['b'].d = 'sort-directory'
 
   require('bufferline').setup{
     options = {
@@ -111,6 +163,16 @@ function config.bufferline()
       always_show_bufferline = false,
     }
   }
+
+  vim.which_leader['1'] = 'which_key_ignore'
+  vim.which_leader['2'] = 'which_key_ignore'
+  vim.which_leader['3'] = 'which_key_ignore'
+  vim.which_leader['4'] = 'which_key_ignore'
+  vim.which_leader['5'] = 'which_key_ignore'
+  vim.which_leader['6'] = 'which_key_ignore'
+  vim.which_leader['7'] = 'which_key_ignore'
+  vim.which_leader['8'] = 'which_key_ignore'
+  vim.which_leader['9'] = 'which_key_ignore'
 end
 
 return config

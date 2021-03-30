@@ -87,6 +87,7 @@ local enhance_attach = function(client,bufnr)
 
   if caps.rename then
     nnoremap { '<Leader>cr', [[<Cmd>Lspsaga rename<CR>]], opts }
+    vim.which_leader['c'].r = 'rename'
   end
 
   if caps.goto_definition then
@@ -103,8 +104,11 @@ local enhance_attach = function(client,bufnr)
 
   -- Diagnostics are prob always avalible
   nnoremap { '<Leader>ce', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], opts }
+  vim.which_leader['c'].e = 'list-diagnostics'
   nnoremap { ']e', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], opts }
+  vim.which_next['e'] = 'diagnostic'
   nnoremap { '[e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], opts }
+  vim.which_prev['e'] = 'diagnostic'
 
   api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
