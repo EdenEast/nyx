@@ -2,6 +2,17 @@ P = function(a)
   print(vim.inspect(a))
 end
 
+-- Reload a lua module
+RELOAD = function(pack)
+  package.loaded[pack] = nil
+  return require(pack)
+end
+
+-- Unload a lua module
+UNLOAD = function(pack)
+  package.loaded[pack] = nil
+end
+
 local global = require('core.global')
 local path = require('core.path')
 
