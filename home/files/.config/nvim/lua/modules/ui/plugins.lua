@@ -30,6 +30,11 @@ ui['Yggdroot/indentLine'] = {
   config = conf.indentline,
 }
 
+-- Viewer & Finder for LSP symbols and tags
+ui['liuchengxu/vista.vim'] = {
+  config = conf.vista,
+}
+
 ui['lewis6991/gitsigns.nvim'] = {
   event = {'BufReadPre','BufNewFile'},
   config = conf.gitsigns,
