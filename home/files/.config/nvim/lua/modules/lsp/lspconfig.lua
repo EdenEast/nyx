@@ -2,6 +2,7 @@ package.loaded['lspconfig'] = nil
 
 local nvim_lsp = require('lspconfig')
 local global = require('core.global')
+local has_tscope, tscope = pcall(require, 'telescope')
 
 local pack_add = function(packs)
   for _, pack in ipairs(packs) do
@@ -26,27 +27,39 @@ end
 local enhance_attach = function(client, bufnr)
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
   local nnoremap = vim.keymap.nnoremap
+  local inoremap = vim.keymap.inoremap
   local caps = client.resolved_capabilities
 
   status.on_attach(client)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  nnoremap { 'K',  [[<cmd>lua vim.lsp.buf.hover()<cr>]], silent=true }
-  nnoremap { 'gd', [[<cmd>lua vim.lsp.buf.definition()<cr>]], silent=true }
-  nnoremap { 'gD', [[<cmd>lua vim.lsp.buf.declaration()<cr>]], silent=true }
-  nnoremap { 'gr', [[<cmd>lua vim.lsp.buf.references()<cr>]], silent=true }
-  nnoremap { 'gi', [[<cmd>lua vim.lsp.buf.implementation()<cr>]], silent=true }
-  nnoremap { 'gy', [[<cmd>lua vim.lsp.buf.type_definition()<cr>]], silent=true }
-  nnoremap { 'ga', [[<cmd>lua vim.lsp.buf.code_action()<cr>]], silent=true }
-  nnoremap { 'gs', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent=true }
+  inoremap { '<c-s>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent=true }
+  nnoremap { 'K',     [[<cmd>lua vim.lsp.buf.hover()<cr>]], silent=true }
+  nnoremap { 'gD',    [[<cmd>lua vim.lsp.buf.declaration()<cr>]], silent=true }
+  nnoremap { 'gi',    [[<cmd>lua vim.lsp.buf.implementation()<cr>]], silent=true }
+  nnoremap { 'gy',    [[<cmd>lua vim.lsp.buf.type_definition()<cr>]], silent=true }
+  nnoremap { 'ga',    [[<cmd>lua vim.lsp.buf.code_action()<cr>]], silent=true }
+
+
+  if has_tscope then
+    nnoremap { 'gd', [[<cmd>Telescope lsp_definitions<cr>]], silent=true }
+    nnoremap { 'gr', [[<cmd>Telescope lsp_references<cr>]], silent=true }
+  else
+    nnoremap { 'gd', [[<cmd>lua vim.lsp.buf.definition()<cr>]], silent=true }
+    nnoremap { 'gr', [[<cmd>lua vim.lsp.buf.references()<cr>]], silent=true }
+  end
 
   nnoremap { '[e', [[<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>]], silent=true }
   vim.which_prev['e'] = 'diagnostic'
   nnoremap { ']e', [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]], silent=true }
   vim.which_next['e'] = 'diagnostic'
 
-  nnoremap { '<leader>ce', [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent=true }
+  if has_tscope then
+    nnoremap { '<leader>ce', [[<cmd>Telescope lsp_workspace_diagnostics<cr>]], silent=true }
+  else
+    nnoremap { '<leader>ce', [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent=true }
+  end
   vim.which_leader['c'].e = 'list-diagnostics'
 
   if caps.document_formatting then
