@@ -51,7 +51,7 @@ ui['liuchengxu/vista.vim'] = {
 ui['lewis6991/gitsigns.nvim'] = {
   event = {'BufReadPre','BufNewFile'},
   config = conf.gitsigns,
-  requires = {'nvim-lua/plenary.nvim', opt=true}
+  requires = {'nvim-lua/plenary.nvim', opt=true},
 }
 
 ui['akinsho/nvim-bufferline.lua'] = {
