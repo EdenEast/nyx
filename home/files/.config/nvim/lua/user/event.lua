@@ -41,7 +41,7 @@ vim.augroup {
     };
 
     numtoggoe = {
-      {'BufEnter,FocusGained,InsertLeave', '*', 'set relativenumber'};
-      {'BufLeave,FocusLost,InsertEnter', '*', 'set norelativenumber'};
+      {'BufEnter,FocusGained,InsertLeave', '*', [[lua require('core.util').set_relnumber()]]};
+      {'BufLeave,FocusLost,InsertEnter', '*', [[lua require('core.util').set_no_relnumber()]]};
     };
 }
