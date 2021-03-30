@@ -3,13 +3,17 @@ package.loaded['lspconfig'] = nil
 local nvim_lsp = require('lspconfig')
 local global = require('core.global')
 
-local pack_add = function(pack)
-  if not packer_plugins[pack].loaded then
-    vim.cmd('packadd ' .. pack)
+local pack_add = function(packs)
+  for _, pack in ipairs(packs) do
+    if not packer_plugins[pack].loaded then
+      vim.cmd('packadd ' .. pack)
+    end
   end
 end
 
-pack_add('lsp_extensions.nvim')
+pack_add({'lsp_extensions.nvim', 'lspkind-nvim'})
+
+require('lspkind').init()
 
 local enhance_init = function(client)
   client.config.flags = client.config.flags or {}
@@ -32,9 +36,9 @@ local enhance_attach = function(client, bufnr)
   nnoremap { 'ga', [[<cmd>lua vim.lsp.buf.code_action()<cr>]], silent=true }
   nnoremap { 'gs', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent=true }
 
-  nnoremap { '[e', [[<cmd>lua vim.lsp.buf.goto_prev()<cr>]], silent=true }
+  nnoremap { '[e', [[<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>]], silent=true }
   vim.which_prev['e'] = 'diagnostic'
-  nnoremap { ']e', [[<cmd>lua vim.lsp.buf.goto_next()<cr>]], silent=true }
+  nnoremap { ']e', [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]], silent=true }
   vim.which_next['e'] = 'diagnostic'
 
   nnoremap { '<leader>ce', [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent=true }
@@ -54,9 +58,6 @@ local enhance_attach = function(client, bufnr)
   end
 
   if caps.document_highlight then
-    vim.api.nvim_exec([[
-
-    ]], false)
   end
 
   -- Rust is currently the only thing w/ inlay hints
