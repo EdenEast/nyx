@@ -79,19 +79,41 @@ require('telescope').setup {
 
 require('telescope').load_extension('fzy_native')
 
-nnoremap { '<leader>ff', function() require('telescope.builtin').find_files() end }
+nnoremap { '<leader>ff', [[<cmd>Telescope find_files<cr>]], silent=true }
 vim.which_leader['f'].f = 'files'
 
-nnoremap { '<leader>fg', function() require('telescope.builtin').live_grep() end }
-vim.which_leader['f'].g = 'grep'
+nnoremap { '<leader>fr', [[<cmd>Telescope live_grep<cr>]], silent=true }
+vim.which_leader['f'].r = 'grep'
 
-nnoremap { '<leader>fb', function() require('telescope.builtin').buffers() end }
+nnoremap { '<leader>fs', [[<cmd>Telescope lsp_workspace_symbols<cr>]], silent=true }
+vim.which_leader['f'].s = 'symbols'
+
+nnoremap { '<leader>fb', [[<cmd>Telescope buffers<cr>]], silent=true }
 vim.which_leader['f'].b = 'buffers'
 
-nnoremap { '<leader>fh', function() require('telescope.builtin').help_tags() end }
+nnoremap { '<leader>fB', [[<cmd>Telescope builtin<cr>]], silent=true }
+vim.which_leader['f'].B = 'builtins'
+
+nnoremap { '<leader>fh', [[<cmd>Telescope help_tags<cr>]], silent=true }
 vim.which_leader['f'].h = 'help'
 
-nnoremap { '<leader>fe', function() require('telescope.builtin').file_browser() end }
+nnoremap { '<leader>fe', [[<cmd>Telescope file_browser<cr>]], silent=true }
 vim.which_leader['f'].e = 'file-explorer'
 
+nnoremap { '<leader>fq', [[<cmd>Telescope quickfix<cr>]], silent=true }
+vim.which_leader['f'].q = 'quickfix'
 
+nnoremap { '<leader>fQ', [[<cmd>Telescope loclist<cr>]], silent=true }
+vim.which_leader['f'].Q = 'locallist'
+
+nnoremap { '<leader>fgb', [[<cmd>Telescope git_branches<cr>]], silent=true }
+nnoremap { '<leader>fgc', [[<cmd>Telescope git_commits<cr>]], silent=true }
+nnoremap { '<leader>fgl', [[<cmd>Telescope git_bcommits<cr>]], silent=true }
+nnoremap { '<leader>fgs', [[<cmd>Telescope git_status<cr>]], silent=true }
+vim.which_leader['f'].g = {
+  name = '+git',
+  b = 'branches',
+  c = 'commits',
+  l = 'local-commits',
+  s = 'status',
+}
