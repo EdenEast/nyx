@@ -1,116 +1,63 @@
-local api = vim.api
-local lspconfig = require 'lspconfig'
-local global = require 'core.global'
+package.loaded['lspconfig'] = nil
 
-local load_plugins = function(names)
-  for _, name in ipairs(names) do
-    if not packer_plugins[name].loaded then
-      vim.cmd('packadd ' .. name)
-    end
+local nvim_lsp = require('lspconfig')
+local global = require('core.global')
+
+local pack_add = function(pack)
+  if not packer_plugins[pack].loaded then
+    vim.cmd('packadd ' .. pack)
   end
 end
 
-
-load_plugins({'lspsaga.nvim', 'lspkind-nvim'})
-
-local saga = require 'lspsaga'
-saga.init_lsp_saga({
-  code_action_icon = '💡'
-})
-
-require('lspkind').init()
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-function _G.reload_lsp()
-  vim.lsp.stop_client(vim.lsp.get_active_clients())
-  vim.cmd [[edit]]
-end
-
-function _G.open_lsp_log()
-  local path = vim.lsp.get_log_path()
-  vim.cmd("edit " .. path)
-end
-
-vim.cmd('command! -nargs=0 LspLog call v:lua.open_lsp_log()')
-vim.cmd('command! -nargs=0 LspRestart call v:lua.reload_lsp()')
-
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    -- Enable underline, use default values
-    underline = true,
-    -- Enable virtual text, override spacing to 4
-    virtual_text = true,
-    signs = {
-      enable = true,
-      priority = 20
-    },
-    -- Disable a feature
-    update_in_insert = false,
-})
+pack_add('lsp_extensions.nvim')
 
 local enhance_init = function(client)
   client.config.flags = client.config.flags or {}
   client.config.flags.allow_incremental_sync = true
 end
 
-local enhance_attach = function(client,bufnr)
+local enhance_attach = function(client, bufnr)
+  local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
   local nnoremap = vim.keymap.nnoremap
-  local xnoremap = vim.keymap.xnoremap
-  local opts = { buffer = true }
-
   local caps = client.resolved_capabilities
 
-  -- if caps.document_formatting then
-  --   format.lsp_before_save()
-  -- end
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  if caps.hover then
-    nnoremap { 'K', [[:Lspsaga hover_doc<CR>]], opts }
-    nnoremap { '<c-f>', [[:lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]], opts }
-    nnoremap { '<c-b>', [[:lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]], opts }
-  end
+  nnoremap { 'K',  [[<cmd>lua vim.lsp.buf.hover()<cr>]], silent=true }
+  nnoremap { 'gd', [[<cmd>lua vim.lsp.buf.definition()<cr>]], silent=true }
+  nnoremap { 'gD', [[<cmd>lua vim.lsp.buf.declaration()<cr>]], silent=true }
+  nnoremap { 'gr', [[<cmd>lua vim.lsp.buf.references()<cr>]], silent=true }
+  nnoremap { 'gi', [[<cmd>lua vim.lsp.buf.implementation()<cr>]], silent=true }
+  nnoremap { 'gy', [[<cmd>lua vim.lsp.buf.type_definition()<cr>]], silent=true }
+  nnoremap { 'ga', [[<cmd>lua vim.lsp.buf.code_action()<cr>]], silent=true }
+  nnoremap { 'gs', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent=true }
 
-  if caps.signature_help then
-    nnoremap { 'gs', [[<Cmd>Lspsaga signature_help<CR>]], opts }
-  end
+  nnoremap { '[e', [[<cmd>lua vim.lsp.buf.goto_prev()<cr>]], silent=true }
+  vim.which_prev['e'] = 'diagnostic'
+  nnoremap { ']e', [[<cmd>lua vim.lsp.buf.goto_next()<cr>]], silent=true }
+  vim.which_next['e'] = 'diagnostic'
 
-  if caps.find_references then
-    nnoremap { 'gr', [[<cmd>Lspsaga lsp_finder<cr>]], opts }
-  end
+  nnoremap { '<leader>ce', [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent=true }
+  vim.which_leader['c'].e = 'list-diagnostics'
 
-  if caps.code_action then
-    nnoremap { 'ga', [[<cmd>Lspsaga code_action<cr>]], opts }
-    xnoremap { 'ga', [[<cmd>Lspsaga range_code_action<cr>]], opts }
+  if caps.document_formatting then
+    nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent=true }
+    vim.which_leader['c'].f = 'format'
+  elseif caps.document_range_formatting then
+    nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent=true }
+    vim.which_leader['c'].f = 'format'
   end
 
   if caps.rename then
-    nnoremap { '<Leader>cr', [[<Cmd>Lspsaga rename<CR>]], opts }
-    vim.which_leader['c'].r = 'rename'
+    nnoremap { '<leader>cn', [[<cmd>lua vim.lsp.buf.rename()<cr>]], silent=true }
+    vim.which_leader['c'].n = 'rename'
   end
 
-  if caps.goto_definition then
-    nnoremap { 'gd', [[<Cmd>Lspsaga preview_definition<CR>]], opts }
+  if caps.document_highlight then
+    vim.api.nvim_exec([[
+
+    ]], false)
   end
-
-  if caps.type_definition then
-    nnoremap { 'gy', [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]], opts }
-  end
-
-  if caps.implementation then
-    nnoremap { 'gi', [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], opts }
-  end
-
-  -- Diagnostics are prob always avalible
-  nnoremap { '<Leader>ce', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], opts }
-  vim.which_leader['c'].e = 'list-diagnostics'
-  nnoremap { ']e', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], opts }
-  vim.which_next['e'] = 'diagnostic'
-  nnoremap { '[e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], opts }
-  vim.which_prev['e'] = 'diagnostic'
-
-  api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
   -- Rust is currently the only thing w/ inlay hints
   if filetype == 'rust' then
@@ -122,17 +69,15 @@ local enhance_attach = function(client,bufnr)
   end
 end
 
+-- Setting up for each language server
+local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach }
 local servers = {
-  'bashls','pyright','rust_analyzer'
+  bashls = {},
+  rust_analyzer = {},
+  vimls = {},
 }
 
-for _,server in ipairs(servers) do
-  lspconfig[server].setup {
-    on_attach = enhance_attach;
-    on_init = enhance_init;
-  }
+for server, config in pairs(servers) do
+  nvim_lsp[server].setup(vim.tbl_deep_extend('force', default_lsp_config, config))
 end
 
--- References
--- https://github.com/vim-save/dotfile/blob/f3b8653d9d144ead46a03e9de5ad28af4d9cd2c6/nvim/.config/nvim/lua/modules/completion/lspconfig.lua
--- https://github.com/YaBoiBurner/dotfiles/blob/88e37bad68be58da160dc89eeecaee6e7eacaedb/.config/nvim/lua/user/cfg/lspsettings.lua
