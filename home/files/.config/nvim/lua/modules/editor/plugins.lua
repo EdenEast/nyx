@@ -30,11 +30,12 @@ editor['airblade/vim-rooter'] = {
   config = conf.rooter,
 }
 
-editor['junegunn/fzf.vim'] = {
-  config = conf.fzf,
+editor['nvim-telescope/telescope.nvim'] = {
+  config = conf.telescope,
   requires = {
-    'junegunn/fzf',
-    run = function() vim.fn['fzf#install']() end,
+    {'nvim-lua/popup.nvim', opt=true},
+    {'nvim-lua/plenary.nvim', opt=true},
+    {'nvim-telescope/telescope-fzy-native.nvim'},
   }
 }
 
