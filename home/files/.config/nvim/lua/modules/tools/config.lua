@@ -16,7 +16,6 @@ function config.preview_mkdown()
 end
 
 function config.glow()
-  vim.keymap.nnoremap { '<leader>tg', ':Glow<cr>' }
 end
 
 function config.fugitive()
@@ -55,5 +54,15 @@ end
 function config.octo()
 end
 
+function config.gitblame()
+  vim.g.gitblame_enabled = 0
+
+  vim.keymap.nnoremap { '<leader>tg', ':GitBlameToggle<cr>', silent = true }
+  vim.which_leader['t'].g = 'git-blame-line'
+end
+
+function config.neogit()
+  require('neogit').setup()
+end
 
 return config

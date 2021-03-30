@@ -55,6 +55,19 @@ tools['pwntester/octo.nvim'] = {
   diable = true, -- TODO: configure
 }
 
+-- Show git blame in virtual text like git-lens in vscode
+tools['f-person/git-blame.nvim'] = {
+  config = conf.gitblame,
+}
+
+-- TODO: This is a WIP magit replacement written in lua for neovim. Watch this space
+tools['TimUntersberger/neogit'] = {
+  config = conf.neogit,
+  cmd = {'Neogit'},
+  requires = {'nvim-lua/plenary.nvim', opt=true},
+  diable = true,
+}
+
 -- Profiling
 tools['tweekmonster/startuptime.vim'] = {
   cmd = {'StartupTime'}
