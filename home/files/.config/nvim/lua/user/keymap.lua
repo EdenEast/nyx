@@ -33,7 +33,7 @@ xnoremap { '<', '<gv' }
 xnoremap { '*', '"xy/<c-r><cr>' }
 
 -- Toggle highlight search
-nnoremap { '<leader>th', [[(&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"]] }
+nnoremap { '<leader>th', function() vim.opt.hlsearch = not vim.o.hlsearch end }
 
 nnoremap { '<leader>w', [[:<c-u>w<cr>]] }
 vim.which_leader['w'] = 'write-file'
