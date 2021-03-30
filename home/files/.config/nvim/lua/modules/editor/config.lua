@@ -1,9 +1,5 @@
 local config = {}
 
-function config.fzf()
-  require('modules.editor.fzf')
-end
-
 function config.peartree()
   -- I get disorented when the closing brace does not get inserted
   vim.g.pear_tree_repeatable_expand = false
@@ -46,6 +42,10 @@ end
 
 function config.rooter()
   vim.g.rooter_patterns = { '.git', '.git/', '.root', '.root/' }
+end
+
+function config.telescope()
+  require('modules.editor.telescope')
 end
 
 
