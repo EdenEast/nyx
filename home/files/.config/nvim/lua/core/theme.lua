@@ -1,6 +1,6 @@
 local global = require('core.global')
 local path   = require('core.path')
-local event  = require('core.event')
+local augroup = require('core.event')
 
 local default = 'zephyr'
 local cache = path.join({global.cachehome, 'theme.txt'})
@@ -25,7 +25,7 @@ theme.init = function()
     vim.cmd('colorscheme ' .. scheme)
   end
 
-  event.create_augroups(event_group)
+  augroup(event_group)
 end
 
 return theme
