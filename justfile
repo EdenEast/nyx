@@ -8,9 +8,10 @@ expflags := "--experimental-features 'nix-command flakes'"
 input-all := "all"
 
 # colors
-reset := '\033[0m'
-red   := '\033[1;31m'
-green := '\033[1;32m'
+reset  := '\033[0m'
+red    := '\033[1;31m'
+green  := '\033[1;32m'
+yellow := '\033[1;33m'
 
 alias b := build
 alias c := check
@@ -23,17 +24,17 @@ check:
     nix flake check {{expflags}}
 
 # Build an output target of the nix flake
-@build target=default-target:
+build target=default-target:
     printf "Building target:   {{green}}{{target}}{{reset}}\n"
     nix build .#{{target}} {{expflags}}
 
 # Install an output target of the nix flake
-@install target=default-target: (build target)
+install target=default-target: (build target)
     printf "Installing target: {{green}}{{target}}{{reset}}\n"
     [ -f ./result/activate ] && ./result/activate
 
 # Update flake lockfile input or all
-@update input=input-all:
+update input=input-all:
     #!/usr/bin/env bash
     [[ {{input}} == "all" ]] && input="--recreate-lock-file" || input="--update-input {{input}}"
     nix flake update $input
@@ -41,3 +42,15 @@ check:
 # Execute formatter on all .nix files
 @fmt:
     fd --type f --extension nix --exec nixfmt {}
+
+# Remove a symlink for neovim and symlink to `home/files/.config/nvim`
+# This is useful for developing and woriing with nvim config
+nvim:
+    #!/usr/bin/env bash
+    [[ -L "{{HOME}}/.config/nvim" ]] && rm "{{HOME}}/.config/nvim"
+    [[ -d "{{HOME}}/.config/nvim" ]] && {
+        printf "{{red}}Error{{reset}}: {{yellow}}{{HOME}}/.config/nvim{{reset}} exists and not a symlink\n"
+    } || {
+        ln -s "{{justfile_directory()}}/home/files/.config/nvim" "{{HOME}}/.config/nvim"
+    }
+
