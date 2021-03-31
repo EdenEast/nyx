@@ -67,7 +67,7 @@ function Packer:ensure_plugins()
     local cmd = string.format('!git clone %s %s', packer_url, packer_dir)
     api.nvim_command(cmd)
 
-    -- Create plugin dir 
+    -- Create plugin dir
     el.fs_mkdir(path.join({global.datahome, 'plugin'}), 511, function()
       assert('make packer compile dir failed')
     end)
@@ -78,21 +78,8 @@ function Packer:ensure_plugins()
       vim.cmd(string.format("call delete('%s')", packer_compiled))
     end
 
-
     self:load_packer()
-
-    vim.g.packer_finished_installing = false
-    packer.on_complete = function()
-      vim.g.packer_finished_installing = true
-
-      -- Fire the packer compelte event just like the normal packer hook would do
-      vim.cmd [[doautocmd User PackerComplete]]
-    end
-
     packer.install()
-
-    -- Wait 60 seconds or until packer packer_finished_installing
-    vim.wait(60000, function() return vim.g.packer_finished_installing end, 300)
     packer.compile()
   end
 end
