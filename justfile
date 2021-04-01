@@ -4,8 +4,11 @@ export HOME := env_var("HOME")
 export HOME_MANAGER_BACKUP_EXT := "nbak"
 
 default-target := "${NYX_DEFAULT_TARGET:-minimal}"
-expflags := "--experimental-features 'nix-command flakes'"
-input-all := "all"
+expflags       := "--experimental-features 'nix-command flakes'"
+input-all      := "all"
+
+nvim_home       := "${HOME}/.config/nvim"
+packer_compiled := "${HOME}/.local/share/nvim/plugin/packer_compiled.vim"
 
 # colors
 reset  := '\033[0m'
@@ -47,10 +50,24 @@ update input=input-all:
 # This is useful for developing and woriing with nvim config
 nvim:
     #!/usr/bin/env bash
-    [[ -L "{{HOME}}/.config/nvim" ]] && rm "{{HOME}}/.config/nvim"
-    [[ -d "{{HOME}}/.config/nvim" ]] && {
-        printf "{{red}}Error{{reset}}: {{yellow}}{{HOME}}/.config/nvim{{reset}} exists and not a symlink\n"
+    [[ -L "{{nvim_home}}" ]] && rm "{{nvim_home}}"
+    [[ -d "{{nvim_home}}" ]] && {
+        printf "{{red}}Error{{reset}}: {{yellow}}{{nvim_home}}{{reset}} exists and not a symlink\n"
     } || {
-        ln -s "{{justfile_directory()}}/home/files/.config/nvim" "{{HOME}}/.config/nvim"
+        ln -s "{{justfile_directory()}}/home/files/.config/nvim" "{{nvim_home}}"
     }
+
+    # Find if there is a packer_compiled file and delete it just in case
+    [[ -f {{packer_compiled}} ]] && {
+        rm {{packer_compiled}}
+        printf "Removed: {{yellow}}{{packer_compiled}}{{reset}}\n"
+    }
+
+    # Installing new pluings updating new ones and cleaning up old ones
+    printf "Syncing Plugins with packer...\n"
+    nvim --headless +PackerInstallSync +qa
+    nvim --headless +PackerCleanSync +qa
+    nvim --headless +PackerUpdateSync +qa
+    nvim --headless +PackerCompile +qa
+    printf "{{green}}Complete\n"
 
