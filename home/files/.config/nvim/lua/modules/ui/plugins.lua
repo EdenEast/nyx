@@ -4,18 +4,20 @@ local conf = require('modules.ui.config')
 -- Themes -----------------------------------------------------------------------------------------
 
 -- Treesitter supported themes
-ui['glepnir/zephyr-nvim'] = { }
-ui['vigoux/oak'] = { }
-ui['yonlu/omni.vim'] = { }
-ui['savq/melange'] = { }
-
--- Non treesitter supported themes
-ui['arzg/vim-colors-xcode'] = { }
+ui['glepnir/zephyr-nvim'] = {}
+ui['vigoux/oak'] = {}
+ui['yonlu/omni.vim'] = {}
+ui['savq/melange'] = {}
+ui['embark-theme/vim'] = {}
+ui['mhartington/oceanic-next'] = {}
 ui['sainnhe/gruvbox-material'] = {
   config = function()
     vim.g.gruvbox_material_background = 'medium'
   end
 }
+
+-- Non treesitter supported themes
+ui['arzg/vim-colors-xcode'] = {}
 
 ui['mhinz/vim-startify'] = {
   cond = 'not vim.g.started_by_firenvim',
