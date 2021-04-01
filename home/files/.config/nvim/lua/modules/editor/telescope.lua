@@ -82,6 +82,9 @@ require('telescope').load_extension('fzy_native')
 nnoremap { '<leader>ff', [[<cmd>Telescope find_files<cr>]], silent=true }
 vim.which_leader['f'].f = 'files'
 
+nnoremap { '<leader>fd', [[<cmd>Telescope git_files<cr>]], silent=true }
+vim.which_leader['f'].f = 'git-files'
+
 nnoremap { '<leader>fr', [[<cmd>Telescope live_grep<cr>]], silent=true }
 vim.which_leader['f'].r = 'grep'
 
