@@ -161,6 +161,7 @@ function plugins.init_commands()
   vim.cmd [[command! PackerUpdate lua require('core.pack').update()]]
   vim.cmd [[command! PackerSync lua require('core.pack').sync()]]
   vim.cmd [[command! PackerClean lua require('core.pack').clean()]]
+  vim.cmd [[command! PackerStatus lua require('core.pack').status()]]
   vim.cmd [[command! PackerInstallSync lua require('core.pack').install_sync()]]
   vim.cmd [[command! PackerUpdateSync lua require('core.pack').update_sync()]]
   vim.cmd [[command! PackerCleanSync lua require('core.pack').clean_sync()]]
