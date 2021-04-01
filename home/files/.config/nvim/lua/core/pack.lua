@@ -3,11 +3,11 @@ local path = require('core.path')
 
 local fn,api,el = vim.fn,vim.api,vim.loop;
 
-local packer = nil
-local module_path = path.join({global.confighome, 'lua', 'modules'})
+local packer          = nil
+local module_path     = path.join({global.confighome, 'lua', 'modules'})
 local packer_compiled = path.join({global.datahome, 'plugin', 'packer_compiled.vim'})
-local package_root = path.join({global.cachehome, 'site', 'pack'})
-local packpath = path.join({package_root, 'packer'})
+local package_root    = path.join({global.cachehome, 'site', 'pack'})
+local packpath        = path.join({package_root, 'packer'})
 
 local Packer = {}
 Packer.__index = Packer
@@ -79,9 +79,41 @@ function Packer:ensure_plugins()
     end
 
     self:load_packer()
-    packer.install()
+    self:install_sync()
     packer.compile()
   end
+end
+
+function Packer:exec_func_sync(func)
+  vim.g.packer_finished_exec_function = false
+  packer.on_complete = function()
+    vim.g.packer_finished_exec_function = true
+    vim.cmd [[doautocmd User PackerComplete]]
+  end
+
+  func()
+  vim.wait(120000, function() return vim.g.packer_finished_exec_function end, 300)
+end
+
+function Packer:install_sync()
+  if not packer then
+    self:load_packer()
+  end
+  self:exec_func_sync(packer.install)
+end
+
+function Packer:update_sync()
+  if not packer then
+    self:load_packer()
+  end
+  self:exec_func_sync(packer.update)
+end
+
+function Packer:clean_sync()
+  if not packer then
+    self:load_packer()
+  end
+  self:exec_func_sync(packer.clean)
 end
 
 local plugins = setmetatable({}, {
@@ -92,6 +124,18 @@ local plugins = setmetatable({}, {
     return packer[key]
   end
 })
+
+function plugins.install_sync()
+  Packer:install_sync()
+end
+
+function plugins.update_sync()
+  Packer:update_sync()
+end
+
+function plugins.clean_sync()
+  Packer:clean_sync()
+end
 
 function plugins.ensure_plugins()
   Packer:ensure_plugins()
@@ -117,6 +161,9 @@ function plugins.init_commands()
   vim.cmd [[command! PackerUpdate lua require('core.pack').update()]]
   vim.cmd [[command! PackerSync lua require('core.pack').sync()]]
   vim.cmd [[command! PackerClean lua require('core.pack').clean()]]
+  vim.cmd [[command! PackerInstallSync lua require('core.pack').install_sync()]]
+  vim.cmd [[command! PackerUpdateSync lua require('core.pack').update_sync()]]
+  vim.cmd [[command! PackerCleanSync lua require('core.pack').clean_sync()]]
 end
 
 return plugins
