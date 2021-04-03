@@ -27,6 +27,11 @@ lsp['hrsh7th/nvim-compe'] = {
   disable = not vim.g.eden_nvimlsp,
   event = 'InsertEnter',
   config = conf.nvim_compe,
+  requires = {
+    {'hrsh7th/vim-vsnip', opt=true},
+    {'hrsh7th/vim-vsnip-integ', opt=true},
+    {'rafamadriz/friendly-snippets', opt=true},
+  },
 }
 
 return lsp
