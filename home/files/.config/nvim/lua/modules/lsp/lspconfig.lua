@@ -95,8 +95,13 @@ local enhance_attach = function(client, bufnr)
   end
 end
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.window = capabilities.window or {}
+capabilities.window.workDoneProgress = true
+
 -- Setting up for each language server
-local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach, capabilities = status.capabilities }
+local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach, capabilities = capabilities }
 local servers = {
   bashls = {},
   rust_analyzer = {},

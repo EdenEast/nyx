@@ -1,6 +1,10 @@
 local inoremap = vim.keymap.inoremap
 local npairs = require('nvim-autopairs')
 
+vim.cmd [[packadd vim-vsnip]]
+vim.cmd [[packadd vim-vsnip-integ]]
+vim.cmd [[packadd friendly-snippets]]
+
 vim.opt.completeopt = "menuone,noselect"
 
 local t = function(str)
@@ -61,12 +65,12 @@ require'compe'.setup {
     path = true;
     buffer = true;
     calc = true;
-    vsnip = false;
+    vsnip = true;
     nvim_lsp = true;
     nvim_lua = true;
     spell = true;
     tags = true;
-    snippets_nvim = true;
+    snippets_nvim = false;
   };
 }
 
