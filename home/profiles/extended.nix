@@ -30,11 +30,12 @@ in {
         ddrescue
         # Hosted binary caches
         cachix
+        # A TUI file explorer
+        xplr
       ];
     };
 
     nyx.aspects = {
-      shell.broot.enable = true;
       shell.fzf.enable = true;
       shell.glow.enable = true;
       shell.keybase.enable = true;
