@@ -4,7 +4,6 @@
   imports = [
     ./bash.nix
     ./bat.nix
-    ./broot.nix
     ./direnv.nix
     ./fzf.nix
     ./git.nix

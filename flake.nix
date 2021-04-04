@@ -164,6 +164,7 @@
             pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
           cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
           repo = pkgs.callPackage ./nix/pkgs/repo { };
+          xplr = pkgs.callPackage ./nix/pkgs/xplr { };
         });
 
       minimal =
