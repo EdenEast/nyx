@@ -13,9 +13,11 @@ function main()
     # try and update git remote if connected to the internet
     git fetch -nq &>/dev/null
 
-    local remote_list=$(git branch --no-color -r | grep -v 'HEAD ->' | grep -v 'origin/master')
+    local default = git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin}/@@'
+
+    local remote_list=$(git branch --no-color -r | grep -v 'HEAD ->' | grep -v 'origin/$default')
     for r in ${remote_list[@]}; do
-        local result=$(git rev-list --left-right --count origin/master...$r)
+        local result=$(git rev-list --left-right --count origin/$default...$r)
         local ahead=$(echo $result | awk '{ print $2 }')
         local behind=$(echo $result | awk '{ print $1 }')
 
