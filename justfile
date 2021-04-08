@@ -27,12 +27,12 @@ check:
     nix flake check {{expflags}}
 
 # Build an output target of the nix flake
-build target=default-target:
+@build target=default-target:
     printf "Building target:   {{green}}{{target}}{{reset}}\n"
     nix build .#{{target}} {{expflags}}
 
 # Install an output target of the nix flake
-install target=default-target: (build target)
+@install target=default-target: (build target)
     printf "Installing target: {{green}}{{target}}{{reset}}\n"
     [ -f ./result/activate ] && ./result/activate
 

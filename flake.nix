@@ -32,6 +32,13 @@
       ref = "master";
       flake = false;
     };
+
+    neovim-nightly-overlay = {
+      type = "github";
+      owner = "nix-community";
+      repo = "neovim-nightly-overlay";
+      ref = "master";
+    };
   };
 
   outputs = { self, ... }@inputs:
@@ -99,8 +106,20 @@
           configuration = { ... }: {
             imports = [ self.internal.homeManagerConfigurations."${name}" ];
 
-            xdg.configFile."nix/nix.conf".text =
-              "experimental-features = nix-command flakes";
+            xdg.configFile."nix/nix.conf".text = let
+              nixConf = import ./nix/conf.nix;
+              substituters = [ "https://cache.nixos.org" ]
+                ++ nixConf.binaryCaches;
+              trustedPublicKeys = [
+                "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+              ] ++ nixConf.binaryCachePublicKeys;
+            in ''
+              substituters = ${builtins.concatStringsSep " " substituters}
+              trusted-public-keys = ${
+                builtins.concatStringsSep " " trustedPublicKeys
+              }
+            '';
+
             nixpkgs = {
               config = import ./nix/config.nix;
               overlays = self.internal.overlays."${system}";
@@ -142,8 +161,8 @@
         overlays = forEachSystem (system: [
           (self.overlay."${system}")
           (import ./nix/overlays/git-open)
-          (import ./nix/overlays/neovim)
           (import inputs.nixpkgs-mozilla)
+          (inputs.neovim-nightly-overlay.overlay)
         ]);
       };
 
