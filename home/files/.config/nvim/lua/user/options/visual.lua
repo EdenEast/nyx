@@ -1,6 +1,18 @@
 local util = require('core.util')
 local opt = vim.opt
 
+local fillchars = {
+  'vert:┃',        -- BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+  'fold:·',        -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
+}
+
+local highlight = {
+  opt.highlight,
+  '@:Conceal',     -- ~/@ at end of window, 'showbreak'
+  'N:DiffText',    -- make current line number stand out a little
+  'c:LineNr',      -- blend vertical separators with line numbers
+}
+
 local listchars = {
   'nbsp:⦸',        -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
   'tab:▷┅',        -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
@@ -24,6 +36,9 @@ local shortmess = {
 
 opt.belloff        = 'all'                -- I NEVER want to hear this bell for ANY reason
 opt.cursorline     = true                 -- highlight current line
+opt.fillchars      = util.join(fillchars, ',')
+opt.foldlevelstart = 99                   -- start unfolded
+-- opt.highlight      = util.join(highlight, ',') -- TODO: Currently vim.o.highlight is not supported
 opt.laststatus     = 2                    -- always show status line
 opt.lazyredraw     = true                 -- dont bother updating screen durring macro playback
 opt.list           = true                 -- show whitespace
