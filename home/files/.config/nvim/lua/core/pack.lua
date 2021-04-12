@@ -4,10 +4,10 @@ local path = require('core.path')
 local fn,api,el = vim.fn,vim.api,vim.loop;
 
 local packer          = nil
-local module_path     = path.join({global.confighome, 'lua', 'modules'})
-local packer_compiled = path.join({global.datahome, 'plugin', 'packer_compiled.vim'})
-local package_root    = path.join({global.cachehome, 'site', 'pack'})
-local packpath        = path.join({package_root, 'packer'})
+local module_path     = path.join(global.confighome, 'lua', 'modules')
+local packer_compiled = path.join(global.datahome, 'plugin', 'packer_compiled.vim')
+local package_root    = path.join(global.cachehome, 'site', 'pack')
+local packpath        = path.join(package_root, 'packer')
 
 local Packer = {}
 Packer.__index = Packer
@@ -60,7 +60,7 @@ function Packer:load_packer()
 end
 
 function Packer:ensure_plugins()
-  local packer_dir = path.join({packpath, 'opt', 'packer.nvim'})
+  local packer_dir = path.join(packpath, 'opt', 'packer.nvim')
   local packer_url = 'https://github.com/wbthomason/packer.nvim'
   local state =  el.fs_stat(packer_dir)
   if not state then
@@ -68,7 +68,7 @@ function Packer:ensure_plugins()
     api.nvim_command(cmd)
 
     -- Create plugin dir
-    el.fs_mkdir(path.join({global.datahome, 'plugin'}), 511, function()
+    el.fs_mkdir(path.join(global.datahome, 'plugin'), 511, function()
       assert('make packer compile dir failed')
     end)
 
