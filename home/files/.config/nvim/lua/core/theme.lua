@@ -3,7 +3,7 @@ local path   = require('core.path')
 local augroup = require('core.event')
 
 local default = 'zephyr'
-local cache = path.join({global.cachehome, 'theme.txt'})
+local cache = path.join(global.cachehome, 'theme.txt')
 
 local theme = {}
 

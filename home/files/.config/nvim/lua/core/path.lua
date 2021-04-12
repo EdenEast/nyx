@@ -3,8 +3,8 @@ local util = require('core.util')
 
 local path = {}
 
-path.join = function(tbl)
-  return util.join(tbl, global.pathsep)
+path.join = function(...)
+  return table.concat({...}, global.pathsep)
 end
 
 path.create = function(path)
@@ -42,8 +42,8 @@ local construct_runtimepath = function()
     global.datahome
   }
   local rtafter = {
-    path.join({ global.confighome, 'after' }),
-    path.join({ global.datahome, 'after' })
+    path.join(global.confighome, 'after'),
+    path.join(global.datahome, 'after')
   }
 
   for _, v in pairs(rtsplit) do
@@ -62,12 +62,12 @@ end
 local construct_packpath = function()
   local psplit = vim.split(vim.o.packpath, ',')
   local ppath = {
-    path.join({ global.cachehome, 'site' }),
-    path.join({ global.datahome, 'site' })
+    path.join(global.cachehome, 'site'),
+    path.join(global.datahome, 'site')
   }
   local pafter = {
-    path.join({ global.cachehome, 'after', 'site' }),
-    path.join({ global.datahome, 'after', 'site' })
+    path.join(global.cachehome, 'after', 'site'),
+    path.join(global.datahome, 'after', 'site')
   }
 
   for _, v in pairs(psplit) do
