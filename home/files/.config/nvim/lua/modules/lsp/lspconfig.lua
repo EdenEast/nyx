@@ -102,9 +102,46 @@ capabilities.window.workDoneProgress = true
 
 -- Setting up for each language server
 local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach, capabilities = capabilities }
+local ext = global.is_windows and '.cmd' or ''
+local pid = vim.fn.getpid()
 local servers = {
-  bashls = {},
+  bashls = { cmd = {'bash-language-server'..ext, 'start'}, },
+  clangd = { cmd = { "clangd"..ext, "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu", }, },
+  cmake = { cmd = {'cmake-language-server'..ext}, },
+  elmls = { cmd = {'elm-language-server'..ext}, },
+  gopls = {},
+  omnisharp = { cmd = { 'omnisharp'..ext, "--languageserver" , "--hostPID", tostring(pid) }; },
+  pyright = {},
   rust_analyzer = {},
+  sumneko_lua = {
+    cmd = {'lua-language-server'..ext},
+    settings = {
+      Lua = {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+          version = 'LuaJIT',
+          -- Setup your lua path
+          path = vim.split(package.path, ';'),
+        },
+        diagnostics = {
+          -- Get the language server to recognize the `vim` global
+          globals = {'vim', 'P'},
+        },
+        workspace = {
+          -- Make the server aware of Neovim runtime files
+          library = {
+            [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+          },
+        },
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+          enable = false,
+        },
+      },
+    },
+  },
+  tsserver = {},
   vimls = {},
 }
 
@@ -112,6 +149,7 @@ for server, config in pairs(servers) do
   nvim_lsp[server].setup(vim.tbl_deep_extend('force', default_lsp_config, config))
 end
 
+require('lspsync').setup()
 
 -- Resources and references
 --
