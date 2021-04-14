@@ -12,10 +12,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-4PZZ8NNHhorF3luNfbyb1NztvhldFprPPmoK+JtzhjI=";
   };
 
-  # nativeBuildInputs = [ pkg-config ];
-  # buildInputs = [ openssl ];
-
-  cargoSha256 = "sha256-DYsawCjlWm+Nsm/F517wczfZBwdiKxn/CrXBkcnEo1s=";
+  cargoSha256 = "sha256-D5fBg/1lda36SIdj6biwoH6aHMTuWWM6POPWteQk9Ao=";
 
   meta = with lib; {
     description = "A TUI file explorer";
