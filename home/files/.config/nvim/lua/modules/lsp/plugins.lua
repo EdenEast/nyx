@@ -34,4 +34,6 @@ lsp['hrsh7th/nvim-compe'] = {
   },
 }
 
+lsp['EdenEast/nvim-lspsync'] = {}
+
 return lsp
