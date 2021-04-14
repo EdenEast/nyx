@@ -13,7 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "Jp4kQFAuCa4SiPz2h8EO/ZQwi5VNj1EiZ6mm/NK2LFM=";
   };
 
-  cargoSha256 = "sha256-43/VxTrFxlyGgDnxu9+/9bg9Buqzd/XPajnKxhf7d/w=";
+  cargoSha256 = "sha256-YE8UZ8b6/DfQH74AIYmHtxSS5/amujGP/sGILqgPPcQ=";
 
   meta = with lib; {
     description = "List features for a specific crate";

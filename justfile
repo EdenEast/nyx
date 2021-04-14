@@ -40,7 +40,7 @@ check:
 update input=input-all:
     #!/usr/bin/env bash
     [[ {{input}} == "all" ]] && input="--recreate-lock-file" || input="--update-input {{input}}"
-    nix flake update $input
+    nix flake update $input {{expflags}}
 
 # Execute formatter on all .nix files
 @fmt:
