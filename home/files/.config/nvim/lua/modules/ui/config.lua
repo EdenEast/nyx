@@ -1,6 +1,33 @@
 local config = {}
 
 function config.startify()
+  local nnoremap = vim.keymap.nnoremap
+  local ascii = {
+    '',
+    '    ███████╗██████╗ ███████╗███╗   ██╗',
+    '    ██╔════╝██╔══██╗██╔════╝████╗  ██║',
+    '    █████╗  ██║  ██║█████╗  ██╔██╗ ██║',
+    '    ██╔══╝  ██║  ██║██╔══╝  ██║╚██╗██║',
+    '    ███████╗██████╔╝███████╗██║ ╚████║',
+    '    ╚══════╝╚═════╝ ╚══════╝╚═╝  ╚═══╝',
+    '',
+  }
+
+  vim.g.startify_custom_header = ascii
+  vim.g.startify_bookmarks = {
+    {n = '~/.local/nyx/flake.nix'},
+    {v = '~/.local/nyx/home/files/.config/nvim/init.lua'},
+    {g = '~/.local/nyx/home/files/.config/git/config'},
+  }
+
+  vim.g.startify_skiplist = {
+    '^/tmp',
+    '/.git/',
+  }
+
+  nnoremap { '<leader>ts',':<c-u>Startify<cr>' }
+  vim.which_leader['t'].s = 'start-page'
+
   vim.api.nvim_exec(
     [[
      autocmd! FileType startify
