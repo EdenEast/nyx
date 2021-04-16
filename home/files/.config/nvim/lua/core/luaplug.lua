@@ -38,6 +38,8 @@ M.source = function()
 end
 
 M.setup = function()
+  M.source()
+
   vim.augroup {
     luaplug = {
       {'Filetype', '*', ":lua require('core.luaplug').do_filetype(vim.fn.expand('<amatch>'))"},
