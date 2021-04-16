@@ -89,6 +89,9 @@ local load_core = function()
   require('user.options')
   require('user.keymap')
   require('user.event')
+
+  -- execute `lua/plugin/*.lua` and `lua/ftplugin/*.lua`
+  require('core.luaplug').setup()
 end
 
 load_core()
