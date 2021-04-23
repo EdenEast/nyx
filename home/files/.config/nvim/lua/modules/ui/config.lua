@@ -242,4 +242,8 @@ function config.nvim_tree()
   vim.which_leader['t'].e = 'file-explorer'
 end
 
+function config.neoscroll()
+  require('neoscroll').setup()
+end
+
 return config

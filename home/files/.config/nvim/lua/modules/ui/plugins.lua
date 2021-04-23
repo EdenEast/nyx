@@ -70,4 +70,8 @@ ui['kyazdani42/nvim-tree.lua'] = {
   -- cmd = {'NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile'},
 }
 
+ui["karb94/neoscroll.nvim"] = {
+  config = conf.neoscroll,
+}
+
 return ui
