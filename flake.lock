@@ -1,6 +1,6 @@
 {
   "nodes": {
-    "compat": {
+    "flake-compat": {
       "flake": false,
       "locked": {
         "lastModified": 1606424373,
@@ -16,7 +16,7 @@
         "type": "github"
       }
     },
-    "flake-compat": {
+    "flake-compat_2": {
       "flake": false,
       "locked": {
         "lastModified": 1606424373,
@@ -92,7 +92,7 @@
     },
     "neovim-nightly": {
       "inputs": {
-        "flake-compat": "flake-compat",
+        "flake-compat": "flake-compat_2",
         "neovim-flake": "neovim-flake",
         "nixpkgs": "nixpkgs"
       },
@@ -160,7 +160,7 @@
     },
     "root": {
       "inputs": {
-        "compat": "compat",
+        "flake-compat": "flake-compat",
         "home-manager": "home-manager",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_2",

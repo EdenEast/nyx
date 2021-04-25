@@ -8,8 +8,8 @@
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    compat.url = "github:edolstra/flake-compat";
-    compat.flake = false;
+    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat.flake = false;
 
     # Overlays
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
