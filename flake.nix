@@ -49,6 +49,7 @@
           git
           just
           nixfmt
+          nixFlakes
           fd
           nix-build-uncached
           nix-prefetch-git
