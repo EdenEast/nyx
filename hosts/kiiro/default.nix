@@ -15,6 +15,7 @@
           gnupg = {
             enable = true;
             enableService = false;
+            publicKey = ../../home/files/.gnupg/public.key;
           };
         };
       };
