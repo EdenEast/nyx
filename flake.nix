@@ -24,25 +24,8 @@
       util = import ./lib inputs;
       inherit (util) mkHost;
       inherit (util) pkgs;
-    in {
-      overlay."${system}" = _: _: self.packages.x86_64-linux;
-      overlays = [
-        (self.overlay."${system}")
-        (import ./nix/overlays/git-open)
-        inputs.neovim-nightly.overlay
-      ];
 
-      packages."${system}" = {
-        cargo-whatfeatures = pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
-        cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
-        repo = pkgs.callPackage ./nix/pkgs/repo { };
-        xplr = pkgs.callPackage ./nix/pkgs/xplr { };
-      };
-
-      homeConfigurations = { kiiro = mkHost ./hosts/kiiro; };
-      kiiro = self.homeConfigurations.kiiro.activationPackage;
-
-      devShell."${system}" = pkgs.mkShell {
+      shell = pkgs.mkShell {
         name = "nyx";
         naitiveBuildInputs = with pkgs; [
           git-crypt
@@ -63,5 +46,28 @@
           }/bin:$PATH
         '';
       };
+    in {
+      overlay."${system}" = _: _: self.packages.x86_64-linux;
+      overlays = [
+        (self.overlay."${system}")
+        (import ./nix/overlays/git-open)
+        inputs.neovim-nightly.overlay
+      ];
+
+      packages."${system}" = {
+        cargo-whatfeatures = pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
+        cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
+        repo = pkgs.callPackage ./nix/pkgs/repo { };
+        xplr = pkgs.callPackage ./nix/pkgs/xplr { };
+      };
+
+      devShell."${system}" = shell;
+
+      homeConfigurations = {
+        kiiro = mkHost ./hosts/kiiro;
+        chairo = mkHost ./hosts/chairo;
+      };
+      kiiro = self.homeConfigurations.kiiro.activationPackage;
+      chairo = self.homeConfigurations.chairo.activationPackage;
     };
 }
