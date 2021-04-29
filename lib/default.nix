@@ -2,6 +2,6 @@
 
 let lib = self.lib;
 in {
-  mkHost = import ./mkHost.nix inputs;
+  mkHome = import ./mkHome.nix inputs;
   pkgs = import ./pkgs.nix inputs;
 }

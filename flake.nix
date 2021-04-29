@@ -22,7 +22,7 @@
       system = "x86_64-linux";
 
       util = import ./lib inputs;
-      inherit (util) mkHost;
+      inherit (util) mkHome;
       inherit (util) pkgs;
 
       shell = pkgs.mkShell {
@@ -64,8 +64,8 @@
       devShell."${system}" = shell;
 
       homeConfigurations = {
-        kiiro = mkHost ./hosts/kiiro;
-        chairo = mkHost ./hosts/chairo;
+        kiiro = mkHome ./hosts/kiiro;
+        chairo = mkHome ./hosts/chairo;
       };
       kiiro = self.homeConfigurations.kiiro.activationPackage;
       chairo = self.homeConfigurations.chairo.activationPackage;
