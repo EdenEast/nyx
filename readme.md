@@ -31,4 +31,6 @@ works on both nixos and non nixos systems. It is well structured and easy to und
   - Good swap over scripts and handles Nixos, home-manager and darwin
 - [bnjmnt4n/system](https://github.com/bnjmnt4n/system)
   - Found this as it was linked to the issue I made on home-manager with non-nixos configuration
+- [colemickens/nixcfg](https://github.com/colemickens/nixcfg)
+  - Hydra jobs, images, vms
 

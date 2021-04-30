@@ -1,196 +1,73 @@
 {
-  description = "Eden's home configuration";
+  description = "Something";
 
   inputs = {
-    nixpkgs = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "master";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # primary nixpkgs
+    nixpkgs-master.url =
+      "github:nixos/nixpkgs/master"; # for packages on the edge
 
-    home-manager = {
-      type = "github";
-      owner = "nix-community";
-      repo = "home-manager";
-      ref = "master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat.flake = false;
 
-    nixpkgs-mozilla = {
-      type = "github";
-      owner = "mozilla";
-      repo = "nixpkgs-mozilla";
-      ref = "master";
-      flake = false;
-    };
-
-    flake-compat = {
-      type = "github";
-      owner = "edolstra";
-      repo = "flake-compat";
-      ref = "master";
-      flake = false;
-    };
-
-    neovim-nightly-overlay = {
-      type = "github";
-      owner = "nix-community";
-      repo = "neovim-nightly-overlay";
-      ref = "master";
-    };
+    # Overlays
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs = { self, ... }@inputs:
-    with inputs.nixpkgs.lib;
     let
-      forEachSystem = genAttrs [ "x86_64-linux" "aarch64-linux" ];
-      pkgsBySystem = forEachSystem (system:
-        import inputs.nixpkgs {
-          inherit system;
-          config = import ./nix/config.nix;
-          overlays = self.internal.overlays."${system}";
-        });
+      # supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+      # forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (system: f system);
+      system = "x86_64-linux";
 
-      mkHomeManagerConfiguration = name:
-        { system, config }:
-        nameValuePair name ({ ... }: {
-          imports = [
-            (import ./home/aspects)
-            (import ./home/profiles)
-            (import config)
-          ];
+      util = import ./lib inputs;
+      inherit (util) mkHome;
+      inherit (util) pkgs;
 
-          # For compat with nix-shell, nix-build, etc
-          home.file."nixpkgs".source = inputs.nixpkgs;
-          systemd.user.sessionVariables."NIX_PATH" =
-            mkForce "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
+      shell = pkgs.mkShell {
+        name = "nyx";
+        naitiveBuildInputs = with pkgs; [
+          git-crypt
+          git
+          just
+          nixfmt
+          nixFlakes
+          fd
+          nix-build-uncached
+          nix-prefetch-git
+        ];
 
-          # Use the same nix config
-          xdg.configFile."nixpkgs/config.nix".source = ./nix/config.nix;
-
-          # Re-expose self and nixpkgs as flakes.
-          xdg.configFile."nix/registry.json".text = builtins.toJSON {
-            version = 2;
-            flakes = let
-              toInput = input:
-                {
-                  type = "path";
-                  path = input.outPath;
-                } // (filterAttrs (n: _:
-                  n == "lastModified" || n == "rev" || n == "revCount" || n
-                  == "narHash") input);
-            in [
-              {
-                from = {
-                  id = "self";
-                  type = "indirect";
-                };
-                to = toInput inputs.self;
-              }
-              {
-                from = {
-                  id = "nixpkgs";
-                  type = "indirect";
-                };
-                to = toInput inputs.nixpkgs;
-              }
-            ];
-          };
-        });
-
-      mkHomeManagerHostConfiguration = name:
-        { system }:
-        nameValuePair name (inputs.home-manager.lib.homeManagerConfiguration {
-          inherit system;
-          configuration = { ... }: {
-            imports = [ self.internal.homeManagerConfigurations."${name}" ];
-
-            xdg.configFile."nix/nix.conf".text = let
-              nixConf = import ./nix/conf.nix;
-              substituters = [ "https://cache.nixos.org" ]
-                ++ nixConf.binaryCaches;
-              trustedPublicKeys = [
-                "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-              ] ++ nixConf.binaryCachePublicKeys;
-            in ''
-              substituters = ${builtins.concatStringsSep " " substituters}
-              trusted-public-keys = ${
-                builtins.concatStringsSep " " trustedPublicKeys
-              }
-            '';
-
-            nixpkgs = {
-              config = import ./nix/config.nix;
-              overlays = self.internal.overlays."${system}";
-            };
-          };
-
-          # TODO: Use nyx.users to set this depending of the host that was configured
-          # username = config.nyx.users.username;
-          # homeDirectory = config.nyx.users.homeDirectory;
-          username = "eden";
-          homeDirectory = "/home/eden";
-          pkgs = pkgsBySystem."${system}";
-        });
-
+        shellHook = ''
+          PATH=${
+            pkgs.writeShellScriptBin "nix" ''
+              ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes" "$@"
+            ''
+          }/bin:$PATH
+        '';
+      };
     in {
-      internal = {
-        # Attribute set of hostnames to home-manager modules with the entire configuration for
-        # that host - consumed by the home-manager NixOS module for that host (if it exists)
-        # or by `mkHomeManagerHostConfiguration` for home-manager-only hosts.
-        homeManagerConfigurations = mapAttrs' mkHomeManagerConfiguration {
-          minimal = {
-            system = "x86_64-linux";
-            config = ./home/hosts/minimal.nix;
-          };
+      overlay."${system}" = _: _: self.packages.x86_64-linux;
+      overlays = [
+        (self.overlay."${system}")
+        (import ./nix/overlays/git-open)
+        inputs.neovim-nightly.overlay
+      ];
 
-          wsl = {
-            system = "x86_64-linux";
-            config = ./home/hosts/wsl.nix;
-          };
-        };
-
-        homeConfiguration = forEachSystem (system: {
-          minimal =
-            mkHomeManagerHostConfiguration "minimal" { inherit system; };
-          wsl = mkHomeManagerHostConfiguration "wsl" { inherit system; };
-        });
-
-        # Overlays consumed by the home-manager/NixOS configuration.
-        overlays = forEachSystem (system: [
-          (self.overlay."${system}")
-          (import ./nix/overlays/git-open)
-          (import inputs.nixpkgs-mozilla)
-          (inputs.neovim-nightly-overlay.overlay)
-        ]);
+      packages."${system}" = {
+        cargo-whatfeatures = pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
+        cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
+        repo = pkgs.callPackage ./nix/pkgs/repo { };
+        xplr = pkgs.callPackage ./nix/pkgs/xplr { };
       };
 
-      devShell = forEachSystem (system:
-        with pkgsBySystem."${system}";
-        mkShell {
-          name = "nyx";
-          buildInputs =
-            [ git-crypt just nixfmt fd nix-prefetch-git nix-prefetch-github ];
-        });
+      devShell."${system}" = shell;
 
-      overlay = forEachSystem (system: _: _: self.packages."${system}");
-
-      packages = forEachSystem (system:
-        let pkgs = pkgsBySystem."${system}";
-        in {
-          cargo-whatfeatures =
-            pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
-          cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
-          repo = pkgs.callPackage ./nix/pkgs/repo { };
-          xplr = pkgs.callPackage ./nix/pkgs/xplr { };
-        });
-
-      minimal =
-        self.internal.homeConfiguration.x86_64-linux.minimal.value.activationPackage;
-      wsl =
-        self.internal.homeConfiguration.x86_64-linux.wsl.value.activationPackage;
-
-      defaultPackage.x86_64-linux = self.minimal;
+      homeConfigurations = {
+        kiiro = mkHome ./hosts/kiiro;
+        chairo = mkHome ./hosts/chairo;
+      };
+      kiiro = self.homeConfigurations.kiiro.activationPackage;
+      chairo = self.homeConfigurations.chairo.activationPackage;
     };
 }
