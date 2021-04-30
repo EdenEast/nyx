@@ -97,7 +97,7 @@ in {
         signingKey = ${cfg.signing.key}
 
         [commit]
-        gpgSign = ${cfg.signing.signByDefault}
+        gpgSign = ${if cfg.signing.signByDefault then "true" else "false"}
 
         [gpg]
         program = ${cfg.signing.gpgPath}
