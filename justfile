@@ -3,7 +3,7 @@ export USER := env_var("USER")
 export HOME := env_var("HOME")
 export HOME_MANAGER_BACKUP_EXT := "nbak"
 
-default-target := "${NYX_DEFAULT_TARGET:-minimal}"
+default-target := "${NYX_DEFAULT_TARGET:-}"
 expflags       := "--experimental-features 'nix-command flakes'"
 input-all      := "all"
 
