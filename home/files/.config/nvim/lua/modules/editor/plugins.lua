@@ -18,6 +18,12 @@ editor['editorconfig/editorconfig-vim'] = {
   config = conf.editorconfig,
 }
 
+editor['kkoomen/vim-doge'] = {
+  config = conf.doge,
+  run = function() vim.fn['doge#install']() end,
+  cmd = {'DogeGenerate'},
+}
+
 editor['glacambre/firenvim'] = {
   cond = 'vim.g.started_by_firenvim',
   run = function() vim.fn['firenvim#install'](0) end,

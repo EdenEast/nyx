@@ -32,6 +32,10 @@ function config.editorconfig()
   vim.g.EditorConfig_exclude_patterns = { 'fugitive://.*', 'scp://.*' }
 end
 
+function config.doge()
+  vim.g.doge_enable_mappings = 0
+end
+
 function config.firenvim()
   vim.o.laststatus = 0
   vim.bo.filetype = 'markdown'
