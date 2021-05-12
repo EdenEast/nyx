@@ -68,9 +68,28 @@ local leader_map = function()
   }
 end
 
+local windows_spawn_hotfix = function()
+  if not global.is_windows then
+    return
+  end
+
+  -- Note: Currently there is an issue with luv on windows where it does not
+  -- execute `.cmd` executables. This work around is taken from
+  -- `neovim/nvim-lspconfig` https://github.com/neovim/nvim-lspconfig#windows
+  vim.loop.spawn = (function ()
+    local spawn = vim.loop.spawn
+    return function(p, options, on_exit)
+
+      local full_path = vim.fn.exepath(p)
+        return spawn(full_path, options, on_exit)
+    end
+  end)()
+end
+
 local load_core = function()
   disable_distibution_plugins()
   leader_map()
+  windows_spawn_hotfix()
 
   local pack = require('core.pack')
   pack.ensure_plugins()
