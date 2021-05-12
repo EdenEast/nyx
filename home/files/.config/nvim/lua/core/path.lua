@@ -7,17 +7,17 @@ path.join = function(...)
   return table.concat({...}, global.pathsep)
 end
 
-path.create = function(path)
-	local state =  vim.loop.fs_stat(path)
+path.create = function(p)
+	local state =  vim.loop.fs_stat(p)
 	if not state then
-    vim.loop.fs_mkdir(path, 511, function()
-      assert('Failed to make path:' .. path)
+    vim.loop.fs_mkdir(p, 511, function()
+      assert('Failed to make path:' .. p)
     end)
 	end
 end
 
-path.exists = function(path)
-  local state =  vim.loop.fs_stat(path)
+path.exists = function(p)
+  local state =  vim.loop.fs_stat(p)
   return not (state == nil)
 end
 
