@@ -149,7 +149,8 @@ for server, config in pairs(servers) do
   nvim_lsp[server].setup(vim.tbl_deep_extend('force', default_lsp_config, config))
 end
 
-require('lspsync').setup()
+local lspsync = require('lspsync')
+lspsync.startup()
 
 -- Resources and references
 --
