@@ -68,6 +68,9 @@ local leader_map = function()
   }
 end
 
+-- There is currently an issue with this solution as you cannot call `vim.fn` functions
+-- inside `vim.loop` functions.
+-- Issue: https://github.com/neovim/nvim-lspconfig/issues/899
 local windows_spawn_hotfix = function()
   if not global.is_windows then
     return
@@ -89,7 +92,6 @@ end
 local load_core = function()
   disable_distibution_plugins()
   leader_map()
-  windows_spawn_hotfix()
 
   local pack = require('core.pack')
   pack.ensure_plugins()
