@@ -167,5 +167,12 @@ function plugins.init_commands()
   vim.cmd [[command! PackerCleanSync lua require('core.pack').clean_sync()]]
 end
 
+function plugins.local_load(repo_path)
+  local name = string.match(repo_path, '.*/(.*)')
+  local abs = path.join(global.datahome, 'dev-plugins', name)
+  local exists = path.exists(abs)
+  return exists and abs or repo_path
+end
+
 return plugins
 

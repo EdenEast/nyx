@@ -1,5 +1,6 @@
 local lsp = {}
 local conf = require('modules.lsp.config')
+local pack = require('core.pack')
 
 -- CoC --------------------------------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ lsp['hrsh7th/nvim-compe'] = {
   },
 }
 
-lsp['EdenEast/nvim-lspsync'] = {}
+local lspsync = pack.local_load('EdenEast/nvim-lsdpsync')
+lsp[lspsync] = {}
 
 return lsp
