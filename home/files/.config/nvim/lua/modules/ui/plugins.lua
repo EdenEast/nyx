@@ -4,12 +4,13 @@ local conf = require('modules.ui.config')
 -- Themes -----------------------------------------------------------------------------------------
 
 -- Treesitter supported themes
-ui['glepnir/zephyr-nvim'] = {}
-ui['vigoux/oak'] = {}
-ui['yonlu/omni.vim'] = {}
-ui['savq/melange'] = {}
 ui['embark-theme/vim'] = {}
+ui['glepnir/zephyr-nvim'] = {}
 ui['mhartington/oceanic-next'] = {}
+ui['savq/melange'] = {}
+ui['vigoux/oak'] = {}
+ui['wojciechkepka/bogster'] = {}
+ui['yonlu/omni.vim'] = {}
 ui['sainnhe/gruvbox-material'] = {
   config = function()
     vim.g.gruvbox_material_background = 'medium'
