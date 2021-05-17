@@ -2,6 +2,8 @@ if not pcall(require, 'telescope') then
   return
 end
 
+local wk = require('core.whichkey')
+
 local load_plugins = function(names)
   for _, name in ipairs(names) do
     if not packer_plugins[name].loaded then
@@ -90,43 +92,43 @@ require('telescope').setup {
 require('telescope').load_extension('fzy_native')
 
 nnoremap { '<leader>ff', [[<cmd>Telescope find_files<cr>]], silent=true }
-vim.which_leader['f'].f = 'files'
+wk('<leader>ff', 'files')
 
 nnoremap { '<leader>fd', [[<cmd>Telescope git_files<cr>]], silent=true }
-vim.which_leader['f'].f = 'git-files'
+wk('<leader>fd', 'git-files')
 
 nnoremap { '<leader>fr', [[<cmd>Telescope live_grep<cr>]], silent=true }
-vim.which_leader['f'].r = 'grep'
+wk('<leader>fr', 'grep')
 
 nnoremap { '<leader>fs', [[<cmd>Telescope lsp_workspace_symbols<cr>]], silent=true }
-vim.which_leader['f'].s = 'symbols'
+wk('<leader>fs', 'symbols')
 
 nnoremap { '<leader>fb', [[<cmd>Telescope buffers<cr>]], silent=true }
-vim.which_leader['f'].b = 'buffers'
+wk('<leader>fb', 'buffers')
 
 nnoremap { '<leader>fB', [[<cmd>Telescope builtin<cr>]], silent=true }
-vim.which_leader['f'].B = 'builtins'
+wk('<leader>fB', 'builtins')
 
 nnoremap { '<leader>fh', [[<cmd>Telescope help_tags<cr>]], silent=true }
-vim.which_leader['f'].h = 'help'
+wk('<leader>fh', 'help')
 
 nnoremap { '<leader>fe', [[<cmd>Telescope file_browser<cr>]], silent=true }
-vim.which_leader['f'].e = 'file-explorer'
+wk('<leader>fe', 'file-explorer')
 
 nnoremap { '<leader>fq', [[<cmd>Telescope quickfix<cr>]], silent=true }
-vim.which_leader['f'].q = 'quickfix'
+wk('<leader>fq', 'quickfix')
 
 nnoremap { '<leader>fQ', [[<cmd>Telescope loclist<cr>]], silent=true }
-vim.which_leader['f'].Q = 'locallist'
+wk('<leader>fQ', 'locallist')
 
 nnoremap { '<leader>fgb', [[<cmd>Telescope git_branches<cr>]], silent=true }
 nnoremap { '<leader>fgc', [[<cmd>Telescope git_commits<cr>]], silent=true }
 nnoremap { '<leader>fgl', [[<cmd>Telescope git_bcommits<cr>]], silent=true }
 nnoremap { '<leader>fgs', [[<cmd>Telescope git_status<cr>]], silent=true }
-vim.which_leader['f'].g = {
-  name = '+git',
-  b = 'branches',
-  c = 'commits',
-  l = 'local-commits',
-  s = 'status',
-}
+-- wk('<leader>fg', {
+--   name = '+git',
+--   b = 'branches',
+--   c = 'commits',
+--   l = 'local-commits',
+--   s = 'status',
+-- })
