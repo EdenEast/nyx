@@ -23,6 +23,16 @@ require('telescope').setup {
     prompt_prefix = '❯ ',
     selection_caret = '❯ ',
 
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--hidden',
+      '--smart-case'
+    },
 
     winblend = 0,
     preview_cutoff = 120,
