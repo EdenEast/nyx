@@ -23,11 +23,6 @@ function config.nvim_colorizer()
   }
 end
 
-function config.lessspace()
-  vim.g.lessspace_normal = false
-  vim.g.lessspace_blacklist = { 'TelescopePrompt' }
-end
-
 function config.editorconfig()
   vim.g.EditorConfig_exclude_patterns = { 'fugitive://.*', 'scp://.*' }
 end
