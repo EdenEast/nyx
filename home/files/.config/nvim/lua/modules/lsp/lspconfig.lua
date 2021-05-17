@@ -2,6 +2,7 @@ package.loaded['lspconfig'] = nil
 
 local nvim_lsp = require('lspconfig')
 local global = require('core.global')
+local path = require('core.path')
 local has_tscope, tscope = pcall(require, 'telescope')
 local wk = require('core.whichkey')
 
@@ -83,8 +84,8 @@ local enhance_attach = function(client, bufnr)
     wk('<leader>cn', 'rename')
   end
 
-  if caps.document_highlight then
-  end
+  -- if caps.document_highlight then
+  -- end
 
   -- Rust is currently the only thing w/ inlay hints
   if filetype == 'rust' then
@@ -151,7 +152,9 @@ for server, config in pairs(servers) do
 end
 
 local lspsync = require('lspsync')
-lspsync.startup()
+lspsync.startup({
+    install_root = path.join(global.cachehome, 'lspsync')
+  })
 
 -- Resources and references
 --
