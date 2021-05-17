@@ -35,7 +35,7 @@ lsp['hrsh7th/nvim-compe'] = {
   },
 }
 
-local lspsync = pack.local_load('EdenEast/nvim-lsdpsync')
+local lspsync = pack.local_load('EdenEast/nvim-lspsync')
 lsp[lspsync] = {}
 
 return lsp
