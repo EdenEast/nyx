@@ -156,12 +156,15 @@ function plugins.auto_compile()
 end
 
 function plugins.init_commands()
-  vim.cmd [[command! PackerCompile lua require('core.pack').compile()]]
-  vim.cmd [[command! PackerInstall lua require('core.pack').install()]]
-  vim.cmd [[command! PackerUpdate lua require('core.pack').update()]]
-  vim.cmd [[command! PackerSync lua require('core.pack').sync()]]
-  vim.cmd [[command! PackerClean lua require('core.pack').clean()]]
-  vim.cmd [[command! PackerStatus lua require('core.pack').status()]]
+  vim.cmd [[command! PackerInstall  lua require('core.pack').install()]]
+  vim.cmd [[command! PackerUpdate   lua require('core.pack').update()]]
+  vim.cmd [[command! PackerSync     lua require('core.pack').sync()]]
+  vim.cmd [[command! PackerClean    lua require('core.pack').clean()]]
+  vim.cmd [[command! -nargs=* PackerCompile  lua require('core.pack').compile(<q-args>)]]
+  vim.cmd [[command! PackerStatus  lua require('core.pack').status()]]
+  vim.cmd [[command! PackerProfile  lua require('core.pack').profile_output()]]
+  vim.cmd [[command! -nargs=+ -complete=customlist,v:lua.require'packer'.loader_complete PackerLoad lua require('core.pack').loader(<q-args>)]]
+
   vim.cmd [[command! PackerInstallSync lua require('core.pack').install_sync()]]
   vim.cmd [[command! PackerUpdateSync lua require('core.pack').update_sync()]]
   vim.cmd [[command! PackerCleanSync lua require('core.pack').clean_sync()]]
