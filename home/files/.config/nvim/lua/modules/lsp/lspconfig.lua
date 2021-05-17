@@ -69,19 +69,19 @@ local enhance_attach = function(client, bufnr)
   else
     nnoremap { '<leader>ce', [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent=true }
   end
-  wk('<leader>ce', 'list-diagnostics')
+  vim.whichkey('<leader>ce', 'list-diagnostics')
 
   if caps.document_formatting then
     nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent=true }
-    wk('<leader>cf', 'format')
+    vim.whichkey('<leader>cf', 'format')
   elseif caps.document_range_formatting then
     nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent=true }
-    wk('<leader>cf', 'format')
+    vim.whichkey('<leader>cf', 'format')
   end
 
   if caps.rename then
     nnoremap { '<leader>cn', [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent=true }
-    wk('<leader>cn', 'rename')
+    vim.whichkey('<leader>cn', 'rename')
   end
 
   -- if caps.document_highlight then
