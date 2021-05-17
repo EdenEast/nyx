@@ -10,10 +10,6 @@ editor['norcalli/nvim-colorizer.lua'] = {
   config = conf.nvim_colorizer,
 }
 
-editor['thirtythreeforty/lessspace.vim'] = {
-  config = conf.lessspace,
-}
-
 editor['editorconfig/editorconfig-vim'] = {
   config = conf.editorconfig,
 }
