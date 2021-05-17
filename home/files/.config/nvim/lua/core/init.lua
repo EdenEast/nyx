@@ -1,3 +1,5 @@
+local has, wk = pcall(require, 'which-key')
+
 P = function(a)
   print(vim.inspect(a))
 end
@@ -49,6 +51,10 @@ local leader_map = function()
   vim.api.nvim_set_keymap('x', ' ', '', {noremap = true})
   vim.api.nvim_set_keymap('n', ',', '', {noremap = true})
   vim.api.nvim_set_keymap('x', ',', '', {noremap = true})
+
+  vim.whichkey = function(keys, value)
+    if has then wk.register({[keys] = value}) end
+  end
 
   -- Defining the maps for whichkey to use when it is loaded here
   -- so that it can be populated.
