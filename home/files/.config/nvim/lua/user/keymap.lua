@@ -1,3 +1,4 @@
+local wk = require('core.whichkey')
 local keymap = vim.keymap;
 local nnoremap, xnoremap = keymap.nnoremap, keymap.xnoremap
 
@@ -23,7 +24,7 @@ nnoremap { 'N', 'Nzz' }
 
 -- Switch between the last two buffers
 nnoremap { '<leader><leader>', '<c-^>' }
-vim.which_leader['space'] = 'prev-buffer'
+wk('<leader><space>', 'prev-buffer')
 
 -- Keep selection when indent/outdent
 xnoremap { '>', '>gv' }
@@ -36,12 +37,12 @@ xnoremap { '*', '"xy/<c-r><cr>' }
 nnoremap { '<leader>th', function() vim.opt.hlsearch = not vim.o.hlsearch end }
 
 nnoremap { '<leader>w', [[:<c-u>w<cr>]] }
-vim.which_leader['w'] = 'write-file'
+wk('<leader>w', 'write-file')
 nnoremap { '<leader>q', [[:<c-u>q<cr>]] }
-vim.which_leader['q'] = 'quit-file'
+wk('<leader>q', 'quit-file')
 
 nnoremap { '<leader>tn', function() require('core.util').toggle_numbers() end }
-vim.which_leader['n'] = 'line-number'
+wk('<leader>n', 'line-number')
 
 -- Jump list -------------------------------------------------------------------
 -- Because currently in alacritty we cannot tell the difference between <tab>

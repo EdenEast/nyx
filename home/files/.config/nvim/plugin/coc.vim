@@ -139,25 +139,26 @@ endfunction
 " Note the nmap is a motion
 nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
 xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-lua vim.which_leader['c'].a = 'code-action'
+lua wk('<leader>ca', 'code-action')
 
 " Coc and Clap ------------------------------------------------------------------------------------
 nmap <silent> <leader>ce :<C-u>CocList diagnostics<cr>
-lua vim.which_leader['c'].e = 'list-diagnostics'
+lua wk('<leader>ce', 'list-diagnostics')
 
 nmap <silent> <leader>co :<C-u>CocList outline<cr>
-lua vim.which_leader['c'].o = 'show-outline'
+lua wk('<leader>co', 'show-outline')
 
 " TODO: find somewhere to put Clap coc_services coc_symbols coc_outline
 
 " Code actions ------------------------------------------------------------------------------------
 nmap <leader>cn <Plug>(coc-rename)
-lua vim.which_leader['c'].n = 'rename'
+lua wk('<leader>cn', 'rename')
 
 nmap <leader>cf <Plug>(coc-format-selected)
 vmap <leader>cf <Plug>(coc-format-selected)
-lua vim.which_leader['c'].f = 'format'
+lua wk('<leader>cf', 'format')
+
 
 nmap <leader>cF <Plug>(coc-fix-current)
-lua vim.which_leader['c'].F = 'fix'
+lua wk('<leader>cF', 'fix')
 " let g:which_key_map.c.F = 'fix'

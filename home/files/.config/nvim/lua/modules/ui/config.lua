@@ -1,3 +1,4 @@
+local wk = require('core.whichkey')
 local config = {}
 
 function config.startify()
@@ -26,7 +27,8 @@ function config.startify()
   }
 
   nnoremap { '<leader>ts',':<c-u>Startify<cr>' }
-  vim.which_leader['t'].s = 'start-page'
+  -- wk('<leader>ts', 'start-page')
+  wk('<leader>ts', 'start-page')
 
   vim.api.nvim_exec(
     [[
@@ -38,33 +40,55 @@ function config.startify()
 end
 
 function config.whichkey()
-  local nnoremap = vim.keymap.nnoremap
-  local vnoremap = vim.keymap.vnoremap
+  local whichkey = require('which-key')
 
-  vim.opt.timeoutlen = 300
-
-  -- Hide status line on which key
-  vim.cmd([[
-      autocmd! FileType which_key
-      autocmd  FileType which_key set laststatus=0 noshowmode noruler
-      \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
-  ]])
-
-  -- Register which_keymaps defined on load
-  vim.fn['which_key#register']('<Space>', vim.which_leader)
-  vim.fn['which_key#register'](',', vim.which_localleader)
-  vim.fn['which_key#register']('[', vim.which_prev)
-  vim.fn['which_key#register'](']', vim.which_next)
-
-  nnoremap { '<leader>', [[:WhichKey '<Space>'<cr>]], silent = true }
-  vnoremap { '<leader>', [[:WhichKeyVisual '<Space>'<cr>]], silent = true }
-
-  nnoremap { '<localleader>', [[:WhichKey ','<cr>]], silent = true }
-  vnoremap { '<localleader>', [[:WhichKeyVisual ','<cr>]], silent = true }
-
-  nnoremap { '[', [[:WhichKey '['<cr>]], silent = true }
-  nnoremap { ']', [[:WhichKey ']'<cr>]], silent = true }
+  whichkey.setup()
+  whichkey.register({
+    b = { name = '+buffer' },
+    c = { name = '+code' },
+    f = { name = '+find' },
+    g = { name = '+git' },
+    t = { name = '+toggle' },
+    ["1"] = 'which_key_ignore',
+    ["2"] = 'which_key_ignore',
+    ["3"] = 'which_key_ignore',
+    ["4"] = 'which_key_ignore',
+    ["5"] = 'which_key_ignore',
+    ["6"] = 'which_key_ignore',
+    ["7"] = 'which_key_ignore',
+    ["8"] = 'which_key_ignore',
+    ["9"] = 'which_key_ignore',
+    }, {prefix = '<leader>'})
 end
+
+-- function config.whichkey()
+--   local nnoremap = vim.keymap.nnoremap
+--   local vnoremap = vim.keymap.vnoremap
+
+--   vim.opt.timeoutlen = 300
+
+--   -- Hide status line on which key
+--   vim.cmd([[
+--       autocmd! FileType which_key
+--       autocmd  FileType which_key set laststatus=0 noshowmode noruler
+--       \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
+--   ]])
+
+--   -- Register which_keymaps defined on load
+--   vim.fn['which_key#register']('<Space>', vim.which_leader)
+--   vim.fn['which_key#register'](',', vim.which_localleader)
+--   vim.fn['which_key#register']('[', vim.which_prev)
+--   vim.fn['which_key#register'](']', vim.which_next)
+
+--   nnoremap { '<leader>', [[:WhichKey '<Space>'<cr>]], silent = true }
+--   vnoremap { '<leader>', [[:WhichKeyVisual '<Space>'<cr>]], silent = true }
+
+--   nnoremap { '<localleader>', [[:WhichKey ','<cr>]], silent = true }
+--   vnoremap { '<localleader>', [[:WhichKeyVisual ','<cr>]], silent = true }
+
+--   nnoremap { '[', [[:WhichKey '['<cr>]], silent = true }
+--   nnoremap { ']', [[:WhichKey ']'<cr>]], silent = true }
+-- end
 
 function config.indentline()
  -- vim.g.indentLine_char = '│'  -- U+2502
@@ -108,9 +132,9 @@ function config.vista()
   vim.g.vista_sidebar_width = 40
 
   nnoremap { '<leader>tv',':<c-u>Vista!!<cr>' }
-  vim.which_leader['t'].v = 'vista'
+  wk('<leader>tv', 'vista')
   nnoremap { '<leader>fv', ':<c-u>Vista finder<cr>' }
-  vim.which_leader['f'].v = 'vista'
+  wk('<leader>fv', 'vista')
 
   -- Map / in vista buffer to search with fzf
   -- vim.cmd([[autocmd FileType vista,vista_kind nnoremap <buffer><silent> / :<c-u>call vista#finder#fzf#Run()<CR>]]
@@ -148,14 +172,14 @@ function config.gitsigns()
      },
   }
 
-  vim.which_leader['g'].h = {
+  wk('<leader>gh', {
     name = '+hunk',
     b = 'blame',
     p = 'preview',
     r = 'reset',
     s = 'stage',
     u = 'unstage',
-  }
+  })
 
   vim.which_prev['g'] = 'git-hunk'
   vim.which_next['g'] = 'git-hunk'
@@ -171,16 +195,16 @@ function config.bufferline()
   vim.which_prev['b'] = 'buffer'
 
   nnoremap { '<leader>bl', ':BufferLineMoveNext<cr>', silent = true }
-  vim.which_leader['b'].l = 'next'
+  wk('<leader>bl', 'next')
 
   nnoremap { '<leader>bh', ':BufferLineMovePrev<cr>', silent = true }
-  vim.which_leader['b'].h = 'prev'
+  wk('<leader>bh', 'prev')
 
   nnoremap { '<leader>be', ':BufferLineSortByExtension<CR><cr>', silent = true }
-  vim.which_leader['b'].e = 'sort-extension'
+  wk('<leader>be', 'sort-extension')
 
   nnoremap { '<leader>bd', ':BufferLineSortByDirectory<cr>', silent = true }
-  vim.which_leader['b'].d = 'sort-directory'
+  wk('<leader>bd', 'sort-directory')
 
   require('bufferline').setup{
     options = {
@@ -191,15 +215,27 @@ function config.bufferline()
     }
   }
 
-  vim.which_leader['1'] = 'which_key_ignore'
-  vim.which_leader['2'] = 'which_key_ignore'
-  vim.which_leader['3'] = 'which_key_ignore'
-  vim.which_leader['4'] = 'which_key_ignore'
-  vim.which_leader['5'] = 'which_key_ignore'
-  vim.which_leader['6'] = 'which_key_ignore'
-  vim.which_leader['7'] = 'which_key_ignore'
-  vim.which_leader['8'] = 'which_key_ignore'
-  vim.which_leader['9'] = 'which_key_ignore'
+  -- wk('<leader>', {
+  --     ['1'] = 'which_key_ignore',
+  --     ['2'] = 'which_key_ignore',
+  --     ['3'] = 'which_key_ignore',
+  --     ['4'] = 'which_key_ignore',
+  --     ['5'] = 'which_key_ignore',
+  --     ['6'] = 'which_key_ignore',
+  --     ['7'] = 'which_key_ignore',
+  --     ['8'] = 'which_key_ignore',
+  --     ['9'] = 'which_key_ignore',
+  --   })
+
+  -- wk('<leader>1', 'which_key_ignore')
+  -- wk('<leader>2', 'which_key_ignore')
+  -- wk('<leader>3', 'which_key_ignore')
+  -- wk('<leader>4', 'which_key_ignore')
+  -- wk('<leader>5', 'which_key_ignore')
+  -- wk('<leader>6', 'which_key_ignore')
+  -- wk('<leader>7', 'which_key_ignore')
+  -- wk('<leader>8', 'which_key_ignore')
+  -- wk('<leader>9', 'which_key_ignore')
 end
 
 function config.nvim_tree()
@@ -239,7 +275,7 @@ function config.nvim_tree()
   }
 
   vim.keymap.nnoremap { '<leader>te', '<cmd>NvimTreeToggle<cr>', silent=true }
-  vim.which_leader['t'].e = 'file-explorer'
+  wk('<leader>te', 'file-explorer')
 end
 
 function config.neoscroll()

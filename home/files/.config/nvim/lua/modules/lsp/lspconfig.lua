@@ -3,6 +3,7 @@ package.loaded['lspconfig'] = nil
 local nvim_lsp = require('lspconfig')
 local global = require('core.global')
 local has_tscope, tscope = pcall(require, 'telescope')
+local wk = require('core.whichkey')
 
 local pack_add = function(packs)
   for _, pack in ipairs(packs) do
@@ -67,19 +68,19 @@ local enhance_attach = function(client, bufnr)
   else
     nnoremap { '<leader>ce', [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent=true }
   end
-  vim.which_leader['c'].e = 'list-diagnostics'
+  wk('<leader>ce', 'list-diagnostics')
 
   if caps.document_formatting then
     nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent=true }
-    vim.which_leader['c'].f = 'format'
+    wk('<leader>cf', 'format')
   elseif caps.document_range_formatting then
     nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent=true }
-    vim.which_leader['c'].f = 'format'
+    wk('<leader>cf', 'format')
   end
 
   if caps.rename then
     nnoremap { '<leader>cn', [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent=true }
-    vim.which_leader['c'].n = 'rename'
+    wk('<leader>cn', 'rename')
   end
 
   if caps.document_highlight then
