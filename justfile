@@ -34,6 +34,7 @@ check:
 # Install an output target of the nix flake
 @install target=default-target: (build target)
     printf "Installing target: {{green}}{{target}}{{reset}}\n"
+    [ {{nvim_home}} -ef "{{justfile_directory()}}/home/files/.config/nvim" ] && rm {{nvim_home}} || echo "did not"
     [ -f ./result/activate ] && ./result/activate
 
 # Update flake lockfile input or all
