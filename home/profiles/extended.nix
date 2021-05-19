@@ -32,6 +32,7 @@ in {
         cachix
         # A TUI file explorer
         xplr
+        lookatme
       ];
     };
 
