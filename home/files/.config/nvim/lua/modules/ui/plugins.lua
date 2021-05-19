@@ -19,9 +19,9 @@ ui['sainnhe/gruvbox-material'] = {
 -- Non treesitter supported themes
 ui['arzg/vim-colors-xcode'] = {}
 
-ui['mhinz/vim-startify'] = {
+ui['glepnir/dashboard-nvim'] = {
+  config = conf.dashboard,
   cond = 'not vim.g.started_by_firenvim',
-  config = conf.startify,
 }
 
 ui['glepnir/galaxyline.nvim'] = {
@@ -31,18 +31,6 @@ ui['glepnir/galaxyline.nvim'] = {
 ui['folke/which-key.nvim'] = {
   config = [[require('modules.ui.whichkey')]],
 }
--- ui['liuchengxu/vim-which-key'] = {
---   config = conf.whichkey,
---   cmd = {'WhichKey', 'WhichKeyVisual'},
---   keys = {
---     {'n', '<leader>'},
---     {'v', '<leader>'},
---     {'n', '<localleader>'},
---     {'v', '<localleader>'},
---     {'n', '['},
---     {'n', ']'},
---   }
--- }
 
 ui['Yggdroot/indentLine'] = {
   config = conf.indentline,

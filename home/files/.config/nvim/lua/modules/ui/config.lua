@@ -1,39 +1,25 @@
 local config = {}
 
-function config.startify()
-  local nnoremap = vim.keymap.nnoremap
-  local ascii = {
-    '',
-    '    ███████╗██████╗ ███████╗███╗   ██╗',
-    '    ██╔════╝██╔══██╗██╔════╝████╗  ██║',
-    '    █████╗  ██║  ██║█████╗  ██╔██╗ ██║',
-    '    ██╔══╝  ██║  ██║██╔══╝  ██║╚██╗██║',
-    '    ███████╗██████╔╝███████╗██║ ╚████║',
-    '    ╚══════╝╚═════╝ ╚══════╝╚═╝  ╚═══╝',
-    '',
+function config.dashboard()
+  local home = os.getenv('HOME')
+
+  vim.g.dashboard_custom_header = {
+    '███████╗██████╗ ███████╗███╗   ██╗',
+    '██╔════╝██╔══██╗██╔════╝████╗  ██║',
+    '█████╗  ██║  ██║█████╗  ██╔██╗ ██║',
+    '██╔══╝  ██║  ██║██╔══╝  ██║╚██╗██║',
+    '███████╗██████╔╝███████╗██║ ╚████║',
+    '╚══════╝╚═════╝ ╚══════╝╚═╝  ╚═══╝',
   }
-
-  vim.g.startify_custom_header = ascii
-  vim.g.startify_bookmarks = {
-    {n = '~/.local/nyx/flake.nix'},
-    {v = '~/.local/nyx/home/files/.config/nvim/init.lua'},
-    {g = '~/.local/nyx/home/files/.config/git/config'},
+  vim.g.dashboard_default_executive ='telescope'
+  vim.g.dashboard_custom_section = {
+      a = {description = {'  Recently Used Files'}, command = 'Telescope oldfiles'},
+      b = {description = {'  Find File          '}, command = 'Telescope find_files'},
+      c = {description = {'  Load Last Session  '}, command = 'SessionLoad'},
+      d = {description = {'  Find Word          '}, command = 'Telescope live_grep'},
+      e = {description = {'  File Browser       '}, command = 'Telescope file_browser'},
   }
-
-  vim.g.startify_skiplist = {
-    '^/tmp',
-    '/.git/',
-  }
-
-  nnoremap { '<leader>ts',':<c-u>Startify<cr>' }
-
-  vim.api.nvim_exec(
-    [[
-     autocmd! FileType startify
-     autocmd FileType startify set laststatus=0 showtabline=0 | autocmd BufLeave <buffer> set laststatus=2 showtabline=1
-     autocmd User Startified setlocal buflisted
-    ]],
-  false)
+  vim.g.dashboard_custom_footer = {'github.com/EdenEast'}
 end
 
 function config.whichkey()
