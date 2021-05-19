@@ -64,11 +64,3 @@ nvim:
         printf "Removed: {{yellow}}{{packer_compiled}}{{reset}}\n"
     }
 
-    # Installing new pluings updating new ones and cleaning up old ones
-    printf "Syncing Plugins with packer...\n"
-    nvim --headless +PackerInstallSync +qa
-    nvim --headless +PackerCleanSync +qa
-    nvim --headless +PackerUpdateSync +qa
-    nvim --headless +PackerCompile +qa
-    printf "{{green}}Complete\n"
-
