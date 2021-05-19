@@ -40,9 +40,4 @@ function config.rooter()
   vim.g.rooter_patterns = { '.git', '.git/', '.root', '.root/' }
 end
 
-function config.telescope()
-  require('modules.editor.telescope')
-end
-
-
 return config

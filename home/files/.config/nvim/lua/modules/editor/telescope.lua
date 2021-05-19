@@ -4,6 +4,8 @@ local sorters    = require('telescope.sorters')
 local themes     = require('telescope.themes')
 local nnoremap   = vim.keymap.nnoremap
 
+local trouble = require('trouble.providers.telescope')
+
 require('telescope').setup {
   defaults = {
     prompt_prefix = '❯ ',
@@ -47,6 +49,8 @@ require('telescope').setup {
       i = {
         ["<C-x>"] = false,
         ["<C-s>"] = actions.select_horizontal,
+
+        ["<c-t>"] = trouble.open_with_trouble,
 
         -- Experimental
         -- ["<tab>"] = actions.toggle_selection,
