@@ -1,4 +1,3 @@
-local wk = require('core.whichkey')
 local nnoremap = vim.keymap.nnoremap
 local xnoremap = vim.keymap.xnoremap
 local onoremap = vim.keymap.xnoremap

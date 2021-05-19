@@ -2,18 +2,6 @@ if not pcall(require, 'telescope') then
   return
 end
 
-local wk = require('core.whichkey')
-
-local load_plugins = function(names)
-  for _, name in ipairs(names) do
-    if not packer_plugins[name].loaded then
-      vim.cmd('packadd ' .. name)
-    end
-  end
-end
-
-load_plugins({'popup.nvim', 'plenary.nvim'})
-
 local actions    = require('telescope.actions')
 local previewers = require('telescope.previewers')
 local sorters    = require('telescope.sorters')
