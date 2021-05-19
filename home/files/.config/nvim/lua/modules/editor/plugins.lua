@@ -31,12 +31,17 @@ editor['airblade/vim-rooter'] = {
 }
 
 editor['nvim-telescope/telescope.nvim'] = {
-  config = conf.telescope,
+  config = [[require('modules.editor.telescope')]],
   requires = {
     {'nvim-lua/popup.nvim'},
     {'nvim-lua/plenary.nvim'},
     {'nvim-telescope/telescope-fzy-native.nvim'},
   }
+}
+
+editor['folke/trouble.nvim'] = {
+  config = [[require('modules.editor.trouble')]],
+  requires = "kyazdani42/nvim-web-devicons",
 }
 
 return editor
