@@ -20,7 +20,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf (cfg.publicKey != null) {
       home.file.".gnupg/public.key".source = cfg.publicKey;
-      home.activation.gpgtrust = hm.dag.entryAfter ["LinkGeneration"] (''
+      home.activation.gpgtrust = hm.dag.entryAfter ["linkGeneration"] (''
         gpg --import ~/.gnupg/public.key
       '');
     })
