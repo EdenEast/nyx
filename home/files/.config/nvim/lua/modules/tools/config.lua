@@ -1,4 +1,3 @@
-local wk = require('core.whichkey')
 local config = {}
 
 function config.mkpreview()

@@ -60,7 +60,7 @@ tools['f-person/git-blame.nvim'] = {
 tools['TimUntersberger/neogit'] = {
   config = conf.neogit,
   cmd = {'Neogit'},
-  requires = {'nvim-lua/plenary.nvim', opt=true},
+  requires = {'nvim-lua/plenary.nvim'},
   diable = true,
 }
 

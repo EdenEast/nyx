@@ -4,7 +4,6 @@ local nvim_lsp = require('lspconfig')
 local global = require('core.global')
 local path = require('core.path')
 local has_tscope, tscope = pcall(require, 'telescope')
-local wk = require('core.whichkey')
 
 local pack_add = function(packs)
   for _, pack in ipairs(packs) do
