@@ -29,7 +29,7 @@ ui['glepnir/galaxyline.nvim'] = {
 }
 
 ui['folke/which-key.nvim'] = {
-  config = conf.whichkey,
+  config = [[require('modules.ui.whichkey')]],
 }
 -- ui['liuchengxu/vim-which-key'] = {
 --   config = conf.whichkey,

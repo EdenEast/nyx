@@ -26,8 +26,6 @@ function config.startify()
   }
 
   nnoremap { '<leader>ts',':<c-u>Startify<cr>' }
-  -- vim.whichkey('<leader>ts', 'start-page')
-  vim.whichkey('<leader>ts', 'start-page')
 
   vim.api.nvim_exec(
     [[
@@ -61,35 +59,6 @@ function config.whichkey()
     ["9"] = 'which_key_ignore',
     }, {prefix = '<leader>'})
 end
-
--- function config.whichkey()
---   local nnoremap = vim.keymap.nnoremap
---   local vnoremap = vim.keymap.vnoremap
-
---   vim.opt.timeoutlen = 300
-
---   -- Hide status line on which key
---   vim.cmd([[
---       autocmd! FileType which_key
---       autocmd  FileType which_key set laststatus=0 noshowmode noruler
---       \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
---   ]])
-
---   -- Register which_keymaps defined on load
---   vim.fn['which_key#register']('<Space>', vim.which_leader)
---   vim.fn['which_key#register'](',', vim.which_localleader)
---   vim.fn['which_key#register']('[', vim.which_prev)
---   vim.fn['which_key#register'](']', vim.which_next)
-
---   nnoremap { '<leader>', [[:WhichKey '<Space>'<cr>]], silent = true }
---   vnoremap { '<leader>', [[:WhichKeyVisual '<Space>'<cr>]], silent = true }
-
---   nnoremap { '<localleader>', [[:WhichKey ','<cr>]], silent = true }
---   vnoremap { '<localleader>', [[:WhichKeyVisual ','<cr>]], silent = true }
-
---   nnoremap { '[', [[:WhichKey '['<cr>]], silent = true }
---   nnoremap { ']', [[:WhichKey ']'<cr>]], silent = true }
--- end
 
 function config.indentline()
  -- vim.g.indentLine_char = '│'  -- U+2502
@@ -133,9 +102,7 @@ function config.vista()
   vim.g.vista_sidebar_width = 40
 
   nnoremap { '<leader>tv',':<c-u>Vista!!<cr>' }
-  vim.whichkey('<leader>tv', 'vista')
   nnoremap { '<leader>fv', ':<c-u>Vista finder<cr>' }
-  vim.whichkey('<leader>fv', 'vista')
 
   -- Map / in vista buffer to search with fzf
   -- vim.cmd([[autocmd FileType vista,vista_kind nnoremap <buffer><silent> / :<c-u>call vista#finder#fzf#Run()<CR>]]
@@ -169,40 +136,18 @@ function config.gitsigns()
        ['x ih'] = ':<C-U>lua require"gitsigns".text_object()<CR>'
      },
   }
-
-  vim.whichkey('<leader>gh', {
-    name = '+hunk',
-    b = 'blame',
-    p = 'preview',
-    r = 'reset',
-    s = 'stage',
-    u = 'unstage',
-  })
-
-  vim.which_prev['g'] = 'git-hunk'
-  vim.which_next['g'] = 'git-hunk'
 end
 
 function config.bufferline()
   local nnoremap = vim.keymap.nnoremap
 
   nnoremap { ']b', ':BufferLineCycleNext<cr>', silent = true }
-  vim.which_next['b'] = 'buffer'
-
   nnoremap { '[b', ':BufferLineCyclePrev<cr>', silent = true }
-  vim.which_prev['b'] = 'buffer'
 
   nnoremap { '<leader>bl', ':BufferLineMoveNext<cr>', silent = true }
-  vim.whichkey('<leader>bl', 'next')
-
   nnoremap { '<leader>bh', ':BufferLineMovePrev<cr>', silent = true }
-  vim.whichkey('<leader>bh', 'prev')
-
   nnoremap { '<leader>be', ':BufferLineSortByExtension<CR><cr>', silent = true }
-  vim.whichkey('<leader>be', 'sort-extension')
-
   nnoremap { '<leader>bd', ':BufferLineSortByDirectory<cr>', silent = true }
-  vim.whichkey('<leader>bd', 'sort-directory')
 
   require('bufferline').setup{
     options = {
@@ -212,28 +157,6 @@ function config.bufferline()
       always_show_bufferline = false,
     }
   }
-
-  -- vim.whichkey('<leader>', {
-  --     ['1'] = 'which_key_ignore',
-  --     ['2'] = 'which_key_ignore',
-  --     ['3'] = 'which_key_ignore',
-  --     ['4'] = 'which_key_ignore',
-  --     ['5'] = 'which_key_ignore',
-  --     ['6'] = 'which_key_ignore',
-  --     ['7'] = 'which_key_ignore',
-  --     ['8'] = 'which_key_ignore',
-  --     ['9'] = 'which_key_ignore',
-  --   })
-
-  -- vim.whichkey('<leader>1', 'which_key_ignore')
-  -- vim.whichkey('<leader>2', 'which_key_ignore')
-  -- vim.whichkey('<leader>3', 'which_key_ignore')
-  -- vim.whichkey('<leader>4', 'which_key_ignore')
-  -- vim.whichkey('<leader>5', 'which_key_ignore')
-  -- vim.whichkey('<leader>6', 'which_key_ignore')
-  -- vim.whichkey('<leader>7', 'which_key_ignore')
-  -- vim.whichkey('<leader>8', 'which_key_ignore')
-  -- vim.whichkey('<leader>9', 'which_key_ignore')
 end
 
 function config.nvim_tree()
@@ -273,7 +196,6 @@ function config.nvim_tree()
   }
 
   vim.keymap.nnoremap { '<leader>te', '<cmd>NvimTreeToggle<cr>', silent=true }
-  vim.whichkey('<leader>te', 'file-explorer')
 end
 
 function config.neoscroll()

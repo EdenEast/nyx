@@ -23,19 +23,15 @@ function config.fugitive()
 
   -- Stage current file
   nnoremap { '<leader>ga', ':Git add %:p<cr>' }
-  vim.whichkey('<leader>ga', 'add-file')
 
   -- Diff current file
   nnoremap { '<leader>gd', ':Gdiffsplit<cr>' }
-  vim.whichkey('<leader>gd', 'diff-this')
 
   -- Create a git commit from staged changes
   nnoremap { '<leader>gc', ':Git commit<cr>' }
-  vim.whichkey('<leader>gc', 'create-commit')
 
   -- Blame each line in file
   nnoremap { '<leader>gb', ':Git blame<cr>' }
-  vim.whichkey('<leader>gb', 'blame')
 end
 
 function config.messenger()
@@ -44,7 +40,6 @@ function config.messenger()
 
   -- Show commit message for current line
   vim.keymap.nnoremap { '<leader>gm', '<Plug>(git-messenger)' }
-  vim.whichkey('<leader>gm', 'commit-under-cursor')
 end
 
 function config.committia()
@@ -58,7 +53,6 @@ function config.gitblame()
   vim.g.gitblame_enabled = 0
 
   vim.keymap.nnoremap { '<leader>tg', ':GitBlameToggle<cr>', silent = true }
-  vim.whichkey('<leader>tg', 'git-blame-line')
 end
 
 function config.neogit()
