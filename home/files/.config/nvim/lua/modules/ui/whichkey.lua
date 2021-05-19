@@ -63,7 +63,6 @@ wk.register({
       g = 'git-blame-line',
       h = 'search-highlight',
       n = 'line-number',
-      s = 'start-page',
       v = 'vista',
     },
     x = {
