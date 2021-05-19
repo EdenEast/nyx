@@ -57,6 +57,7 @@
       packages."${system}" = {
         cargo-whatfeatures = pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
         cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
+        lookatme = pkgs.callPackage ./nix/pkgs/lookatme { };
         repo = pkgs.callPackage ./nix/pkgs/repo { };
         xplr = pkgs.callPackage ./nix/pkgs/xplr { };
       };
