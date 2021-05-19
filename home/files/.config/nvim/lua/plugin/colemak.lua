@@ -62,7 +62,6 @@ local setup = function()
   vim.cmd [[command! ColemakDisable lua require('plugin.colemak').disable()]]
 
   nnoremap { '<leader>tc', ':ColemakToggle<cr>' }
-  vim.whichkey('<leader>tc', 'colemak')
 
   vim.g.colemak_mode_initialized = true
 end

@@ -1,5 +1,3 @@
-local has, wk = pcall(require, 'which-key')
-
 P = function(a)
   print(vim.inspect(a))
 end
@@ -51,48 +49,6 @@ local leader_map = function()
   vim.api.nvim_set_keymap('x', ' ', '', {noremap = true})
   vim.api.nvim_set_keymap('n', ',', '', {noremap = true})
   vim.api.nvim_set_keymap('x', ',', '', {noremap = true})
-
-  vim.whichkey = function(keys, value)
-    if has then wk.register({[keys] = value}) end
-  end
-
-  -- Defining the maps for whichkey to use when it is loaded here
-  -- so that it can be populated.
-  vim.which_leader = {
-    b = { name = '+buffer' },
-    c = { name = '+code' },
-    f = { name = '+find' },
-    g = { name = '+git' },
-    t = { name = '+toggle' },
-  }
-  vim.which_localleader = {}
-  vim.which_prev = {
-    name = '+previous'
-  }
-  vim.which_next = {
-    name = '+next'
-  }
-end
-
--- There is currently an issue with this solution as you cannot call `vim.fn` functions
--- inside `vim.loop` functions.
--- Issue: https://github.com/neovim/nvim-lspconfig/issues/899
-local windows_spawn_hotfix = function()
-  if not global.is_windows then
-    return
-  end
-
-  -- Note: Currently there is an issue with luv on windows where it does not
-  -- execute `.cmd` executables. This work around is taken from
-  -- `neovim/nvim-lspconfig` https://github.com/neovim/nvim-lspconfig#windows
-  vim.loop.spawn = (function ()
-    local spawn = vim.loop.spawn
-    return function(p, options, on_exit)
-
-      local full_path = vim.fn.exepath(p)
-        return spawn(full_path, options, on_exit)
-    end
-  end)()
 end
 
 local load_core = function()

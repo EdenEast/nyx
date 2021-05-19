@@ -1,7 +1,3 @@
-if not pcall(require, 'telescope') then
-  return
-end
-
 local actions    = require('telescope.actions')
 local previewers = require('telescope.previewers')
 local sorters    = require('telescope.sorters')
@@ -80,43 +76,17 @@ require('telescope').setup {
 require('telescope').load_extension('fzy_native')
 
 nnoremap { '<leader>ff', [[<cmd>Telescope find_files<cr>]], silent=true }
-vim.whichkey('<leader>ff', 'files')
-
 nnoremap { '<leader>fd', [[<cmd>Telescope git_files<cr>]], silent=true }
-vim.whichkey('<leader>fd', 'git-files')
-
 nnoremap { '<leader>fr', [[<cmd>Telescope live_grep<cr>]], silent=true }
-vim.whichkey('<leader>fr', 'grep')
-
 nnoremap { '<leader>fs', [[<cmd>Telescope lsp_workspace_symbols<cr>]], silent=true }
-vim.whichkey('<leader>fs', 'symbols')
-
 nnoremap { '<leader>fb', [[<cmd>Telescope buffers<cr>]], silent=true }
-vim.whichkey('<leader>fb', 'buffers')
-
 nnoremap { '<leader>fB', [[<cmd>Telescope builtin<cr>]], silent=true }
-vim.whichkey('<leader>fB', 'builtins')
-
 nnoremap { '<leader>fh', [[<cmd>Telescope help_tags<cr>]], silent=true }
-vim.whichkey('<leader>fh', 'help')
-
 nnoremap { '<leader>fe', [[<cmd>Telescope file_browser<cr>]], silent=true }
-vim.whichkey('<leader>fe', 'file-explorer')
-
 nnoremap { '<leader>fq', [[<cmd>Telescope quickfix<cr>]], silent=true }
-vim.whichkey('<leader>fq', 'quickfix')
-
 nnoremap { '<leader>fQ', [[<cmd>Telescope loclist<cr>]], silent=true }
-vim.whichkey('<leader>fQ', 'locallist')
 
 nnoremap { '<leader>fgb', [[<cmd>Telescope git_branches<cr>]], silent=true }
 nnoremap { '<leader>fgc', [[<cmd>Telescope git_commits<cr>]], silent=true }
 nnoremap { '<leader>fgl', [[<cmd>Telescope git_bcommits<cr>]], silent=true }
 nnoremap { '<leader>fgs', [[<cmd>Telescope git_status<cr>]], silent=true }
--- vim.whichkey('<leader>fg', {
---   name = '+git',
---   b = 'branches',
---   c = 'commits',
---   l = 'local-commits',
---   s = 'status',
--- })

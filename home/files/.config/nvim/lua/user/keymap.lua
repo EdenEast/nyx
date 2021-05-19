@@ -23,7 +23,6 @@ nnoremap { 'N', 'Nzz' }
 
 -- Switch between the last two buffers
 nnoremap { '<leader><leader>', '<c-^>' }
-vim.whichkey('<leader><space>', 'prev-buffer')
 
 -- Keep selection when indent/outdent
 xnoremap { '>', '>gv' }
@@ -36,12 +35,10 @@ xnoremap { '*', '"xy/<c-r><cr>' }
 nnoremap { '<leader>th', function() vim.opt.hlsearch = not vim.o.hlsearch end }
 
 nnoremap { '<leader>w', [[:<c-u>w<cr>]] }
-vim.whichkey('<leader>w', 'write-file')
 nnoremap { '<leader>q', [[:<c-u>q<cr>]] }
-vim.whichkey('<leader>q', 'quit-file')
+nnoremap { '<leader>!', [[:<c-u>q!<cr>]] }
 
 nnoremap { '<leader>tn', function() require('core.util').toggle_numbers() end }
-vim.whichkey('<leader>n', 'line-number')
 
 -- Jump list -------------------------------------------------------------------
 -- Because currently in alacritty we cannot tell the difference between <tab>
@@ -52,9 +49,7 @@ nnoremap { '<m-i>', '<c-i>' }
 nnoremap { '<m-o>', '<c-o>' }
 
 nnoremap { '[t',':tabprevious<cr>' }
-vim.which_prev['t'] = 'tab'
 nnoremap { ']t',':tabnext<cr>' }
-vim.which_next['t'] = 'tab'
 
 -- Move around splits without having to press <C-w> before each movement"
 nnoremap { '<c-h>', '<c-w>h' }

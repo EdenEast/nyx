@@ -108,13 +108,9 @@ omap af <Plug>(coc-funcobj-a)
 
 " Navigation --------------------------------------------------------------------------------------
 nmap <silent> ]a :<c-u>CocNext<cr>
-lua vim.which_next['a'] = 'action'
 nmap <silent> [a :<c-u>CocPrev<cr>
-lua vim.which_prev['a'] = 'action'
 nmap <silent> ]e <Plug>(coc-diagnostic-next)
-lua vim.which_next['e'] = 'diagnostic'
 nmap <silent> [e <Plug>(coc-diagnostic-prev)
-lua vim.which_prev['e'] = 'diagnostic'
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
