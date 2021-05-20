@@ -30,7 +30,7 @@ set drawbox
 set tabstop 4
 
 # Format string of the prompt shown in the top line. Color format is:  \033[38;5;Xm  where X is in {0..255}.
-set promptfmt "\033[1;38;5;51m[\033[38;5;39m%u\033[38;5;51m@\033[38;5;39m%h\033[38;5;51m] \033[0;38;5;49m%w\033[38;5;48m%f\033[0m"
+set promptfmt "\033[1;38;5;51m[\033[38;5;39m%u\033[38;5;51m@\033[38;5;39m%h\033[38;5;51m] \033[0;38;5;49m%w/\033[38;5;48m%f\033[0m"
 
 # Format string of the file modification time shown in the bottom line.
 set timefmt '[2006-01-02 Mon] [15:04:05]'
