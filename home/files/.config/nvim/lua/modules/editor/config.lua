@@ -40,4 +40,10 @@ function config.rooter()
   vim.g.rooter_patterns = { '.git', '.git/', '.root', '.root/' }
 end
 
+function config.spectre()
+  vim.cmd('command! Spectre lua require("spectre").open()')
+
+  require('spectre').setup()
+end
+
 return config

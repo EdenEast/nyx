@@ -30,6 +30,15 @@ editor['airblade/vim-rooter'] = {
   config = conf.rooter,
 }
 
+editor['windwp/nvim-spectre'] = {
+  config = conf.spectre,
+  cmd = {'Spectre'},
+  requires = {
+    {'nvim-lua/popup.nvim'},
+    {'nvim-lua/plenary.nvim'}
+  }
+}
+
 editor['nvim-telescope/telescope.nvim'] = {
   config = [[require('modules.editor.telescope')]],
   requires = {
