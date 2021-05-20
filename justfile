@@ -38,10 +38,9 @@ check:
     [ -f ./result/activate ] && ./result/activate
 
 # Update flake lockfile input or all
-update input=input-all:
+update:
     #!/usr/bin/env bash
-    [[ {{input}} == "all" ]] && input="--recreate-lock-file" || input="--update-input {{input}}"
-    nix flake update $input {{expflags}}
+    nix flake update {{expflags}}
 
 # Execute formatter on all .nix files
 @fmt:
