@@ -1,1 +1,0 @@
-call eden#theme#init()
