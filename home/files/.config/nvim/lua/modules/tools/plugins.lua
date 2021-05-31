@@ -10,21 +10,6 @@ tools['iamcco/markdown-preview.nvim'] = {
   config = conf.mkpreview,
 }
 
-tools['skanehira/preview-markdown.vim'] = {
-  ft = {'markdown', 'vimwiki'},
-  cmd = {'PreviewMarkdown'},
-  config = conf.preview_mkdown,
-}
-
--- Preview markdown directly in neovim
--- NOTE: Trying
-tools['npxbr/glow.nvim'] = {
-  -- run = function() vim.cmd([[:GlowInstall]]) end,
-  ft = {'markdown', 'vimwiki'},
-  cmd = {'Glow'},
-  config = conf.glow,
-}
-
 tools['gyim/vim-boxdraw'] = { }
 
 -- Git integrations -------------------------------------------------------------------------------

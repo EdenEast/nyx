@@ -7,17 +7,6 @@ function config.mkpreview()
   vim.keymap.nnoremap { '<leader>tp', ':MarkdownPreviewToggle<cr>' }
 end
 
-function config.preview_mkdown()
-  vim.g.preview_markdown_parser = 'glow'
-  vim.g.preview_markdown_vertical = 1
-  vim.g.preview_markdown_auto_update = 1
-
-  vim.keymap.noremap { '<leader>tm', ':PreviewMarkdown<cr>' }
-end
-
-function config.glow()
-end
-
 function config.fugitive()
   local nnoremap = vim.keymap.nnoremap
 
