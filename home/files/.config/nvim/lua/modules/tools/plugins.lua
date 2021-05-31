@@ -10,6 +10,14 @@ tools['iamcco/markdown-preview.nvim'] = {
   config = conf.mkpreview,
 }
 
+tools['ThePrimeagen/harpoon'] = {
+  config = conf.harpoon,
+  requires = {
+    {'nvim-lua/popup.nvim'},
+    {'nvim-lua/plenary.nvim'}
+  }
+}
+
 tools['gyim/vim-boxdraw'] = { }
 
 -- Git integrations -------------------------------------------------------------------------------
