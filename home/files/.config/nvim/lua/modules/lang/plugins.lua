@@ -7,6 +7,11 @@ lang['nvim-treesitter/nvim-treesitter'] = {
   config = conf.nvim_treesitter,
 }
 
+lang['nvim-treesitter/playground'] = {
+  config = conf.playground,
+  cmd = {'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor'},
+}
+
 lang['sheerun/vim-polyglot'] = {
   config = conf.polyglot,
 }

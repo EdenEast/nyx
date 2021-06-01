@@ -9,20 +9,28 @@ function config.nvim_treesitter()
   -- NOTE: Had issues with clang and nix installed build-essentials and gcc and it works
   require 'nvim-treesitter.install'.compilers = { 'gcc', 'clang', 'cl' }
   require 'nvim-treesitter.configs'.setup {
-     highlight = {
-       enable = true,
-     },
-     textobjects = {
-       select = {
-         enable = true,
-         -- keymaps = {
-         --   ["af"] = "@function.outer",
-         --   ["if"] = "@function.inner",
-         --   ["ac"] = "@class.outer",
-         --   ["ic"] = "@class.inner",
-         -- },
-       },
-     },
+    highlight = {
+      enable = true,
+    },
+    playground = {
+      enable = true,
+    },
+    query_linter = {
+      enable = true,
+      use_virtual_text = true,
+      lint_events = {"BufWrite", "CursorHold"},
+    },
+    textobjects = {
+      select = {
+        enable = true,
+        -- keymaps = {
+        --   ["af"] = "@function.outer",
+        --   ["if"] = "@function.inner",
+        --   ["ac"] = "@class.outer",
+        --   ["ic"] = "@class.inner",
+        -- },
+      },
+    },
     ensure_installed = {
       'bash',
       'c',
@@ -34,11 +42,12 @@ function config.nvim_treesitter()
       'lua',
       'nix',
       'python',
+      'query',
       'regex',
       'rust',
       'toml',
       'typescript',
-    }
+    },
   }
 end
 
