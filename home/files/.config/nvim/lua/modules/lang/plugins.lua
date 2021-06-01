@@ -5,6 +5,9 @@ lang['nvim-treesitter/nvim-treesitter'] = {
   event = 'BufRead',
   run = ':TSUpdate',
   config = conf.nvim_treesitter,
+  requires = {
+    {'romgrk/nvim-treesitter-context', opt=true},
+  },
 }
 
 lang['nvim-treesitter/playground'] = {

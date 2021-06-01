@@ -1,8 +1,10 @@
 local config = {}
 
 function config.nvim_treesitter()
- vim.api.nvim_command('set foldmethod=expr')
- vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
+  vim.cmd [[packadd nvim-treesitter-context]]
+
+  vim.api.nvim_command('set foldmethod=expr')
+  vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
 
   -- Setting clang as the compiler to use as pre this solution
   -- https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support#troubleshooting
@@ -49,6 +51,8 @@ function config.nvim_treesitter()
       'typescript',
     },
   }
+
+  require'treesitter-context.config'.setup()
 end
 
 function config.polyglot()
