@@ -32,6 +32,8 @@ util.exec_file = function()
 
   if ft == 'lua' then
     vim.cmd('luafile %')
+  elseif ft == 'python' then
+    vim.cmd('!python %')
   elseif ft == 'vim' then
     vim.cmd('source %')
   end
