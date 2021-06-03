@@ -10,7 +10,6 @@ alias j=just
 alias m=make
 alias t=tmux
 alias v=vim
-alias y=yadm
 
 alias cb='cargo b'
 alias cc='cargo c'
@@ -31,13 +30,10 @@ alias egrep='egrep --color=auto'
 alias grep='grep --color=auto'
 alias pgrep='pgrep -l'
 
-# git and yadm shortcuts
+# git shortcuts
 alias ga="git add"
 alias gc="git commit --verbose"
 alias gs="git status -s"
-alias ya="yadm add"
-alias yc="yadm commit --verbose"
-alias ys="yadm status -s"
 
 # tmux shortcuts
 alias tn="tmux -u new"
