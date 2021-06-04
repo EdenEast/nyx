@@ -1,5 +1,5 @@
 local keymap = vim.keymap;
-local nnoremap, xnoremap = keymap.nnoremap, keymap.xnoremap
+local nnoremap, xnoremap, tnoremap = keymap.nnoremap, keymap.xnoremap, keymap.tnoremap
 
 -- 'j' and 'k' moves up and down visible lines in editor not actual lines
 -- This is noticable when text wraps to next line
@@ -62,3 +62,10 @@ nnoremap { '<F1>', ":lua require('core.util').exec_file()<cr>" }
 nnoremap { '<F2>', ":lua require('core.util').open_url_under_cursor()<cr>" }
 nnoremap { '<F3>', ":lua require('core.pack').reload_plugins()<cr>" }
 
+-- Terminal
+tnoremap { '<esc>', [[<c-\><c-n>]] }
+tnoremap { '<c-q>', [[<c-\><c-n>:bdelete!<cr>]] }
+tnoremap { '<c-h>', [[<c-\><c-n><c-w>h]] }
+tnoremap { '<c-j>', [[<c-\><c-n><c-w>j]] }
+tnoremap { '<c-k>', [[<c-\><c-n><c-w>k]] }
+tnoremap { '<c-l>', [[<c-\><c-n><c-w>l]] }
