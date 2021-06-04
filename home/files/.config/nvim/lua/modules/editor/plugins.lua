@@ -53,4 +53,8 @@ editor['folke/trouble.nvim'] = {
   requires = "kyazdani42/nvim-web-devicons",
 }
 
+editor['akinsho/nvim-toggleterm.lua'] = {
+  config = conf.toggleterm,
+}
+
 return editor
