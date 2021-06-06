@@ -18,7 +18,13 @@
   };
 
 
-  outputs = { self, ... }@inputs: {
+  outputs = { self, ... }@inputs:
+  let
+    lib = inputs.nixpkgs.lib.extend
+        (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
+  in {
+    lib = lib.my;
+
     packages.x86_64-linux.hello = inputs.nixpkgs.legacyPackages.x86_64-linux.hello;
     defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
   };
