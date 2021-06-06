@@ -40,7 +40,7 @@ function HandleSymlink([string]$path, [string]$target) {
 }
 
 # Get the root directory of nyx
-$NyxRootDir = (get-item $PSScriptRoot).parent.parent.FullName
+$NyxRootDir = (get-item $PSScriptRoot).parent.parent.parent.FullName
 
 $ConfigHome = Join-Path -Path $HOME -ChildPath .config
 $LocalHome = Join-Path -Path $HOME -ChildPath .local
