@@ -1,0 +1,97 @@
+;; vim: ft=clojure sw=2 sts=2 ts=2 et:
+#| ------------------------------------------------------------------
+(deflayer name
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _                    _
+  _    _    _              _              _    _    _    _               _    _    _
+)
+-------------------------------------------------------------------- |#
+
+(defcfg
+  ;; For windows
+  input  (low-level-hook)
+  output (send-event-sink)
+
+  ;; This option tells KMonad to let non-configured keys act normal
+  fallthrough true
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \     del  end  pgdn
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft                 up
+  lctl lmet lalt           spc            ralt rmet cmp  rctl            left down rght
+)
+
+(defalias
+  qty (tap-hold-next-release 500 f2 (layer-switch base))
+  qhr (tap-hold-next-release 500 f3 (layer-switch qwerty-hr))
+  cdh (tap-hold-next-release 500 f4 (layer-switch colemak-dh))
+
+  ext (tap-hold-next-release 200 esc (layer-toggle extend))
+)
+
+(deflayer base
+  _    _    @qty @qhr @cdh _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  @ext _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _                    _
+  _    _    _              _              _    _    _    _               _    _    _
+)
+
+(defalias
+  mea (tap-hold-next-release 250 a lmet)
+  als (tap-hold-next-release 220 s lalt)
+  sfd (tap-hold-next-release 220 d lsft)
+  ctf (tap-hold-next-release 220 f lctl)
+
+  ctj (tap-hold-next-release 220 j lctl)
+  sfk (tap-hold-next-release 220 k lsft)
+  all (tap-hold-next-release 220 l lalt)
+  me; (tap-hold-next-release 250 ; lmet)
+)
+
+(deflayer qwerty-hr
+  _    _    @qty @qhr @cdh _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  @ext @mea @als @sfd @ctf _    _    @ctj @sfk @all @me; _    _
+  _    _    _    _    _    _    _    _    _    _    _    _                    _
+  _    _    _              _              _    _    _    _               _    _    _
+)
+
+(defalias
+  alr (tap-hold-next-release 250 r lalt)
+  sfs (tap-hold-next-release 220 s lsft)
+  ctt (tap-hold-next-release 220 t lctl)
+
+  ctn (tap-hold-next-release 220 n lctl)
+  sfe (tap-hold-next-release 220 e lsft)
+  ali (tap-hold-next-release 220 i lalt)
+  meo (tap-hold-next-release 250 o lmet)
+)
+
+(deflayer colemak-dh
+  _    _    @qty @qhr @cdh _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  _    q    w    f    p    b    j    l    u    y    ;    _    _    _     _    _    _
+  @ext @mea @alr @sfs @ctt g    m    @ctn @sfe @ali @meo _    _
+  _    z    x    c    d    v    k    h    _    _    _    _                    _
+  _    _    _              _              _    _    _    _               _    _    _
+)
+
+(deflayer extend
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _
+  XX   _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _                    _
+  _    _    _              _              _    _    _    _               _    _    _
+)
+

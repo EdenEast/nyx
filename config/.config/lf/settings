@@ -1,0 +1,43 @@
+# Behaviour -------------------------------------------------------------------
+
+# Preview program path
+set previewer ~/.config/lf/scripts/preview
+set cleaner ~/.config/lf/scripts/clear
+# set previewer ~/.local/share/lf/preview
+
+# Show hidden files and folders by default
+set hidden true
+
+# Jump to the first match after each keystroke during search
+set incsearch
+
+# Ignore case when searching
+set ignorecase
+
+# Appearance ------------------------------------------------------------------
+
+# Show nerdfont icons before eash item in the list
+#
+# Note: Currently on wsl this does not look great not sure if that is just the
+#   font being used on my desktop with alacritty. Even though the font should be
+#   hack nerdfont
+# set icons
+
+# Draw boxes around panes with nox drawing characters
+set drawbox
+
+# Number of space characters to show for tab character
+set tabstop 4
+
+# Format string of the prompt shown in the top line. Color format is:  \033[38;5;Xm  where X is in {0..255}.
+set promptfmt "\033[1;38;5;51m[\033[38;5;39m%u\033[38;5;51m@\033[38;5;39m%h\033[38;5;51m] \033[0;38;5;49m%w/\033[38;5;48m%f\033[0m"
+
+# Format string of the file modification time shown in the bottom line.
+set timefmt '[2006-01-02 Mon] [15:04:05]'
+
+# Truncate character shown at the end when the file name does not fit to the pane.
+set truncatechar ⋯
+
+set ifs "\n"
+
+# vim: filetype=conf

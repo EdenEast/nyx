@@ -1,0 +1,4 @@
+--style="base16"
+--map-syntax='*.conf:INI'
+--style="changes,snip"
+
