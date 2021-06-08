@@ -1,6 +1,6 @@
 { ... }:
 
 {
-  imports = [ ./app ./dev ./service ./shell ];
+  imports = [ ./app ./dev ./shell ];
 }
 
