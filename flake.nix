@@ -21,7 +21,7 @@
   outputs = { self, ... }@inputs:
   with inputs.nixpkgs.lib;
   let
-    inherit (lib.my) mkHomeConfig mkHostConfig;
+    inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig;
 
     lib = inputs.nixpkgs.lib.extend
         (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
@@ -31,6 +31,7 @@
     internal = {
       hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
         eden = { system = "x86_64-linux"; config = ./home/hosts/eden.nix; };
+        wsl  = { system = "x86_64-linux"; config = ./home/hosts/wsl.nix; };
       };
     };
 
@@ -42,6 +43,11 @@
       eden = { system = "x86_64-linux"; };
     };
 
+    nixosConfigurations = mapAttrs' mkSystemConfig {
+      wsl = { system = "x86_64-linux"; config = ./nixos/hosts/wsl; };
+    };
+
     eden = self.homeManagerConfigurations.eden.activationPackage;
+    wsl = self.nixosConfigurations.wsl.config.system.build.toplevel;
   };
 }

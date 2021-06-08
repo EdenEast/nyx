@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.nyx.profiles.common;
 in {
-  options.nyx.profiles.common = { enable = mkEnableOption "common profilej"; };
+  options.nyx.profiles.common = { enable = mkEnableOption "common profile"; };
 
   config = mkIf cfg.enable {
     home = {

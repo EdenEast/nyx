@@ -10,7 +10,7 @@
       };
 
 
-      pkgs = lib.my.mkPkgs inputs.nixpkgs system;
+      pkgs = lib.my.mkPkgs system;
       homeDirectory = "/home/eden";
       username = "eden";
     });
