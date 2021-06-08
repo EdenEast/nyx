@@ -19,13 +19,25 @@
 
 
   outputs = { self, ... }@inputs:
+  with inputs.nixpkgs.lib;
   let
+    inherit (lib.my) mkHomeConfig mkHostConfig;
+
     lib = inputs.nixpkgs.lib.extend
         (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
   in {
     lib = lib.my;
 
-    packages.x86_64-linux.hello = inputs.nixpkgs.legacyPackages.x86_64-linux.hello;
-    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
+    internal = {
+      hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
+        eden = { system = "x86_64-linux"; config = ./home/hosts/eden.nix; };
+      };
+    };
+
+    homeManagerConfigurations = mapAttrs' mkHomeConfig {
+      eden = { system = "x86_64-linux"; };
+    };
+
+    eden = self.homeManagerConfigurations.eden.activationPackage;
   };
 }
