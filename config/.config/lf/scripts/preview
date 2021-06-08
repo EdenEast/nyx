@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Ueberzug image viewer script
+IMAGE=$HOME/.config/lf/scripts/draw
+
+# Clear the last preview (if any)
+. ~/.config/lf/scripts/clear
+
+# Calculate where the image should be placed on the screen.
+X=$(printf "%0.f\n" "`echo "$(tput cols) / 2 + 1" | bc`")
+Y=2
+MAX_WIDTH=$(printf "%0.f\n" "`echo "$(tput cols) - $X - 1" | bc`")
+MAX_HEIGHT=$(printf "%0.f\n" "`echo "$(tput lines) - 4" | bc`")
+
+# File info
+FILE=$(readlink -f "$1")
+DIR=$(dirname "$FILE")
+THUMB_DIR="/tmp/.thumbs"
+
+case "$1" in
+    *.tgz|*.tar.gz) tar tzf "$1";;
+    *.tar.bz2|*.tbz2) tar tjf "$1";;
+    *.tar.txz|*.txz) xz --list "$1";;
+    *.tar) tar tf "$1";;
+    *.zip|*.jar|*.war|*.ear|*.oxt) unzip -l "$1";;
+    *.rar) unrar l "$1";;
+    *.7z) 7z l "$1";;
+    *.o) nm "$1" | less ;;
+    *.torrent) transmission-show "$1";;
+    *.pdf)
+        [ ! -d "${THUMB_DIR}$DIR" ] && mkdir -p "${THUMB_DIR}$DIR"
+        [ ! -f "${THUMB_DIR}$FILE.jpg" ] &&
+            pdftoppm -jpeg -singlefile "$FILE" "${THUMB_DIR}$FILE"
+        FILE="${THUMB_DIR}$FILE.jpg"
+        "$IMAGE" "$FILE" $X "$Y" "$MAX_WIDTH" "$MAX_HEIGHT"
+        ;;
+    *.xcf)
+        [ ! -d "${THUMB_DIR}$DIR" ] && mkdir -p "${THUMB_DIR}$DIR"
+        [ ! -f "${THUMB_DIR}$FILE.png" ] &&
+            convert -flatten "$FILE" "${THUMB_DIR}$FILE.png"
+        FILE="${THUMB_DIR}$FILE.png"
+        "$IMAGE" "$FILE" "$X" "$Y" "$MAX_WIDTH" "$MAX_HEIGHT"
+        ;;
+    *.bmp|*.jpg|*.jpeg|*.png|*.xpm)
+        "$IMAGE" "$1" "$X" "$Y" "$MAX_WIDTH" "$MAX_HEIGHT"
+        ;;
+    *.mp4|*.mkv)
+        [ ! -d "${THUMB_DIR}$DIR" ] && mkdir -p "${THUMB_DIR}$DIR"
+        [ ! -f "${THUMB_DIR}$FILE.png" ] &&
+            ffmpegthumbnailer -i "$FILE" -o "${THUMB_DIR}$FILE.png" -s 0 -q 10
+        FILE="${THUMB_DIR}$FILE.png"
+        "$IMAGE" "$FILE" "$X" "$Y" "$MAX_WIDTH" "$MAX_HEIGHT"
+        ;;
+    *) bat --color=always "$1" || cat "$1";;
+esac
+exit 1

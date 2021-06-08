@@ -1,0 +1,5 @@
+# show local files only; no network (TUI-mode only)
+local: true
+
+# word wrap at width
+# width: 80

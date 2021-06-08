@@ -1,0 +1,2 @@
+#!/bin/sh
+declare -p -A cmd=([action]=remove [identifier]="preview") > "$FIFO_UEBERZUG"

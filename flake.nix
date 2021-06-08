@@ -34,6 +34,10 @@
       };
     };
 
+    overlays = [
+      inputs.neovim-nightly.overlay
+    ];
+
     homeManagerConfigurations = mapAttrs' mkHomeConfig {
       eden = { system = "x86_64-linux"; };
     };

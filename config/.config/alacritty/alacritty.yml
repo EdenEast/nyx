@@ -1,0 +1,25 @@
+#
+#   █████╗ ██╗      █████╗  ██████╗██████╗ ██╗████████╗████████╗██╗   ██╗
+#  ██╔══██╗██║     ██╔══██╗██╔════╝██╔══██╗██║╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝
+#  ███████║██║     ███████║██║     ██████╔╝██║   ██║      ██║    ╚████╔╝
+#  ██╔══██║██║     ██╔══██║██║     ██╔══██╗██║   ██║      ██║     ╚██╔╝
+#  ██║  ██║███████╗██║  ██║╚██████╗██║  ██║██║   ██║      ██║      ██║
+#  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝      ╚═╝
+#
+
+live_config_reload: true
+
+import:
+  - ~/.config/alacritty/func/debug.yml
+  - ~/.config/alacritty/func/env.yml
+  - ~/.config/alacritty/func/scrolling.yml
+  - ~/.config/alacritty/func/selection.yml
+  - ~/.config/alacritty/func/shell.yml
+  - ~/.config/alacritty/inputs/keybinding.yml
+  - ~/.config/alacritty/inputs/mouse.yml
+  - ~/.config/alacritty/visual/colors.yml
+  - ~/.config/alacritty/visual/cursor.yml
+  - ~/.config/alacritty/visual/font.yml
+  - ~/.config/alacritty/visual/window.yml
+  - ~/.local/share/alacritty/config.yml
+
