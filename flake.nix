@@ -50,7 +50,16 @@
       wsl = { inherit system; config = ./nixos/hosts/wsl; };
     };
 
-    eden = self.homeManagerConfigurations.eden.activationPackage;
-    wsl = self.nixosConfigurations.wsl.config.system.build.toplevel;
+
+    top = let
+      nixtop = genAttrs
+          (builtins.attrNames inputs.self.nixosConfigurations)
+          (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
+
+      hometop = genAttrs
+          (builtins.attrNames inputs.self.homeManagerConfigurations)
+          (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+    in
+    nixtop // hometop;
   };
 }
