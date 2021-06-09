@@ -13,5 +13,6 @@
       pkgs = lib.my.mkPkgs system;
       homeDirectory = "/home/eden";
       username = "eden";
+      extraSpecialArgs = { inherit name inputs; };
     });
 }

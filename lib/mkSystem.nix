@@ -29,6 +29,7 @@
       (import ../nixos/profiles)
       (import config)
     ];
+
     specialArgs = { inherit name inputs; };
   });
 }
