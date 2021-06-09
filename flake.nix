@@ -23,28 +23,31 @@
   let
     inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig;
 
+    system = "x86_64-linux";
+
     lib = inputs.nixpkgs.lib.extend
         (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
   in {
     lib = lib.my;
 
     internal = {
+      overlays = [
+        # (self.overlay)
+        (inputs.neovim-nightly.overlay)
+      ];
+
       hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
-        eden = { system = "x86_64-linux"; config = ./home/hosts/eden.nix; };
-        wsl  = { system = "x86_64-linux"; config = ./home/hosts/wsl.nix; };
+        eden = { inherit system; config = ./home/hosts/eden.nix; };
+        wsl  = { inherit system; config = ./home/hosts/wsl.nix; };
       };
     };
 
-    overlays = [
-      inputs.neovim-nightly.overlay
-    ];
-
     homeManagerConfigurations = mapAttrs' mkHomeConfig {
-      eden = { system = "x86_64-linux"; };
+      eden = { inherit system; };
     };
 
     nixosConfigurations = mapAttrs' mkSystemConfig {
-      wsl = { system = "x86_64-linux"; config = ./nixos/hosts/wsl; };
+      wsl = { inherit system; config = ./nixos/hosts/wsl; };
     };
 
     eden = self.homeManagerConfigurations.eden.activationPackage;
