@@ -21,9 +21,10 @@
   outputs = { self, ... }@inputs:
   with inputs.nixpkgs.lib;
   let
-    inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig;
+    inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig mapModules mkPkgs;
 
     system = "x86_64-linux";
+    pkgs = mkPkgs system;
 
     lib = inputs.nixpkgs.lib.extend
         (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
@@ -31,16 +32,19 @@
     lib = lib.my;
 
     internal = {
-      overlays = [
-        # (self.overlay)
-        (inputs.neovim-nightly.overlay)
-      ];
-
       hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
         eden = { inherit system; config = ./home/hosts/eden.nix; };
         wsl  = { inherit system; config = ./home/hosts/wsl.nix; };
       };
     };
+
+    overlay = final: prev: {
+      my = self.packages."${system}";
+    };
+
+    overlays = { neovim-nightly = inputs.neovim-nightly.overlay; } // mapModules ./nix/overlays import;
+
+    packages."${system}" = mapModules ./nix/pkgs (p: pkgs.callPackage p {});
 
     homeManagerConfigurations = mapAttrs' mkHomeConfig {
       eden = { inherit system; };
