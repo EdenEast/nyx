@@ -1,9 +1,9 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 
 {
   mkPkgs = system: import inputs.nixpkgs {
     inherit system;
     config.allowUnfree = true;
-    overlays = inputs.self.internal.overlays;
+    overlays = lib.attrValues inputs.self.overlays;
   };
 }
