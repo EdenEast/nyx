@@ -1,10 +1,9 @@
-{ self, nixpkgs, ... }@inputs:
+{ inputs, lib, ... }:
 
-let
-  pkgs = import inputs.nixpkgs {
-    system = "x86_64-linux";
-    config = { allowUnfree = true; };
-    overlays = self.overlays;
+{
+  mkPkgs = system: import inputs.nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
+    overlays = lib.attrValues inputs.self.overlays;
   };
-
-in pkgs
+}

@@ -1,0 +1,18 @@
+
+# This is the main entry point for git's config file. The config has been broken
+# up into different files for sanity. We are including all of the files that the
+# config was broken up into.
+
+[include]
+    path = ./cfg/alias.conf
+    path = ./cfg/core.conf
+    path = ./cfg/url.conf
+
+    # local git config (stuff like user and signing)
+    path = ~/.local/share/git/config
+    path = ~/.local/share/git/nyx-gen
+
+[commit]
+    template = ~/.config/git/template
+
+# vim: ft=gitconfig:

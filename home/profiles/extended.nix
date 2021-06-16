@@ -31,17 +31,17 @@ in {
         # Hosted binary caches
         cachix
         # A TUI file explorer
-        xplr
-        lookatme
+        # xplr
+        # lookatme
       ];
     };
 
-    nyx.aspects = {
+    nyx.modules = {
       shell.fzf.enable = true;
       shell.glow.enable = true;
       shell.keybase.enable = true;
       shell.lf.enable = true;
-      shell.repo.enable = true;
+      # shell.repo.enable = true;
       shell.tmux.enable = true;
       shell.zoxide.enable = true;
       shell.zsh.enable = true;

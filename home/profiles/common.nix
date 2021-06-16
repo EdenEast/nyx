@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.nyx.profiles.common;
 in {
-  options.nyx.profiles.common = { enable = mkEnableOption "common profilej"; };
+  options.nyx.profiles.common = { enable = mkEnableOption "common profile"; };
 
   config = mkIf cfg.enable {
     home = {
@@ -61,7 +61,7 @@ in {
     # Install man output for any Nix packages.
     programs.man.enable = true;
 
-    nyx.aspects = {
+    nyx.modules = {
       shell.bash.enable = true;
       shell.bat.enable = true;
       shell.git.enable = true;

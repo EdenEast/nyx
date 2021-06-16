@@ -1,0 +1,22 @@
+# Toggle hidden (.) files
+map . set hidden!
+
+# Search with fzf for directories
+map <tab> fzf
+map <backspace>  fzf-home
+map <backspace2> fzf-home
+
+# Toggle selection
+map <c-j> :toggle; down
+map <c-k> :toggle; up
+
+# Trash items
+map D trash
+
+# Rename directory with vim
+map R vi-rename
+
+# Clear buffer
+map c clear-wrapper
+
+# vim: filetype=conf
