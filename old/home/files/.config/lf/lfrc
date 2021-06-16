@@ -1,0 +1,18 @@
+#  __    _____
+# |  |  |   __|
+# |  |__|   __|
+# |_____|__|
+#
+# https://godoc.org/github.com/gokcehan/lf
+
+# Load sub-config files
+source ~/.config/lf/settings
+source ~/.config/lf/commands
+source ~/.config/lf/mappings
+
+# Resources/Examples
+#
+# https://github.com/p-kolacz/.dotfiles/tree/92b72e6/lf/.config/lf
+# https://github.com/sarrost/dotfiles/tree/3775a66/dotfiles/lf/.config/lf
+
+# vim: filetype=conf

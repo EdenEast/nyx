@@ -1,0 +1,25 @@
+theme_insomnia: &theme_insomnia
+  primary:
+    background: '0x21252b'
+    foreground: '0x9da5b4'
+  normal:
+    black:   '0x454a54'
+    red:     '0xd7427f'
+    green:   '0x98c379'
+    yellow:  '0xe5c07b'
+    blue:    '0x61afef'
+    magenta: '0xc678dd'
+    cyan:    '0x56b6c2'
+    white:   '0xcdcdcd'
+  bright:
+    black:   '0x5c6370'
+    red:     '0xe06c75'
+    green:   '0xb3d39c'
+    yellow:  '0xb3d38c'
+    blue:    '0x8fc6f4'
+    magenta: '0xd7a1e7'
+    cyan:    '0x7bc6d0'
+    white:   '0xe6e6e6'
+
+colors:
+  *theme_insomnia

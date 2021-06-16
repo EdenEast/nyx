@@ -1,0 +1,6 @@
+{ ... }:
+
+{
+  imports = [ ./app ./dev ./shell ];
+}
+

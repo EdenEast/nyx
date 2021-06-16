@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+# Show remote branches that do not have a pull request
+
+# Print failure message to stderr and exit
+function die()
+{
+    echo "Failed: $@" 1>&2
+    exit 1
+}
+
+REMOTE_URL="$(git ls-remote --get-url origin)"
+if [[ $REMOTE_URL =~ "github" ]]; then
+    REF_MAP="refs/pull/*/head"
+elif [[ $REMOTE_URL =~ "gitlab" ]]; then
+    REF_MAP="refs/merge-requests/*/head"
+elif [[ $REMOTE_URL =~ "bitbucket" ]]; then
+    die "Bitbucket has not been implemented yet"
+else
+    die "Remote hosting provider is not supported"
+fi
+
+grep -v -f <(git ls-remote origin $REF_MAP) <(git ls-remote -h origin)

@@ -1,14 +1,16 @@
-self: super:
+final: prev:
 
-let metadata = import ./metadata.nix;
+let
+  rev = "14fdf5c96e30e89b84504d513a0311b3f712cee0";
+  sha256 = "sha256-BXMjnGcrZ9zdoZplemv8jDL9OPsHES1BCEq/9Ui9fBw=";
 in {
-  git-open = super.git-open.overrideAttrs (old: rec {
+  git-open = prev.git-open.overrideAttrs (old: rec {
     version = "2.2.0-dev";
-    src = super.fetchFromGitHub {
+    src = prev.fetchFromGitHub {
       owner = "paulirish";
       repo = "git-open";
-      rev = metadata.rev;
-      sha256 = metadata.sha256;
+      rev = rev;
+      sha256 = sha256;
     };
   });
 }

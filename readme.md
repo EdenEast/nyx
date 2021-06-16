@@ -1,36 +1,93 @@
 # Nyx
 
-Nyx is my current work in progress port of my current [dots] repo. Since wsl2 came out I am
-porting my dotfiles to nix. Currently this configuration works for non nixos systems (like Wsl).
+This repository contains my configuration for all my systems, written primarily in [Nix].
+This repository defines machines running [NixOS][nix], or unix machines running nix and
+[home-manager], or Windows.
 
-This configuration structure is based off of [David Wood] configuration [veritas]. His configuration
-works on both nixos and non nixos systems. It is well structured and easy to understand.
+[nix]: https://nixos.org/
+[home-manager]: https://github.com/nix-community/home-manager
 
-[dots]: https://github.com/edeneast/dots
-[David Wood]: https://davidtw.co
-[veritas]: https://github.com/davidtwco/veritas
+## Structure
+
+- `config/` - Contains `.dotfiles` for various applications. You can think of this as my `$HOME` directory.
+- `home/` - Configuration for my user. This is where home-manager configurations lives.
+  - `hosts/` - The definition of a home user. If same name as a `nixos/hosts` will be used by it.
+  - `modules/` - A defined set of home modules that can be enabled in a `home/host`.
+  - `profiles/` - A collection of module configurations grouped together to be used by a `home/host`.
+  - `secrets/` - A folder of secrets used by the user
+- `lib/` - List of helper functions
+- `nix/` - Nix package manager configurations
+  - `overlays/` - Nix overlays
+  - `pkgs/` - Self packaged applications
+- `nixos/` - Machine configurations
+  - `hosts/` - The definition of a nixos machine
+  - `modules/` - Nixos modules
+  - `profiles/` - A collection of module configurations.
+  - `secrets/` - Secrets used for a machine host.
+
+## Dotfiles
+
+My `.dotfiles` can be found under `config/`. On systems managed by nix and this flake repository
+they are managed by `home-manager`. I `home-manager` to use the `config/` folder as the source for
+my configurations. This helps when I am on a machine that is not managed by nix (*cough windows
+cough*). On these machines I symlink the files in the `config/` folder into their respective
+locations. Some configurations of note:
+
+- [Neovim](./config/.config/nvim/init.lua)
+- [Git](./config/.config/git/readme.md)
+- [Bash/Zsh](./config/.config/shell)
 
 ## Resources
 
-- [davidtwco/veritas](https://github.com/davidtwco/veritas)
-  - I based my first configuration off of this well structured and commented
-- [hlissner/dotfiles](https://github.com/hlissner/dotfiles)
-  - The creator of doom emacs with good module structure
-- [colemickens/nixcfg](https://github.com/colemickens/nixcfg)
-  - Complex setup with some good comments on their thought process
-- [divnix/devos](https://github.com/divnix/devos)
-  - A community template configuration framework
-- [NobbZ/nixos-config](https://github.com/NobbZ/nixos-config)
-  - Simple way to handle having both Nixos and home-manager
-- [MagicRB/dotfiles](https://github.com/MagicRB/dotfiles)
-  - Another simple way of handling both Nixos and home-manager
-- [wiltaylor/dotfiles](https://github.com/wiltaylor/dotfiles)
-  - Also has a good [youtube](https://youtube.com/playlist?list=PL-saUBvIJzOkjAw_vOac75v-x6EzNzZq-)
-    series going over nix/nixos/flakes... etc
-- [esselius/nix-cfg](https://github.com/esselius/nix-cfg)
-  - Good swap over scripts and handles Nixos, home-manager and darwin
-- [bnjmnt4n/system](https://github.com/bnjmnt4n/system)
-  - Found this as it was linked to the issue I made on home-manager with non-nixos configuration
-- [colemickens/nixcfg](https://github.com/colemickens/nixcfg)
-  - Hydra jobs, images, vms
+### Manuals
 
+- [Nix][nix-manual] - The expression language and package manager
+- [Nixpkgs][nixpkgs-manual] - The repository of packages
+- [NixOS][nixos-manual] - The operating system built on top of nix
+- [Home Manager][home-manager-manual] - Manage user environments
+
+### Learning
+
+- [Awesome Nix][awe-nix] - A curated list of the best resources in the Nix community.
+- [Learn][nix-learn] - Home page for learning the nix eco-system
+- [NixOS Wiki][wiki] - Community maintained wiki
+- [Nix Pills][nix-pills] - A learn nix by example understanding how it works step by step
+- [nix.dev][nix-dev] - An opinionated guide for developers getting things done using the Nix ecosystem
+
+### Flakes
+
+- Nix Flakes Series by [Eelco Dolstra][edolstra]. Great introduction to flakes
+  - [Part 1][flake-1] - An introduction and tutorial
+  - [Part 2][flake-2] - Evaluation caching
+  - [Part 3][flake-3] - Managing NixOS systems
+- [Flake wiki][flake-wiki] - Wiki page on flakes
+
+I agree with [@hlissner][hlissner]. This is needed when nix [drives you to drink][drive-to-drink].
+
+[nix-manual]: https://nixos.org/manual/nix/stable/
+[nixpkgs-manual]: https://nixos.org/manual/nixpkgs/stable/
+[nixos-manual]: https://nixos.org/manual/nixos/stable/
+[home-manager-manual]: https://nix-community.github.io/home-manager/
+[awe-nix]: https://nix-community.github.io/awesome-nix/
+[nix-learn]: https://nixos.org/learn.html
+[wiki]: https://nixos.wiki/
+[nix-pills]: https://nixos.org/guides/nix-pills/
+[nix-dev]: https://nix.dev/
+[edolstra]: https://github.com/edolstra
+[flake-1]: https://www.tweag.io/blog/2020-05-25-flakes/
+[flake-2]: https://www.tweag.io/blog/2020-06-25-eval-cache/
+[flake-3]: https://www.tweag.io/blog/2020-07-31-nixos-flakes/
+[flake-wiki]: https://nixos.wiki/wiki/Flakes
+[drive-to-drink]: https://youtu.be/Eni9PPPPBpg
+
+## References
+
+- [@davidwco](https://github.com/davidtwco) [veritas](https://github.com/davidtwco/veritas)
+- [@hlissner](https://github.com/hlissner) [dotfiles](https://github.com/hlissner/dotfiles)
+- [@LEXUGE](https://github.com/LEXUGE) [nixos](https://github.com/LEXUGE/nixos)
+- [@utdemir](https://github.com/utdemir) [dotfiles](https://github.com/utdemir/dotfiles)
+- [@cole-mickens](https://github.com/cole-mickens) [nixcfg](https://github.com/cole-mickens/nixcfg)
+- [@pinpox](https://github.com/pinpox) [nixos](https://github.com/pinpox/nixos)
+- [@MayNiklas](https://github.com/MayNiklas) [nixos](https://github.com/MayNiklas/nixos)
+
+[hlissner]: https://github.com/hlissner

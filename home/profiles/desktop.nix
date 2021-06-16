@@ -6,10 +6,9 @@ in {
   options.nyx.profiles.desktop = { enable = mkEnableOption "desktop profile"; };
 
   config = mkIf cfg.enable {
-    nyx.aspects = {
+    nyx.modules = {
       app.alacritty.enable = true;
       app.discord.enable = true;
-      service.redshift.enable = true;
     };
   };
 }

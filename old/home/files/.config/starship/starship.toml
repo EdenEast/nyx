@@ -1,0 +1,45 @@
+# Don't print a new line at the start of the prompt
+add_newline = false
+
+# Define order to make prompt on one line
+# https://starship.rs/config/#default-prompt-order
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$hg_branch\
+$docker_context\
+$nix_shell\
+$status\
+$character\
+"""
+
+# Change timeout of scanning files to 10 mili secs
+scan_timeout = 10
+
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold green)"
+
+[directory]
+truncation_length = 2
+truncate_to_repo = true
+style = "bold cyan"
+
+[git_branch]
+style = "bold yellow"
+
+[git_state]
+format = "[\\($state($progress_current of $progress_total)\\)]($style)"
+cherry_pick = "[🍒 PICKING](bold red)"
+
+[git_status]
+style = "bold blue"
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+

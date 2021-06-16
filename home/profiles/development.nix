@@ -20,7 +20,7 @@ in {
       tokei
     ];
 
-    nyx.aspects = {
+    nyx.modules = {
       dev.cc.enable = true;
       dev.dhall.enable = true;
       dev.go.enable = true;

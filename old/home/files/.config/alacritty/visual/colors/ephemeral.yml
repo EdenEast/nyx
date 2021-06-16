@@ -1,0 +1,25 @@
+theme_lovelace: &theme_ephemeral
+  primary:
+    background: '0x323f4e'
+    foreground: '0xf8f8f2'
+  normal:
+    black:   '0x3d4c5f'
+    red:     '0xf48fb1'
+    green:   '0xa1efd3'
+    yellow:  '0xf1fa8c'
+    blue:    '0x92b6f4'
+    magenta: '0xbd99ff'
+    cyan:    '0x87dfeb'
+    white:   '0xf8f8f2'
+  bright:
+    black:   '0x56687e'
+    red:     '0xee4f84'
+    green:   '0x53e2ae'
+    yellow:  '0xf1ff52'
+    blue:    '0x6498ef'
+    magenta: '0x985eff'
+    cyan:    '0x24d1e7'
+    white:   '0xe5e5e5'
+
+colors:
+  *theme_ephemeral

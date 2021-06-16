@@ -1,13 +1,15 @@
 {
-  description = "Something";
+  description = ''
+    Nyx is the personal configuration for James Simpson. This repository holdes .dotfile configuration as well as both
+    nix (with home-manager) and nixos configurations.
+  '';
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # primary nixpkgs
-    nixpkgs-master.url =
-      "github:nixos/nixpkgs/master"; # for packages on the edge
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
@@ -15,60 +17,53 @@
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
   };
 
+
   outputs = { self, ... }@inputs:
-    let
-      # supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-      # forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (system: f system);
-      system = "x86_64-linux";
+  with inputs.nixpkgs.lib;
+  let
+    inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig mapModules mkPkgs;
 
-      util = import ./lib inputs;
-      inherit (util) mkHome;
-      inherit (util) pkgs;
+    system = "x86_64-linux";
+    pkgs = mkPkgs system;
 
-      shell = pkgs.mkShell {
-        name = "nyx";
-        naitiveBuildInputs = with pkgs; [
-          git-crypt
-          git
-          just
-          nixfmt
-          nixFlakes
-          fd
-          nix-build-uncached
-          nix-prefetch-git
-        ];
+    lib = inputs.nixpkgs.lib.extend
+        (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
+  in {
+    lib = lib.my;
 
-        shellHook = ''
-          PATH=${
-            pkgs.writeShellScriptBin "nix" ''
-              ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes" "$@"
-            ''
-          }/bin:$PATH
-        '';
+    internal = {
+      hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
+        eden = { inherit system; config = ./home/hosts/eden.nix; };
+        wsl  = { inherit system; config = ./home/hosts/wsl.nix; };
       };
-    in {
-      overlay."${system}" = _: _: self.packages.x86_64-linux;
-      overlays = [
-        (self.overlay."${system}")
-        (import ./nix/overlays/git-open)
-        inputs.neovim-nightly.overlay
-      ];
-
-      packages."${system}" = {
-        cargo-whatfeatures = pkgs.callPackage ./nix/pkgs/cargo-whatfeatures { };
-        cargo-why = pkgs.callPackage ./nix/pkgs/cargo-why { };
-        lookatme = pkgs.callPackage ./nix/pkgs/lookatme { };
-        repo = pkgs.callPackage ./nix/pkgs/repo { };
-        xplr = pkgs.callPackage ./nix/pkgs/xplr { };
-      };
-
-      devShell."${system}" = shell;
-
-      homeConfigurations = {
-        kiiro = mkHome ./hosts/kiiro;
-        chairo = mkHome ./hosts/chairo;
-      };
-      kiiro = self.homeConfigurations.kiiro.activationPackage;
-      chairo = self.homeConfigurations.chairo.activationPackage;
     };
+
+    overlay = final: prev: {
+      my = self.packages."${system}";
+    };
+
+    overlays = { neovim-nightly = inputs.neovim-nightly.overlay; } // mapModules ./nix/overlays import;
+
+    packages."${system}" = mapModules ./nix/pkgs (p: pkgs.callPackage p {});
+
+    homeManagerConfigurations = mapAttrs' mkHomeConfig {
+      eden = { inherit system; };
+    };
+
+    nixosConfigurations = mapAttrs' mkSystemConfig {
+      wsl = { inherit system; config = ./nixos/hosts/wsl; };
+    };
+
+
+    top = let
+      nixtop = genAttrs
+          (builtins.attrNames inputs.self.nixosConfigurations)
+          (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
+
+      hometop = genAttrs
+          (builtins.attrNames inputs.self.homeManagerConfigurations)
+          (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+    in
+    nixtop // hometop;
+  };
 }
