@@ -12,7 +12,7 @@ let
     cargo-outdated
     cargo-udeps
     cargo-whatfeatures
-    cargo-why
+    my.cargo-why
   ];
 in {
   options.nyx.modules.dev.rust = {
