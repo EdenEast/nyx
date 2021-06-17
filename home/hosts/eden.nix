@@ -21,6 +21,7 @@
     };
     profiles = {
       extended.enable = true;
+      development.enable = true;
     };
   };
 }
