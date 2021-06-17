@@ -41,6 +41,7 @@ function HandleSymlink([string]$path, [string]$target) {
 
 # Get the root directory of nyx
 $NyxRootDir = (get-item $PSScriptRoot).parent.parent.parent.FullName
+$WinDir = [IO.Path]::Combine($NyxRootDir, "extras", "scripts", "windows")
 
 $ConfigHome = Join-Path -Path $HOME -ChildPath .config
 $LocalHome = Join-Path -Path $HOME -ChildPath .local
@@ -48,7 +49,7 @@ $AppRoaming = $env:APPDATA;
 $AppLocal = $env:LOCALAPPDATA;
 $StartupDir = [IO.Path]::Combine($AppRoaming, "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
 
-$NyxDotHome = [IO.Path]::Combine($NyxRootDir, 'home', 'files')
+$NyxDotHome = [IO.Path]::Combine($NyxRootDir, 'config')
 foreach ($child in Get-ChildItem -Path $NyxDotHome -Force) {
     $path = Join-Path -Path $HOME -ChildPath $child
     HandleSymlink $path $child.FullName
@@ -66,11 +67,11 @@ HandleSymlink $NvimSource $NvimTarget
 
 # Autohotkey caps remap to ctrl/escape
 $AutohotkeySource = [IO.Path]::Combine($StartupDir, "caps-to-ctrl+esc.ahk")
-$AutohotkeyTarget = [IO.Path]::Combine($NyxRootDir, "scripts", "windows", "caps-to-ctrl+esc.ahk")
+$AutohotkeyTarget = [IO.Path]::Combine($WinDir, "caps-to-ctrl+esc.ahk")
 HandleSymlink $AutohotkeySource $AutohotkeyTarget
 
 # KMonad settings on startup
 $KMonadSource = [IO.Path]::Combine($StartupDir, "kmonad-startup.ps1")
-$KMonadTarget = [IO.Path]::Combine($NyxRootDir, "scripts", "windows", "kmonad-startup.ps1")
+$KMonadTarget = [IO.Path]::Combine($WinDir, "kmonad-startup.ps1")
 HandleSymlink $KMonadSource $KMonadTarget
 
