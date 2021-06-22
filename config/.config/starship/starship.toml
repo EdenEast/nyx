@@ -6,6 +6,7 @@ add_newline = false
 format = """
 $username\
 $hostname\
+$shlvl\
 $directory\
 $git_branch\
 $git_commit\
@@ -23,12 +24,14 @@ scan_timeout = 10
 
 [character]
 success_symbol = "[➜](bold green)"
-error_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"
+vicmd_symbol = "[V](bold blue)"
 
 [directory]
-truncation_length = 2
+truncation_length = 3
 truncate_to_repo = true
 style = "bold cyan"
+
 
 [git_branch]
 style = "bold yellow"
@@ -38,8 +41,14 @@ format = "[\\($state($progress_current of $progress_total)\\)]($style)"
 cherry_pick = "[🍒 PICKING](bold red)"
 
 [git_status]
+format = '([\[$ahead_behind\]]($style)) '
 style = "bold blue"
 ahead = "⇡${count}"
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 behind = "⇣${count}"
 
+[nix_shell]
+symbol = "❅"
+impure_msg = "[❅](red)"
+pure_msg = "[❅](green)"
+format = 'via [$symbol \($name\)](bold blue) '
