@@ -54,6 +54,8 @@ impure_msg = "[❅](red)"
 pure_msg = "[❅](green)"
 format = 'via [$symbol \($name\)](bold blue) '
 
+# https://github.com/starship/starship/discussions/1252#discussioncomment-194627
+# https://github.com/starship/starship/discussions/1252#discussioncomment-838901
 [custom.giturl]
 description = "Display symbol for remote Git server"
 command = """
@@ -74,3 +76,18 @@ echo "$GIT_REMOTE_SYMBOL "
 when = 'git rev-parse --is-inside-work-tree 2> /dev/null'
 shell = ["bash", "--noprofile", "--norc"]
 format = "at $output  "
+
+# https://github.com/starship/starship/discussions/1252#discussioncomment-502146
+[custom.lastcommit]
+description = "Display last commit hash and message"
+command = "git show -s --format='%h \"%s\"'"
+when = 'git rev-parse --is-inside-work-tree 2> /dev/null'
+style = "bright-yellow bold"
+format = "[$output]($style) "
+
+# https://github.com/starship/starship/discussions/1252#discussioncomment-481286
+[custom.git_email]
+command = "git config user.email"
+when = "git rev-parse --git-dir 2> /dev/null"
+format = "by [$output]($style) "
+style = "bright-yellow bold"
