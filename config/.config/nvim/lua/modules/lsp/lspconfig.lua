@@ -107,7 +107,7 @@ local servers = {
   gopls = {},
   omnisharp = { cmd = { 'omnisharp'..ext, "--languageserver" , "--hostPID", tostring(pid) }; },
   pyright = {},
-  rust_analyzer = {},
+  rust_analyzer = { cmd = { 'rust-analyzer'..ext }; },
   sumneko_lua = {
     cmd = {'lua-language-server'..ext},
     settings = {
