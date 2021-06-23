@@ -9,6 +9,7 @@ in {
     nyx.modules = {
       app.alacritty.enable = true;
       app.discord.enable = true;
+      app.wezterm.enable = true;
     };
   };
 }
