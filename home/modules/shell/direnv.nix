@@ -10,7 +10,7 @@ in {
   config = mkIf cfg.enable {
     programs.direnv = {
       enable = true;
-      enableNixDirenvIntegration = true;
+      nix-direnv.enable = true;
     };
 
     nyx.modules.shell.bash.initExtra =
