@@ -18,6 +18,7 @@
     ./starship.nix
     ./tmux.nix
     ./xdg.nix
+    ./zellij.nix
     ./zoxide.nix
     ./zsh.nix
   ];

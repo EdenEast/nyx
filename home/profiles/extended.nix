@@ -43,6 +43,7 @@ in {
       shell.lf.enable = true;
       # shell.repo.enable = true;
       shell.tmux.enable = true;
+      shell.zellij.enable = true;
       shell.zoxide.enable = true;
       shell.zsh.enable = true;
     };
