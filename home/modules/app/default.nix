@@ -1,6 +1,6 @@
 { ... }:
 
 {
-  imports = [ ./alacritty.nix ./discord.nix ];
+  imports = [ ./alacritty.nix ./discord.nix ./wezterm.nix ];
 }
 
