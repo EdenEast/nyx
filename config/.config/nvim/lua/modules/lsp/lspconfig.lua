@@ -145,7 +145,7 @@ for server, config in pairs(servers) do
 end
 
 local lspsync = require('lspsync')
-lspsync.startup({
+lspsync.init({
     install_root = path.join(global.cachehome, 'lspsync')
   })
 
