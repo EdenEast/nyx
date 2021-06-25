@@ -6,7 +6,7 @@ lang['nvim-treesitter/nvim-treesitter'] = {
   run = ':TSUpdate',
   config = conf.nvim_treesitter,
   requires = {
-    {'romgrk/nvim-treesitter-context', opt=true},
+    {'romgrk/nvim-treesitter-context', opt=true, disabled = not require('core.global').is_windows},
   },
 }
 

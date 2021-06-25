@@ -1,7 +1,7 @@
 local config = {}
 
 function config.nvim_treesitter()
-  vim.cmd [[packadd nvim-treesitter-context]]
+  local global = require('core.global')
 
   vim.api.nvim_command('set foldmethod=expr')
   vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
@@ -52,7 +52,10 @@ function config.nvim_treesitter()
     },
   }
 
-  require'treesitter-context.config'.setup()
+  if not global.is_windows then
+    vim.cmd [[packadd nvim-treesitter-context]]
+    require'treesitter-context.config'.setup()
+  end
 end
 
 function config.polyglot()
