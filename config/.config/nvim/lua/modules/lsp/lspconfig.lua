@@ -18,9 +18,7 @@ pack_add({'lsp_extensions.nvim', 'lsp-status.nvim', 'lspsaga.nvim', 'lspkind-nvi
 require('lspkind').init()
 
 local saga = require('lspsaga')
-saga.init_lsp_saga({
-  code_action_icon = '💡'
-})
+saga.init_lsp_saga({})
 
 local status = require('modules.lsp.status')
 status.activate()
@@ -33,6 +31,7 @@ end
 local enhance_attach = function(client, bufnr)
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
   local nnoremap = vim.keymap.nnoremap
+  local vnoremap = vim.keymap.vnoremap
   local inoremap = vim.keymap.inoremap
   local caps = client.resolved_capabilities
 
@@ -76,6 +75,9 @@ local enhance_attach = function(client, bufnr)
   if caps.rename then
     nnoremap { '<leader>cn', [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent=true }
   end
+
+  nnoremap { '<leader>ca', [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent=true }
+  vnoremap { '<leader>ca', [[:<c-u><cmd>lua require('lspsaga.codeaction').range_code_action()<cr>]], silent=true }
 
   -- if caps.document_highlight then
   -- end
