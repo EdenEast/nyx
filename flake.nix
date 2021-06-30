@@ -33,8 +33,9 @@
 
     internal = {
       hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
-        eden = { inherit system; config = ./home/hosts/eden.nix; };
-        wsl  = { inherit system; config = ./home/hosts/wsl.nix; };
+        eden  = { inherit system; config = ./home/hosts/eden.nix; };
+        wsl   = { inherit system; config = ./home/hosts/wsl.nix; };
+        sloth = { inherit system; config = ./home/hosts/sloth.nix; };
       };
     };
 
@@ -52,6 +53,7 @@
 
     nixosConfigurations = mapAttrs' mkSystemConfig {
       wsl = { inherit system; config = ./nixos/hosts/wsl; };
+      sloth = { inherit system; config = ./nixos/hosts/sloth; };
     };
 
 
