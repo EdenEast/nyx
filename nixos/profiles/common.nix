@@ -57,6 +57,7 @@ in {
 
     nyx.modules = {
       user.enable = true;
+      yubikey.enable = true;
     };
 
     # Silence warning about an invalid password hash.
