@@ -14,5 +14,9 @@ in {
         })
       ];
     };
+
+    nyx.modules = {
+      caps.enable = true;
+    };
   };
 }
