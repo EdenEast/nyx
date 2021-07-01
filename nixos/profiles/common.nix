@@ -54,6 +54,7 @@ in {
     systemd.services.nix-daemon.serviceConfig."LimitSTACK" = "infinity";
 
     time.timeZone = "America/Toronto";
+    i18n.defaultLocale = "en_US.UTF-8";
 
     nyx.modules = {
       user.enable = true;

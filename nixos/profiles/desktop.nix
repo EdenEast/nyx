@@ -15,6 +15,22 @@ in {
       ];
     };
 
+    services.xserver = {
+      enable = true;
+      layout = "us";
+      libinput.enable = true;
+      desktopManager.gnome.enable = true;
+      displayManager.gdm.enable = true;
+    };
+
+    hardware = {
+      pulseaudio = {
+        enable = true;
+        support32Bit = true;
+        package = pkgs.pulseaudioFull;
+      };
+    };
+
     nyx.modules = {
       caps.enable = true;
     };
