@@ -22,8 +22,16 @@ in
       enable = true;
       layout = "us";
       libinput.enable = true;
-      desktopManager.gnome.enable = true;
-      displayManager.gdm.enable = true;
+      displayManager.startx.enable = true;
+      desktopManager = {
+        session = [{
+          name = "home-manager";
+          start = ''
+            ${pkgs.runtimeShell} $HOME/.hm-xsession &
+            waitPID=$!
+          '';
+        }];
+      };
     };
 
     sound.enable = true;
@@ -40,6 +48,7 @@ in
 
     nyx.modules = {
       caps.enable = true;
+      xserver.enable = true;
     };
   };
 }
