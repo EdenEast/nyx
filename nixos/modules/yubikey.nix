@@ -11,6 +11,7 @@ in
     environment.systemPackages = with pkgs; [
       yubikey-personalization
       yubikey-manager
+      pinentry-curses
     ];
 
     services = {

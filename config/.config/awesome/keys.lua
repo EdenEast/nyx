@@ -271,6 +271,10 @@ keys.client = gears.table.join(
     function(c) c:kill() end,
     { description = 'close' , group = '' }
   ),
+  awful.key({ mod, shft }, 'q',
+    function(c) c:kill() end,
+    { description = 'close' , group = '' }
+  ),
   awful.key({ alt }, 'F4',
     function(c) c:kill() end,
     { description = 'close' , group = '' }
