@@ -8,6 +8,7 @@ expflags       := "--experimental-features 'nix-command flakes'"
 input-all      := "all"
 
 nvim_home       := "${HOME}/.config/nvim"
+awesome_home    := "${HOME}/.config/awesome"
 packer_compiled := "${HOME}/.local/share/nvim/plugin/packer_compiled.vim"
 
 # colors
@@ -46,7 +47,20 @@ update:
 @fmt:
     fd --type f --extension nix --exec nixfmt {}
 
-# Remove a symlink for neovim and symlink to `home/files/.config/nvim`
+# Remove the symlink for awesome and symlink to to `config/.config/awesome`
+# This make it much easier to work on the config without having to
+# tell nix to rebuild
+awesome:
+    #!/usr/bin/env bash
+    [[ -L "{{awesome_home}}" ]] && rm "{{awesome_home}}"
+    [[ -d "{{awesome_home}}" ]] && {
+        printf "{{red}}Error{{reset}}: {{yellow}}{{awesome_home}}{{reset}} exists and not a symlink\n"
+        exit 1
+    }
+    ln -s "{{justfile_directory()}}/config/.config/awesome" "{{awesome_home}}"
+
+
+# Remove a symlink for neovim and symlink to `config/.config/nvim`
 # This is useful for developing and woriing with nvim config
 nvim:
     #!/usr/bin/env bash
@@ -54,8 +68,8 @@ nvim:
     [[ -d "{{nvim_home}}" ]] && {
         printf "{{red}}Error{{reset}}: {{yellow}}{{nvim_home}}{{reset}} exists and not a symlink\n"
         exit 1
-    } 
-    
+    }
+
     ln -s "{{justfile_directory()}}/config/.config/nvim" "{{nvim_home}}"
 
     # Find if there is a packer_compiled file and delete it just in case
