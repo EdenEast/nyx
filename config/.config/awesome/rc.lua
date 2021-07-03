@@ -1,65 +1,35 @@
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
-pcall(require, "luarocks.loader")
+pcall(require, 'luarocks.loader')
 
 user = {
   terminal = 'alacritty',
 }
 
--- local awful     = require('awful')
--- local beautiful = require('beautiful')
--- local gears     = require('gears')
+local awful     = require('awful')
+local beautiful = require('beautiful')
+local gears     = require('gears')
+local menubar   = require('menubar')
 local naughty   = require('naughty')
--- local wibox     = require('wibox')
-require("awful.autofocus")
+local wibox     = require('wibox')
+
+require('awful.autofocus')
+require('modules.errors')
+require('modules.wallpaper')
 
 local keys = require('keys')
-
--- Error handling
--- If there are any errors then fall bcak to another config
-if awesome.startup_errors then
-  naughty.notify({
-      reset = naughty.config.presets.critical,
-      title = "Oops, there were errors durring setup",
-      text = awesome.startup_errors,
-    })
-end
 
 ------------------------------------------------------------------------
 
 -- From the default awesome config:
 
--- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
-require("awful.autofocus")
--- Widget and layout library
-local wibox = require("wibox")
 -- Theme handling library
-local beautiful = require("beautiful")
 -- Notification library
 -- local naughty = require("naughty")
-local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-
--- Handle runtime errors after startup
-do
-    local in_error = false
-    awesome.connect_signal("debug::error", function (err)
-        -- Make sure we don't go into an endless error loop
-        if in_error then return end
-        in_error = true
-
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
-        in_error = false
-    end)
-end
--- }}}
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
@@ -67,7 +37,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -236,9 +206,6 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
-              {description = "jump to urgent client", group = "client"}),
-
     -- Prompt
     awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
@@ -275,7 +242,7 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      raise = true,
-                     keys = gears.table.merge(clientkeys, keys.client),
+                     keys = keys.client,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen

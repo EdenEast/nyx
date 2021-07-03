@@ -190,6 +190,11 @@ keys.global = gears.table.join(
         client.focus = c
       end
     end, { description = 'restore minimized' , group = '' }
+  ),
+
+  -- Jumps
+  awful.key({ mod }, 'u', awful.client.urgent.jumpto,
+    { description = 'jump to urgent client' , group = '' }
   )
 )
 
