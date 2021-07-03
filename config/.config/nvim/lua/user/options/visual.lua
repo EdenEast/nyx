@@ -31,7 +31,7 @@ local shortmess = {
   'a',             -- use abbreviations in message '[ro]' instead of '[readonly]'
   'o',             -- overwrite file-written mesage
   't',             -- truncate file messages at start
-
+  'c',             -- dont show matching messages
 }
 
 opt.belloff        = 'all'                -- I NEVER want to hear this bell for ANY reason

@@ -1,16 +1,21 @@
 local util = require('core.util')
 local opt = vim.opt
 
+-- :help fo-table
 local formatopts = {
-  opt.formatoptions,
-  'j',                  -- remove comment leader when joning comments
-  'n',                  -- smart auto indenting inside numbered lists
+  'j',          -- remove comment leader when joning comments
+  'r',          -- continue comment with enter `excluding [o/O]`
+  'q',          -- formmating of comments with `gq`
+  'n',          -- smart auto indenting inside numbered lists
+  't',          -- auto wrap test with textwitdh
+  'c',          -- auto wrap comments using textwith
+  'l',          -- long lines are not broken up
 }
 
 local keywords = {
   opt.iskeyword,
-  '-',                  -- treat - seperated words as a word object
-  '_',                  -- treat _ seperated words as a word object
+  '-',          -- treat - seperated words as a word object
+  '_',          -- treat _ seperated words as a word object
 }
 
 opt.autoindent    = true                -- maintain indent of current line
