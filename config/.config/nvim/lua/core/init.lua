@@ -65,13 +65,12 @@ local load_core = function()
   require('core.keymap')
 
   -- Load opt into vim.opt
-  require('core.options')
   require('core.event')
 
   -- load base neovim user configuration
-  require('user.options')
   require('user.keymap')
   require('user.event')
+  require('user.options')
 
   -- execute `lua/plugin/*.lua` and `lua/ftplugin/*.lua`
   require('core.luaplug').setup()
