@@ -124,6 +124,10 @@ keys.global = gears.table.join(
     function() awful.spawn(user.terminal) end,
     { description = 'launch terminal' , group = 'launcher' }
   ),
+  awful.key({ mod, shft }, 'Return',
+    function() awful.spawn('rofi -show combi') end,
+    { description = 'launch terminal' , group = 'launcher' }
+  ),
   -- TODO: scratchpad
 
   awful.key({ mod, shft }, 'minus',
