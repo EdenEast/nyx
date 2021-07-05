@@ -184,8 +184,4 @@ function config.nvim_tree()
   vim.keymap.nnoremap { '<leader>te', '<cmd>NvimTreeToggle<cr>', silent=true }
 end
 
-function config.neoscroll()
-  require('neoscroll').setup()
-end
-
 return config
