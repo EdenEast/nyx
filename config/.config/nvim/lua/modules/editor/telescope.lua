@@ -8,8 +8,8 @@ local trouble = require('trouble.providers.telescope')
 
 require('telescope').setup {
   defaults = {
-    prompt_prefix = '❯ ',
-    selection_caret = '❯ ',
+    -- prompt_prefix = '❯ ',
+    -- selection_caret = '❯ ',
 
     vimgrep_arguments = {
       'rg',
@@ -22,28 +22,12 @@ require('telescope').setup {
       '--smart-case'
     },
 
-    winblend = 0,
-    preview_cutoff = 120,
-
     layout_strategy = 'horizontal',
-    layout_defaults = {
-      horizontal = {
-        width_padding = 0.1,
-        height_padding = 0.1,
-        preview_width = 0.6,
-      },
-      vertical = {
-        width_padding = 0.05,
-        height_padding = 1,
-        preview_height = 0.5,
-      }
-    },
 
-    selection_strategy = "reset",
-    sorting_strategy = "descending",
-    scroll_strategy = "cycle",
-    prompt_position = "bottom",
-    color_devicons = true,
+    -- selection_strategy = "reset",
+    -- sorting_strategy = "descending",
+    -- scroll_strategy = "cycle",
+    -- prompt_position = "bottom",
 
     mappings = {
       i = {
@@ -60,13 +44,7 @@ require('telescope').setup {
       },
     },
 
-    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
-
     file_sorter = sorters.get_fzy_sorter,
-
-    file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
-    grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
-    qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
   },
 
   extensions = {
