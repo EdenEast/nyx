@@ -23,6 +23,8 @@ in {
         tree
         # Interactive process viewer.
         htop
+        # Mote interactive top (btm)
+        bottom
         # Compress/uncompress `.zip` files.
         unzip
         zip
@@ -31,10 +33,6 @@ in {
         man-pages
         posix_man_pages
         stdman
-        # Index the nix store (provides `nix-locate`).
-        nix-index
-        # Eases nixpkgs review workflow.
-        nix-review
         # grep alternative.
         ripgrep
         # ls alternative.
@@ -43,10 +41,10 @@ in {
         fd
         # sed alternative
         sd
-        # More intuitive du.
-        du-dust
-        # Visualize Nix gc-roots to delete to free space.
-        nix-du
+        # Interactive du with rm functionality
+        dua
+        # A modern replacement for ps
+        procs
         # Encrypted files in Git repositories
         git-crypt
       ];
