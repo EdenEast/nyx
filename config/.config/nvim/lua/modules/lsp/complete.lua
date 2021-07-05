@@ -12,8 +12,8 @@ local t = function(str)
 end
 
 local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
+  local col = vim.fn.col('.') - 1
+  return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
 -- Use (s-)tab to:
@@ -40,6 +40,11 @@ _G.s_tab_complete = function()
     return t "<S-Tab>"
   end
 end
+
+require("nvim-autopairs.completion.compe").setup({
+  map_cr = true, --  map <CR> on insert mode
+  map_complete = true -- it will auto insert `(` after select function or method item
+})
 
 -- _G.complete_confirm = function()
 --   if vim.fn.pumvisible() ~= 0  then
@@ -76,10 +81,10 @@ require'compe'.setup {
   };
 }
 
-inoremap { "<Tab>",   "v:lua.complete_tab()",   expr=true }
-inoremap { "<Tab>",   "v:lua.complete_tab()",   expr=true }
-inoremap { "<S-Tab>", "v:lua.complete_s_tab()", expr=true }
-inoremap { "<S-Tab>", "v:lua.complete_s_tab()", expr=true }
+inoremap { "<Tab>",   "v:lua.tab_complete()",   expr=true }
+inoremap { "<Tab>",   "v:lua.tab_complete()",   expr=true }
+inoremap { "<S-Tab>", "v:lua.s_tab_complete()", expr=true }
+inoremap { "<S-Tab>", "v:lua.s_tab_complete()", expr=true }
 
 inoremap { '<C-Space>', [[compe#complete()]],         expr=true }
 -- inoremap { '<cr>',      [[compe#confirm('<cr>')]], expr=true }
