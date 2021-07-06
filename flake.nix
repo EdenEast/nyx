@@ -56,7 +56,6 @@
       sloth = { inherit system; config = ./nixos/hosts/sloth; };
     };
 
-
     top = let
       nixtop = genAttrs
           (builtins.attrNames inputs.self.nixosConfigurations)
@@ -67,5 +66,11 @@
           (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
     in
     nixtop // hometop;
+
+    # Can be executed with `nix run . -- <args>`
+    defaultApp."${system}" = {
+      type = "app";
+      program = ./bin/nyx;
+    };
   };
 }
