@@ -1,0 +1,514 @@
+#!/usr/bin/env bash
+
+# color chart https://stackoverflow.com/a/5947802
+RED='\033[0;31m'
+GRN='\033[0;32m'
+YLO='\033[0;33m'
+BLU='\033[0;34m'
+MTA='\033[0;35m'
+CYN='\033[0;36m'
+RST='\033[0m'
+
+NYX_ROOT="$(dirname $(dirname "$(readlink -f "$0")"))"
+
+# shellcheck shell=bash
+INTERNAL_COMMANDS="^(build|check|fmt|help|link|switch|update|unlink)$"
+
+
+declare -A TARGETS
+declare -A SOURCES
+TARGETS['nvim']="$HOME/.config/nvim"
+SOURCES['nvim']="$NYX_ROOT/config/.config/nvim"
+TARGETS['awesome']="$HOME/.config/awesome"
+SOURCES['awesome']="$NYX_ROOT/config/.config/awesome"
+
+function main() {
+  # Parse command line options
+  local retval=0
+  if [ -z "$*" ]; then
+    help # There is no arguments passed print help
+  elif [[ "$1" =~ $INTERNAL_COMMANDS ]]; then
+    NYX_COMMAND="${1//-/_}"
+    NYX_ARGS=()
+    shift
+
+    while [[ $# -gt 0 ]]; do
+      key="$1"
+      case $key in
+        -v|--verbose) # used by all commands
+          DEBUG="YES"
+          ;;
+
+        *)
+          NYX_ARGS+=("$1")
+          ;;
+      esac
+      shift
+    done
+  else
+    failure "Unknown command: \`$1\`"
+    help
+  fi
+
+  $NYX_COMMAND "${NYX_ARGS[@]}"
+}
+
+# --- Commands ----------------------------------------------------------------
+
+function build() {
+  local help_msg
+  IFS='' read -r -d '' help_msg << EOF
+USAGE: nyx build [target]
+
+Build an output target. If no output target is specified nyx will build
+either the nixos system configuration or the toplevel host config.
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        do_help=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$do_help" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  (
+    cd "$NYX_ROOT"
+
+    if [[ ${#args[@]} -gt 0 ]]; then
+      debug "target argument was passed to build. Building ${args[0]}"
+      nix build ".#top.${args[0]}"
+      exit 0
+    fi
+
+    # There was no target passed to build so infer what do build
+
+    if is_nixos; then
+      debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
+      sudo nixos-rebuild build --flake .
+    else
+      debug "Nixos not detected, building target based on \$USER"
+      # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
+      # infer then nix build will just run and build the default package.
+      # TODO: This is wrong and should save what top target should be built for the machine.
+      nix build ".#top.$USER"
+
+      # # Could not infer and building the default package
+      # debug "Could not infer target to build, building default package for the flake"
+      # nix build
+    fi
+  )
+}
+
+function check() {
+  local help_msg
+  IFS='' read -r -d '' help_msg << EOF
+USAGE: nyx check
+
+Execute flake check output.
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        do_help=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$do_help" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  (
+    cd "$NYX_ROOT"
+
+    [ -n "$do_help" ] && {
+      printf "%s\n" "$help_msg"
+      exit 1
+    }
+
+    nix flake check
+  )
+}
+
+function fmt() {
+  local help_msg
+  IFS='' read -r -d '' help_msg << EOF
+USAGE: nyx fmt [OPTIONS] [target...]
+
+Execute formatters for file types.
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        do_help=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$do_help" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  # Formatting *.nix files
+  nix-shell -p fd -p nixfmt --run "fd --type f --extension nix --exec nixfmt {}"
+
+  # Formatting lua files with stylua
+  # TODO: pkg stylua
+  # nix-shell -p fd -p nixfmt --run "stylua -g config/**/*.lua"
+}
+
+function link() {
+  local help_msg
+  IFS='' read -r -d '' help_msg << EOF
+USAGE: nyx link [OPTIONS] [target...]
+
+Create a symlink to config file. If no application is given all will be provided.
+
+TARGETS:
+  nvim
+  awesome
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        do_help=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$do_help" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  function create_link() {
+    if [[ -L "$1" ]]; then
+      if [[ "$(readlink $1)" = "$2" ]]; then
+        debug "link: $1 already points to $2. Skipping"
+        return
+      else
+        debug "Found link: \`$1\` removing"
+        rm "$1"
+      fi
+    fi
+
+    if [[ -d "$1" ]]; then
+      warn "path: \`$1\` is a directory. Skipping"
+      return
+    fi
+
+    ln -s "$2" "$1"
+    if [[ "$(readlink "$1")" = "$2" ]]; then
+      debug "created link $1 to $2"
+    else
+      failure "created link $1 does not point to $2. Points to $(readlink $1)"
+    fi
+  }
+
+  (
+    cd "$NYX_ROOT"
+
+    if [[ ${#args[@]} -gt 0 ]]; then
+      for index in "${!args[@]}"; do
+        key="${args[$index]}"
+        target="${TARGETS[$key]}"
+        source="${SOURCES[$key]}"
+        if [[ -z $target ]] || [[ -z source ]]; then
+          failure "unknown target $key"
+        fi
+
+        create_link "$target" "$source"
+      done
+    else
+      for key in "${!TARGETS[@]}"; do
+        create_link "${TARGETS[$key]}" "${SOURCES[$key]}"
+      done
+    fi
+  )
+}
+
+function switch() {
+  local help_msg
+  IFS='' read -r -d '' help_msg << EOF
+USAGE: nyx switch [OPTIONS] [target...]
+
+Switch the current installed configuration state.
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        do_help=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$do_help" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  (
+    cd "$NYX_ROOT"
+
+    # The switch will fail is there is links that point to the config folder they need to be removed before the switch
+    unlink
+
+    if [[ ${#args[@]} -gt 0 ]]; then
+      debug "target argument was passed to switch. Switiching to ${args[0]}"
+      if is_nixos; then
+        sudo nixos-rebuild switch --flake ".#top.${args[0]}"
+      else
+        nix build ".#top.${args[0]}"
+        ./result/activate
+        exit 0
+      fi
+    fi
+
+    # There was no target passed to build so infer what do build
+
+    if is_nixos; then
+      debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
+      sudo nixos-rebuild switch --flake .
+    else
+      # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
+      # infer then nix build will just run and build the default package.
+      # TODO: This is wrong and should save what top target should be built for the machine.
+      nix build ".#top.$USER"
+      ./result/activate
+
+      # # Could not infer and building the default package
+      # debug "Could not infer target to build, building default package for the flake"
+      # nix build
+    fi
+  )
+}
+
+function update() {
+  local help_msg
+  IFS='' read -r -d '' help_msg << EOF
+USAGE: nyx update [OPTIONS] [inputs...]
+
+Update flake.lock file
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        do_help=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$do_help" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  (
+    cd "$NYX_ROOT"
+
+    # TODO: update flake-url / inputs
+    nix flake update
+  )
+}
+
+function unlink() {
+  local help_msg
+  IFS='' read -r -d '' help_msg << EOF
+USAGE: nyx unlink [OPTIONS] [targets...]
+
+Remove manual symlinks to config/ folder
+
+TARGETS:
+  nvim
+  awesome
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        do_help=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$do_help" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  function remove_link() {
+    if [[ -L "$1" ]]; then
+      if [[ "$(readlink $1)" = "$2" ]]; then
+        debug "link: $1 points to nyx config folder $2. Removing"
+        rm "$1"
+      else
+        debug "link $1 does not point to nyx config folder: $(readlink $1)"
+      fi
+    fi
+  }
+
+  (
+    cd "$NYX_ROOT"
+
+    if [[ ${#args[@]} -gt 0 ]]; then
+      for index in "${!args[@]}"; do
+        key="${args[$index]}"
+        target="${TARGETS[$key]}"
+        source="${SOURCES[$key]}"
+        if [[ -z $target ]] || [[ -z source ]]; then
+          failure "unknown target $key"
+        fi
+
+        remove_link "$target" "$source"
+      done
+    else
+      for key in "${!TARGETS[@]}"; do
+        remove_link "${TARGETS[$key]}" "${SOURCES[$key]}"
+      done
+    fi
+  )
+}
+
+function help() {
+  if [[ "$1" =~ $INTERNAL_COMMANDS ]]; then
+    $1 '--help'
+  fi
+
+  local msg
+  IFS='' read -r -d '' msg << EOF
+Utility script to work with my nix configuration more effectively
+
+USAGE: nyx <COMMAND> [OPTIONS...]
+
+COMMANDS:
+  build  - Build target
+  check  - Execute flake check
+  fmt    - Execute formatters
+  link   - Symlink config locations in config/ to ~/.config
+  switch - Switch to configuration
+  update - Update flake inputs
+  unlink - Remove custom link from the \`link\` command
+EOF
+
+  printf "%s\n" "$msg"
+  exit 1
+}
+
+# --- Utility functions -------------------------------------------------------
+
+function get_distro() {
+  cat /etc/*-release | grep '^ID=' | cut -c4-
+}
+
+function is_nixos() {
+  local distro=$(get_distro)
+  [[ $distro = "nixos" ]] && echo 1
+}
+
+function debug() {
+  [ -n "$DEBUG" ] && echo_e "${BLU}[DEBUG]: $*${RST}"
+}
+
+function info() {
+  echo_e "$*"
+}
+
+function warn() {
+  echo_e "${YLO}[WARN]: $*${RST}"
+}
+function error() {
+  echo_e "${RED}[ERROR]: $*${RST}" 1>&2
+}
+function failure() {
+  error $1
+  exit ${2:-1}
+}
+
+# --- Echo replacements -------------------------------------------------------
+
+function echo() {
+  IFS=' '
+  printf '%s\n' "$*"
+}
+function echo_n() {
+  IFS=' '
+  printf '%s' "$*"
+}
+function echo_e() {
+  IFS=' '
+  printf '%b\n' "$*"
+}
+
+# --- Execute main process ----------------------------------------------------
+main $*
+
+# vim: et sw=2 ts=2 sts=2
