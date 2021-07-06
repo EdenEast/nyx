@@ -12,6 +12,13 @@ with inputs.nixpkgs.lib;
         (config)
       ];
 
+      # For compatibility with nix-shell, nix-build, etc.
+      home.file.".nixpkgs".source = inputs.nixpkgs;
+      home.sessionVariables."NIX_PATH" =
+        "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
+      systemd.user.sessionVariables."NIX_PATH" =
+        mkForce "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
+
       # Reexpose self and nixpkgs as a flake
       xdg.configFile."nix/registry.json".text = builtins.toJSON {
         version = 2;
