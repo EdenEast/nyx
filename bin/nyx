@@ -183,12 +183,17 @@ EOF
     exit 1
   }
 
-  # Formatting *.nix files
-  nix-shell -p fd -p nixfmt --run "fd --type f --extension nix --exec nixfmt {}"
+  (
+    cd $NYX_ROOT
 
-  # Formatting lua files with stylua
-  # TODO: pkg stylua
-  # nix-shell -p fd -p nixfmt --run "stylua -g config/**/*.lua"
+    # Formatting *.nix files
+    nix-shell -p fd -p nixfmt --run "fd . --type f --extension nix --exec nixfmt {}"
+
+    (
+      cd config/.config/nvim
+      nix-shell -p stylua --run "stylua -g *.lua -- ."
+    )
+  )
 }
 
 function link() {
