@@ -15,6 +15,11 @@ lang['nvim-treesitter/playground'] = {
   cmd = {'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor'},
 }
 
+lang['kristijanhusak/orgmode.nvim'] = {
+  config = conf.orgmode,
+  ft = { 'org' }
+}
+
 lang['sheerun/vim-polyglot'] = {
   config = conf.polyglot,
 }

@@ -58,6 +58,10 @@ function config.nvim_treesitter()
   end
 end
 
+function config.orgmode()
+  require('orgmode').setup()
+end
+
 function config.polyglot()
   vim.g.vim_markdown_folding_disabled = 1
   vim.g.vim_markdown_override_foldtext = 0
