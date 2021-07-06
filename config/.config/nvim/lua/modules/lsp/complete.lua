@@ -46,22 +46,6 @@ require("nvim-autopairs.completion.compe").setup({
   map_complete = true -- it will auto insert `(` after select function or method item
 })
 
--- _G.complete_confirm = function()
---   if vim.fn.pumvisible() ~= 0  then
---     if vim.fn.complete_info()["selected"] ~= -1 then
---       vim.fn["compe#confirm"]()
---       return npairs.esc("<c-y>")
---     else
---       vim.defer_fn(function()
---         vim.fn["compe#confirm"]("<cr>")
---       end, 20)
---       return npairs.esc("<c-n>")
---     end
---   else
---     return npairs.check_break_line_char()
---   end
--- end
-
 require'compe'.setup {
   enabled = true;
   autocomplete = true;
@@ -69,15 +53,48 @@ require'compe'.setup {
   min_length = 1;
   preselect = 'always';
   source = {
-    path = true;
     buffer = true;
     calc = true;
-    vsnip = true;
     nvim_lsp = true;
     nvim_lua = true;
+    path = true;
     spell = true;
-    tags = true;
-    snippets_nvim = false;
+    treesitter = true;
+    vsnip = true;
+    emoji = {
+      filetypes = {"markdown", "text"},
+      priority = 0,
+    };
+
+    -- path = {
+    --   menu = "  ",
+    -- },
+    -- buffer = {
+    --   menu = "  ",
+    -- },
+    -- spell = {
+    --   menu = "  ",
+    -- },
+    -- calc = {
+    --   menu = "  ",
+    -- },
+    -- nvim_lsp = {
+    --   menu = "  "
+    -- },
+    -- nvim_lua = {
+    --   menu = "  "
+    -- },
+    -- vsnip = {
+    --   menu = "  "
+    -- },
+    -- treesitter = {
+    --   menu = "  ",
+    -- },
+    -- emoji = {
+    --   menu = " ﲃ ",
+    --   filetypes = {"markdown", "text"},
+    --   priority = 0,
+    -- },
   };
 }
 
@@ -87,6 +104,4 @@ inoremap { "<S-Tab>", "v:lua.s_tab_complete()", expr=true }
 inoremap { "<S-Tab>", "v:lua.s_tab_complete()", expr=true }
 
 inoremap { '<C-Space>', [[compe#complete()]],         expr=true }
--- inoremap { '<cr>',      [[compe#confirm('<cr>')]], expr=true }
--- inoremap { '<cr>',      [[v:lua.complete_confirm()]], expr=true }
 
