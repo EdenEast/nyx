@@ -10,7 +10,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       # clang compiler
-      clang
+      # clang
       # clang-tidy, clang-format clang-check
       clang-tools
       # cross platform makefile generator
@@ -21,7 +21,7 @@ in {
       cmake-format
       # TODO: fix collision between gcc and clang for cc
       # gnu compiler
-      # gcc
+      gcc
       # gnu debugger
       gdb
       # curses frontnend to gdb
