@@ -21,6 +21,7 @@ lsp['neovim/nvim-lspconfig'] = {
     {'nvim-lua/lsp-status.nvim', opt=true},
     {'glepnir/lspsaga.nvim', opt=true},
     {'onsails/lspkind-nvim', opt=true},
+    {'ray-x/lsp_signature.nvim', opt=true},
   },
 }
 
