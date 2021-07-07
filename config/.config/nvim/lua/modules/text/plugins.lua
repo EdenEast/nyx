@@ -7,9 +7,12 @@ local text = {}
 text['tpope/vim-commentary'] = { }
 
 -- Jump to any location specified by two characters
-text['justinmk/vim-sneak'] = {
-  config = conf.sneak,
+text['ggandor/lightspeed.nvim'] = {
+  config = conf.lightspeed,
 }
+-- text['justinmk/vim-sneak'] = {
+--   config = conf.sneak,
+-- }
 
 --
 text['junegunn/vim-easy-align'] = {
