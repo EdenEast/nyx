@@ -51,6 +51,7 @@ function main() {
   fi
 
   $NYX_COMMAND "${NYX_ARGS[@]}"
+  exit 0
 }
 
 # --- Commands ----------------------------------------------------------------
@@ -308,14 +309,14 @@ EOF
     cd "$NYX_ROOT"
 
     # The switch will fail is there is links that point to the config folder they need to be removed before the switch
-    unlink
 
     if [[ ${#args[@]} -gt 0 ]]; then
       debug "target argument was passed to switch. Switiching to ${args[0]}"
       if is_nixos; then
+        unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
         sudo nixos-rebuild switch --flake ".#top.${args[0]}"
       else
-        nix build ".#top.${args[0]}" && ./result/activate
+        nix build ".#top.${args[0]}" && unlink && ./result/activate
         exit 0
       fi
     fi
@@ -324,12 +325,13 @@ EOF
 
     if is_nixos; then
       debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
+      unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
       sudo nixos-rebuild switch --flake .
     else
       # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
       # infer then nix build will just run and build the default package.
       # TODO: This is wrong and should save what top target should be built for the machine.
-      nix build ".#top.$USER" && ./result/activate
+      nix build ".#top.$USER" && unlink && ./result/activate
 
       # # Could not infer and building the default package
       # debug "Could not infer target to build, building default package for the flake"
