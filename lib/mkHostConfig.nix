@@ -19,6 +19,9 @@ with inputs.nixpkgs.lib;
       systemd.user.sessionVariables."NIX_PATH" =
         mkForce "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
 
+      # TODO: Note sure where this should go
+      home.sessionPath = [ "$HOME/.local/nyx/bin" "$XDG_BIN_HOME" ];
+
       # Reexpose self and nixpkgs as a flake
       xdg.configFile."nix/registry.json".text = builtins.toJSON {
         version = 2;
