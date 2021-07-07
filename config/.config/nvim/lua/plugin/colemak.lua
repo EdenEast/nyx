@@ -12,36 +12,36 @@ end
 
 local enable_qwerty = function()
   -- Movement keys
-  anoremap { 'h', 'h' }
-  anoremap { 'j', 'j' }
-  anoremap { 'k', 'k' }
-  anoremap { 'l', 'l' }
+  anoremap({ "h", "h" })
+  anoremap({ "j", "j" })
+  anoremap({ "k", "k" })
+  anoremap({ "l", "l" })
 
-  anoremap { 'm', 'm' }
-  anoremap { 'n', 'n' }
-  anoremap { 'e', 'e' }
-  anoremap { 'i', 'i' }
+  anoremap({ "m", "m" })
+  anoremap({ "n", "n" })
+  anoremap({ "e", "e" })
+  anoremap({ "i", "i" })
 end
 
 -- Note: This is for Colemak-DH mode
 local enable_colemak = function()
   -- Movement keys
-  anoremap { 'm', 'h' }
-  anoremap { 'n', 'j' }
-  anoremap { 'e', 'k' }
-  anoremap { 'i', 'l' }
+  anoremap({ "m", "h" })
+  anoremap({ "n", "j" })
+  anoremap({ "e", "k" })
+  anoremap({ "i", "l" })
 
   -- Insert keys
-  nnoremap { 'h', 'i' }
+  nnoremap({ "h", "i" })
 
   -- Next search
-  nnoremap { 'l', 'n' }
+  nnoremap({ "l", "n" })
 
   -- End
-  nnoremap { 'k', 'e' }
+  nnoremap({ "k", "e" })
 
   -- Marks
-  nnoremap { 'j', 'm' }
+  nnoremap({ "j", "m" })
 end
 
 local setup = function()
@@ -57,11 +57,11 @@ local setup = function()
     colemak_mode()
   end
 
-  vim.cmd [[command! ColemakToggle lua require('plugin.colemak').toggle()]]
-  vim.cmd [[command! ColemakEnable lua require('plugin.colemak').enable()]]
-  vim.cmd [[command! ColemakDisable lua require('plugin.colemak').disable()]]
+  vim.cmd([[command! ColemakToggle lua require('plugin.colemak').toggle()]])
+  vim.cmd([[command! ColemakEnable lua require('plugin.colemak').enable()]])
+  vim.cmd([[command! ColemakDisable lua require('plugin.colemak').disable()]])
 
-  nnoremap { '<leader>tc', ':ColemakToggle<cr>' }
+  nnoremap({ "<leader>tc", ":ColemakToggle<cr>" })
 
   vim.g.colemak_mode_initialized = true
 end

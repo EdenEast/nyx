@@ -1,11 +1,11 @@
 local M = {}
 
 M.do_filetype = function(filetype)
-  local ftplugins = vim.api.nvim_get_runtime_file(string.format('ftplugin/%s.lua', filetype), true)
+  local ftplugins = vim.api.nvim_get_runtime_file(string.format("ftplugin/%s.lua", filetype), true)
 
   local f_env = setmetatable({
     -- Override print, so the prints still go through, otherwise it's confusing for people
-    print = vim.schedule_wrap(print)
+    print = vim.schedule_wrap(print),
   }, {
     -- Buf default back read/write to whatever is going on in the global landscape
     __index = _G,
@@ -27,7 +27,7 @@ M.do_filetype = function(filetype)
 end
 
 M.source = function()
-  for _, mod in ipairs(vim.api.nvim_get_runtime_file('lua/plugin/**/*.lua', true)) do
+  for _, mod in ipairs(vim.api.nvim_get_runtime_file("lua/plugin/**/*.lua", true)) do
     local ok, msg = pcall(loadfile(mod))
 
     if not ok then
@@ -40,11 +40,11 @@ end
 M.setup = function()
   M.source()
 
-  vim.augroup {
+  vim.augroup({
     luaplug = {
-      {'Filetype', '*', ":lua require('core.luaplug').do_filetype(vim.fn.expand('<amatch>'))"},
-    }
-  }
+      { "Filetype", "*", ":lua require('core.luaplug').do_filetype(vim.fn.expand('<amatch>'))" },
+    },
+  })
 end
 
 return M

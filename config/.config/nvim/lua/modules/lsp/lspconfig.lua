@@ -1,26 +1,26 @@
-package.loaded['lspconfig'] = nil
+package.loaded["lspconfig"] = nil
 
-local nvim_lsp = require('lspconfig')
-local global = require('core.global')
-local path = require('core.path')
-local has_tscope, _ = pcall(require, 'telescope')
+local nvim_lsp = require("lspconfig")
+local global = require("core.global")
+local path = require("core.path")
+local has_tscope, _ = pcall(require, "telescope")
 
 local pack_add = function(packs)
   for _, pack in ipairs(packs) do
     if not packer_plugins[pack].loaded then
-      vim.cmd('packadd ' .. pack)
+      vim.cmd("packadd " .. pack)
     end
   end
 end
 
-pack_add({'lsp_extensions.nvim', 'lsp-status.nvim', 'lspsaga.nvim', 'lspkind-nvim', 'lsp_signature.nvim'})
+pack_add({ "lsp_extensions.nvim", "lsp-status.nvim", "lspsaga.nvim", "lspkind-nvim", "lsp_signature.nvim" })
 
-require('lspkind').init()
+require("lspkind").init()
 
-local saga = require('lspsaga')
+local saga = require("lspsaga")
 saga.init_lsp_saga({})
 
-local status = require('modules.lsp.status')
+local status = require("modules.lsp.status")
 status.activate()
 
 local enhance_init = function(client)
@@ -28,69 +28,69 @@ local enhance_init = function(client)
   client.config.flags.allow_incremental_sync = true
 end
 
-local sig_config = { }
+local sig_config = {}
 
 local enhance_attach = function(client, bufnr)
-  local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
+  local filetype = vim.api.nvim_buf_get_option(0, "filetype")
   local nnoremap = vim.keymap.nnoremap
   local vnoremap = vim.keymap.vnoremap
   local inoremap = vim.keymap.inoremap
   local caps = client.resolved_capabilities
 
   status.on_attach(client)
-  require('lsp_signature').on_attach(sig_config)
+  require("lsp_signature").on_attach(sig_config)
 
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-  nnoremap { 'K',     [[<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>]], silent=true }
-  nnoremap { '<c-f>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]], silent=true }
-  nnoremap { '<c-b>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]], silent=true }
+  nnoremap({ "K", [[<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>]], silent = true })
+  nnoremap({ "<c-f>", [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]], silent = true })
+  nnoremap({ "<c-b>", [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]], silent = true })
 
-  inoremap { '<c-s>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent=true }
-  nnoremap { 'gD',    [[<cmd>lua vim.lsp.buf.declaration()<cr>]], silent=true }
-  nnoremap { 'gi',    [[<cmd>lua vim.lsp.buf.implementation()<cr>]], silent=true }
-  nnoremap { 'gy',    [[<cmd>lua vim.lsp.buf.type_definition()<cr>]], silent=true }
-  nnoremap { 'ga',    [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent=true }
+  inoremap({ "<c-s>", [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent = true })
+  nnoremap({ "gD", [[<cmd>lua vim.lsp.buf.declaration()<cr>]], silent = true })
+  nnoremap({ "gi", [[<cmd>lua vim.lsp.buf.implementation()<cr>]], silent = true })
+  nnoremap({ "gy", [[<cmd>lua vim.lsp.buf.type_definition()<cr>]], silent = true })
+  nnoremap({ "ga", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent = true })
 
   if has_tscope then
-    nnoremap { 'gd', [[<cmd>Telescope lsp_definitions<cr>]], silent=true }
-    nnoremap { 'gr', [[<cmd>Telescope lsp_references<cr>]], silent=true }
+    nnoremap({ "gd", [[<cmd>Telescope lsp_definitions<cr>]], silent = true })
+    nnoremap({ "gr", [[<cmd>Telescope lsp_references<cr>]], silent = true })
   else
-    nnoremap { 'gd', [[<cmd>lua vim.lsp.buf.definition()<cr>]], silent=true }
-    nnoremap { 'gr', [[<cmd>lua vim.lsp.buf.references()<cr>]], silent=true }
+    nnoremap({ "gd", [[<cmd>lua vim.lsp.buf.definition()<cr>]], silent = true })
+    nnoremap({ "gr", [[<cmd>lua vim.lsp.buf.references()<cr>]], silent = true })
   end
 
-  nnoremap { '[e', [[<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>]], silent=true }
-  nnoremap { ']e', [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]], silent=true }
+  nnoremap({ "[e", [[<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>]], silent = true })
+  nnoremap({ "]e", [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]], silent = true })
 
   if has_tscope then
-    nnoremap { '<leader>ce', [[<cmd>Telescope lsp_workspace_diagnostics<cr>]], silent=true }
+    nnoremap({ "<leader>ce", [[<cmd>Telescope lsp_workspace_diagnostics<cr>]], silent = true })
   else
-    nnoremap { '<leader>ce', [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent=true }
+    nnoremap({ "<leader>ce", [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent = true })
   end
 
   if caps.document_formatting then
-    nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent=true }
+    nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent = true })
   elseif caps.document_range_formatting then
-    nnoremap { '<leader>cf', [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent=true }
+    nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent = true })
   end
 
   if caps.rename then
-    nnoremap { '<leader>cn', [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent=true }
+    nnoremap({ "<leader>cn", [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent = true })
   end
 
-  nnoremap { '<leader>ca', [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent=true }
-  vnoremap { '<leader>ca', [[:<c-u><cmd>lua require('lspsaga.codeaction').range_code_action()<cr>]], silent=true }
+  nnoremap({ "<leader>ca", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent = true })
+  vnoremap({ "<leader>ca", [[:<c-u><cmd>lua require('lspsaga.codeaction').range_code_action()<cr>]], silent = true })
 
   -- if caps.document_highlight then
   -- end
 
   -- Rust is currently the only thing w/ inlay hints
-  if filetype == 'rust' then
+  if filetype == "rust" then
     vim.cmd(
       [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions.inlay_hints').request { ]]
         .. [[aligned = true, prefix = " » " ]]
-      .. [[} ]]
+        .. [[} ]]
     )
   end
 end
@@ -102,36 +102,44 @@ capabilities.window.workDoneProgress = true
 
 -- Setting up for each language server
 local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach, capabilities = capabilities }
-local ext = global.is_windows and '.cmd' or ''
+local ext = global.is_windows and ".cmd" or ""
 local pid = vim.fn.getpid()
 local servers = {
-  bashls = { cmd = {'bash-language-server'..ext, 'start'}, },
-  clangd = { cmd = { "clangd"..ext, "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu", }, },
-  cmake = { cmd = {'cmake-language-server'..ext}, },
-  elmls = { cmd = {'elm-language-server'..ext}, },
+  bashls = { cmd = { "bash-language-server" .. ext, "start" } },
+  clangd = {
+    cmd = {
+      "clangd" .. ext,
+      "--background-index",
+      "--suggest-missing-includes",
+      "--clang-tidy",
+      "--header-insertion=iwyu",
+    },
+  },
+  cmake = { cmd = { "cmake-language-server" .. ext } },
+  elmls = { cmd = { "elm-language-server" .. ext } },
   gopls = {},
-  omnisharp = { cmd = { 'omnisharp'..ext, "--languageserver" , "--hostPID", tostring(pid) }; },
+  omnisharp = { cmd = { "omnisharp" .. ext, "--languageserver", "--hostPID", tostring(pid) } },
   pyright = {},
-  rust_analyzer = { cmd = { 'rust-analyzer'..ext }; },
+  rust_analyzer = { cmd = { "rust-analyzer" .. ext } },
   sumneko_lua = {
-    cmd = {'lua-language-server'..ext},
+    cmd = { "lua-language-server" .. ext },
     settings = {
       Lua = {
         runtime = {
           -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-          version = 'LuaJIT',
+          version = "LuaJIT",
           -- Setup your lua path
-          path = vim.split(package.path, ';'),
+          path = vim.split(package.path, ";"),
         },
         diagnostics = {
           -- Get the language server to recognize the `vim` global
-          globals = {'vim', 'P'},
+          globals = { "vim", "P" },
         },
         workspace = {
           -- Make the server aware of Neovim runtime files
           library = {
-            [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+            [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
           },
         },
         -- Do not send telemetry data containing a randomized but unique identifier
@@ -146,13 +154,13 @@ local servers = {
 }
 
 for server, config in pairs(servers) do
-  nvim_lsp[server].setup(vim.tbl_deep_extend('force', default_lsp_config, config))
+  nvim_lsp[server].setup(vim.tbl_deep_extend("force", default_lsp_config, config))
 end
 
-local lspsync = require('lspsync')
+local lspsync = require("lspsync")
 lspsync.init({
-    install_root = path.join(global.cachehome, 'lspsync')
-  })
+  install_root = path.join(global.cachehome, "lspsync"),
+})
 
 -- Resources and references
 --
