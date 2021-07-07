@@ -1,16 +1,16 @@
 local config = {}
 
 function config.nvim_treesitter()
-  local global = require('core.global')
+  local global = require("core.global")
 
-  vim.api.nvim_command('set foldmethod=expr')
-  vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
+  vim.api.nvim_command("set foldmethod=expr")
+  vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
 
   -- Setting clang as the compiler to use as pre this solution
   -- https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support#troubleshooting
   -- NOTE: Had issues with clang and nix installed build-essentials and gcc and it works
-  require 'nvim-treesitter.install'.compilers = { 'gcc', 'clang', 'cl' }
-  require 'nvim-treesitter.configs'.setup {
+  require("nvim-treesitter.install").compilers = { "gcc", "clang", "cl" }
+  require("nvim-treesitter.configs").setup({
     highlight = {
       enable = true,
     },
@@ -20,7 +20,7 @@ function config.nvim_treesitter()
     query_linter = {
       enable = true,
       use_virtual_text = true,
-      lint_events = {"BufWrite", "CursorHold"},
+      lint_events = { "BufWrite", "CursorHold" },
     },
     textobjects = {
       select = {
@@ -34,32 +34,32 @@ function config.nvim_treesitter()
       },
     },
     ensure_installed = {
-      'bash',
-      'c',
-      'c_sharp',
-      'comment',
-      'cpp',
-      'go',
-      'json',
-      'lua',
-      'nix',
-      'python',
-      'query',
-      'regex',
-      'rust',
-      'toml',
-      'typescript',
+      "bash",
+      "c",
+      "c_sharp",
+      "comment",
+      "cpp",
+      "go",
+      "json",
+      "lua",
+      "nix",
+      "python",
+      "query",
+      "regex",
+      "rust",
+      "toml",
+      "typescript",
     },
-  }
+  })
 
   if not global.is_windows then
-    vim.cmd [[packadd nvim-treesitter-context]]
-    require'treesitter-context.config'.setup()
+    vim.cmd([[packadd nvim-treesitter-context]])
+    require("treesitter-context.config").setup()
   end
 end
 
 function config.orgmode()
-  require('orgmode').setup()
+  require("orgmode").setup()
 end
 
 function config.polyglot()

@@ -1,35 +1,35 @@
 local lang = {}
-local conf = require('modules.lang.config')
+local conf = require("modules.lang.config")
 
-lang['nvim-treesitter/nvim-treesitter'] = {
-  event = 'BufRead',
-  run = ':TSUpdate',
+lang["nvim-treesitter/nvim-treesitter"] = {
+  event = "BufRead",
+  run = ":TSUpdate",
   config = conf.nvim_treesitter,
   requires = {
-    {'romgrk/nvim-treesitter-context', opt=true, disabled = not require('core.global').is_windows},
+    { "romgrk/nvim-treesitter-context", opt = true, disabled = not require("core.global").is_windows },
   },
 }
 
-lang['nvim-treesitter/playground'] = {
+lang["nvim-treesitter/playground"] = {
   config = conf.playground,
-  cmd = {'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor'},
+  cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
 }
 
-lang['kristijanhusak/orgmode.nvim'] = {
+lang["kristijanhusak/orgmode.nvim"] = {
   config = conf.orgmode,
-  ft = { 'org' }
+  ft = { "org" },
 }
 
-lang['sheerun/vim-polyglot'] = {
+lang["sheerun/vim-polyglot"] = {
   config = conf.polyglot,
 }
 
-lang['pest-parser/pest.vim'] = {
-  ft = { 'pest' }
+lang["pest-parser/pest.vim"] = {
+  ft = { "pest" },
 }
 
-lang['vmchale/just-vim'] = {
-  ft = { 'just' }
+lang["vmchale/just-vim"] = {
+  ft = { "just" },
 }
 
 return lang

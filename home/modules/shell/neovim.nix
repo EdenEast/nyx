@@ -10,8 +10,12 @@ in {
 
   config = mkIf cfg.enable {
     # home.packages = with pkgs; [ neovim-nightly ];
-    home.packages = with pkgs; [ neovim-unwrapped ];
     xdg.configFile."nvim".source = ../../../config/.config/nvim;
+    home.packages = with pkgs; [
+      neovim-unwrapped
+      stylua
+      nixfmt
+    ];
 
     # Add Treesitter parsers
     home.file = {

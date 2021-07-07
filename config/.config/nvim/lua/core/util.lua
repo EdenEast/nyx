@@ -1,4 +1,4 @@
-local global = require('core.global')
+local global = require("core.global")
 
 local util = {}
 
@@ -14,28 +14,28 @@ util.join = function(tbl, delm)
 end
 
 util.exec_line = function()
-  local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+  local ft = vim.api.nvim_buf_get_option(0, "filetype")
   local line = vim.api.nvim_get_current_line()
 
-  if ft == 'lua' then
+  if ft == "lua" then
     local cmd = string.format('execute(":lua %s")', line)
     vim.cmd(cmd)
-  elseif ft == 'vim' then
-    local cmd = 'execute ' .. line
+  elseif ft == "vim" then
+    local cmd = "execute " .. line
     vim.cmd(cmd)
   end
 end
 
 util.exec_file = function()
-  local ft = vim.api.nvim_buf_get_option(0, 'filetype')
-  vim.cmd('silent! write')
+  local ft = vim.api.nvim_buf_get_option(0, "filetype")
+  vim.cmd("silent! write")
 
-  if ft == 'lua' then
-    vim.cmd('luafile %')
-  elseif ft == 'python' then
-    vim.cmd('!python %')
-  elseif ft == 'vim' then
-    vim.cmd('source %')
+  if ft == "lua" then
+    vim.cmd("luafile %")
+  elseif ft == "python" then
+    vim.cmd("!python %")
+  elseif ft == "vim" then
+    vim.cmd("source %")
   end
 end
 
@@ -50,12 +50,12 @@ util.open_url = function(url)
   elseif global.is_linux then
     vim.cmd([[:execute 'silent !xdg-open ]] .. url .. "'")
   else
-    print('Unknown platform. Cannot open url')
+    print("Unknown platform. Cannot open url")
   end
 end
 
 util.open_url_under_cursor = function()
-  local cword = vim.fn.expand('<cWORD>')
+  local cword = vim.fn.expand("<cWORD>")
 
   -- Remove surronding quotes if exist
   local url = string.gsub(cword, [[.*['"](.*)['"].*$]], "%1")
@@ -67,17 +67,17 @@ util.open_url_under_cursor = function()
 
   -- If string matches `user/repo`
   if string.match(url, [[.*/.*]]) then
-    return util.open_url('https://github.com/' .. url)
+    return util.open_url("https://github.com/" .. url)
   end
 end
 
 util.toggle_numbers = function()
   local o = vim.wo
   if o.number then
-    o.number         = false
+    o.number = false
     o.relativenumber = false
   else
-    o.number         = true
+    o.number = true
     o.relativenumber = true
   end
 end

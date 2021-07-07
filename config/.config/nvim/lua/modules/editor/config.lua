@@ -1,33 +1,33 @@
 local config = {}
 
 function config.nvim_autopairs()
-  require('nvim-autopairs').setup({
-    disable_filetype = { "TelescopePrompt" , "vim" },
+  require("nvim-autopairs").setup({
+    disable_filetype = { "TelescopePrompt", "vim" },
     enable_check_bracket_line = true,
   })
 end
 
 function config.nvim_colorizer()
-  require 'colorizer'.setup {
-    css = { rgb_fn = true; };
-    lua = { names = false; };
-    sass = { rgb_fn = true; };
-    scss = { rgb_fn = true; };
-    stylus = { rgb_fn = true; };
-    tmux = { names = false; };
-    vim = { names = true; };
-    'javascript';
-    'javascriptreact';
-    'typescript';
-    'typescriptreact';
+  require("colorizer").setup({
+    css = { rgb_fn = true },
+    lua = { names = false },
+    sass = { rgb_fn = true },
+    scss = { rgb_fn = true },
+    stylus = { rgb_fn = true },
+    tmux = { names = false },
+    vim = { names = true },
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
     html = {
-      mode = 'foreground';
-    }
-  }
+      mode = "foreground",
+    },
+  })
 end
 
 function config.editorconfig()
-  vim.g.EditorConfig_exclude_patterns = { 'fugitive://.*', 'scp://.*' }
+  vim.g.EditorConfig_exclude_patterns = { "fugitive://.*", "scp://.*" }
 end
 
 function config.doge()
@@ -36,30 +36,30 @@ end
 
 function config.firenvim()
   vim.o.laststatus = 0
-  vim.bo.filetype = 'markdown'
+  vim.bo.filetype = "markdown"
 end
 
 function config.rooter()
-  vim.g.rooter_patterns = { '.git', '.git/', '.root', '.root/' }
+  vim.g.rooter_patterns = { ".git", ".git/", ".root", ".root/" }
 end
 
 function config.spectre()
   vim.cmd('command! Spectre lua require("spectre").open()')
 
-  require('spectre').setup()
+  require("spectre").setup()
 end
 
 function config.toggleterm()
-  require("toggleterm").setup {
+  require("toggleterm").setup({
     open_mapping = [[<c-space>]],
     size = function(term)
-    if term.direction == "horizontal" then
-      return 20
-    elseif term.direction == "vertical" then
-      return vim.o.columns * 0.4
-    end
-  end,
-  }
+      if term.direction == "horizontal" then
+        return 20
+      elseif term.direction == "vertical" then
+        return vim.o.columns * 0.4
+      end
+    end,
+  })
 end
 
 return config
