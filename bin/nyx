@@ -315,8 +315,7 @@ EOF
       if is_nixos; then
         sudo nixos-rebuild switch --flake ".#top.${args[0]}"
       else
-        nix build ".#top.${args[0]}"
-        ./result/activate
+        nix build ".#top.${args[0]}" && ./result/activate
         exit 0
       fi
     fi
@@ -330,8 +329,7 @@ EOF
       # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
       # infer then nix build will just run and build the default package.
       # TODO: This is wrong and should save what top target should be built for the machine.
-      nix build ".#top.$USER"
-      ./result/activate
+      nix build ".#top.$USER" && ./result/activate
 
       # # Could not infer and building the default package
       # debug "Could not infer target to build, building default package for the flake"
