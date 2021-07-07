@@ -44,6 +44,11 @@ tools['pwntester/octo.nvim'] = {
   diable = true, -- TODO: configure
 }
 
+tools['sindrets/diffview.nvim'] = {
+  config = conf.diffview,
+  cmd = {'DiffviewOpen', 'Neogit'},
+}
+
 -- Show git blame in virtual text like git-lens in vscode
 tools['f-person/git-blame.nvim'] = {
   config = conf.gitblame,
@@ -53,6 +58,7 @@ tools['f-person/git-blame.nvim'] = {
 tools['TimUntersberger/neogit'] = {
   config = conf.neogit,
   cmd = {'Neogit'},
+  keys = {'<leader>gg'},
   requires = {'nvim-lua/plenary.nvim'},
   diable = true,
 }

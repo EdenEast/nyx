@@ -47,6 +47,7 @@ wk.register({
       b = 'blame-file',
       c = 'create-commit',
       d = 'diff-file',
+      g = 'neogit',
       m = 'commit-under-cursor',
       h = {
         name = '+hunk',

@@ -61,6 +61,11 @@ end
 function config.octo()
 end
 
+function config.diffview()
+  local cb = require'diffview.config'.diffview_callback
+  require'diffview'.setup { }
+end
+
 function config.gitblame()
   vim.g.gitblame_enabled = 0
 
@@ -68,7 +73,13 @@ function config.gitblame()
 end
 
 function config.neogit()
-  require('neogit').setup()
+  require('neogit').setup({
+    integrations = {
+      diffview = true
+    }
+  })
+
+  vim.keymap.nnoremap { '<leader>gg', ':Neogit<cr>' }
 end
 
 return config
