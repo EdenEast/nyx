@@ -3,7 +3,7 @@ package.loaded['lspconfig'] = nil
 local nvim_lsp = require('lspconfig')
 local global = require('core.global')
 local path = require('core.path')
-local has_tscope, tscope = pcall(require, 'telescope')
+local has_tscope, _ = pcall(require, 'telescope')
 
 local pack_add = function(packs)
   for _, pack in ipairs(packs) do
@@ -13,7 +13,7 @@ local pack_add = function(packs)
   end
 end
 
-pack_add({'lsp_extensions.nvim', 'lsp-status.nvim', 'lspsaga.nvim', 'lspkind-nvim'})
+pack_add({'lsp_extensions.nvim', 'lsp-status.nvim', 'lspsaga.nvim', 'lspkind-nvim', 'lsp_signature.nvim'})
 
 require('lspkind').init()
 
@@ -28,6 +28,8 @@ local enhance_init = function(client)
   client.config.flags.allow_incremental_sync = true
 end
 
+local sig_config = { }
+
 local enhance_attach = function(client, bufnr)
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
   local nnoremap = vim.keymap.nnoremap
@@ -36,6 +38,7 @@ local enhance_attach = function(client, bufnr)
   local caps = client.resolved_capabilities
 
   status.on_attach(client)
+  require('lsp_signature').on_attach(sig_config)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
