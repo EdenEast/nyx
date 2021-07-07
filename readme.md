@@ -91,3 +91,7 @@ I agree with [@hlissner][hlissner]. This is needed when nix [drives you to drink
 - [@MayNiklas](https://github.com/MayNiklas) [nixos](https://github.com/MayNiklas/nixos)
 
 [hlissner]: https://github.com/hlissner
+
+## TODO:
+
+- Create wsl options, check this [commit](https://github.com/davidtwco/veritas/commit/62cf0dd3f30b117462e3c31682b602d6cde3bc6a)
