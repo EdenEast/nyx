@@ -14,7 +14,6 @@ NYX_ROOT="$(dirname $(dirname "$(readlink -f "$0")"))"
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(build|check|fmt|help|link|switch|update|unlink)$"
 
-
 declare -A TARGETS
 declare -A SOURCES
 TARGETS['nvim']="$HOME/.config/nvim"
@@ -24,10 +23,9 @@ SOURCES['awesome']="$NYX_ROOT/config/.config/awesome"
 
 function main() {
   # Parse command line options
-  local retval=0
   if [ -z "$*" ]; then
     help # There is no arguments passed print help
-  elif [[ "$1" =~ $INTERNAL_COMMANDS ]]; then
+  elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
     NYX_COMMAND="${1//-/_}"
     NYX_ARGS=()
     shift
@@ -35,7 +33,7 @@ function main() {
     while [[ $# -gt 0 ]]; do
       key="$1"
       case $key in
-        -v|--verbose) # used by all commands
+        -v | --verbose) # used by all commands
           DEBUG="YES"
           ;;
 
@@ -58,7 +56,7 @@ function main() {
 
 function build() {
   local help_msg
-  IFS='' read -r -d '' help_msg << EOF
+  IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx build [target]
 
 Build an output target. If no output target is specified nyx will build
@@ -71,7 +69,7 @@ EOF
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
+      -h | --help)
         do_help=true
         ;;
       *)
@@ -101,7 +99,7 @@ EOF
       debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
       sudo nixos-rebuild build --flake .
     else
-      debug "Nixos not detected, building target based on \$USER"
+      debug "Nixos not detected, building target based on $USER"
       # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
       # infer then nix build will just run and build the default package.
       # TODO: This is wrong and should save what top target should be built for the machine.
@@ -116,7 +114,7 @@ EOF
 
 function check() {
   local help_msg
-  IFS='' read -r -d '' help_msg << EOF
+  IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx check
 
 Execute flake check output.
@@ -128,7 +126,7 @@ EOF
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
+      -h | --help)
         do_help=true
         ;;
       *)
@@ -157,7 +155,7 @@ EOF
 
 function fmt() {
   local help_msg
-  IFS='' read -r -d '' help_msg << EOF
+  IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx fmt [OPTIONS] [target...]
 
 Execute formatters for file types.
@@ -169,7 +167,7 @@ EOF
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
+      -h | --help)
         do_help=true
         ;;
       *)
@@ -185,13 +183,13 @@ EOF
   }
 
   (
-    cd $NYX_ROOT
+    cd "$NYX_ROOT"
 
     # Formatting *.nix files
     nix-shell -p fd -p nixfmt --run "fd . --type f --extension nix --exec nixfmt {}"
 
     (
-      cd config/.config/nvim
+      cd "config/.config/nvim"
       nix-shell -p stylua --run "stylua -g *.lua -- ."
     )
   )
@@ -199,7 +197,7 @@ EOF
 
 function link() {
   local help_msg
-  IFS='' read -r -d '' help_msg << EOF
+  IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx link [OPTIONS] [target...]
 
 Create a symlink to config file. If no application is given all will be provided.
@@ -215,7 +213,7 @@ EOF
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
+      -h | --help)
         do_help=true
         ;;
       *)
@@ -231,8 +229,8 @@ EOF
   }
 
   function create_link() {
-    if [[ -L "$1" ]]; then
-      if [[ "$(readlink $1)" = "$2" ]]; then
+    if [[ -L $1 ]]; then
+      if [[ "$(readlink $1)" == "$2" ]]; then
         debug "link: $1 already points to $2. Skipping"
         return
       else
@@ -241,13 +239,13 @@ EOF
       fi
     fi
 
-    if [[ -d "$1" ]]; then
+    if [[ -d $1 ]]; then
       warn "path: \`$1\` is a directory. Skipping"
       return
     fi
 
     ln -s "$2" "$1"
-    if [[ "$(readlink "$1")" = "$2" ]]; then
+    if [[ "$(readlink "$1")" == "$2" ]]; then
       debug "created link $1 to $2"
     else
       failure "created link $1 does not point to $2. Points to $(readlink $1)"
@@ -262,7 +260,7 @@ EOF
         key="${args[$index]}"
         target="${TARGETS[$key]}"
         source="${SOURCES[$key]}"
-        if [[ -z $target ]] || [[ -z source ]]; then
+        if [[ -z $target ]] || [[ -z $source ]]; then
           failure "unknown target $key"
         fi
 
@@ -278,20 +276,24 @@ EOF
 
 function switch() {
   local help_msg
-  IFS='' read -r -d '' help_msg << EOF
+  IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx switch [OPTIONS] [target...]
 
 Switch the current installed configuration state.
 
 OPTIONS:
   -h, --help      Show help message
+  -l, --link      Link after switch
 EOF
 
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
+      -h | --help)
         do_help=true
+        ;;
+      -l | --link)
+        do_link=true
         ;;
       *)
         args+=("$1")
@@ -319,30 +321,33 @@ EOF
         nix build ".#top.${args[0]}" && unlink && ./result/activate
         exit 0
       fi
-    fi
-
-    # There was no target passed to build so infer what do build
-
-    if is_nixos; then
-      debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
-      unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
-      sudo nixos-rebuild switch --flake .
     else
-      # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
-      # infer then nix build will just run and build the default package.
-      # TODO: This is wrong and should save what top target should be built for the machine.
-      nix build ".#top.$USER" && unlink && ./result/activate
+      # There was no target passed to build so infer what do build
+      if is_nixos; then
+        debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
+        unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
+        sudo nixos-rebuild switch --flake .
+      else
+        # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
+        # infer then nix build will just run and build the default package.
+        # TODO: This is wrong and should save what top target should be built for the machine.
+        nix build ".#top.$USER" && unlink && ./result/activate
 
-      # # Could not infer and building the default package
-      # debug "Could not infer target to build, building default package for the flake"
-      # nix build
+        # # Could not infer and building the default package
+        # debug "Could not infer target to build, building default package for the flake"
+        # nix build
+      fi
     fi
+
+    [ "$?" -ne 0 ] && exit "$?"
+
+    [ -n "$do_link" ] && link
   )
 }
 
 function update() {
   local help_msg
-  IFS='' read -r -d '' help_msg << EOF
+  IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx update [OPTIONS] [inputs...]
 
 Update flake.lock file
@@ -354,7 +359,7 @@ EOF
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
+      -h | --help)
         do_help=true
         ;;
       *)
@@ -379,7 +384,7 @@ EOF
 
 function unlink() {
   local help_msg
-  IFS='' read -r -d '' help_msg << EOF
+  IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx unlink [OPTIONS] [targets...]
 
 Remove manual symlinks to config/ folder
@@ -395,7 +400,7 @@ EOF
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
+      -h | --help)
         do_help=true
         ;;
       *)
@@ -411,8 +416,8 @@ EOF
   }
 
   function remove_link() {
-    if [[ -L "$1" ]]; then
-      if [[ "$(readlink $1)" = "$2" ]]; then
+    if [[ -L $1 ]]; then
+      if [[ $(readlink "$1") == "$2" ]]; then
         debug "link: $1 points to nyx config folder $2. Removing"
         rm "$1"
       else
@@ -429,7 +434,7 @@ EOF
         key="${args[$index]}"
         target="${TARGETS[$key]}"
         source="${SOURCES[$key]}"
-        if [[ -z $target ]] || [[ -z source ]]; then
+        if [[ -z $target ]] || [[ -z $source ]]; then
           failure "unknown target $key"
         fi
 
@@ -444,12 +449,12 @@ EOF
 }
 
 function help() {
-  if [[ "$1" =~ $INTERNAL_COMMANDS ]]; then
+  if [[ $1 =~ $INTERNAL_COMMANDS ]]; then
     $1 '--help'
   fi
 
   local msg
-  IFS='' read -r -d '' msg << EOF
+  IFS='' read -r -d '' msg <<EOF
 Utility script to work with my nix configuration more effectively
 
 USAGE: nyx <COMMAND> [OPTIONS...]
@@ -476,7 +481,7 @@ function get_distro() {
 
 function is_nixos() {
   local distro=$(get_distro)
-  [[ $distro = "nixos" ]] && echo 1
+  [[ $distro == "nixos" ]] && echo 1
 }
 
 function debug() {
