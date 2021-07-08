@@ -10,6 +10,7 @@ CYN='\033[0;36m'
 RST='\033[0m'
 
 NYX_ROOT="$(dirname $(dirname "$(readlink -f "$0")"))"
+HOME_MANAGER_BACKUP_EXT="nbak"
 
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(build|check|fmt|help|link|switch|update|unlink)$"
