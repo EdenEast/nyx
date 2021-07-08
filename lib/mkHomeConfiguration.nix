@@ -9,7 +9,7 @@
         configuration = { ... }: {
           imports = [ inputs.self.internal.hostConfigurations."${configName}" ];
 
-          xdg.configFile."nix/conf.nix".text =
+          xdg.configFile."nix/nix.conf".text =
             let
               nixConf = import ../nix/cache.nix;
             in

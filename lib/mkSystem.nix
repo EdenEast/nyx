@@ -37,6 +37,18 @@
                 };
             }
           )
+          (
+            { inputs, ... }: {
+              # Re-expose self and nixpkgs as flakes.
+              nix.registry = {
+                self.flake = inputs.self;
+                nixpkgs = {
+                  from = { id = "nixpkgs"; type = "indirect"; };
+                  flake = inputs.nixpkgs;
+                };
+              };
+            }
+          )
           (import ../nixos/modules)
           (import ../nixos/profiles)
           (import config)
