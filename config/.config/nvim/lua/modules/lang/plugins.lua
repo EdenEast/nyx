@@ -20,16 +20,21 @@ lang["kristijanhusak/orgmode.nvim"] = {
   ft = { "org" },
 }
 
-lang["sheerun/vim-polyglot"] = {
-  config = conf.polyglot,
-}
-
 lang["pest-parser/pest.vim"] = {
   ft = { "pest" },
 }
 
-lang["vmchale/just-vim"] = {
+lang["NoahTheDuke/vim-just"] = {
   ft = { "just" },
+}
+
+lang["plasticboy/vim-markdown"] = {
+  config = conf.markdown,
+  ft = { "markdown" },
+}
+
+lang["axvr/org.vim"] = {
+  ft = { "org" },
 }
 
 return lang
