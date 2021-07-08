@@ -15,62 +15,67 @@
 
     # Overlays
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
+
+    fenix.url = "github:nix-community/fenix";
+    fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
 
   outputs = { self, ... }@inputs:
-  with inputs.nixpkgs.lib;
-  let
-    inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig mapModules mkPkgs;
+    with inputs.nixpkgs.lib;
+    let
+      inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig mapModules mkPkgs;
 
-    system = "x86_64-linux";
-    pkgs = mkPkgs system;
+      system = "x86_64-linux";
+      pkgs = mkPkgs system;
 
-    lib = inputs.nixpkgs.lib.extend
+      lib = inputs.nixpkgs.lib.extend
         (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
-  in {
-    lib = lib.my;
-
-    internal = {
-      hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
-        eden  = { inherit system; config = ./home/hosts/eden.nix; };
-        wsl   = { inherit system; config = ./home/hosts/wsl.nix; };
-        sloth = { inherit system; config = ./home/hosts/sloth.nix; };
-      };
-    };
-
-    overlay = final: prev: {
-      my = self.packages."${system}";
-    };
-
-    overlays = { neovim-nightly = inputs.neovim-nightly.overlay; } // mapModules ./nix/overlays import;
-
-    packages."${system}" = mapModules ./nix/pkgs (p: pkgs.callPackage p {});
-
-    homeManagerConfigurations = mapAttrs' mkHomeConfig {
-      eden = { inherit system; };
-    };
-
-    nixosConfigurations = mapAttrs' mkSystemConfig {
-      wsl = { inherit system; config = ./nixos/hosts/wsl; };
-      sloth = { inherit system; config = ./nixos/hosts/sloth; };
-    };
-
-    top = let
-      nixtop = genAttrs
-          (builtins.attrNames inputs.self.nixosConfigurations)
-          (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
-
-      hometop = genAttrs
-          (builtins.attrNames inputs.self.homeManagerConfigurations)
-          (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
     in
-    nixtop // hometop;
+      {
+        lib = lib.my;
 
-    # Can be executed with `nix run . -- <args>`
-    defaultApp."${system}" = {
-      type = "app";
-      program = ./bin/nyx;
-    };
-  };
+        internal = {
+          overlays = [ (inputs.neovim-nightly.overlay) (inputs.fenix.overlay) ] ++ (attrValues (mapModules ./nix/overlays import));
+
+          hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
+            eden = { inherit system; config = ./home/hosts/eden.nix; };
+            wsl = { inherit system; config = ./home/hosts/wsl.nix; };
+            sloth = { inherit system; config = ./home/hosts/sloth.nix; };
+          };
+        };
+
+        overlay = final: prev: {
+          my = self.packages."${system}";
+        };
+
+        packages."${system}" = mapModules ./nix/pkgs (p: pkgs.callPackage p {});
+
+        homeManagerConfigurations = mapAttrs' mkHomeConfig {
+          eden = { inherit system; };
+        };
+
+        nixosConfigurations = mapAttrs' mkSystemConfig {
+          wsl = { inherit system; config = ./nixos/hosts/wsl; };
+          sloth = { inherit system; config = ./nixos/hosts/sloth; };
+        };
+
+        top = let
+          nixtop = genAttrs
+            (builtins.attrNames inputs.self.nixosConfigurations)
+            (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
+
+          hometop = genAttrs
+            (builtins.attrNames inputs.self.homeManagerConfigurations)
+            (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+        in
+          nixtop // hometop;
+
+        # Can be executed with `nix run . -- <args>`
+        defaultApp."${system}" = {
+          type = "app";
+          program = ./bin/nyx;
+        };
+      };
 }
