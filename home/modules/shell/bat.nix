@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.bat;
-in {
+in
+{
   options.nyx.modules.shell.bat = {
     enable = mkEnableOption "bat configuration";
   };

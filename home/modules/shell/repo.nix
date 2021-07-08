@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.repo;
-in {
+in
+{
   options.nyx.modules.shell.repo = {
     enable = mkEnableOption "repo configuration";
   };

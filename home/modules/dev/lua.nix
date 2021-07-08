@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.dev.lua;
-in {
+in
+{
 
   options.nyx.modules.dev.lua = {
     enable = mkEnableOption "lua configuration";

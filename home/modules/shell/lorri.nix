@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.lorri;
-in {
+in
+{
   options.nyx.modules.shell.lorri = {
     enable = mkEnableOption "lorri configuration";
   };

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.dev.nix;
-in {
+in
+{
   options.nyx.modules.dev.nix = {
     enable = mkEnableOption "nix configuration";
   };
@@ -10,7 +11,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       # Code formatter for nix
-      nixfmt
+      nixpkgs-fmt
       # Source hash for fetchgit
       nix-prefetch-git
       # Source hash for github

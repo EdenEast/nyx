@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.profiles.extended;
-in {
+in
+{
   options.nyx.profiles.extended = {
     enable = mkEnableOption "extended profile";
   };

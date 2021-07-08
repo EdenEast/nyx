@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.direnv;
-in {
+in
+{
   options.nyx.modules.shell.direnv = {
     enable = mkEnableOption "direnv configuration";
   };

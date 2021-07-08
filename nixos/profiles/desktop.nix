@@ -3,14 +3,15 @@
 with lib;
 let
   cfg = config.nyx.profiles.desktop;
-in {
+in
+{
   options.nyx.profiles.desktop.enable = mkEnableOption "desktop profile";
 
   config = mkIf cfg.enable {
     fonts = {
       fonts = with pkgs; [
         (nerdfonts.override {
-          fonts = ["Hack" "Meslo" "UbuntuMono"];
+          fonts = [ "Hack" "Meslo" "UbuntuMono" ];
         })
       ];
     };

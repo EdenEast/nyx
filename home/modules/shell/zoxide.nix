@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.zoxide;
-in {
+in
+{
   options.nyx.modules.shell.zoxide = {
     enable = mkEnableOption "zoxide configuration";
   };

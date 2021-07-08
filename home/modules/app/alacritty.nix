@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.app.alacritty;
-in {
+in
+{
   options.nyx.modules.app.alacritty = {
     enable = mkEnableOption "alacritty configuration";
   };

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.profiles.development;
-in {
+in
+{
   options.nyx.profiles.development.enable =
     mkEnableOption "development configuration";
 

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.profiles.common;
-in {
+in
+{
   options.nyx.profiles.common = { enable = mkEnableOption "common profile"; };
 
   config = mkIf cfg.enable {

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.dev.dhall;
-in {
+in
+{
   options.nyx.modules.dev.dhall = {
     enable = mkEnableOption "dhall configuration";
   };

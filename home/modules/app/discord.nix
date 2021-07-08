@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.app.discord;
-in {
+in
+{
   options.nyx.modules.app.discord = { enable = mkEnableOption "discord app"; };
 
   config = mkIf cfg.enable {

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.ssh;
-in {
+in
+{
   options.nyx.modules.shell.ssh = {
     enable = mkEnableOption "ssh configuration";
   };

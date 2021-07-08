@@ -33,35 +33,36 @@
       lib = inputs.nixpkgs.lib.extend
         (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
     in
-      {
-        lib = lib.my;
+    {
+      lib = lib.my;
 
-        internal = {
-          overlays = [ (inputs.neovim-nightly.overlay) (inputs.fenix.overlay) ] ++ (attrValues (mapModules ./nix/overlays import));
+      internal = {
+        overlays = [ (inputs.neovim-nightly.overlay) (inputs.fenix.overlay) ] ++ (attrValues (mapModules ./nix/overlays import));
 
-          hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
-            eden = { inherit system; config = ./home/hosts/eden.nix; };
-            wsl = { inherit system; config = ./home/hosts/wsl.nix; };
-            sloth = { inherit system; config = ./home/hosts/sloth.nix; };
-          };
+        hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
+          eden = { inherit system; config = ./home/hosts/eden.nix; };
+          wsl = { inherit system; config = ./home/hosts/wsl.nix; };
+          sloth = { inherit system; config = ./home/hosts/sloth.nix; };
         };
+      };
 
-        overlay = final: prev: {
-          my = self.packages."${system}";
-        };
+      overlay = final: prev: {
+        my = self.packages."${system}";
+      };
 
-        packages."${system}" = mapModules ./nix/pkgs (p: pkgs.callPackage p {});
+      packages."${system}" = mapModules ./nix/pkgs (p: pkgs.callPackage p { });
 
-        homeManagerConfigurations = mapAttrs' mkHomeConfig {
-          eden = { inherit system; };
-        };
+      homeManagerConfigurations = mapAttrs' mkHomeConfig {
+        eden = { inherit system; };
+      };
 
-        nixosConfigurations = mapAttrs' mkSystemConfig {
-          wsl = { inherit system; config = ./nixos/hosts/wsl; };
-          sloth = { inherit system; config = ./nixos/hosts/sloth; };
-        };
+      nixosConfigurations = mapAttrs' mkSystemConfig {
+        wsl = { inherit system; config = ./nixos/hosts/wsl; };
+        sloth = { inherit system; config = ./nixos/hosts/sloth; };
+      };
 
-        top = let
+      top =
+        let
           nixtop = genAttrs
             (builtins.attrNames inputs.self.nixosConfigurations)
             (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
@@ -70,12 +71,12 @@
             (builtins.attrNames inputs.self.homeManagerConfigurations)
             (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
         in
-          nixtop // hometop;
+        nixtop // hometop;
 
-        # Can be executed with `nix run . -- <args>`
-        defaultApp."${system}" = {
-          type = "app";
-          program = ./bin/nyx;
-        };
+      # Can be executed with `nix run . -- <args>`
+      defaultApp."${system}" = {
+        type = "app";
+        program = ./bin/nyx;
       };
+    };
 }

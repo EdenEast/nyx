@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.app.wezterm;
-in {
+in
+{
   options.nyx.modules.app.wezterm = {
     enable = mkEnableOption "wezterm configuration";
   };

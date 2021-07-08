@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.caps;
-in {
+in
+{
   options.nyx.modules.caps.enable = mkEnableOption "Caps to escape+crtl";
 
   config = mkIf cfg.enable {

@@ -34,8 +34,8 @@ in
   systemd.enableEmergencyMode = false;
 
   environment.etc."wsl.conf".text = ''
-  [network]
-  hostname = wsl
+    [network]
+    hostname = wsl
   '';
 
   system.stateVersion = "21.05";

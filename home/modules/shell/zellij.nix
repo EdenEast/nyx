@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.zellij;
-in {
+in
+{
   options.nyx.modules.shell.zellij = {
     enable = mkEnableOption "zellij configuration";
   };

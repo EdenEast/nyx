@@ -5,7 +5,8 @@ let
   cfg = config.nyx.modules.dev.python;
   configHome = config.xdg.configHome;
   dataHome = config.xdg.dataHome;
-in {
+in
+{
   options.nyx.modules.dev.python.enable = mkEnableOption "python configuration";
 
   config = mkIf cfg.enable {

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.starship;
-in {
+in
+{
   options.nyx.modules.shell.starship = {
     enable = mkEnableOption "starship configuration";
   };
