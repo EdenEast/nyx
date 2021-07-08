@@ -1,5 +1,5 @@
 {
-  binaryCache = [
+  binaryCaches = [
     "https://cachix.cachix.org"
     "https://nix-community.cachix.org"
   ];
