@@ -18,7 +18,7 @@ wk.register({
   c = {
     name = "+code",
     e = "list-diagnostics",
-    f = "format",
+    -- f = "format",
     n = "rename",
   },
   f = {

@@ -70,10 +70,17 @@ local enhance_attach = function(client, bufnr)
   end
 
   if caps.document_formatting then
-    nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent = true })
-  elseif caps.document_range_formatting then
-    nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent = true })
+    vim.cmd([[
+      augroup !LSPFormatOnSave
+        autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()
+      augroup END
+    ]])
   end
+  -- if caps.document_formatting then
+  --   nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent = true })
+  -- elseif caps.document_range_formatting then
+  --   nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent = true })
+  -- end
 
   if caps.rename then
     nnoremap({ "<leader>cn", [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent = true })
@@ -100,6 +107,9 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.window = capabilities.window or {}
 capabilities.window.workDoneProgress = true
 
+local shellcheck = require("modules.lsp.efm.shellcheck")
+local shfmt = require("modules.lsp.efm.shfmt")
+
 -- Setting up for each language server
 local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach, capabilities = capabilities }
 local ext = global.is_windows and ".cmd" or ""
@@ -116,6 +126,14 @@ local servers = {
     },
   },
   cmake = { cmd = { "cmake-language-server" .. ext } },
+  efm = {
+    init_options = { documentFormatting = true },
+    settings = {
+      languages = {
+        sh = { shfmt, shellcheck },
+      },
+    },
+  },
   elmls = { cmd = { "elm-language-server" .. ext } },
   gopls = {},
   omnisharp = { cmd = { "omnisharp" .. ext, "--languageserver", "--hostPID", tostring(pid) } },

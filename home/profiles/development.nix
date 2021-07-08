@@ -26,7 +26,7 @@ in {
       # dev.go.enable = true;
       # dev.lua.enable = true;
       dev.nix.enable = true;
-      # dev.node.enable = true;
+      dev.node.enable = true;
       # dev.python.enable = true;
       dev.rust.enable = true;
       shell.direnv.enable = true;

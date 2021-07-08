@@ -3,7 +3,8 @@
 with lib;
 let
   cfg = config.nyx.modules.shell.neovim;
-in {
+in
+{
   options.nyx.modules.shell.neovim = {
     enable = mkEnableOption "neovim configuration";
   };
@@ -15,6 +16,8 @@ in {
       neovim-unwrapped
       stylua
       nixfmt
+      my.efm-lsp
+      shfmt
     ];
 
     # Add Treesitter parsers
@@ -43,4 +46,3 @@ in {
     };
   };
 }
-
