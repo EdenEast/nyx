@@ -7,7 +7,8 @@ let
     [
       vimv # Batch rename files with vim
     ];
-in {
+in
+{
   options.nyx.modules.shell.lf = {
     enable = mkEnableOption "lf configuration";
 

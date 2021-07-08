@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.bash;
-in {
+in
+{
   options.nyx.modules.shell.bash = {
     enable = mkEnableOption "bash configuration";
 

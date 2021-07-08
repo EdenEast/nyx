@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.tmux;
-in {
+in
+{
   options.nyx.modules.shell.tmux = {
     enable = mkEnableOption "tmux configuration";
   };

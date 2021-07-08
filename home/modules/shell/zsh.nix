@@ -34,7 +34,8 @@ let
     config.file = mkDefault "${config.name}.plugin.zsh";
   });
 
-in {
+in
+{
   options.nyx.modules.shell.zsh = {
     enable = mkEnableOption "zsh configuration";
 

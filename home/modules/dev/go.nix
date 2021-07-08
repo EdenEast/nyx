@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.dev.go;
-in {
+in
+{
   options.nyx.modules.dev.go = { enable = mkEnableOption "go configuration"; };
 
   config = mkIf cfg.enable {

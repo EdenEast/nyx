@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.keybase;
-in {
+in
+{
   options.nyx.modules.shell.keybase.enable =
     mkEnableOption "keybase/kbfs configuration";
 

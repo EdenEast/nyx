@@ -4,7 +4,8 @@ with lib;
 let
   cfg = config.nyx.modules.shell.fzf;
   cfgHome = config.xdg.configHome;
-in {
+in
+{
   options.nyx.modules.shell.fzf = {
     enable = mkEnableOption "fzf configuration";
 

@@ -3,7 +3,8 @@
 with lib;
 let
   cfg = config.nyx.modules.user;
-in {
+in
+{
   options.nyx.modules.yubikey.enable = mkEnableOption "yubikey support";
 
   config = mkIf cfg.enable {

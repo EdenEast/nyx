@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.shell.xdg;
-in {
+in
+{
   options.nyx.modules.shell.xdg.enable = mkEnableOption "xdg configuration";
 
   config = mkIf cfg.enable {

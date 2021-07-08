@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.nyx.modules.dev.cc;
-in {
+in
+{
   options.nyx.modules.dev.cc = {
     enable = mkEnableOption "c/c++ configuration";
   };

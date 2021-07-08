@@ -187,7 +187,7 @@ EOF
     cd "$NYX_ROOT"
 
     # Formatting *.nix files
-    nix-shell -p fd -p nixfmt --run "fd . --type f --extension nix --exec nixfmt {}"
+    nix-shell -p fd -p nixpkgs-fmt --run "fd . --type f --extension nix --exec nixpkgs-fmt {}"
 
     (
       cd "config/.config/nvim"

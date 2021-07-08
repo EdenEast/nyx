@@ -38,16 +38,16 @@ with inputs.nixpkgs.lib;
                     input
                 );
             in
-              [
-                {
-                  from = { id = "self"; type = "indirect"; };
-                  to = toInput inputs.self;
-                }
-                {
-                  from = { id = "nixpkgs"; type = "indirect"; };
-                  to = toInput inputs.nixpkgs;
-                }
-              ];
+            [
+              {
+                from = { id = "self"; type = "indirect"; };
+                to = toInput inputs.self;
+              }
+              {
+                from = { id = "nixpkgs"; type = "indirect"; };
+                to = toInput inputs.nixpkgs;
+              }
+            ];
         };
       }
     );

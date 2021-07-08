@@ -9,7 +9,8 @@ let
   configHome = config.xdg.configHome;
   dataHome = config.xdg.dataHome;
   cacheHome = config.xdg.cacheHome;
-in {
+in
+{
   options.nyx.modules.dev.node = {
 
     enable = mkEnableOption "node configuration";
