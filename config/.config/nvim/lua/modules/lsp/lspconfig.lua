@@ -109,6 +109,9 @@ capabilities.window.workDoneProgress = true
 
 local shellcheck = require("modules.lsp.efm.shellcheck")
 local shfmt = require("modules.lsp.efm.shfmt")
+local efm_langs = {
+  sh = { shfmt, shellcheck },
+}
 
 -- Setting up for each language server
 local default_lsp_config = { on_init = enhance_init, on_attach = enhance_attach, capabilities = capabilities }
@@ -128,10 +131,9 @@ local servers = {
   cmake = { cmd = { "cmake-language-server" .. ext } },
   efm = {
     init_options = { documentFormatting = true },
+    filetypes = vim.tbl_keys(efm_langs),
     settings = {
-      languages = {
-        sh = { shfmt, shellcheck },
-      },
+      languages = efm_langs,
     },
   },
   elmls = { cmd = { "elm-language-server" .. ext } },
