@@ -3,7 +3,9 @@
 with lib;
 let
   cfg = config.nyx.profiles.common;
-in {
+  nixConf = import ../../nix/cache.nix;
+in
+{
   options.nyx.profiles.common = { enable = mkEnableOption "common profile"; };
 
   imports = [ inputs.nixpkgs.nixosModules.notDetected ];
@@ -32,6 +34,7 @@ in {
     ];
 
     nix = {
+      inherit (nixConf) binaryCaches binaryCachePublicKeys;
       autoOptimiseStore = true;
       sshServe.enable = true;
     };

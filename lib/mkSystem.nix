@@ -26,15 +26,10 @@
           (
             { pkgs, ... }: {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.
-              nix = let
-                nixConf = import ../nix/cache.nix;
-              in
-                {
-                  package = pkgs.nixFlakes;
-                  extraOptions = "experimental-features = nix-command flakes";
-                  binaryCaches = nixConf.binaryCache;
-                  binaryCachePublicKeys = nixConf.binaryCachePublicKeys;
-                };
+              nix = {
+                package = pkgs.nixFlakes;
+                extraOptions = "experimental-features = nix-command flakes";
+              };
             }
           )
           (
