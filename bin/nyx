@@ -15,6 +15,12 @@ HOME_MANAGER_BACKUP_EXT="nbak"
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(build|check|fmt|help|link|switch|update|unlink)$"
 
+NIXARGS=(--experimental-features "nix-command flakes")
+NIXBUILDARGS=(
+  --option '--extra-substituters' 'https://cachix.cachix.org https://nix-community.cachix.org https://edeneast.cachix.org'
+  --option '--extra-trusted-public-keys' 'cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= edeneast.cachix.org-1:a4tKrKZgZXXXYhDytg/Z3YcjJ04oz5ormt0Ow6OpExc='
+)
+
 declare -A TARGETS
 declare -A SOURCES
 TARGETS['nvim']="$HOME/.config/nvim"
@@ -90,7 +96,7 @@ EOF
 
     if [[ ${#args[@]} -gt 0 ]]; then
       debug "target argument was passed to build. Building ${args[0]}"
-      nix build ".#top.${args[0]}"
+      nix build ".#top.${args[0]}" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
       exit 0
     fi
 
@@ -104,11 +110,11 @@ EOF
       # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
       # infer then nix build will just run and build the default package.
       # TODO: This is wrong and should save what top target should be built for the machine.
-      nix build ".#top.$USER"
+      nix build ".#top.$USER" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
 
       # # Could not infer and building the default package
       # debug "Could not infer target to build, building default package for the flake"
-      # nix build
+      # nix build "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
     fi
   )
 }
@@ -319,24 +325,24 @@ EOF
         unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
         sudo nixos-rebuild switch --flake ".#top.${args[0]}"
       else
-        nix build ".#top.${args[0]}" && unlink && ./result/activate
+        nix build ".#top.${args[0]}" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}" && unlink && ./result/activate
         exit 0
       fi
     else
       # There was no target passed to build so infer what do build
       if is_nixos; then
         debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
-        unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
-        sudo nixos-rebuild switch --flake .
+        unlink                              # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
+        sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
       else
         # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
         # infer then nix build will just run and build the default package.
         # TODO: This is wrong and should save what top target should be built for the machine.
-        nix build ".#top.$USER" && unlink && ./result/activate
+        nix build ".#top.$USER" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}" && unlink && ./result/activate
 
         # # Could not infer and building the default package
         # debug "Could not infer target to build, building default package for the flake"
-        # nix build
+        # nix build "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
       fi
     fi
 
