@@ -1,0 +1,88 @@
+name: Pull Request
+on:
+  pull_request:
+
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        target:
+          - sloth
+          - eden
+
+    steps:
+      # Checkout the pr into a path called `pr` so that we can diff it vs `main`
+      - name: Checkout Pr
+        uses: actions/checkout@v2
+        with:
+          path: pr
+
+      - name: Checkout Main
+        uses: actions/checkout@v2
+        with:
+          path: main
+          ref: main
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v13
+        with:
+          install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20210604_8e6ee1b/install
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      # - name: Setup cachix
+      #   uses: cachix/cachix-action@v10
+      #   with:
+      #     name: edeneast
+      #     authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Build
+        run: |
+          nix build -L ./main#top${{ matrix.target }} --profile /tmp/nix-profile
+          nix build -L ./pr#top${{ matrix.target }} --profile /tmp/nix-profile
+
+      - name: Diff
+        id: diff
+        run: |
+          nix profile diff-closures --profile /tmp/nix-profile | tee /tmp/diff.txt
+          OUTPUT_DIFF="$(cat /tmp/diff.txt)"
+          OUTPUT_DIFF="${OUTPUT_DIFF//'%'/'%25'}"
+          OUTPUT_DIFF="${OUTPUT_DIFF//$'\n'/'%0A'}"
+          OUTPUT_DIFF="${OUTPUT_DIFF//$'\r'/'%0D'}"
+          echo "$OUTPUT_DIFF"
+          echo "::set-output name=diff::$OUTPUT_DIFF"
+
+      - name: Scan for security issues
+        id: security
+        run: |
+          nix run nixpkgs/nixos-20.09#vulnix -- -w https://raw.githubusercontent.com/ckauhaus/nixos-vulnerability-roundup/master/whitelists/nixos-20.09.toml /tmp/nix-profile | tee /tmp/security.txt
+          OUTPUT_SECURITY="$(cat /tmp/security.txt)"
+          OUTPUT_SECURITY="${OUTPUT_SECURITY//'%'/'%25'}"
+          OUTPUT_SECURITY="${OUTPUT_SECURITY//$'\n'/'%0A'}"
+          OUTPUT_SECURITY="${OUTPUT_SECURITY//$'\r'/'%0D'}"
+          echo "$OUTPUT_SECURITY"
+          echo "::set-output name=security::$OUTPUT_SECURITY"
+
+      - name: Post report
+        uses: peter-evans/commit-comment@v1
+        with:
+          body: |
+            # Summary of changes
+            For your information, I have made the following summary of changes.
+            Please use this in your assement whether this commit should be merged.
+            ## Version report
+            ```
+            ${{ steps.diff.outputs.diff }}
+            ```
+            ## Vulnerability report
+            ```
+            ${{ steps.security.outputs.security }}
+            ```
+
+# Idea reference
+# https://github.com/arianvp/nixos-stuff/blob/adec9e6/.github/workflows/pr.yml
