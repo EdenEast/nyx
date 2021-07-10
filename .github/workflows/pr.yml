@@ -43,8 +43,8 @@ jobs:
 
       - name: Build
         run: |
-          nix build -L ./main#top${{ matrix.target }} --profile /tmp/nix-profile
-          nix build -L ./pr#top${{ matrix.target }} --profile /tmp/nix-profile
+          nix build -L --profile /tmp/nix-profile ./main#top.${{ matrix.target }}
+          nix build -L --profile /tmp/nix-profile ./pr#top.${{ matrix.target }}
 
       - name: Diff
         id: diff
