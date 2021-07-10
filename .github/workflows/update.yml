@@ -18,9 +18,11 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
       - run: nix flake update
-      - uses: peter-evans/create-pull-request@v3.8
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.PAT }} # needed so that this triggers further flows. not ideal.
-          title: "chore(flake): nix flake update"
-          commit-message: "chore(flake): Update flake lockfile"
+          commit-message: "chore(flake): Update flake.lock"
           branch: "chore/flake-update"
+          delete-branch: true
+          title: "chore(flake): Automatic flake updates"
