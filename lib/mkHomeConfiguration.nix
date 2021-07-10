@@ -13,11 +13,11 @@
             let
               nixConf = import ../nix/cache.nix;
             in
-            ''
-              substituters = ${builtins.concatStringsSep " " nixConf.binaryCaches }
-              trusted-public-keys = ${builtins.concatStringsSep " " nixConf.binaryCachePublicKeys}
-              experimental-features = nix-command flakes
-            '';
+              ''
+                extra-substituters = ${builtins.concatStringsSep " " nixConf.binaryCaches }
+                extra-trusted-public-keys = ${builtins.concatStringsSep " " nixConf.binaryCachePublicKeys}
+                experimental-features = nix-command flakes
+              '';
         };
 
         pkgs = lib.my.mkPkgs system;
