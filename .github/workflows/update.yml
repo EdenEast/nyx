@@ -1,0 +1,46 @@
+name: Update
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cachix/install-nix-action@v13
+      with:
+        install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20210604_8e6ee1b/install
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - run: nix flake update
+
+  build:
+    runs-on: ubuntu-latest
+    needs: update
+    strategy:
+      matrix:
+        target: [ sloth, eden ]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cachix/install-nix-action@v13
+      with:
+        install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20210604_8e6ee1b/install
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - run: nix build .#top.${{ matrix.target }} -L
+
+  commit:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore: Update lock file'
+        title: '[auto] Update flake lock file'
+        body: |
+          Update flake lockfile input
+        branch: auto/update-flake
+
