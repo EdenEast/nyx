@@ -1,5 +1,9 @@
 # Nyx
 
+[![Build](https://github.com/EdenEast/nyx/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/EdenEast/nyx/actions/workflows/build.yml)
+[![NixOS 21.05](https://img.shields.io/badge/NixOS-v21.05-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
+[![Licence](https://img.shields.io/badge/license-Unlicense-blue)](https://github.com/EdenEast/nyx/blob/main/LICENSE)
+
 This repository contains my configuration for all my systems, written primarily in [Nix].
 This repository defines machines running [NixOS][nix], or unix machines running nix and
 [home-manager], or Windows.
