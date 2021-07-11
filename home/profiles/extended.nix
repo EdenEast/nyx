@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.profiles.extended;
+let
+  cfg = config.nyx.profiles.extended;
 in
 {
   options.nyx.profiles.extended = {
@@ -20,7 +21,7 @@ in
         # Dump traffic on a network.
         tcpdump
         # A command-line tool to generate, analyze, convert and manipulate colors.
-        pastel
+        # pastel
         # Tool for indexing, slicing, analyzing, splitting and joining CSV files.
         xsv
         # Command line image viewer
