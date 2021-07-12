@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.nyx.profiles.common;
-  nixConf = import ../../nix/cache.nix;
+  nixConf = import ../../nix/conf.nix;
 in
 {
   options.nyx.profiles.common = { enable = mkEnableOption "common profile"; };

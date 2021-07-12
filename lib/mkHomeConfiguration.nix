@@ -11,7 +11,7 @@
 
           xdg.configFile."nix/nix.conf".text =
             let
-              nixConf = import ../nix/cache.nix;
+              nixConf = import ../nix/conf.nix;
             in
               ''
                 extra-substituters = ${builtins.concatStringsSep " " nixConf.binaryCaches }
