@@ -1,3 +1,4 @@
 result
 .env
 symmetric.key
+.direnv/
