@@ -6,6 +6,8 @@ function config.nvim_treesitter()
   vim.api.nvim_command("set foldmethod=expr")
   vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
 
+  vim.cmd([[packadd nvim-ts-context-commentstring]])
+
   -- Setting clang as the compiler to use as pre this solution
   -- https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support#troubleshooting
   -- NOTE: Had issues with clang and nix installed build-essentials and gcc and it works
@@ -25,12 +27,21 @@ function config.nvim_treesitter()
     textobjects = {
       select = {
         enable = true,
-        -- keymaps = {
-        --   ["af"] = "@function.outer",
-        --   ["if"] = "@function.inner",
-        --   ["ac"] = "@class.outer",
-        --   ["ic"] = "@class.inner",
-        -- },
+        lookahead = true,
+        keymap = {
+          ["ia"] = "@parameter.inner",
+          ["aa"] = "@parameter.outer",
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+        },
+      },
+    },
+    context_commentstring = {
+      enable = true,
+      config = {
+        c = "// %s",
+        lua = "-- %s",
+        nix = "# %s",
       },
     },
     ensure_installed = {
