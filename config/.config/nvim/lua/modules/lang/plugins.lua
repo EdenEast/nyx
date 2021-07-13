@@ -7,6 +7,7 @@ lang["nvim-treesitter/nvim-treesitter"] = {
   config = conf.nvim_treesitter,
   requires = {
     { "romgrk/nvim-treesitter-context", opt = true, disabled = not require("core.global").is_windows },
+    { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
   },
 }
 
