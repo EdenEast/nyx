@@ -61,4 +61,9 @@ editor["akinsho/nvim-toggleterm.lua"] = {
   config = conf.toggleterm,
 }
 
+-- Because emacs has it why cant neovim
+editor["alec-gibson/nvim-tetris"] = {
+  cmd = { "Tetris" },
+}
+
 return editor
