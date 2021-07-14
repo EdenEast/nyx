@@ -10,9 +10,11 @@ in
   config = mkIf cfg.enable {
     fonts = {
       fonts = with pkgs; [
-        (nerdfonts.override {
-          fonts = [ "Hack" "Meslo" "UbuntuMono" ];
-        })
+        (
+          nerdfonts.override {
+            fonts = [ "Hack" "Meslo" "UbuntuMono" ];
+          }
+        )
       ];
     };
 
@@ -24,6 +26,7 @@ in
       displayManager.gdm.enable = true;
     };
 
+    sound.enable = true;
     hardware = {
       pulseaudio = {
         enable = true;
@@ -31,6 +34,9 @@ in
         package = pkgs.pulseaudioFull;
       };
     };
+
+
+    services.printing.enable = true;
 
     nyx.modules = {
       caps.enable = true;
