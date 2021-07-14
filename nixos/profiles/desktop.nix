@@ -18,21 +18,21 @@ in
       ];
     };
 
-    services.xserver = {
-      enable = true;
-      layout = "us";
-      libinput.enable = true;
-      displayManager.startx.enable = true;
-      desktopManager = {
-        session = [{
-          name = "home-manager";
-          start = ''
-            ${pkgs.runtimeShell} $HOME/.hm-xsession &
-            waitPID=$!
-          '';
-        }];
-      };
-    };
+    # services.xserver = {
+    #   enable = true;
+    #   layout = "us";
+    #   libinput.enable = true;
+    #   displayManager.startx.enable = true;
+    #   desktopManager = {
+    #     session = [{
+    #       name = "home-manager";
+    #       start = ''
+    #         ${pkgs.runtimeShell} $HOME/.hm-xsession &
+    #         waitPID=$!
+    #       '';
+    #     }];
+    #   };
+    # };
 
     sound.enable = true;
     hardware = {
