@@ -28,10 +28,9 @@ in
       supportedFilesystems = [ "cifs" "ntfs" "nfs" ];
     };
 
-    environment.systemPackages = with pkgs; [
-      # Audit
-      audit
-    ];
+    # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+    networking.useDHCP = false;
+    networking.networkmanager.enable = true;
 
     nix = {
       inherit (nixConf) binaryCaches binaryCachePublicKeys;
@@ -58,6 +57,13 @@ in
 
     time.timeZone = "America/Toronto";
     i18n.defaultLocale = "en_US.UTF-8";
+
+    # List of bare minimal requirements for a system to have to bootstrap from
+    environment.systemPackages = with pkgs; [
+      vim
+      git
+      firefox
+    ];
 
     nyx.modules = {
       user.enable = true;
