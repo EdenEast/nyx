@@ -3,7 +3,8 @@
 with lib;
 let
   cfg = config.nyx.modules.xserver;
-in {
+in
+{
   options.nyx.modules.xserver = {
     enable = mkEnableOption "x server";
   };
@@ -17,20 +18,19 @@ in {
       libinput.enable = true;
 
       # Setting display manager to use startx from home-manager
-      displayManager.startx.enable = true;
-
-      desktopManager = {
-        xterm.enable = false;
-        session = [{
-          name = "home-manager";
-          start = ''
-            ${pkgs.runtimeShell} $HOME/.hm-xsession &
-            waitPID=$!
-          '';
-        }];
+      displayManager = {
+        lightdm.enable = true;
+        session = [
+          {
+            name = "home-manager";
+            manage = "window";
+            start = ''
+              ${pkgs.runtimeShell} $HOME/.hm-xsession &
+              waitPID=$!
+            '';
+          }
+        ];
       };
     };
   };
 }
-
-

@@ -93,6 +93,7 @@ I agree with [@hlissner][hlissner]. This is needed when nix [drives you to drink
 - [@cole-mickens](https://github.com/cole-mickens) [nixcfg](https://github.com/cole-mickens/nixcfg)
 - [@pinpox](https://github.com/pinpox) [nixos](https://github.com/pinpox/nixos)
 - [@MayNiklas](https://github.com/MayNiklas) [nixos](https://github.com/MayNiklas/nixos)
+- [@yurrriq](https://github.com/yurrriq) [dotfiles](https://github.com/yurrriq/dotfiles)
 
 [hlissner]: https://github.com/hlissner
 
