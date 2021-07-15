@@ -102,7 +102,7 @@ EOF
 
     # There was no target passed to build so infer what do build
 
-    if is_nixos; then
+    if test is_nixos; then
       debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
       sudo nixos-rebuild build --flake .
     else
@@ -321,7 +321,7 @@ EOF
 
     if [[ ${#args[@]} -gt 0 ]]; then
       debug "target argument was passed to switch. Switiching to ${args[0]}"
-      if is_nixos; then
+      if test is_nixos; then
         unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
         sudo nixos-rebuild switch --flake ".#top.${args[0]}"
       else
@@ -330,7 +330,7 @@ EOF
       fi
     else
       # There was no target passed to build so infer what do build
-      if is_nixos; then
+      if test is_nixos; then
         debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
         unlink                              # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
         sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
