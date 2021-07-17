@@ -1,0 +1,4 @@
+* The AwesomeWM Main Configuration
+
+Here are all the main configuration files for primarily AwesomeWM.
+In config.lua you can edit common variables easily.

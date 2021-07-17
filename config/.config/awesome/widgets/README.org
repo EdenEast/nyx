@@ -1,0 +1,4 @@
+* AwesomeWM Widgets
+
+The files for AwesomeWM Widgets are stored here, these contain a variety of
+things that are all placed onto wiboxes.
