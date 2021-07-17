@@ -1,0 +1,4 @@
+* AwesomeWM Modules
+
+Here are modules that are not particularly UI, widgets or inbuilt awesome
+configuration elements. However they extend onto AwesomeWM.
