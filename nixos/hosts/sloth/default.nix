@@ -29,6 +29,7 @@
 
   swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
 
+  networking.enableIPv6 = true;
   networking.interfaces.enp0s25.useDHCP = true;
   networking.interfaces.wlp3s0.useDHCP = true;
 
