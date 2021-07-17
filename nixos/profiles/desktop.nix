@@ -22,8 +22,20 @@ in
       enable = true;
       layout = "us";
       libinput.enable = true;
-      desktopManager.gnome.enable = true;
-      displayManager.gdm.enable = true;
+
+      displayManager = {
+        lightdm.enable = true;
+        session = [
+          {
+            name = "home-manager";
+            manage = "window";
+            start = ''
+              ${pkgs.runtimeShell} $HOME/.hm-xsession &
+              waitPID=$!
+            '';
+          }
+        ];
+      };
     };
 
     sound.enable = true;
