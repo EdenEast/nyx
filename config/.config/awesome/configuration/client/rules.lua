@@ -4,6 +4,7 @@ local client_keys = require("configuration.client.keys")
 local client_buttons = require("configuration.client.buttons")
 local title_bars = require("configuration.client.titlebars")
 local beautiful = require("beautiful")
+local keys = require("configuration.keys")
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -16,7 +17,7 @@ awful.rules.rules = {
       border_color = beautiful.border_normal,
       focus = awful.client.focus.filter,
       raise = true,
-      keys = clientKeys,
+      keys = keys.client,
       buttons = clientButtons,
       screen = awful.screen.preferred,
       placement = awful.placement.no_overlap + awful.placement.no_offscreen,

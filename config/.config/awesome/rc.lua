@@ -37,7 +37,9 @@ require("ui")
 require("configuration.tags")
 require("configuration.client")
 require("configuration.init")
-_G.root.keys(require("configuration.keys.global"))
+
+local keys = require("configuration.keys")
+_G.root.keys(keys.global)
 _G.root.buttons(require("configuration.mouse.desktop"))
 
 -- {{{ Error handling
