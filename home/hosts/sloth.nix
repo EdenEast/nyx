@@ -22,6 +22,7 @@
     profiles = {
       extended.enable = true;
       desktop.enable = true;
+      development.enable = true;
     };
   };
 }
