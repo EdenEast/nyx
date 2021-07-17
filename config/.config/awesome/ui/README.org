@@ -1,0 +1,4 @@
+* AwesomeWM User Interface
+
+The files for the AwesomeWM User Interface is stored here, this contains system
+panels and dashboards etc.

@@ -12,6 +12,7 @@ in
       synergy
     ];
 
+    xdg.configFile."awesome".source = ../../config/.config/awesome;
     xsession = {
       enable = true;
       scriptPath = ".hm-xsession";
