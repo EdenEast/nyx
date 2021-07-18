@@ -9,7 +9,13 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      feh
+      light
+      lm_sensors
+      rofi
+      networkmanagerapplet
       synergy
+      xdotool
     ];
 
     xdg.configFile."awesome".source = ../../config/.config/awesome;

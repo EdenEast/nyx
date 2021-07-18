@@ -11,31 +11,29 @@
 # is intended to be a copy of this file
 # to allow out of tree autostart programs
 APPS=(
-    # keepassxc
-    # kdeconnect-indicator
-    # radeon-profile
-    # $HOME/.config/awesomestart
-    udiskie
+  # keepassxc
+  # kdeconnect-indicator
+  # radeon-profile
+  # $HOME/.config/awesomestart
+  udiskie
+  nm-applet
 )
 
 # Some applications start child applications that need to be killed on reload
 KILL=(
-    # synergyc
-    # nextcloud
+  # synergyc
+  # nextcloud
 )
 
 # First kill lingering apps
-for app in "${APPS[@]}"
-do
-    kill -9 $(pidof $app)
+for app in "${APPS[@]}"; do
+  kill -9 $(pidof $app)
 done
-for app in "${KILL[@]}"
-do
-    kill -9 $(pidof $app)
+for app in "${KILL[@]}"; do
+  kill -9 $(pidof $app)
 done
 
 # Start new instances
-for app in "${APPS[@]}"
-do
-    env $app ${@:2} &
+for app in "${APPS[@]}"; do
+  env $app ${@:2} &
 done
