@@ -167,10 +167,26 @@ local global = gears.table.join(
 
   -- Layouts
 
+  -- Centered layout
+  -- Single tap: Set centered layout
+  -- double tap: Also disable floating for all visible clients in the tag
+  awful.key({ mod }, "w", function()
+    awful.layout.set(bling.centered)
+    helpers.single_double_tap(nil, function()
+      local clients = awful.screen.focused().clients
+      for _, c in pairs(clients) do
+        c.floating = false
+      end
+    end)
+  end, {
+    description = "set centered layout",
+    group = "launcher",
+  }),
+
   -- Max layout
   -- Single tap: Set max layout
   -- double tap: Also disable floating for all visible clients in the tag
-  awful.key({ mod }, "w", function()
+  awful.key({ mod, shft }, "w", function()
     awful.layout.set(awful.layout.suit.max)
     helpers.single_double_tap(nil, function()
       local clients = awful.screen.focused().clients
@@ -204,14 +220,6 @@ local global = gears.table.join(
     awful.layout.set(awful.layout.suit.floating)
   end, {
     description = "set floating layout",
-    group = "launcher",
-  }),
-
-  -- Centered
-  awful.key({ mod, shft }, "w", function()
-    awful.layout.set(bling.centered)
-  end, {
-    description = "set centered layout",
     group = "launcher",
   }),
 
