@@ -1,5 +1,6 @@
 local awful = require("awful")
 local gears = require("gears")
+local bling = require("bling.layout")
 
 local mods = require("configuration.keys.mod")
 local mod, alt, shft, ctrl = mods.mod, mods.alt, mods.shft, mods.ctrl
@@ -203,6 +204,14 @@ local global = gears.table.join(
     awful.layout.set(awful.layout.suit.floating)
   end, {
     description = "set floating layout",
+    group = "launcher",
+  }),
+
+  -- Centered
+  awful.key({ mod, shft }, "w", function()
+    awful.layout.set(bling.centered)
+  end, {
+    description = "set centered layout",
     group = "launcher",
   }),
 
