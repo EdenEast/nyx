@@ -1,6 +1,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local bling = require("bling.layout")
+local machi = require("modules.layout-machi")
 
 local mods = require("configuration.keys.mod")
 local mod, alt, shft, ctrl = mods.mod, mods.alt, mods.shft, mods.ctrl
@@ -186,7 +187,7 @@ local global = gears.table.join(
     end)
   end, {
     description = "set centered layout",
-    group = "launcher",
+    group = "layout",
   }),
 
   -- Max layout
@@ -202,7 +203,7 @@ local global = gears.table.join(
     end)
   end, {
     description = "set max layout",
-    group = "launcher",
+    group = "layout",
   }),
 
   -- Tiling
@@ -218,7 +219,23 @@ local global = gears.table.join(
     end)
   end, {
     description = "set tile layout",
-    group = "launcher",
+    group = "layout",
+  }),
+
+  -- Machi
+  -- Single tap: Set machi layout
+  -- double tap: Also disable floating for all visible clients in the tag
+  awful.key({ mod }, "e", function()
+    awful.layout.set(machi.default_layout)
+    helpers.single_double_tap(nil, function()
+      local clients = awful.screen.focused().clients
+      for _, c in pairs(clients) do
+        c.floating = false
+      end
+    end)
+  end, {
+    description = "set tile layout",
+    group = "layout",
   }),
 
   -- Floating
@@ -226,7 +243,7 @@ local global = gears.table.join(
     awful.layout.set(awful.layout.suit.floating)
   end, {
     description = "set floating layout",
-    group = "launcher",
+    group = "layout",
   }),
 
   -- Restore minimized
@@ -237,7 +254,21 @@ local global = gears.table.join(
     end
   end, {
     description = "restore minimized",
-    group = "",
+    group = "layout",
+  }),
+
+  -- Machi
+  awful.key({ mod }, ".", function()
+    machi.default_editor.start_interactive()
+  end, {
+    description = "edit current layout machi",
+    group = "layout",
+  }),
+  awful.key({ mod }, "/", function()
+    machi.switcher.start(client.focus)
+  end, {
+    description = "switch between windows machi",
+    group = "layout",
   }),
 
   -- Jumps
