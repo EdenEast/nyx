@@ -1,6 +1,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local apps = require("configuration.apps")
+local bling = require("bling.layout")
 
 -- Configure Tag Properties
 awful.screen.connect_for_each_screen(function(s)
@@ -13,6 +14,7 @@ end)
 awful.layout.layouts = {
   awful.layout.suit.tile,
   awful.layout.suit.floating,
+  bling.centered,
   -- awful.layout.suit.tile.left,
   -- awful.layout.suit.tile.bottom,
   -- awful.layout.suit.tile.top,
