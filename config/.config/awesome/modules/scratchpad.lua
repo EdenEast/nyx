@@ -1,5 +1,5 @@
 local awful = require("awful")
-local bling = require("bling")
+local bling = require("modules.bling")
 
 local setup = function()
   -- Get the currnet focused screen

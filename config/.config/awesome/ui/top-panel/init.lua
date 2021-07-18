@@ -4,7 +4,7 @@ local wibox = require("wibox")
 local gears = require("gears")
 
 configuration = require("configuration.config")
-require("widgets.top-panel")
+require("ui.widgets.top-panel")
 
 local TopPanel = function(s)
   -- Wiboxes are much more flexible than wibars simply for the fact that there are no defaults, however if you'd rather have the ease of a wibar you can replace this with the original wibar code
