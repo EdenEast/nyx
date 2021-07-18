@@ -3,10 +3,15 @@ local gears = require("gears")
 local apps = require("configuration.apps")
 local bling = require("bling.layout")
 
+local beautiful = require("beautiful")
+local machi = require("modules.layout-machi")
+beautiful.layout_machi = machi.get_icon()
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
   bling.centered,
+  machi.default_layout,
   awful.layout.suit.floating,
   -- awful.layout.suit.tile.left,
   -- awful.layout.suit.tile.bottom,
