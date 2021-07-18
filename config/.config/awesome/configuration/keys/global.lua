@@ -1,6 +1,6 @@
 local awful = require("awful")
 local gears = require("gears")
-local bling = require("bling.layout")
+local bling = require("modules.bling.layout")
 local machi = require("modules.layout-machi")
 
 local mods = require("configuration.keys.mod")
