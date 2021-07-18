@@ -150,7 +150,13 @@ local global = gears.table.join(
     description = "launch terminal",
     group = "launcher",
   }),
-  -- TODO: scratchpad
+  awful.key({ mod }, "space", function()
+    local sp = require("modules.scratchpad")
+    sp:toggle()
+  end, {
+    description = "launch terminal",
+    group = "launcher",
+  }),
 
   awful.key({ mod, shft }, "minus", function()
     awful.tag.incgap(3, nil)
