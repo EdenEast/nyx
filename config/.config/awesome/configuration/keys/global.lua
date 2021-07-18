@@ -241,7 +241,84 @@ local global = gears.table.join(
   }),
 
   -- Jumps
-  awful.key({ mod }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "" })
+  awful.key({ mod }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "" }),
+
+  -- XF86
+  -------------------------------------------------------
+
+  -- Volume and mic
+  awful.key({}, "XF86AudioRaiseVolume", function()
+    awful.spawn.with_shell("pamixer -i 3")
+  end, {}),
+  awful.key({}, "XF86AudioLowerVolume", function()
+    awful.spawn.with_shell("pamixer -d 3")
+  end, {}),
+  awful.key({}, "XF86AudioMute", function()
+    awful.spawn.with_shell("pamixer -t")
+  end, {}),
+  -- TODO:
+  -- awful.key({}, "XF86AudioRecord", function()
+  --   awful.spawn.with_shell('~/.script/wm/soundctl forward')
+  -- end, {}),
+  -- awful.key({}, "XF86AudioMicMute", function()
+  --   awful.spawn.with_shell("")
+  -- end, {}),
+
+  -- Media
+  -- TODO:
+  -- awful.key({}, "XF86AudioMedia", function()
+  --   awful.spawn.with_shell('~/.script/wm/soundctl forward')
+  -- end, {}),
+  awful.key({}, "XF86AudioPlay", function()
+    awful.spawn.with_shell("playerctl play-pause")
+  end, {}),
+  awful.key({}, "XF86AudioStop", function()
+    awful.spawn.with_shell("playerctl stop")
+  end, {}),
+  awful.key({}, "XF86AudioNext", function()
+    awful.spawn.with_shell("playerctl next")
+  end, {}),
+  awful.key({}, "XF86AudioPrev", function()
+    awful.spawn.with_shell("playerctl previous")
+  end, {}),
+  awful.key({}, "XF86AudioForward", function()
+    awful.spawn.with_shell("~/.script/wm/soundctl forward")
+  end, {}),
+  awful.key({}, "XF86AudioRewind", function()
+    awful.spawn.with_shell("~/.script/wm/soundctl backward")
+  end, {}),
+
+  -- Display
+  awful.key({}, "XF86Display", function()
+    awful.spawn.with_shell("arandr")
+  end, {}),
+  awful.key({}, "XF86MonBrightnessUp", function()
+    awful.spawn.with_shell("brightnessctl s +5%")
+  end, {}),
+  awful.key({}, "XF86MonBrightnessDown", function()
+    awful.spawn.with_shell("brightnessctl s 5%-")
+  end, {}),
+
+  -- Power
+  awful.key({}, "XF86PowerOff", function()
+    awful.spawn.with_shell("~/.scripts/lockscreen.sh")
+  end, {}),
+  awful.key({}, "XF86Reload", awesome.restart, {}),
+  awful.key({}, "XF86ScreenSaver", function() end, {}),
+  awful.key({}, "XF86Sleep", function()
+    awful.spawn.with_shell("~/.scripts/lockscreen.sh")
+  end, {}),
+  awful.key({}, "XF86Suspend", function()
+    awful.spawn.with_shell("~/.scripts/lockscreen.sh")
+  end, {})
+
+  -- awful.key({}, "XF86Close", function() end, {}),
+  -- awful.key({}, "XF86Explorer", function() end, {}),
+  -- awful.key({}, "XF86HomePage", function() end, {}),
+  -- awful.key({}, "XF86KbdBrightnessDown", function() end, {}),
+  -- awful.key({}, "XF86KbdBrightnessUp", function() end, {}),
+  -- awful.key({}, "XF86KbdLightOnOff", function() end, {}),
+  -- awful.key({}, "XF86MyComputer", function() end, {}),
 )
 
 -- Bind all key numbers to tags.
