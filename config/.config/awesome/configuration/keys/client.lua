@@ -1,5 +1,6 @@
 local awful = require("awful")
 local gears = require("gears")
+local beautiful = require("beautiful")
 
 local mods = require("configuration.keys.mod")
 local mod, alt, shft, ctrl = mods.mod, mods.alt, mods.shft, mods.ctrl
@@ -133,13 +134,17 @@ local client = gears.table.join(
 
   -- Toggle titlebar
   awful.key({ mod }, "t", function(c)
-    decorations.cycle(c)
-  end, { description = "toggle titlebar", group = "" }),
+    -- TODO: resize the window
+    awful.titlebar.toggle(c, beautiful.titlebar_position)
+  end, {
+    description = "toggle titlebar",
+    group = "",
+  }),
   -- Toggle titlebar for all visible clients in selected tag
   awful.key({ mod, shft }, "t", function(c)
     local clients = awful.screen.focused().clients
     for _, c in pairs(clients) do
-      decorations.cycle(c)
+      awful.titlebar.toggle(c, beautiful.titlebar_position)
     end
   end, {
     description = "toggle titlebar",

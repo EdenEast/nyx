@@ -16,5 +16,6 @@
 - [mofiqul](https://github.com/mofiqul/awesome-shell)
 - [desnomeado](https://github.com/desnomeado/awesome.conf)
 - [JavaCafe01](https://github.com/JavaCafe01/awedots)
+- [Nooo37](https://github.com/Nooo37/dots)
 - [WillPower3309](https://github.com/WillPower3309/awesome-dotfiles)
 - [manilarome](https://github.com/manilarome/the-glorious-dotfiles)
