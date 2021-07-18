@@ -39,6 +39,10 @@ in
     };
 
     sound.enable = true;
+    environment.systemPackages = with pkgs; [
+      pamixer
+    ];
+
     hardware = {
       pulseaudio = {
         enable = true;

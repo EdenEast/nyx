@@ -9,8 +9,9 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      brightnessctl
+      playerctl
       feh
-      light
       lm_sensors
       rofi
       networkmanagerapplet
