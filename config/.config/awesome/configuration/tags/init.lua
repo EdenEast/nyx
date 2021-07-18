@@ -1,7 +1,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local apps = require("configuration.apps")
-local bling = require("bling.layout")
+local bling = require("modules.bling.layout")
 
 local beautiful = require("beautiful")
 local machi = require("modules.layout-machi")

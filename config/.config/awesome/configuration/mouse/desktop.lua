@@ -1,6 +1,6 @@
 local gears = require("gears")
 local awful = require("awful")
-require("widgets.mainmenu")
+require("ui.widgets.mainmenu")
 
 -- Mousebindings that occur on the desktop
 desktopMouse = gears.table.join(
