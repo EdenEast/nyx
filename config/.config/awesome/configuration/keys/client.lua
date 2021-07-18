@@ -1,6 +1,8 @@
 local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
+local xresources = require("beautiful.xresources")
+local dpi = xresources.apply_dpi
 
 local mods = require("configuration.keys.mod")
 local mod, alt, shft, ctrl = mods.mod, mods.alt, mods.shft, mods.ctrl
