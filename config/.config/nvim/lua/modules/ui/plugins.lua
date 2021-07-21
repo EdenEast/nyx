@@ -25,8 +25,9 @@ ui["glepnir/dashboard-nvim"] = {
   cond = "not vim.g.started_by_firenvim",
 }
 
-ui["glepnir/galaxyline.nvim"] = {
-  config = [[require('modules.ui.galaxyline')]],
+ui["hoob3rt/lualine.nvim"] = {
+  config = [[require('modules.ui.lualine')]],
+  requires = { "nvim-lua/lsp-status.nvim" },
 }
 
 ui["folke/which-key.nvim"] = {
