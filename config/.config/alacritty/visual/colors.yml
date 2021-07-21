@@ -6,6 +6,7 @@ import:
   # - ~/.config/alacritty/visual/colors/insomnia.yml
   # - ~/.config/alacritty/visual/colors/lovelace.yml
   # - ~/.config/alacritty/visual/colors/neon.yml
+  - ~/.config/alacritty/visual/colors/nightfox.yml
   # - ~/.config/alacritty/visual/colors/skyfall.yml
   # - ~/.config/alacritty/visual/colors/tomorrow_night.yml
 

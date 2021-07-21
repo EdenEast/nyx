@@ -1,5 +1,6 @@
 local ui = {}
 local conf = require("modules.ui.config")
+local pack = require("core.pack")
 
 -- Themes -----------------------------------------------------------------------------------------
 
@@ -60,5 +61,8 @@ ui["kyazdani42/nvim-tree.lua"] = {
   -- Have to find a solution.
   -- cmd = {'NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile'},
 }
+
+local nf = pack.local_load("EdenEast/nightfox.nvim")
+ui[nf] = {}
 
 return ui
