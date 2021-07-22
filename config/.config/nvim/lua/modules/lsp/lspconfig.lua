@@ -5,16 +5,6 @@ local global = require("core.global")
 local path = require("core.path")
 local has_tscope, _ = pcall(require, "telescope")
 
-local pack_add = function(packs)
-  for _, pack in ipairs(packs) do
-    if not packer_plugins[pack].loaded then
-      vim.cmd("packadd " .. pack)
-    end
-  end
-end
-
-pack_add({ "lsp_extensions.nvim", "lsp-status.nvim", "lspsaga.nvim", "lspkind-nvim", "lsp_signature.nvim" })
-
 require("lspkind").init()
 
 local saga = require("lspsaga")

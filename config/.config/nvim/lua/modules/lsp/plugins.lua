@@ -14,13 +14,12 @@ lsp["neoclide/coc.nvim"] = {
 
 lsp["neovim/nvim-lspconfig"] = {
   disable = not vim.g.eden_nvimlsp,
-  event = "BufReadPre",
   config = conf.nvim_lsp,
   requires = {
-    { "nvim-lua/lsp_extensions.nvim", opt = true },
-    { "glepnir/lspsaga.nvim", opt = true },
-    { "onsails/lspkind-nvim", opt = true },
-    { "ray-x/lsp_signature.nvim", opt = true },
+    "nvim-lua/lsp_extensions.nvim",
+    "glepnir/lspsaga.nvim",
+    "onsails/lspkind-nvim",
+    "ray-x/lsp_signature.nvim",
   },
 }
 
