@@ -14,7 +14,7 @@
 
         gnupg = {
           enable = true;
-          enableService = false;
+          wslCompatibility = true;
           publicKey = ../../config/.gnupg/public.key;
         };
       };
