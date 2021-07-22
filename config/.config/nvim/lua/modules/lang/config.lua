@@ -75,7 +75,7 @@ function config.orgmode()
   require("orgmode").setup()
 end
 
-function markdown()
+function config.markdown()
   vim.g.vim_markdown_folding_disabled = 1
   vim.g.vim_markdown_override_foldtext = 0
   vim.g.vim_markdown_no_default_key_mappings = 1
