@@ -4,6 +4,10 @@ on:
     branches: [ main ]
     paths-ignore:
       - "**.md"
+      - "**.org"
+      - "**.norg"
+      - "bin/**"
+      - "extra/**"
 
 jobs:
   build:
