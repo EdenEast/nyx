@@ -1,21 +1,18 @@
 local ui = {}
 local conf = require("modules.ui.config")
-local pack = require("core.pack")
+local load = require("core.pack").local_load
 
 -- Themes -----------------------------------------------------------------------------------------
 
 -- Treesitter supported themes
+ui[load("EdenEast/nightfox.nvim")] = {}
 ui["cocopon/iceberg.vim"] = {}
 ui["embark-theme/vim"] = {}
 ui["folke/tokyonight.nvim"] = {}
 ui["glepnir/zephyr-nvim"] = {}
 ui["vigoux/oak"] = {}
 ui["wojciechkepka/bogster"] = {}
-ui["sainnhe/gruvbox-material"] = {
-  config = function()
-    vim.g.gruvbox_material_background = "medium"
-  end,
-}
+ui["eddyekofo94/gruvbox-flat.nvim"] = {}
 
 -- Non treesitter supported themes
 ui["arzg/vim-colors-xcode"] = {}
@@ -50,6 +47,7 @@ ui["lewis6991/gitsigns.nvim"] = {
 }
 
 ui["akinsho/nvim-bufferline.lua"] = {
+  disable = true,
   config = conf.bufferline,
   requires = { "kyazdani42/nvim-web-devicons" },
 }
@@ -62,8 +60,5 @@ ui["kyazdani42/nvim-tree.lua"] = {
   -- Have to find a solution.
   -- cmd = {'NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile'},
 }
-
-local nf = pack.local_load("EdenEast/nightfox.nvim")
-ui[nf] = {}
 
 return ui
