@@ -4,7 +4,7 @@ local conf = require("modules.lang.config")
 lang["nvim-treesitter/nvim-treesitter"] = {
   event = "BufRead",
   run = ":TSUpdate",
-  config = conf.nvim_treesitter,
+  config = [[require('modules.lang.treesitter')]],
   requires = {
     { "romgrk/nvim-treesitter-context", opt = true, disabled = not require("core.global").is_windows },
     { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
