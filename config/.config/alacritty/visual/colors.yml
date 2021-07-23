@@ -2,7 +2,7 @@ import:
   # - ~/.config/alacritty/visual/colors/arc.yml
   # - ~/.config/alacritty/visual/colors/code.yml
   # - ~/.config/alacritty/visual/colors/ephemeral.yml
-  - ~/.config/alacritty/visual/colors/fox.yml
+  # - ~/.config/alacritty/visual/colors/fox.yml
   # - ~/.config/alacritty/visual/colors/insomnia.yml
   # - ~/.config/alacritty/visual/colors/lovelace.yml
   # - ~/.config/alacritty/visual/colors/neon.yml

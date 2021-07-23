@@ -1,7 +1,7 @@
 theme_neon: &theme_nightfox
   primary:
-    background: '0x1e1e1e'
-    foreground: '0xf8f8f8'
+    background: '0x192330'
+    foreground: '0xafc0d5'
   normal:
     black:   '0x393b44'
     red:     '0xc94f6d'
