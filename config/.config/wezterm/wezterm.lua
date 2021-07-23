@@ -34,8 +34,12 @@ local config = {
     background = "#192330",
     foreground = "#afc0d5",
 
+    cursor_border = "#7f8c98",
     cursor_bg = "#7f8c98",
     cursor_fg = "#afc0d5",
+
+    selection_bg = "#283648",
+    selection_fg = "#CDCECF",
 
     ansi = { "#393b44", "#c94f6d", "#81b29a", "#dbc074", "#719cd6", "#9d79d6", "#63cdcf", "#dfdfe0" },
     brights = { "#7f8c98", "#d6616b", "#58cd8b", "#ffe37e", "#84cee4", "#b8a1e3", "#59f0ff", "#f2f2f2" },
