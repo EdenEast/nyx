@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.modules.shell.direnv;
+let
+  cfg = config.nyx.modules.shell.direnv;
 in
 {
   options.nyx.modules.shell.direnv = {
@@ -11,7 +12,10 @@ in
   config = mkIf cfg.enable {
     programs.direnv = {
       enable = true;
-      nix-direnv.enable = true;
+      nix-direnv = {
+        enable = true;
+        enableFlakes = true;
+      };
     };
 
     nyx.modules.shell.bash.initExtra =
