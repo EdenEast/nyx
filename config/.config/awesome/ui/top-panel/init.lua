@@ -40,6 +40,7 @@ local TopPanel = function(s)
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
       mytextclock,
+      require("ui.widgets.top-panel.battery")(),
       wibox.widget.systray(),
       s.mylayoutbox,
     },
