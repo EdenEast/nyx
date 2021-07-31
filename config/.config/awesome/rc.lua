@@ -24,6 +24,7 @@ require("awful.hotkeys_popup.keys")
 
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "xresources/theme.lua")
+-- beautiful.init(gears.filesystem.get_themes_dir() .. "nightfox/theme.lua")
 
 -- Init all modules (You can add/remove active modules here)
 require("modules.auto-start")
