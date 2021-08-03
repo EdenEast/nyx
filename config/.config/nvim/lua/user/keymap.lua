@@ -18,8 +18,8 @@ nnoremap({ "Y", "y$" })
 xnoremap({ "Y", "y$" })
 
 -- Center search
-nnoremap({ "n", "nzz" })
-nnoremap({ "N", "Nzz" })
+nnoremap({ "n", "nzzzv" })
+nnoremap({ "N", "Nzzzv" })
 
 -- Switch between the last two buffers
 nnoremap({ "<leader><leader>", "<c-^>" })
