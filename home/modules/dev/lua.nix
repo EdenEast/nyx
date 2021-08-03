@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.modules.dev.lua;
+let
+  cfg = config.nyx.modules.dev.lua;
 in
 {
 
@@ -10,6 +11,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ lua52Packages.lua lua52Packages.lua-lsp ];
+    home.packages = with pkgs; [ lua52Packages.lua sumneko-lua-language-server ];
   };
 }
