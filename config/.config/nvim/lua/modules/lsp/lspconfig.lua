@@ -134,6 +134,15 @@ local servers = {
   rust_analyzer = { cmd = { "rust-analyzer" .. ext } },
   sumneko_lua = {
     cmd = { "lua-language-server" .. ext },
+    root_dir = function(filename, bufnr)
+      local cwd = vim.fn.getcwd()
+      if string.match(cwd, "nyx/config/.config") then
+        return cwd
+      end
+
+      local util = nvim_lsp.util
+      return util.find_git_ancestor(filename) or util.path.dirname(filename)
+    end,
     settings = {
       Lua = {
         runtime = {
