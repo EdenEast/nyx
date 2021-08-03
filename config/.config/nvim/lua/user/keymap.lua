@@ -14,8 +14,8 @@ keymap.map({ "<up>", "k" })
 keymap.map({ "<right>", "l" })
 
 -- Map Y to be the same as D and C
-nnoremap({ "Y", "y$" })
-xnoremap({ "Y", "y$" })
+nnoremap({ "Y", "yg_" })
+xnoremap({ "Y", "yg_" })
 
 -- Center search
 nnoremap({ "n", "nzzzv" })
