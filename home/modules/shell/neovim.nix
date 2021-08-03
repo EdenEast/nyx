@@ -7,6 +7,35 @@ in
 {
   options.nyx.modules.shell.neovim = {
     enable = mkEnableOption "neovim configuration";
+
+    # Rust is handled by the dev/rust.nix file as there is more to setup for that env
+    lspServers = mkOption {
+      description = "List of language server packages";
+      type = with types; listOf package;
+      default = with pkgs; [
+        # cmake-language-server
+        # elmPackages.elm-language-server
+        lldb
+        my.efm-lsp
+        nodePackages.bash-language-server
+        nodePackages.pyright
+        nodePackages.typescript-language-server
+        nodePackages.vim-language-server
+        omnisharp-roslyn
+        rnix-lsp
+        sumneko-lua-language-server
+      ];
+    };
+
+    formatters = mkOption {
+      description = "List of formatters and linters";
+      type = with types; listOf package;
+      default = with pkgs; [
+        stylua
+        shfmt
+        nixpkgs-fmt
+      ];
+    };
   };
 
   config = mkIf cfg.enable {
@@ -14,11 +43,7 @@ in
     xdg.configFile."nvim".source = ../../../config/.config/nvim;
     home.packages = with pkgs; [
       neovim-unwrapped
-      stylua
-      nixfmt
-      my.efm-lsp
-      shfmt
-    ];
+    ] ++ cfg.lspServers ++ cfg.formatters;
 
     # Add Treesitter parsers
     home.file = {
