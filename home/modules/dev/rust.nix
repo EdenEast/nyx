@@ -18,14 +18,21 @@ in
 {
   options.nyx.modules.dev.rust = {
     enable = mkEnableOption "rust configuration";
-    components = mkOption {
-      description = "Which components to add, such as rustc, clippy or cargo";
+    stableComponents = mkOption {
+      description = "Which stable components to add, such as rustc, clippy or cargo";
       type = with types; listOf str;
       default = [
         "cargo"
         "rustc"
         "rust-src"
         "rust-std"
+      ];
+    };
+
+    nightlyComponents = mkOption {
+      description = "Which nightly components to add, such as rustc, clippy or cargo";
+      type = with types; listOf str;
+      default = [
         "clippy-preview"
         "rustfmt-preview"
       ];
@@ -36,14 +43,22 @@ in
       type = types.bool;
       default = true;
     };
+
+    extraPackages = mkOption {
+      description = "Extra packages to be installed with rust";
+      type = with types; listOf package;
+      default = with pkgs; [
+        sccache
+      ];
+    };
   };
 
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        (fenix.latest.withComponents cfg.components)
-
-      ] ++ (optional cfg.rust-analyzer fenix.rust-analyzer);
+        (fenix.stable.withComponents cfg.stableComponents)
+        (fenix.latest.withComponents cfg.nightlyComponents)
+      ] ++ cfg.extraPackages ++ (optional cfg.rust-analyzer fenix.rust-analyzer);
 
       sessionVariables = {
         RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
