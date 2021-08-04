@@ -63,7 +63,6 @@ tools["TimUntersberger/neogit"] = {
   cmd = { "Neogit" },
   keys = { "<leader>gg" },
   requires = { "nvim-lua/plenary.nvim" },
-  diable = true,
 }
 
 -- Profiling
