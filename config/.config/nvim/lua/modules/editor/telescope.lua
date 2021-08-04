@@ -1,16 +1,12 @@
 local actions = require("telescope.actions")
-local previewers = require("telescope.previewers")
 local sorters = require("telescope.sorters")
-local themes = require("telescope.themes")
+
 local nnoremap = vim.keymap.nnoremap
 
 local trouble = require("trouble.providers.telescope")
 
 require("telescope").setup({
   defaults = {
-    -- prompt_prefix = '❯ ',
-    -- selection_caret = '❯ ',
-
     vimgrep_arguments = {
       "rg",
       "--color=never",
@@ -23,11 +19,6 @@ require("telescope").setup({
     },
 
     layout_strategy = "horizontal",
-
-    -- selection_strategy = "reset",
-    -- sorting_strategy = "descending",
-    -- scroll_strategy = "cycle",
-    -- prompt_position = "bottom",
 
     mappings = {
       i = {
@@ -56,6 +47,7 @@ require("telescope").setup({
 })
 
 require("telescope").load_extension("fzy_native")
+require("telescope").load_extension("dap")
 
 nnoremap({ "<leader>ff", [[<cmd>Telescope find_files<cr>]], silent = true })
 nnoremap({ "<leader>fd", [[<cmd>Telescope git_files<cr>]], silent = true })

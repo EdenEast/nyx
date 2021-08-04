@@ -66,4 +66,13 @@ editor["alec-gibson/nvim-tetris"] = {
   cmd = { "Tetris" },
 }
 
+editor["mfussenegger/nvim-dap"] = {
+  config = [[require("modules.editor.debug")]],
+  requires = {
+    "nvim-telescope/telescope-dap.nvim",
+    "theHamsta/nvim-dap-virtual-text",
+    "rcarriga/nvim-dap-ui",
+  },
+}
+
 return editor
