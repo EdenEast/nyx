@@ -43,26 +43,24 @@ local function find_exec_files(prompt, path, ignore_paths)
 end
 
 local function rust_crate()
-  return function()
-    local metadata_json = vim.fn.system("cargo metadata --format-version 1 --no-deps")
-    local metadata = vim.fn.json_decode(metadata_json)
-    local target_dir = metadata.target_directory
+  local metadata_json = vim.fn.system("cargo metadata --format-version 1 --no-deps")
+  local metadata = vim.fn.json_decode(metadata_json)
+  local target_dir = metadata.target_directory
 
-    local results = {}
-    for _, package in ipairs(metadata.packages) do
-      for _, target in ipairs(package.targets) do
-        if vim.tbl_contains(target.kind, "bin") then
-          table.insert(results, target_dir .. "/debug/" .. target.name)
-        end
+  local results = {}
+  for _, package in ipairs(metadata.packages) do
+    for _, target in ipairs(package.targets) do
+      if vim.tbl_contains(target.kind, "bin") then
+        table.insert(results, target_dir .. "/debug/" .. target.name)
       end
     end
-
-    if #results == 1 then
-      return results[1]
-    end
-
-    return user_select("Select target:", results)
   end
+
+  if #results == 1 then
+    return results[1]
+  end
+
+  return user_select("Select target:", results)
 end
 
 -- Settings -------------------------------------------------------------------
