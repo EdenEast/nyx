@@ -1,14 +1,8 @@
 local dap = require("dap")
+local utils = require("dap.utils")
 local fmt = string.format
 
 local nnoremap = vim.keymap.nnoremap
-
-local function get_file(prompt, path)
-  return function()
-    path = path or ""
-    return vim.fn.input(prompt, vim.fn.getcwd() .. "/" .. path, "file")
-  end
-end
 
 local function user_select(prompt, options)
   local choices = { prompt }
@@ -23,22 +17,6 @@ local function user_select(prompt, options)
     end
 
     return options[choice]
-  end
-end
-
-local function find_exec_files(prompt, path, ignore_paths)
-  return function()
-    local ignores = ignore_paths or {}
-
-    local cmd = { "fd", ".", path, "-t", "x" }
-    for _, i in pairs(ignores) do
-      table.insert(cmd, "-E")
-      table.insert(cmd, i)
-    end
-
-    local output = vim.fn.system(cmd)
-    local lines = vim.split(output, "\n")
-    return user_select(prompt, lines)
   end
 end
 
@@ -102,6 +80,15 @@ dap.configurations.rust = {
     program = function()
       return rust_crate()
     end,
+  },
+  {
+    -- If you get an "Operation not permitted" error using this, try disabling YAMA:
+    --  echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+    name = "Attach",
+    type = "lldb",
+    request = "attach",
+    pid = utils.pick_process,
+    args = {},
   },
 }
 
