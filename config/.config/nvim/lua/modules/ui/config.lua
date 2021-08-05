@@ -73,12 +73,7 @@ end
 function config.vista()
   local nnoremap = vim.keymap.nnoremap
 
-  -- Use coc as the backend
-  if vim.g.eden_nvimlsp then
-    vim.g.vista_default_executive = "nvim_lsp"
-  else
-    vim.g.vista_default_executive = "coc"
-  end
+  vim.g.vista_default_executive = "nvim_lsp"
 
   -- Enable fzf preview with vista
   vim.g.vista_fzf_preview = { "right:50%" }
