@@ -2,18 +2,9 @@ local lsp = {}
 local conf = require("modules.lsp.config")
 local pack = require("core.pack")
 
--- CoC --------------------------------------------------------------------------------------------
-
-lsp["neoclide/coc.nvim"] = {
-  disable = not vim.g.eden_nvimlsp,
-  branch = "release",
-  opt = true,
-}
-
 -- Nvim Lsp ---------------------------------------------------------------------------------------
 
 lsp["neovim/nvim-lspconfig"] = {
-  disable = not vim.g.eden_nvimlsp,
   config = conf.nvim_lsp,
   requires = {
     "nvim-lua/lsp_extensions.nvim",
@@ -24,7 +15,6 @@ lsp["neovim/nvim-lspconfig"] = {
 }
 
 lsp["hrsh7th/nvim-compe"] = {
-  disable = not vim.g.eden_nvimlsp,
   event = "InsertEnter",
   config = conf.nvim_compe,
   requires = {
