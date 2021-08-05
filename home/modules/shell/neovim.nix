@@ -15,7 +15,6 @@ in
       default = with pkgs; [
         # cmake-language-server
         # elmPackages.elm-language-server
-        lldb
         my.efm-lsp
         nodePackages.bash-language-server
         nodePackages.pyright
@@ -24,6 +23,14 @@ in
         omnisharp-roslyn
         rnix-lsp
         sumneko-lua-language-server
+      ];
+    };
+
+    debugAdaptors = mkOption {
+      description = "List of debug adaptor packages";
+      type = with types; listOf package;
+      default = with pkgs; [
+        lldb
       ];
     };
 
@@ -43,7 +50,7 @@ in
     xdg.configFile."nvim".source = ../../../config/.config/nvim;
     home.packages = with pkgs; [
       neovim-unwrapped
-    ] ++ cfg.lspServers ++ cfg.formatters;
+    ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters;
 
     # Add Treesitter parsers
     home.file = {
