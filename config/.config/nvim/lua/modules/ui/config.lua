@@ -170,4 +170,24 @@ function config.nvim_tree()
   vim.keymap.nnoremap({ "<leader>te", "<cmd>NvimTreeToggle<cr>", silent = true })
 end
 
+function config.truezen()
+  require("true-zen").setup({
+    integrations = {
+      gitsigns = true,
+      lualine = true,
+    },
+  })
+
+  local nnoremap = vim.keymap.nnoremap
+
+  nnoremap({ "<leader>bm", [[<cmd>TZFocus<cr>]] })
+  nnoremap({ "<leader>tz", [[<cmd>TZAtaraxis<cr>]] })
+end
+
+function config.zenmode()
+  require("zen-mode").setup()
+
+  vim.keymap.nnoremap({ "<leader>tz", [[<cmd>ZenMode<cr>]] })
+end
+
 return config

@@ -61,4 +61,8 @@ ui["kyazdani42/nvim-tree.lua"] = {
   -- cmd = {'NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile'},
 }
 
+ui["folke/zen-mode.nvim"] = {
+  config = conf.zenmode,
+}
+
 return ui
