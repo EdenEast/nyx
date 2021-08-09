@@ -46,6 +46,11 @@ function Packer:load_packer()
     package_root = package_root,
     git = { clone_timeout = 120 },
     disable_commands = true,
+    display = {
+      open_fn = function()
+        return require("packer.util").float({ border = "single" })
+      end,
+    },
   })
 
   packer.reset()
@@ -165,7 +170,9 @@ function plugins.init_commands()
   vim.cmd([[command! -nargs=* PackerCompile  lua require('core.pack').compile(<q-args>)]])
   vim.cmd([[command! PackerStatus  lua require('core.pack').status()]])
   vim.cmd([[command! PackerProfile  lua require('core.pack').profile_output()]])
-  vim.cmd([[command! -nargs=+ -complete=customlist,v:lua.require'packer'.loader_complete PackerLoad lua require('core.pack').loader(<q-args>)]])
+  vim.cmd(
+    [[command! -nargs=+ -complete=customlist,v:lua.require'packer'.loader_complete PackerLoad lua require('core.pack').loader(<q-args>)]]
+  )
 
   vim.cmd([[command! PackerInstallSync lua require('core.pack').install_sync()]])
   vim.cmd([[command! PackerUpdateSync lua require('core.pack').update_sync()]])
