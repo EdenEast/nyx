@@ -95,6 +95,7 @@ wk.register({
     h = "search-highlight",
     n = "line-number",
     v = "vista",
+    z = "zen",
   },
   x = {
     name = "+trouble",
