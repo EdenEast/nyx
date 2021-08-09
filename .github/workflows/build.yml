@@ -8,6 +8,7 @@ on:
       - "**.norg"
       - "bin/**"
       - "extra/**"
+      - "docs/**"
 
 jobs:
   build:
