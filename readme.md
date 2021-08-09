@@ -13,11 +13,13 @@ This repository defines machines running [NixOS][nix], or unix machines running 
 
 ## Structure
 
-- `config/` - Contains `.dotfiles` for various applications. You can think of this as my `$HOME` directory.
-- `home/` - Configuration for my user. This is where home-manager configurations lives.
-  - `hosts/` - The definition of a home user. If same name as a `nixos/hosts` will be used by it.
-  - `modules/` - A defined set of home modules that can be enabled in a `home/host`.
-  - `profiles/` - A collection of module configurations grouped together to be used by a `home/host`.
+- `bin/` - Contains scripts that will be added to the `$PATH` variable
+  - `windows/` - Scripts that are user to setup my windows machines
+- `config/` - Contains `.dotfiles` for various applications. You can think of this as my `$HOME` directory
+- `home/` - Configuration for my user. This is where home-manager configurations lives
+  - `hosts/` - The definition of a home user. If same name as a `nixos/hosts` will be used by it
+  - `modules/` - A defined set of home modules that can be enabled in a `home/host`
+  - `profiles/` - A collection of module configurations grouped together to be used by a `home/host`
   - `secrets/` - A folder of secrets used by the user
 - `lib/` - List of helper functions
 - `nix/` - Nix package manager configurations
@@ -26,8 +28,8 @@ This repository defines machines running [NixOS][nix], or unix machines running 
 - `nixos/` - Machine configurations
   - `hosts/` - The definition of a nixos machine
   - `modules/` - Nixos modules
-  - `profiles/` - A collection of module configurations.
-  - `secrets/` - Secrets used for a machine host.
+  - `profiles/` - A collection of module configurations
+  - `secrets/` - Secrets used for a machine host
 
 ## Dotfiles
 

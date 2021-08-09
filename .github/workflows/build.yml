@@ -7,7 +7,6 @@ on:
       - "**.org"
       - "**.norg"
       - "bin/**"
-      - "extra/**"
       - "docs/**"
 
 jobs:
