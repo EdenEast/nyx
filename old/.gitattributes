@@ -1,2 +1,0 @@
-.secret/** filter=git-crypt diff=git-crypt
-hosts/chairo/** filter=git-crypt diff=git-crypt
