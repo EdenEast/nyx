@@ -22,11 +22,16 @@ local function rust_crate()
   return util.user_select("Select target:", results)
 end
 
-local function lldb_lookup()
+local function lldb_init_commands()
   local sysroot = vim.fn.system("rustc --print sysroot"):gsub("\n", "")
-  local path = sysroot .. "/lib/rustlib/etc/lldb_lookup.py"
-  local result = string.format([[command script import "%s"]], path)
-  P(result)
+  local path = sysroot .. "/lib/rustlib/etc"
+  local lookup = string.format([[command script import "%s"/lldb_lookup.py]], path)
+  local commands = string.format([[command source "%s"/lldb_commands]], path)
+  local result = {
+    lookup,
+    commands,
+  }
+
   return result
 end
 
@@ -41,7 +46,7 @@ dap.adapters.lldb_rust = {
   env = util.pass_env({
     LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES",
   }),
-  initCommands = lldb_lookup(),
+  initCommands = lldb_init_commands(),
 }
 
 dap.configurations.rust = {
