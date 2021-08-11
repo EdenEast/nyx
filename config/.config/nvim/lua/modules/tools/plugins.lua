@@ -20,8 +20,6 @@ tools["ThePrimeagen/harpoon"] = {
   },
 }
 
-tools["gyim/vim-boxdraw"] = {}
-
 -- Git integrations -------------------------------------------------------------------------------
 -- The wrapper around git
 tools["tpope/vim-fugitive"] = {
