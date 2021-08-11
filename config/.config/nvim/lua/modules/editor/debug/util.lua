@@ -22,4 +22,12 @@ M.basic_file_path = function()
   return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 end
 
+M.pass_env = function(additional)
+  local vars = additional or {}
+  for k, v in pairs(vim.fn.environ()) do
+    table.insert(vars, fmt("%s=%s", k, v))
+  end
+  return vars
+end
+
 return M

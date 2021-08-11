@@ -22,7 +22,15 @@ local function rust_crate()
   return util.user_select("Select target:", results)
 end
 
-dap.adapters.lldb = {
+local function lldb_lookup()
+  local sysroot = vim.fn.system("rustc --print sysroot"):gsub("\n", "")
+  local path = sysroot .. "/lib/rustlib/etc/lldb_lookup.py"
+  local result = string.format([[command script import "%s"]], path)
+  P(result)
+  return result
+end
+
+dap.adapters.lldb_rust = {
   name = "lldb",
   type = "executable",
   attach = {
@@ -30,15 +38,16 @@ dap.adapters.lldb = {
     pidSelect = "ask",
   },
   command = "lldb-vscode",
-  env = {
+  env = util.pass_env({
     LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES",
-  },
+  }),
+  initCommands = lldb_lookup(),
 }
 
 dap.configurations.rust = {
   {
     name = "Debug Crate",
-    type = "lldb",
+    type = "lldb_rust",
     request = "launch",
     program = function()
       return rust_crate()

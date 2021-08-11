@@ -27,6 +27,7 @@ wk.register({
     B = "conditional-breakpoint",
     c = "continue",
     d = "run-last",
+    d = "hover",
     j = "step-into",
     J = "down-callstack",
     k = "step-out",

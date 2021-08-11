@@ -4,10 +4,23 @@ local util = require("modules.editor.debug.util")
 
 -- lldb adapter is defined in rust
 
+dap.adapters.lldb_cpp = {
+  name = "lldb",
+  type = "executable",
+  attach = {
+    pidProperty = "pid",
+    pidSelect = "ask",
+  },
+  command = "lldb-vscode",
+  env = util.pass_env({
+    LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES",
+  }),
+}
+
 dap.configurations.c = {
   {
     name = "Launch",
-    type = "lldb",
+    type = "lldb_cpp",
     request = "launch",
     program = function()
       return util.basic_file_path()
