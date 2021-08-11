@@ -6,16 +6,9 @@ local load = require("core.pack").local_load
 
 -- Treesitter supported themes
 ui[load("EdenEast/nightfox.nvim")] = {}
-ui["cocopon/iceberg.vim"] = {}
 ui["embark-theme/vim"] = {}
 ui["folke/tokyonight.nvim"] = {}
-ui["glepnir/zephyr-nvim"] = {}
-ui["vigoux/oak"] = {}
-ui["wojciechkepka/bogster"] = {}
 ui["eddyekofo94/gruvbox-flat.nvim"] = {}
-
--- Non treesitter supported themes
-ui["arzg/vim-colors-xcode"] = {}
 
 ui["glepnir/dashboard-nvim"] = {
   config = conf.dashboard,
@@ -35,11 +28,6 @@ ui["Yggdroot/indentLine"] = {
   config = conf.indentline,
 }
 
--- Viewer & Finder for LSP symbols and tags
-ui["liuchengxu/vista.vim"] = {
-  config = conf.vista,
-}
-
 ui["lewis6991/gitsigns.nvim"] = {
   event = { "BufReadPre", "BufNewFile" },
   config = conf.gitsigns,
@@ -55,10 +43,8 @@ ui["akinsho/nvim-bufferline.lua"] = {
 ui["kyazdani42/nvim-tree.lua"] = {
   config = conf.nvim_tree,
   requires = { "kyazdani42/nvim-web-devicons" },
-  -- NOTE: Currently there is an issue with the ordering of whichkey and opt loading on cmd.
-  -- WhichKey will load before this one will register and not showup.
-  -- Have to find a solution.
-  -- cmd = {'NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile'},
+  cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFindFile" },
+  keys = { "<leader>te" },
 }
 
 ui["folke/zen-mode.nvim"] = {

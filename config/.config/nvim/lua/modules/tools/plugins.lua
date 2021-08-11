@@ -12,14 +12,6 @@ tools["iamcco/markdown-preview.nvim"] = {
   config = conf.mkpreview,
 }
 
-tools["ThePrimeagen/harpoon"] = {
-  config = conf.harpoon,
-  requires = {
-    { "nvim-lua/popup.nvim" },
-    { "nvim-lua/plenary.nvim" },
-  },
-}
-
 -- Git integrations -------------------------------------------------------------------------------
 -- The wrapper around git
 tools["tpope/vim-fugitive"] = {
