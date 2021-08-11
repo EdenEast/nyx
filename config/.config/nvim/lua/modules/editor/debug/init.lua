@@ -37,7 +37,9 @@ nnoremap({ "<leader>dB", [[<cmd>lua require('dap').set_breakpoint(vim.fn.input('
 nnoremap({ "<leader>dm", [[<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>]] })
 
 nnoremap({ "<leader>dd", [[<cmd>lua require('dap').run_last()<cr>]] })
-nnoremap({ "<leader>dq", [[<cmd>lua require('dap').diconnect()<cr>]] })
-nnoremap({ "<leader>dQ", [[<cmd>lua require('dap').diconnect({restart = true})<cr>]] })
+nnoremap({ "<leader>dq", [[<cmd>lua require('dap').disconnect()<cr>]] })
+nnoremap({ "<leader>dQ", [[<cmd>lua require('dap').disconnect({restart = true})<cr>]] })
+
+nnoremap({ "<leader>dh", [[<cmd>lua require('dap.ui.widgets').hover()<cr>]] })
 
 nnoremap({ "<leader>du", [[<cmd>lua require('dapui').toggle()<cr>]] })
