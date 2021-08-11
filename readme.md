@@ -39,8 +39,9 @@ my configurations. This helps when I am on a machine that is not managed by nix 
 cough*). On these machines I symlink the files in the `config/` folder into their respective
 locations. Some configurations of note:
 
-- [Neovim](./config/.config/nvim/init.lua)
-- [Git](./config/.config/git/readme.md)
+- [Neovim](./config/.config/nvim)
+- [Git](./config/.config/git)
+- [Awesome](./config/.config/awesome)
 - [Bash/Zsh](./config/.config/shell)
 
 ## Resources
