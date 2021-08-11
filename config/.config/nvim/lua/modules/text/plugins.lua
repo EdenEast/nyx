@@ -2,17 +2,12 @@ local conf = require("modules.text.config")
 local text = {}
 
 -- Language agnostic comment motions
--- TODO: Maybe switch???
--- text['b3nj5m1n/kommentary'] = { }
 text["tpope/vim-commentary"] = {}
 
 -- Jump to any location specified by two characters
 text["ggandor/lightspeed.nvim"] = {
   config = conf.lightspeed,
 }
--- text['justinmk/vim-sneak'] = {
---   config = conf.sneak,
--- }
 
 --
 text["junegunn/vim-easy-align"] = {
@@ -32,9 +27,6 @@ text["glts/vim-textobj-comment"] = {}
 
 -- Add text objects for pair, quote, seperator, argument, and tag
 text["wellle/targets.vim"] = {}
-
--- Add - object for line 'da-'
-text["wellle/line-targets.vim"] = {}
 
 -- Create own user text objects
 text["kana/vim-textobj-user"] = {}
