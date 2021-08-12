@@ -21,20 +21,6 @@ path.exists = function(p)
   return not (state == nil)
 end
 
-local emplace = function(tbl, value)
-  local exists = false
-  for _, v in ipairs(tbl) do
-    if v == value then
-      exists = true
-      break
-    end
-  end
-
-  if not exists then
-    table.insert(tbl, value)
-  end
-end
-
 local construct_runtimepath = function()
   local rtsplit = vim.split(vim.o.runtimepath, ",")
   local rtpath = {
@@ -48,9 +34,9 @@ local construct_runtimepath = function()
 
   for _, v in pairs(rtsplit) do
     if string.match(v, "[\\/]after$") then
-      emplace(rtafter, v)
+      util.emplace(rtafter, v)
     else
-      emplace(rtpath, v)
+      util.emplace(rtpath, v)
     end
   end
 
@@ -71,9 +57,9 @@ local construct_packpath = function()
 
   for _, v in pairs(psplit) do
     if string.match(v, "[\\/]after$") then
-      emplace(pafter, v)
+      util.emplace(pafter, v)
     else
-      emplace(ppath, v)
+      util.emplace(ppath, v)
     end
   end
   return util.join(ppath, ",") .. "," .. util.join(pafter, ",")

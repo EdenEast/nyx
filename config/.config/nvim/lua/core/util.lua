@@ -13,6 +13,20 @@ util.join = function(tbl, delm)
   return result
 end
 
+util.emplace = function(tbl, value)
+  local exists = false
+  for _, v in ipairs(tbl) do
+    if v == value then
+      exists = true
+      break
+    end
+  end
+
+  if not exists then
+    table.insert(tbl, value)
+  end
+end
+
 util.exec_line = function()
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
   local line = vim.api.nvim_get_current_line()
