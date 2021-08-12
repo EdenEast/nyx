@@ -134,7 +134,7 @@ local servers = {
   rust_analyzer = { cmd = { "rust-analyzer" .. ext } },
   sumneko_lua = {
     cmd = { "lua-language-server" .. ext },
-    root_dir = function(filename, bufnr)
+    root_dir = function(filename, _)
       local cwd = vim.fn.getcwd()
       if string.match(cwd, "nyx/config/.config") then
         return cwd

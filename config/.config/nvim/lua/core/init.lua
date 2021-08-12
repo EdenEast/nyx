@@ -13,7 +13,6 @@ UNLOAD = function(pack)
   package.loaded[pack] = nil
 end
 
-local global = require("core.global")
 local path = require("core.path")
 
 path.init()
