@@ -132,34 +132,37 @@ local function worker(user_args)
       level_widget.text = string.format(" %d%%", charge)
     end
 
-    local is_charging = status == "Charging"
-
-    if charge >= 0 and charge < 15 then
-      battery_icon = is_charging and "" or ""
-      if enable_battery_warning and status ~= "Charging" and os.difftime(os.time(), last_battery_check) > 300 then
-        -- if 5 minutes have elapsed since the last warning
-        last_battery_check = os.time()
-
-        show_battery_warning()
-      end
-    elseif charge >= 20 and charge < 30 then
-      battery_icon = is_charging and "" or ""
-    elseif charge >= 30 and charge < 40 then
-      battery_icon = is_charging and "" or ""
-    elseif charge >= 40 and charge < 50 then
-      battery_icon = is_charging and "" or ""
-    elseif charge >= 50 and charge < 60 then
-      battery_icon = is_charging and "" or ""
-    elseif charge >= 60 and charge < 70 then
-      battery_icon = is_charging and "" or ""
-    elseif charge >= 70 and charge < 80 then
-      battery_icon = is_charging and "" or ""
-    elseif charge >= 80 and charge < 90 then
-      battery_icon = is_charging and "" or ""
-    elseif charge == 100 then
-      battery_icon = is_charging and "" or ""
+    local function is_in_range(value, min, max)
+      return value >= min and value < max
+    end
+    if status == "Charging" then
+      battery_icon = ""
     else
-      battery_icon = is_charging and "" or ""
+      if is_in_range(charge, 0, 15) then
+        battery_icon = ""
+        if enable_battery_warning and status ~= "Charging" and os.difftime(os.time(), last_battery_check) > 300 then
+          -- if 5 minutes have elapsed since the last warning
+          last_battery_check = os.time()
+
+          show_battery_warning()
+        end
+      elseif is_in_range(charge, 15, 30) then
+        battery_icon = ""
+      elseif is_in_range(charge, 30, 40) then
+        battery_icon = ""
+      elseif is_in_range(charge, 40, 50) then
+        battery_icon = ""
+      elseif is_in_range(charge, 50, 60) then
+        battery_icon = ""
+      elseif is_in_range(charge, 60, 70) then
+        battery_icon = ""
+      elseif is_in_range(charge, 70, 80) then
+        battery_icon = ""
+      elseif is_in_range(charge, 80, 90) then
+        battery_icon = ""
+      else
+        battery_icon = ""
+      end
     end
 
     icon_widget.text = battery_icon
