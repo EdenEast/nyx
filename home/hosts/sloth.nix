@@ -21,7 +21,10 @@
     };
     profiles = {
       extended.enable = true;
-      desktop.enable = true;
+      desktop = {
+        enable = true;
+        laptop = true;
+      };
       development.enable = true;
     };
   };

@@ -3,9 +3,19 @@
 with lib;
 let
   cfg = config.nyx.profiles.desktop;
+  laptopPkgs = with pkgs; [
+    acpi
+  ];
 in
 {
-  options.nyx.profiles.desktop = { enable = mkEnableOption "desktop profile"; };
+  options.nyx.profiles.desktop = {
+    enable = mkEnableOption "desktop profile";
+    laptop = mkOption {
+      description = "Add packages required when machine is a laptop";
+      type = types.bool;
+      default = false;
+    };
+  };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
@@ -17,7 +27,7 @@ in
       networkmanagerapplet
       synergy
       xdotool
-    ];
+    ] ++ optionals cfg.laptop laptopPkgs;
 
     xdg.configFile."awesome".source = ../../config/.config/awesome;
     xsession = {
