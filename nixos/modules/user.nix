@@ -38,7 +38,7 @@ in
         hashedPassword = "$6$nF.UDyrpHmh6M$yKCw56auQ7Dm1FfvmQg6y3Y59mWsoiHJyAYhqF9e8nKjfeKwUoFocwHhogKUTq.A3hVe9S.smv7u1NLV/yPTd0";
         # `shell` attribute cannot be removed! If no value is present then there will be no shell
         # configured for the user and SSH will not allow logins!
-        # shell = zsh;
+        shell = pkgs.zsh;
         uid = 1000;
       };
 
