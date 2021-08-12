@@ -1,9 +1,12 @@
 local global = require("core.global")
-local augroup = vim.augroup
 
 vim.augroup({
   packer = {
-    { "BufWritePost", string.format("%s/lua/modules/*.lua", global.confighome), "lua require('core.pack').auto_compile()" },
+    {
+      "BufWritePost",
+      string.format("%s/lua/modules/*.lua", global.confighome),
+      "lua require('core.pack').auto_compile()",
+    },
   },
 
   bufs = {

@@ -1,4 +1,3 @@
-local util = require("core.util")
 local global = require("core.global")
 local path = require("core.path")
 

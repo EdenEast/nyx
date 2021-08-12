@@ -1,5 +1,4 @@
 local inoremap = vim.keymap.inoremap
-local npairs = require("nvim-autopairs")
 
 vim.cmd([[packadd vim-vsnip]])
 vim.cmd([[packadd vim-vsnip-integ]])
@@ -18,7 +17,7 @@ end
 
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
+--- jump to prev/next snippet's placeholdersr
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t("<C-n>")
@@ -66,36 +65,6 @@ require("compe").setup({
       filetypes = { "markdown", "text" },
       priority = 0,
     },
-
-    -- path = {
-    --   menu = "  ",
-    -- },
-    -- buffer = {
-    --   menu = "  ",
-    -- },
-    -- spell = {
-    --   menu = "  ",
-    -- },
-    -- calc = {
-    --   menu = "  ",
-    -- },
-    -- nvim_lsp = {
-    --   menu = "  "
-    -- },
-    -- nvim_lua = {
-    --   menu = "  "
-    -- },
-    -- vsnip = {
-    --   menu = "  "
-    -- },
-    -- treesitter = {
-    --   menu = "  ",
-    -- },
-    -- emoji = {
-    --   menu = " ﲃ ",
-    --   filetypes = {"markdown", "text"},
-    --   priority = 0,
-    -- },
   },
 })
 

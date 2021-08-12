@@ -1,8 +1,6 @@
 local config = {}
 
 function config.dashboard()
-  local home = os.getenv("HOME")
-
   vim.g.dashboard_custom_header = {
     "███████╗██████╗ ███████╗███╗   ██╗",
     "██╔════╝██╔══██╗██╔════╝████╗  ██║",
