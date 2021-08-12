@@ -62,4 +62,13 @@ function config.toggleterm()
   })
 end
 
+function config.bufdel()
+  require("bufdel").setup({
+    next = "alternate",
+    quit = false,
+  })
+
+  vim.keymap.nnoremap({ "<leader>bq", [[<cmd>BufDel<cr>]] })
+end
+
 return config

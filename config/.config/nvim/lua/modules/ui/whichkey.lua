@@ -14,6 +14,7 @@ wk.register({
     d = "sort-directory",
     l = "next",
     h = "prev",
+    q = "quit",
   },
   c = {
     name = "+code",
