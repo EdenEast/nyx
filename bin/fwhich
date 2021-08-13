@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# This is a quick script call which and follow the results if they are links
+
+function process() {
+  local result="$1"
+  if [[ -L $result ]]; then
+    result=$(readlink "$result")
+  fi
+  echo "$result"
+}
+
+function main() {
+  if [ -z "$1" ]; then
+    echo "Require executable in PATH"
+    exit 1
+  fi
+
+  path=$(which "$1")
+  while [ -L "$path" ]; do
+    path=$(process "$path")
+  done
+
+  echo "$path"
+}
+
+main "$@"
