@@ -44,6 +44,27 @@ locations. Some configurations of note:
 - [Awesome](./config/.config/awesome)
 - [Bash/Zsh](./config/.config/shell)
 
+## Hosts
+
+| Configuration | Type   | Description                                      |
+| ------------- | ------ | ------------------------------------------------ |
+| [sloth]       | System | An old lenovo T530 Laptop                        |
+| [eden]        | Home   | Generic home config for non nixos machines (wsl) |
+
+[sloth]: ./nixos/hosts/sloth
+[eden]: ./home/hosts/eden.nix
+
+## Ci/Cd
+
+I have github action workflows setup to continuously build my configurations and deploy the results
+to a binary cache server ([cachix]). Every week I have a workflow that creates a pull request with
+an updated flake lock file. The pr action will diff the changing packages between the current and
+updated lockfile changes. It will then also run a security issues with [vulnix]. A report is
+generated in the pr and I can accept the changes.
+
+[cachix]: https://app.cachix.org/cache/edeneast
+[vulnix]: https://github.com/flyingcircusio/vulnix
+
 ## Resources
 
 ### Manuals
