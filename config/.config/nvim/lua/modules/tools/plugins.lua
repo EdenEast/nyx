@@ -50,8 +50,6 @@ tools["f-person/git-blame.nvim"] = {
 -- TODO: This is a WIP magit replacement written in lua for neovim. Watch this space
 tools["TimUntersberger/neogit"] = {
   config = conf.neogit,
-  cmd = { "Neogit" },
-  keys = { "<leader>gg" },
   requires = { "nvim-lua/plenary.nvim" },
 }
 
