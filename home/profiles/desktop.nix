@@ -27,6 +27,7 @@ in
       networkmanagerapplet
       synergy
       xdotool
+      my.deadhead-font
     ] ++ optionals cfg.laptop laptopPkgs;
 
     xdg.configFile."awesome".source = ../../config/.config/awesome;
