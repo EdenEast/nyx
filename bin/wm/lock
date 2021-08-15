@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# i3lock-color \
+i3lock \
+    -n \
+    --indicator \
+    -c 292e39 \
+    -S=0 \
+    --insidecolor=2e3440ff \
+    --insidevercolor=81a1c1ff \
+    --insidewrongcolor=d08770ff \
+    \
+    --ringcolor=d8dee9ff \
+    --ringvercolor=d8dee9ff \
+    --ringwrongcolor=d8dee9ff \
+    \
+    --line-uses-inside \
+    --keyhlcolor=a3be8cff \
+    --bshlcolor=bf616aff \
+    \
+    --layoutcolor=eceff4ff \
+    --separatorcolor=2e344000 \
+    --indpos="x+w/2:y+200+h/2" \
+    --radius=52 \
+    --ring-width=20 \
+    --noinputtext="" \
+    \
+    --clock \
+    \
+    --timecolor=e5e9f0ff \
+    --timestr="•%H %M•" \
+    --timepos="x+w/2:y+64+h/2" \
+    --time-font="Fira Sans" \
+    --timesize=64 \
+    \
+    --datecolor=88c0d0ff \
+    --datestr="%A" \
+    --datepos="x+w/2:y+h/2" \
+    --date-font="Deadhead Script" \
+    --datesize=256 \
+    \   --veriftext="Verifying" \
+    --verifcolor=81a1c1ff \
+    --verif-font="Deadhead Script" \
+    --verifpos="x+w/2:y+h/2" \
+    --verifsize=256 \
+    \
+    --wrongtext="Try again" \
+    --wrongcolor=d08770ff \
+    --wrong-font="Deadhead Script" \
+    --wrongpos="x+w/2:y+h/2" \
+    --wrongsize=256
