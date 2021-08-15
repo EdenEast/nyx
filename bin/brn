@@ -1,0 +1,162 @@
+#!/bin/bash
+
+VERSON=1.0.0
+
+# color chart https://stackoverflow.com/a/5947802
+RED='\033[0;31m'
+YLO='\033[0;33m'
+BLU='\033[0;34m'
+RST='\033[0m'
+
+# -----------------------------------------------------------------------------
+# logging
+
+function debug() { [[ -n $verbose ]] && { echo -e "${BLU}$@${RST}"; } }
+function info() { echo -e "$@"; }
+function warn() { echo -e "${YLO}$@${RST}"; }
+function error() { echo -e "${RED}$@${RST}" 1>&2; }
+function failure() { error "$1" ; exit "${2:-1}"; }
+
+# -----------------------------------------------------------------------------
+
+function main()
+{
+    parse_cli_arguments "$@"
+
+    declare -r files="$(mktemp --tmpdir brn.XXX)"
+
+    populate_src
+    write_files
+
+    # open editor
+    ${EDITOR:-vi} "${files}"
+
+    populate_dst
+
+    move_files
+}
+
+function usage()
+{
+    cat <<EOF
+brn $VERSON
+
+[B]ulk [R]e[n]ame files with $EDITOR
+
+USAGE:
+    brn [OPTIONS] [FILES]
+
+OPTIONS:
+    -h, --help      Print help information
+    -v, --verbose   Output verbose debug information
+    -V, --version   Prings version information
+
+ARGS:
+    <FILES>
+                    Files to be renamed. If no files are provided the files
+                    in the current directory will be used
+EOF
+}
+
+function version()
+{
+    info $VERSON
+}
+
+function parse_cli_arguments()
+{
+    positionals=()
+
+    while [[ $# -gt 0 ]]; do
+        key="$1"
+
+        case $key in
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            -V|--version)
+                version
+                exit 0
+                ;;
+            -v|--verbose)
+                verbose=1
+                shift
+                ;;
+            *)
+                positionals+=("$1")
+                ;;
+        esac
+    done
+
+    # restore positional parameters
+    set -- ${positionals[@]}
+}
+
+function cleanup()
+{
+    debug "Removing tmp file list"
+    debug "  rm -r ${files}"
+    rm -f ${files}
+}
+
+function populate_src()
+{
+    [ $# -ne 0 ] && {
+        src=( "$@" )
+    } || {
+        IFS=$'\r\n' GLOBIGNORE='*' command eval  'src=($(ls))'
+    }
+}
+
+function write_files()
+{
+    for s in ${src[@]}; do
+        debug "Adding to list: $s"
+        echo $s >> "${files}"
+    done
+}
+
+function populate_dst()
+{
+    IFS=$'\r\n' GLOBIGNORE='*' command eval  'dst=($(cat "${files}"))'
+}
+
+function move_files()
+{
+    src_count=${#src[@]}
+    dst_count=${#dst[@]}
+    [[ $src_count -ne $dst_count ]] && {
+        failure "Number of source files [$src_count] does not match saved edited result [$dst_count]"
+    }
+
+    count=0
+    for ((i=0; i<$src_count; ++i)); do
+        src_file=${src[i]}
+        dst_file=${dst[i]}
+
+        [ "$src_file" != "$dst_file" ] && {
+            debug "moving $src_file to $dst_file"
+
+            # get the directory of the dst file and create if does not exist
+            mkdir -p "`dirname "$dst_file"`"
+
+            if git ls-files --error-unmatch $src_file > /dev/null 2>&1; then
+                debug "  git mv $src_file $dst_file"
+                git mv $src_file $dst_file
+            else
+                debug "  mv $src_file $dst_file"
+                mv $src_file $dst_file
+            fi
+
+            ((count++))
+        }
+    done
+}
+
+# -----------------------------------------------------------------------------
+
+# register clean to be executed cleanup on exit
+trap cleanup EXIT
+main "$@"
+
