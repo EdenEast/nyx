@@ -212,11 +212,20 @@ TARGETS:
 
 OPTIONS:
   -h, --help      Show help message
+  -l, --list      Show status of current links
+                    - Green:  Linked to local 'config/'
+                    - Cyan:   Linked to the nix store
+                    - Yellow: Linked to somewhere other then /nix/store
+                    - Red:    Target points to a non linked directory
+                    - Blue:   Target does not exist on system
 EOF
 
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      -l | --list)
+        do_list=true
+        ;;
       *)
         args+=("$1")
         ;;
@@ -227,6 +236,33 @@ EOF
   [ -n "$HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
+  }
+
+  [ -n "$do_list" ] && {
+    for key in "${!SOURCES[@]}"; do
+      src="${SOURCES[$key]}"
+      tar="${TARGETS[$key]}"
+
+      if [ -L "$tar" ]; then
+        output=$(readlink "$tar")
+        if [[ $output == "$src" ]]; then
+          color="$GRN"
+        else
+          [[ $output =~ ^/nix/store/.* ]] && color="$CYN" || color="$YLO"
+        fi
+      else
+        if [ -d "$tar" ] || [ -f "$tar" ]; then
+          output="$tar"
+          color="$RED"
+        else
+          color="$BLU"
+          output="---"
+        fi
+      fi
+      printf "${color}%*s${RST}: %s\n" 10 "$key" " $output"
+    done
+
+    exit 0
   }
 
   function create_link() {
