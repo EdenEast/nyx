@@ -46,7 +46,7 @@ function main() {
           DEBUG="YES"
           ;;
         -h | --help)
-          HELP=true
+          CMD_HELP=true
           ;;
         *)
           NYX_ARGS+=("$1")
@@ -89,7 +89,7 @@ EOF
     shift
   done
 
-  [ -n "$HELP" ] && {
+  [ -n "$CMD_HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
   }
@@ -143,18 +143,13 @@ EOF
     shift
   done
 
-  [ -n "$HELP" ] && {
+  [ -n "$CMD_HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
   }
 
   (
     cd "$NYX_ROOT"
-
-    [ -n "$HELP" ] && {
-      printf "%s\n" "$help_msg"
-      exit 1
-    }
 
     nix flake check
   )
@@ -181,7 +176,7 @@ EOF
     shift
   done
 
-  [ -n "$HELP" ] && {
+  [ -n "$CMD_HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
   }
@@ -233,7 +228,7 @@ EOF
     shift
   done
 
-  [ -n "$HELP" ] && {
+  [ -n "$CMD_HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
   }
@@ -336,7 +331,7 @@ EOF
     shift
   done
 
-  [ -n "$HELP" ] && {
+  [ -n "$CMD_HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
   }
@@ -400,7 +395,7 @@ EOF
     shift
   done
 
-  [ -n "$HELP" ] && {
+  [ -n "$CMD_HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
   }
@@ -438,7 +433,7 @@ EOF
     shift
   done
 
-  [ -n "$HELP" ] && {
+  [ -n "$CMD_HELP" ] && {
     printf "%s\n" "$help_msg"
     exit 1
   }
