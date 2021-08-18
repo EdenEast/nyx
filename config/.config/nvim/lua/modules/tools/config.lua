@@ -52,7 +52,7 @@ function config.neogit()
     },
   })
 
-  vim.keymap.nnoremap({ "<leader>gg", "<cmd>Neogit<cr>" })
+  vim.keymap.nnoremap({ "<leader>gn", "<cmd>Neogit<cr>" })
 end
 
 return config

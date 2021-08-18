@@ -38,8 +38,6 @@ tools["pwntester/octo.nvim"] = {
 
 tools["sindrets/diffview.nvim"] = {
   config = conf.diffview,
-  cmd = { "DiffviewOpen", "Neogit" },
-  keys = { "<leader>gg" },
 }
 
 -- Show git blame in virtual text like git-lens in vscode
