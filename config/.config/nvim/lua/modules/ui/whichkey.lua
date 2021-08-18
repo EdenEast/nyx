@@ -67,6 +67,7 @@ wk.register({
     d = "diff-file",
     g = "neogit",
     m = "commit-under-cursor",
+    p = "diff-pick",
     h = {
       name = "+hunk",
       b = "blame",

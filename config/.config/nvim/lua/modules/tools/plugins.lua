@@ -53,6 +53,14 @@ tools["TimUntersberger/neogit"] = {
   requires = { "nvim-lua/plenary.nvim" },
 }
 
+tools["AndrewRadev/linediff.vim"] = {
+  config = function()
+    vim.keymap.nnoremap({ "<leader>gp", [[<cmd>LinediffPick<cr>]] })
+  end,
+  cmd = { "LinediffPick" },
+  keys = { "<leader>gp" },
+}
+
 -- Profiling
 tools["tweekmonster/startuptime.vim"] = {
   cmd = { "StartupTime" },
