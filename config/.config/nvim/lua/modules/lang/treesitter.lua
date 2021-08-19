@@ -4,6 +4,7 @@ vim.api.nvim_command("set foldmethod=expr")
 vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
 
 vim.cmd([[packadd nvim-ts-context-commentstring]])
+vim.cmd([[packadd nvim-treesitter-textobjects]])
 
 -- Setting clang as the compiler to use as pre this solution
 -- https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support#troubleshooting
