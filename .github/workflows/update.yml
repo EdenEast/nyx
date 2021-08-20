@@ -1,3 +1,4 @@
+# https://github.com/sandhose/nixconf/blob/055de30/.github/workflows/update.yaml
 name: Update
 on:
   # Manual triggering
@@ -5,24 +6,45 @@ on:
 
   # Every Friday at 12:00
   schedule:
-    - cron:  '0 0 * * FRI'
+    - cron:  '0 5 * * SUN'
 
 jobs:
   flake-update:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - uses: cachix/install-nix-action@v13
         with:
           install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20210604_8e6ee1b/install
           extra_nix_config: |
             experimental-features = nix-command flakes
-      - run: nix flake update
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git author
+        run: |
+          git config user.name 'GitHub Actions'
+          git config user.email 'noreply@github.com'
+
+      - name: Update lock file
+        run: nix flake update --no-registries --commit-lock-file
+
+      - name: Get commit message
+        id: commit
+        run: |
+          message="$(git log -1 --pretty=%B | tail +3 | awk -f ./.github/misc/flake-to-markdown.awk)"
+          message="${message//'%'/'%25'}"
+          message="${message//$'\n'/'%0A'}"
+          message="${message//$'\r'/'%0D'}"
+          echo "::set-output name=message::$message"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.PAT }} # needed so that this triggers further flows. not ideal.
-          commit-message: "chore(flake): Update flake.lock"
+          title: "chore(flake): Automatic flake update"
+          body: "${{ steps.commit.outputs.message }}"
           branch: "chore/flake-update"
           delete-branch: true
-          title: "chore(flake): Automatic flake updates"
