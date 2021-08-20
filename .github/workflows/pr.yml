@@ -1,9 +1,12 @@
 name: Pull Request
 on:
   pull_request:
-
     paths-ignore:
       - "**.md"
+      - "**.org"
+      - "**.norg"
+      - "bin/**"
+      - "docs/**"
 
 jobs:
   build:
@@ -16,17 +19,9 @@ jobs:
           - eden
 
     steps:
-      # Checkout the pr into a path called `pr` so that we can diff it vs `main`
-      - name: Checkout Pr
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
-          path: pr
-
-      - name: Checkout Main
-        uses: actions/checkout@v2
-        with:
-          path: main
-          ref: main
+          fetch-depth: 0
 
       - name: Install nix
         uses: cachix/install-nix-action@v13
@@ -34,33 +29,44 @@ jobs:
           install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20210604_8e6ee1b/install
           extra_nix_config: |
             experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Setup cachix
-      #   uses: cachix/cachix-action@v10
-      #   with:
-      #     name: edeneast
-      #     authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - uses: cachix/cachix-action@v10
+        with:
+          name: edeneast
+          skipPush: true
+          extraPullNames: nix-community
 
-      - name: Build
-        run: |
-          nix build -L --profile /tmp/nix-profile ./main#top.${{ matrix.target }}
-          nix build -L --profile /tmp/nix-profile ./pr#top.${{ matrix.target }}
+      - name: Build pr target
+        env:
+          TARGET: ".#top.${{ matrix.target }}"
+        run: nix build $TARGET --show-trace --fallback -v --log-format raw
 
-      - name: Diff
+      - name: Fetch current main and build it in a profile
+        env:
+          TARGET: "github:EdenEast/nyx#top.${{ matrix.target }}"
+        run: nix build $TARGET -v --log-format raw --profile ./profile
+
+      - name: Apply new target to profile
+        env:
+          TARGET: ".#top.${{ matrix.target }}"
+        run: nix build $TARGET -v --log-format raw --profile ./profile
+
+      - name: Diff profile
         id: diff
         run: |
-          nix profile diff-closures --profile /tmp/nix-profile | tee /tmp/diff.txt
-          OUTPUT_DIFF="$(cat /tmp/diff.txt)"
-          OUTPUT_DIFF="${OUTPUT_DIFF//'%'/'%25'}"
-          OUTPUT_DIFF="${OUTPUT_DIFF//$'\n'/'%0A'}"
-          OUTPUT_DIFF="${OUTPUT_DIFF//$'\r'/'%0D'}"
-          echo "$OUTPUT_DIFF"
-          echo "::set-output name=diff::$OUTPUT_DIFF"
+          diff="$(nix profile diff-closures --profile ./profile)"
+          echo "$diff"
+          diff="$(echo "$diff" | sed 's/\x1b\[[0-9;]*m//g')"
+          diff="${diff//'%'/'%25'}"
+          diff="${diff//$'\n'/'%0A'}"
+          diff="${diff//$'\r'/'%0D'}"
+          echo "::set-output name=diff::$diff"
 
       - name: Scan for security issues
         id: security
         run: |
-          nix run nixpkgs/nixos-20.09#vulnix -- -w https://raw.githubusercontent.com/ckauhaus/nixos-vulnerability-roundup/master/whitelists/nixos-20.09.toml /tmp/nix-profile | tee /tmp/security.txt
+          nix run nixpkgs/nixos-20.09#vulnix -- -w https://raw.githubusercontent.com/ckauhaus/nixos-vulnerability-roundup/master/whitelists/nixos-20.09.toml ./profile | tee /tmp/security.txt
           OUTPUT_SECURITY="$(cat /tmp/security.txt)"
           OUTPUT_SECURITY="${OUTPUT_SECURITY//'%'/'%25'}"
           OUTPUT_SECURITY="${OUTPUT_SECURITY//$'\n'/'%0A'}"
@@ -68,21 +74,26 @@ jobs:
           echo "$OUTPUT_SECURITY"
           echo "::set-output name=security::$OUTPUT_SECURITY"
 
-      - name: Post report
-        uses: peter-evans/commit-comment@v1
+      - name: Comment report in pr
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          body: |
-            # Summary of changes
-            For your information, I have made the following summary of changes.
-            Please use this in your assement whether this commit should be merged.
-            ## Version report
+          header: ".#top.${{ matrix.target }}"
+          message: |
+            ### Report for `${{ matrix.target }}`
+            Version changes:
             ```
             ${{ steps.diff.outputs.diff }}
             ```
-            ## Vulnerability report
-            ```
+            <details>
+            <summary>
+            Security vulnerability report
+            </summary>
+            <br>
+            <pre>
             ${{ steps.security.outputs.security }}
-            ```
+            </pre>
+            </details>
 
 # Idea reference
 # https://github.com/arianvp/nixos-stuff/blob/adec9e6/.github/workflows/pr.yml
+# https://github.com/sandhose/nixconf/blob/055de30/.github/workflows/check-pr.yaml
