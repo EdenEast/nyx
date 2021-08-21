@@ -172,6 +172,13 @@ local global = gears.table.join(
     group = "launcher",
   }),
 
+  awful.key({ mod }, "p", function()
+    awful.util.spawn_with_shell("sleep 0.5 && scrot -s")
+  end, {
+    description = "take screenshot",
+    group = "launcher",
+  }),
+
   -- Layouts
 
   -- Centered layout
