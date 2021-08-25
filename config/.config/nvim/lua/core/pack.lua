@@ -5,7 +5,7 @@ local fn, api, el = vim.fn, vim.api, vim.loop
 
 local packer = nil
 local module_path = path.join(global.confighome, "lua", "modules")
-local packer_compiled = path.join(global.datahome, "plugin", "packer_compiled.vim")
+local packer_compiled = path.join(global.datahome, "plugin", "packer_compiled.lua")
 local package_root = path.join(global.cachehome, "site", "pack")
 local packpath = path.join(package_root, "packer")
 
