@@ -2,13 +2,14 @@ local global = require("core.global")
 local path = require("core.path")
 local augroup = require("core.event")
 
-local default = "zephyr"
+local default = "nightfox"
 local cache = path.join(global.cachehome, "theme.txt")
 
 local theme = {}
 
 local event_group = {
   theme = {
+    { "VimEnter", "*", [[lua require('core.theme').reload()]] },
     { "ColorScheme", "*", [[lua require('core.theme').hook()]] },
     { "User", "PackerComplete", [[lua require('core.theme').reload()]] },
   },
@@ -21,9 +22,9 @@ theme.hook = function()
 end
 
 theme.init = function()
-  if not vim.g.colors_name then
-    theme.reload()
-  end
+  -- if not vim.g.colors_name then
+  --   theme.reload()
+  -- end
 
   augroup(event_group)
 end

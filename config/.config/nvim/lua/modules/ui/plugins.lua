@@ -5,7 +5,25 @@ local load = require("core.pack").local_load
 -- Themes -----------------------------------------------------------------------------------------
 
 -- Treesitter supported themes
-ui[load("EdenEast/nightfox.nvim")] = {}
+ui[load("EdenEast/nightfox.nvim")] = {
+  config = function()
+    local nightfox = require("nightfox")
+    nightfox.setup({
+      hlgroups = {
+        TSPunctDelimiter = { fg = "${red}" },
+      },
+    })
+    nightfox.load()
+  end,
+}
+ui["Pocco81/Catppuccino.nvim"] = {
+  config = function()
+    local catppuccino = require("catppuccino")
+    catppuccino.setup({
+      colorscheme = "neon_latte",
+    })
+  end,
+}
 ui["embark-theme/vim"] = {}
 ui["folke/tokyonight.nvim"] = {}
 ui["eddyekofo94/gruvbox-flat.nvim"] = {}
