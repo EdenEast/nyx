@@ -5,7 +5,9 @@ let
   cfg = config.nyx.profiles.desktop;
 in
 {
-  options.nyx.profiles.desktop.enable = mkEnableOption "desktop profile";
+  options.nyx.profiles.desktop = {
+    enable = mkEnableOption "desktop profile";
+  };
 
   config = mkIf cfg.enable {
     fonts = {

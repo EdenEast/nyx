@@ -6,10 +6,10 @@
   # Hardware ------------------------------------------------------------------
   boot = {
     kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
+    extraModulePackages = [];
     initrd = {
       availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
-      kernelModules = [ ];
+      kernelModules = [];
     };
 
     loader = {
@@ -48,7 +48,15 @@
     export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
   '';
 
-  nyx.profiles.desktop.enable = true;
+  nyx.modules.nvidia = {
+    enable = true;
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
+  };
+
+  nyx.profiles.desktop = {
+    enable = true;
+  };
 
   system.stateVersion = "21.05";
 }
