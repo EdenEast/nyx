@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
         target:
+          - pride
           - sloth
           - eden
 
