@@ -42,6 +42,7 @@
           hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
             eden = { inherit system; config = ./home/hosts/eden.nix; };
             wsl = { inherit system; config = ./home/hosts/wsl.nix; };
+            pride = { inherit system; config = ./home/hosts/pride.nix; };
             sloth = { inherit system; config = ./home/hosts/sloth.nix; };
           };
         };
@@ -60,6 +61,7 @@
 
         nixosConfigurations = mapAttrs' mkSystemConfig {
           wsl = { inherit system; config = ./nixos/hosts/wsl; };
+          pride = { inherit system; config = ./nixos/hosts/pride; };
           sloth = { inherit system; config = ./nixos/hosts/sloth; };
         };
 
