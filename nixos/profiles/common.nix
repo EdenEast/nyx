@@ -63,6 +63,7 @@ in
       vim
       git
       firefox
+      pciutils
     ];
 
     nyx.modules = {
