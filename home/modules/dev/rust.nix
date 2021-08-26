@@ -26,16 +26,15 @@ in
         "rustc"
         "rust-src"
         "rust-std"
+        "clippy-preview"
+        "rustfmt-preview"
       ];
     };
 
     nightlyComponents = mkOption {
       description = "Which nightly components to add, such as rustc, clippy or cargo";
       type = with types; listOf str;
-      default = [
-        "clippy-preview"
-        "rustfmt-preview"
-      ];
+      default = [];
     };
 
     rust-analyzer = mkOption {
