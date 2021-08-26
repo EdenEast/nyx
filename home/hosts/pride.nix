@@ -5,6 +5,9 @@
 
   nyx = {
     modules = {
+      app = {
+        alacritty.fontSize = 8;
+      };
       shell = {
         git = {
           userName = "James Simpson";
