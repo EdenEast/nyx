@@ -352,7 +352,7 @@ EOF
       fi
     else
       # There was no target passed to build so infer what do build
-      if is_nixos >/dev/nul; then
+      if is_nixos >/dev/null; then
         debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
         unlink                              # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
         sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
