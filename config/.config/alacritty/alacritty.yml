@@ -21,5 +21,6 @@ import:
   - ~/.config/alacritty/visual/cursor.yml
   - ~/.config/alacritty/visual/font.yml
   - ~/.config/alacritty/visual/window.yml
+  - ~/.local/share/alacritty/nyx-config.yml
   - ~/.local/share/alacritty/config.yml
 
