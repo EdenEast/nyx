@@ -8,7 +8,7 @@
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
     initrd = {
-      availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+      availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
       kernelModules = [ ];
     };
 
@@ -35,9 +35,8 @@
   # ---------------------------------------------------------------------------
 
   networking.enableIPv6 = true;
-  networking.interfaces.enp0s25.useDHCP = true;
-  networking.interfaces.enp0s20f0u1.useDHCP = true;
   networking.interfaces.wlp3s0.useDHCP = true;
+  # networking.interfaces.enp0s20f0u1.useDHCP = true;
 
   # GPG and SSH
   # Enable for smartcard mode
