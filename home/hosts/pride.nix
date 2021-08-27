@@ -5,6 +5,10 @@
 
   nyx = {
     modules = {
+      # Set the default theme for this host
+      theme.colors = with builtins;
+        fromJSON (readFile ../modules/theme/nordfox.json);
+
       app = {
         alacritty.fontSize = 8;
       };
