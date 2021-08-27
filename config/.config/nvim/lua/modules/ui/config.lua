@@ -120,6 +120,7 @@ function config.bufferline()
 end
 
 function config.nvim_tree()
+  local tree_cb = require("nvim-tree.config").nvim_tree_callback
   vim.g.nvim_tree_ignore = { ".git", "node_modules" }
   vim.g.nvim_tree_auto_close = 1
   vim.g.nvim_tree_auto_ignore_ft = { "startify", "dashboard" }
@@ -132,6 +133,10 @@ function config.nvim_tree()
   vim.g.nvim_tree_hijack_netrw = 1
   vim.g.nvim_tree_add_trailing = 1
   vim.g.nvim_tree_group_empty = 1
+  vim.g.nvim_tree_bindings = {
+    { key = "l", cb = tree_cb("edit") },
+    { key = "h", cb = tree_cb("close_node") },
+  }
   vim.g.nvim_tree_icons = {
     default = "",
     symlink = "",
