@@ -37,6 +37,29 @@ in
       windowManager.awesome.enable = true;
     };
 
+    home.file.".Xresources".text = with config.nyx.modules.theme.colors; ''
+      *background: #${bg}
+      *foreground: #${fg}
+      *color0: #${base.black}
+      *color1: #${base.red}
+      *color2: #${base.green}
+      *color3: #${base.yellow}
+      *color4: #${base.blue}
+      *color5: #${base.magenta}
+      *color6: #${base.cyan}
+      *color7: #${base.white}
+      *color8: #${bright.black}
+      *color9: #${bright.red}
+      *color10: #${bright.green}
+      *color11: #${bright.yellow}
+      *color12: #${bright.blue}
+      *color13: #${bright.magenta}
+      *color14: #${bright.cyan}
+      *color15: #${bright.white}
+      *color16: #${base.orange}
+      *color17: #${base.pink}
+    '';
+
     nyx.modules = {
       app.alacritty.enable = true;
       app.discord.enable = true;
