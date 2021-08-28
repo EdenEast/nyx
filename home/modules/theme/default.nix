@@ -6,10 +6,19 @@ let
 in
 {
   options.nyx.modules.theme = {
-    colors = mkOption {
-      # type = with types; attrsOf str;
-      type = with types; attrs;
-      description = "Base16 colors";
+    name = mkOption {
+      type = types.str;
+      description = "Name of the theme loaded into color attributes";
+      default = "nightfox";
     };
+    colors = mkOption {
+      type = types.attrs;
+      description = "Color attributes";
+      internal = true;
+    };
+  };
+
+  config = {
+    nyx.modules.theme.colors = with builtins; fromJSON (readFile ((toString ./.) + "/${cfg.name}.json"));
   };
 }
