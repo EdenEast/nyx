@@ -34,6 +34,8 @@
 
   # ---------------------------------------------------------------------------
 
+  programs.steam.enable = true;
+
   networking.enableIPv6 = true;
   networking.interfaces.wlp3s0.useDHCP = true;
   # networking.interfaces.enp0s20f0u1.useDHCP = true;
