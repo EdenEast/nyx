@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.modules.shell.bash;
+let
+  cfg = config.nyx.modules.shell.bash;
 in
 {
   options.nyx.modules.shell.bash = {
