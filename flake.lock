@@ -149,13 +149,29 @@
         "type": "github"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1630178330,
+        "narHash": "sha256-EYSjLs9i5+b4Ea0O4QPnB/Y1eVD1ZgTzNkwr1yB53lo=",
+        "owner": "nix-community",
+        "repo": "nur",
+        "rev": "d26888042ee2c1316a54f6a1b4f2804451effc70",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nur",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "fenix": "fenix",
         "flake-compat": "flake-compat",
         "home-manager": "home-manager",
         "neovim-nightly": "neovim-nightly",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nur": "nur"
       }
     },
     "rust-analyzer-src": {
