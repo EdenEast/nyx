@@ -10,6 +10,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nur.url = "github:nix-community/nur";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
+
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
@@ -37,7 +40,12 @@
         lib = lib.my;
 
         internal = {
-          overlays = [ (inputs.neovim-nightly.overlay) (inputs.fenix.overlay) ] ++ (attrValues (mapModules ./nix/overlays import));
+          overlays = [
+            (inputs.neovim-nightly.overlay)
+            (inputs.fenix.overlay)
+            (inputs.nur.overlay)
+          ]
+          ++ (attrValues (mapModules ./nix/overlays import));
 
           hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
             eden = { inherit system; config = ./home/hosts/eden.nix; };
