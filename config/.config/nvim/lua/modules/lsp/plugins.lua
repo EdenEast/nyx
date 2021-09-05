@@ -1,5 +1,5 @@
 local lsp = {}
-local pack = require("core.pack")
+local load = require("core.pack").local_load
 
 -- Nvim Lsp ---------------------------------------------------------------------------------------
 
@@ -23,7 +23,6 @@ lsp["hrsh7th/nvim-compe"] = {
   },
 }
 
-local lspsync = pack.local_load("EdenEast/nvim-lspsync")
-lsp[lspsync] = {}
+lsp[load("EdenEast/nvim-lspsync")] = {}
 
 return lsp
