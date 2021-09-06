@@ -28,8 +28,8 @@ nnoremap({ "<leader>dl", [[<cmd>lua require('dap').step_over()<cr>]] })
 nnoremap({ "<leader>dj", [[<cmd>lua require('dap').step_into()<cr>]] })
 nnoremap({ "<leader>dk", [[<cmd>lua require('dap').step_out()<cr>]] })
 
-nnoremap({ "<leader>bK", [[<cmd>lua require('dap').up()<cr>]] })
-nnoremap({ "<leader>bJ", [[<cmd>lua require('dap').down()<cr>]] })
+nnoremap({ "<leader>dK", [[<cmd>lua require('dap').up()<cr>]] })
+nnoremap({ "<leader>dJ", [[<cmd>lua require('dap').down()<cr>]] })
 
 nnoremap({ "<F9>", [[<cmd>lua require('dap').toggle_breakpoint()<cr>]] })
 nnoremap({ "<leader>db", [[<cmd>lua require('dap').toggle_breakpoint()<cr>]] })
