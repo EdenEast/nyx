@@ -1,5 +1,28 @@
 #!/usr/bin/env bash
 
+if [ -n "$*" ]; then
+  key="$1"
+  case $key in
+    -e | --extended) EXTENDED=true ;;
+    *) ;;
+  esac
+  shift
+fi
+
+if [ -n "$EXTENDED" ]; then
+  for x in {0..8}; do
+    for i in {30..37}; do
+      for a in {40..47}; do
+        echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m\033[0m"
+      done
+      echo
+    done
+  done
+  echo ""
+
+  exit 0
+fi
+
 T='•••' # The text for the color test
 
 echo -e "\n         def     40m     41m     42m     43m     44m     45m     46m     47m"
@@ -16,3 +39,5 @@ for FGs in '    m' '   1m' '  30m' '1;30m' '  31m' '1;31m' '  32m' \
   echo
 done
 echo
+
+# vim: et sw=2 ts=2 sts=2
