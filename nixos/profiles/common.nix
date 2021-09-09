@@ -34,8 +34,15 @@ in
 
     nix = {
       inherit (nixConf) binaryCaches binaryCachePublicKeys;
+
+      # Save space by hardlinking store files
       autoOptimiseStore = true;
-      sshServe.enable = true;
+
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+      };
     };
 
     # security = {
