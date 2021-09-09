@@ -58,6 +58,7 @@ in
 
     nyx.modules = {
       caps.enable = true;
+      disk.enable = true;
     };
   };
 }
