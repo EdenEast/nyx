@@ -43,6 +43,8 @@ in
         dates = "weekly";
         options = "--delete-older-than 30d";
       };
+
+      allowedUsers = [ "root" ];
     };
 
     # security = {
