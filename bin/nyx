@@ -13,7 +13,7 @@ NYX_ROOT="$(dirname $(dirname "$(readlink -f "$0")"))"
 HOME_MANAGER_BACKUP_EXT="nbak"
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(build|check|fmt|help|link|switch|update|unlink)$"
+INTERNAL_COMMANDS="^(build|check|fmt|gc|help|link|switch|update|unlink)$"
 
 NIXARGS=(--experimental-features "nix-command flakes")
 NIXBUILDARGS=(
@@ -192,6 +192,55 @@ EOF
       nix-shell -p stylua --run "stylua -g *.lua -- ."
     )
   )
+}
+
+function gc() {
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE: nyx gc [OPTIONS] [target...]
+
+Garbage collection and nix store optimization
+
+OPTIONS:
+  -h, --help      Show help message
+  -a, --all       GC both user and system profiles
+  -s, --system    Only gc system profile
+EOF
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -a | --all) do_all=true ;;
+      -s | --system) do_system=true ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  if [ -n "$do_all" ] || [ -n "$do_system" ]; then
+    info "Cleaning up system profile"
+    sudo nix-collect-garbage -d
+    sudo nix-store --optimize
+
+    # nix-collect-garbage is a Nix tool, not a NixOS tool. It won't delete old
+    # boot entries until you do a nixos-rebuild (which means we'll always have
+    # 2 boot entries at any time). Instead, we properly delete them by
+    # reloading the current environment.
+    sudo nix-env --delete-generations old --profile /nix/var/nix/profiles/system
+    sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
+  fi
+
+  if [ -n "$do_all" ] || [ -z "$do_system" ]; then
+    info "Cleaning up system profile"
+    nix-collect-garbage -d
+  fi
 }
 
 function link() {
@@ -486,6 +535,7 @@ COMMANDS:
   build  - Build target
   check  - Execute flake check
   fmt    - Execute formatters
+  gc     - Garbage collection and nix store optimization
   link   - Symlink config locations in config/ to ~/.config
   switch - Switch to configuration
   update - Update flake inputs
