@@ -38,6 +38,10 @@ xnoremap({ "*", '"xy/<c-r><cr>' })
 -- Clone paragraph
 nnoremap({ "cp", [[yap<S-}>p]] })
 
+-- Redirect change operation to blackhole register
+nnoremap({ "c", [["_c]] })
+nnoremap({ "C", [["_C]] })
+
 -- Toggle highlight search
 nnoremap({
   "<leader>th",
