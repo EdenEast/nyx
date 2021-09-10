@@ -6,6 +6,10 @@ local nnoremap, xnoremap, tnoremap = keymap.nnoremap, keymap.xnoremap, keymap.tn
 nnoremap({ "j", "gj" })
 nnoremap({ "k", "gk" })
 
+-- Read the current line and execute that in your $SHELL.  The resulting output of the command will replace the line
+-- that you were on. This is very handy. Also I dont use Ex mode.
+nnoremap({ "Q", [[!!$SHELL <cr>]] })
+
 -- Witn colemak having 'hjkl' all not on the home row, and all on the right
 -- index finger, having a 'nav' layer helpr with navigation
 keymap.map({ "<left>", "h" })
