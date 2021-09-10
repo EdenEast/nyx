@@ -41,6 +41,8 @@ nnoremap({ "cp", [[vap:t'><cr>{j]] })
 -- Redirect change operation to blackhole register
 nnoremap({ "c", [["_c]] })
 nnoremap({ "C", [["_C]] })
+xnoremap({ "c", [["_c]] })
+xnoremap({ "C", [["_C]] })
 
 -- Toggle highlight search
 nnoremap({
