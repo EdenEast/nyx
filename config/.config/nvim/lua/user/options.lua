@@ -21,6 +21,7 @@ opt.undofile = true
 opt.viewdir = view
 
 opt.autoindent = true -- maintain indent of current line
+opt.breakindent = true -- continue indent visually
 opt.belloff = "all" -- I NEVER want to hear this bell for ANY reason
 opt.clipboard = "unnamedplus" -- use '+' register for all yanks, and deletes
 opt.cursorline = true -- highlight current line
@@ -63,6 +64,10 @@ opt.ttyfast = true -- let vim know that I am using a fast term
 opt.virtualedit = "block" -- allow cursor to move where there is no text in visual block mode
 opt.visualbell = false -- stop beeping for non-error errors, please god
 opt.wildmenu = true -- show options as list when switching buffers etc
+
+opt.breakindentopt = {
+  shift = 2, -- wrapped line's beginning will be shifted by the given number of
+}
 
 opt.fillchars = {
   vert = "┃", -- BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
