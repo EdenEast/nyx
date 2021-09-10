@@ -31,6 +31,9 @@ xnoremap({ "<", "<gv" })
 -- Search for selected text
 xnoremap({ "*", '"xy/<c-r><cr>' })
 
+-- Clone paragraph
+nnoremap({ "cp", [[yap<S-}>p]] })
+
 -- Toggle highlight search
 nnoremap({
   "<leader>th",
