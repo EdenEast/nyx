@@ -36,7 +36,7 @@ xnoremap({ "<", "<gv" })
 xnoremap({ "*", '"xy/<c-r><cr>' })
 
 -- Clone paragraph
-nnoremap({ "cp", [[yap<S-}>p]] })
+nnoremap({ "cp", [[vap:t'><cr>{j]] })
 
 -- Redirect change operation to blackhole register
 nnoremap({ "c", [["_c]] })
