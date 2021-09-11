@@ -58,7 +58,7 @@ editor["folke/trouble.nvim"] = {
 }
 
 editor["akinsho/nvim-toggleterm.lua"] = {
-  config = conf.toggleterm,
+  config = [[require('modules.editor.toggleterm')]],
 }
 
 editor["ojroques/nvim-bufdel"] = {
