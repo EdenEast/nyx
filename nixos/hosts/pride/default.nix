@@ -5,6 +5,8 @@
 
   # Hardware ------------------------------------------------------------------
   boot = {
+    # Change kernal to zen kernal
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [];
     initrd = {
