@@ -1,10 +1,14 @@
 local trouble = require("trouble")
-local nnoremap = vim.keymap.nnoremap
 
 trouble.setup()
 
-nnoremap({ "<leader>xx", [[<cmd>TroubleToggle<cr>]], silent = true })
-nnoremap({ "<leader>xw", [[<cmd>TroubleToggle lsp_workspace_diagnostics<cr>]], silent = true })
-nnoremap({ "<leader>xd", [[<cmd>TroubleToggle lsp_document_diagnostics<cr>]], silent = true })
-nnoremap({ "<leader>xl", [[<cmd>TroubleToggle locallist<cr>]], silent = true })
-nnoremap({ "<leader>xq", [[<cmd>TroubleToggle quickfix<cr>]], silent = true })
+vim.keymap({
+  "<leader>x",
+  {
+    { "x", [[<cmd>TroubleToggle<cr>]] },
+    { "w", [[<cmd>TroubleToggle lsp_workspace_diagnostics<cr>]] },
+    { "d", [[<cmd>TroubleToggle lsp_document_diagnostics<cr>]] },
+    { "l", [[<cmd>TroubleToggle locallist<cr>]] },
+    { "q", [[<cmd>TroubleToggle quickfix<cr>]] },
+  },
+})

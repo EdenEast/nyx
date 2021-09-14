@@ -1,5 +1,3 @@
-local inoremap = vim.keymap.inoremap
-
 vim.cmd([[packadd vim-vsnip]])
 vim.cmd([[packadd vim-vsnip-integ]])
 vim.cmd([[packadd friendly-snippets]])
@@ -68,9 +66,14 @@ require("compe").setup({
   },
 })
 
-inoremap({ "<Tab>", "v:lua.tab_complete()", expr = true })
-inoremap({ "<Tab>", "v:lua.tab_complete()", expr = true })
-inoremap({ "<S-Tab>", "v:lua.s_tab_complete()", expr = true })
-inoremap({ "<S-Tab>", "v:lua.s_tab_complete()", expr = true })
-
-inoremap({ "<C-Space>", [[compe#complete()]], expr = true })
+vim.keymap({
+  mode = "i",
+  expr = true,
+  {
+    { "<Tab>", "v:lua.tab_complete()", expr = true },
+    { "<Tab>", "v:lua.tab_complete()", expr = true },
+    { "<S-Tab>", "v:lua.s_tab_complete()", expr = true },
+    { "<S-Tab>", "v:lua.s_tab_complete()", expr = true },
+    { "<C-Space>", [[compe#complete()]], expr = true },
+  },
+})

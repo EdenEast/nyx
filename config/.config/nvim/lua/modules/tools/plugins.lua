@@ -53,7 +53,7 @@ tools["TimUntersberger/neogit"] = {
 
 tools["AndrewRadev/linediff.vim"] = {
   config = function()
-    vim.keymap.nnoremap({ "<leader>gp", [[<cmd>LinediffPick<cr>]] })
+    vim.keymap("<leader>gp", [[<cmd>LinediffPick<cr>]])
   end,
   cmd = { "LinediffPick" },
   keys = { "<leader>gp" },

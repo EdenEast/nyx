@@ -55,7 +55,7 @@ function config.bufdel()
     quit = false,
   })
 
-  vim.keymap.nnoremap({ "<leader>bq", [[<cmd>BufDel<cr>]] })
+  vim.keymap("<leader>bq", [[<cmd>BufDel<cr>]])
 end
 
 return config

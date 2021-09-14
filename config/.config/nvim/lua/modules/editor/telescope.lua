@@ -1,8 +1,6 @@
 local actions = require("telescope.actions")
 local sorters = require("telescope.sorters")
 
-local nnoremap = vim.keymap.nnoremap
-
 local trouble = require("trouble.providers.telescope")
 
 require("telescope").setup({
@@ -49,18 +47,24 @@ require("telescope").setup({
 require("telescope").load_extension("fzy_native")
 require("telescope").load_extension("dap")
 
-nnoremap({ "<leader>ff", [[<cmd>Telescope find_files<cr>]], silent = true })
-nnoremap({ "<leader>fd", [[<cmd>Telescope git_files<cr>]], silent = true })
-nnoremap({ "<leader>fr", [[<cmd>Telescope live_grep<cr>]], silent = true })
-nnoremap({ "<leader>fs", [[<cmd>Telescope lsp_workspace_symbols<cr>]], silent = true })
-nnoremap({ "<leader>fb", [[<cmd>Telescope buffers<cr>]], silent = true })
-nnoremap({ "<leader>fB", [[<cmd>Telescope builtin<cr>]], silent = true })
-nnoremap({ "<leader>fh", [[<cmd>Telescope help_tags<cr>]], silent = true })
-nnoremap({ "<leader>fe", [[<cmd>Telescope file_browser<cr>]], silent = true })
-nnoremap({ "<leader>fq", [[<cmd>Telescope quickfix<cr>]], silent = true })
-nnoremap({ "<leader>fQ", [[<cmd>Telescope loclist<cr>]], silent = true })
-
-nnoremap({ "<leader>fgb", [[<cmd>Telescope git_branches<cr>]], silent = true })
-nnoremap({ "<leader>fgc", [[<cmd>Telescope git_commits<cr>]], silent = true })
-nnoremap({ "<leader>fgl", [[<cmd>Telescope git_bcommits<cr>]], silent = true })
-nnoremap({ "<leader>fgs", [[<cmd>Telescope git_status<cr>]], silent = true })
+vim.keymap("<leader>f", {
+  { "f", [[<cmd>Telescope find_files<cr>]] },
+  { "d", [[<cmd>Telescope git_files<cr>]] },
+  { "r", [[<cmd>Telescope live_grep<cr>]] },
+  { "s", [[<cmd>Telescope lsp_workspace_symbols<cr>]] },
+  { "b", [[<cmd>Telescope buffers<cr>]] },
+  { "B", [[<cmd>Telescope builtin<cr>]] },
+  { "h", [[<cmd>Telescope help_tags<cr>]] },
+  { "e", [[<cmd>Telescope file_browser<cr>]] },
+  { "q", [[<cmd>Telescope quickfix<cr>]] },
+  { "Q", [[<cmd>Telescope loclist<cr>]] },
+  {
+    "g",
+    {
+      { "b", [[<cmd>Telescope git_branches<cr>]] },
+      { "c", [[<cmd>Telescope git_commits<cr>]] },
+      { "l", [[<cmd>Telescope git_bcommits<cr>]] },
+      { "s", [[<cmd>Telescope git_status<cr>]] },
+    },
+  },
+})

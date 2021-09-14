@@ -1,223 +1,166 @@
-local keymap = {}
+-- Modified version of nest.nvim (https://github.com/LionC/nest.nvim)
+local fmt = string.format
 
--- Have to use a global to handle re-requiring this file and losing all of the keymap.
---  In the future, the C code will handle this.
-__KeyMapStore = __KeyMapStore or {}
-keymap._store = __KeyMapStore
+local M = {}
 
-keymap._create = function(f)
-  table.insert(keymap._store, f)
-  return #keymap._store
+M.defaults = {
+  mode = "n",
+  prefix = "",
+  buffer = false,
+  opts = {
+    noremap = true,
+    silent = true,
+  },
+}
+
+local store = {}
+
+M._callFn = function(index)
+  store[index]()
 end
 
-keymap._execute = function(id)
-  keymap._store[id]()
+M._execExpr = function(index)
+  local keys = store[index]()
+  return vim.api.nvim_replace_termcodes(keys, true, true, true)
 end
 
-local make_mapper = function(mode, defaults, opts)
-  local args, map_args = {}, {}
-  for k, v in pairs(opts) do
-    if type(k) == "number" then
-      args[k] = v
+local function funcToRhs(func, expr)
+  table.insert(store, func)
+  local index = #store
+  return expr and fmt([[v:lua vim.keymap._execExpr(%d)]], index) or fmt([[<cmd>lua vim.keymap._callFn(%d)<cr>]], index)
+end
+
+local function mergeOpts(left, right)
+  local ret = vim.deepcopy(left)
+
+  if right == nil then
+    return ret
+  end
+
+  if right.mode ~= nil then
+    ret.mode = right.mode
+  end
+
+  if right.buffer ~= nil then
+    ret.buffer = right.buffer
+  end
+
+  if right.prefix ~= nil then
+    ret.prefix = ret.prefix .. right.prefix
+  end
+
+  if right.silent ~= nil then
+    ret.opts.silent = right.silent
+  end
+
+  if right.expr ~= nil then
+    ret.opts.expr = right.expr
+  end
+
+  if right.noremap ~= nil then
+    ret.opts.noremap = right.noremap
+  end
+
+  if right.unique ~= nil then
+    ret.opts.unique = right.unique
+  end
+
+  if right.script ~= nil then
+    ret.opts.script = right.script
+  end
+
+  return ret
+end
+
+M.new = function(...)
+  local resolved = M.resolve({ ... })
+  for _, r in ipairs(resolved) do
+    -- TODO: Validate that there is a lhs and rhs
+    if r.buffer then
+      local bufnr = (r.buffer == 0) and 0 or r.buffer
+      vim.api.nvim_buf_set_keymap(bufnr, r.mode, r.prefix, r.rhs, r.opts)
     else
-      map_args[k] = v
+      vim.api.nvim_set_keymap(r.mode, r.prefix, r.rhs, r.opts)
     end
   end
+end
 
-  local lhs = opts.lhs or args[1]
-  local rhs = opts.rhs or args[2]
-  local map_opts = vim.tbl_extend("force", defaults, map_args)
+M.resolve = function(config, presets)
+  local merged = mergeOpts(presets or M.defaults, config)
 
-  local mapping
-  if type(rhs) == "string" then
-    mapping = rhs
-  elseif type(rhs) == "function" then
-    assert(map_opts.noremap, "If `rhs` is a function, `opts.noremap` must be true")
-
-    local func_id = keymap._create(rhs)
-    mapping = string.format([[<cmd>lua vim.keymap._execute(%s)<CR>]], func_id)
-  else
-    error("Unexpected type for rhs:" .. tostring(rhs))
-  end
-
-  if not map_opts.buffer then
-    vim.api.nvim_set_keymap(mode, lhs, mapping, map_opts)
-  else
-    -- Clear the buffer after saving it
-    local buffer = map_opts.buffer
-    if buffer == true then
-      buffer = 0
+  local lhs = config[1]
+  if type(lhs) == "table" then
+    local ret = {}
+    for _, value in ipairs(config) do
+      local resolve_results = M.resolve(value, merged)
+      for _, r in ipairs(resolve_results) do
+        table.insert(ret, r)
+      end
     end
 
-    map_opts.buffer = nil
-
-    vim.api.nvim_buf_set_keymap(buffer, mode, lhs, mapping, map_opts)
+    return ret
   end
+
+  merged.prefix = merged.prefix .. lhs
+
+  local rhs = config[2]
+  rhs = type(rhs) == "function" and funcToRhs(rhs, merged.opts.expr) or rhs
+
+  if type(rhs) == "table" then
+    local ret = {}
+    for _, value in ipairs(rhs) do
+      local result = M.resolve(value, merged)
+      for _, r in ipairs(result) do
+        table.insert(ret, r)
+      end
+    end
+
+    return ret
+  end
+
+  local ret = {}
+  for mode in string.gmatch(merged.mode, ".") do
+    local m = mode == "_" and "" or mode
+    local copy = vim.deepcopy(merged)
+    copy.mode = m
+    copy.rhs = rhs
+    table.insert(ret, copy)
+  end
+
+  return ret
 end
 
---- Helper function for ':map'.
----
---@see |vim.keymap.nmap|
----
-function keymap.map(opts)
-  return make_mapper("", { noremap = false }, opts)
-end
+setmetatable(M, {
+  __call = function(t, ...)
+    t.new(...)
+  end,
+})
 
---- Helper function for ':noremap'
---@see |vim.keymap.nmap|
----
-function keymap.noremap(opts)
-  return make_mapper("", { noremap = true }, opts)
-end
+-- local function test(...)
+--   return M.resolve({ ... })
+-- end
 
---- Helper function for ':nmap'.
----
---- <pre>
----   vim.keymap.nmap { 'lhs', function() print("real lua function") end, silent = true }
---- </pre>
---@param opts (table): A table with keys:
----     - [1] = left hand side: Must be a string
----     - [2] = right hand side: Can be a string OR a lua function to execute
----     - Other keys can be arguments to |:map|, such as "silent". See |nvim_set_keymap()|
----
-function keymap.nmap(opts)
-  return make_mapper("n", { noremap = false }, opts)
-end
+-- P(test("<leader>x", {
+--   { "x", [[<cmd>TroubleToggle<cr>]] },
+--   { "w", [[<cmd>TroubleToggle lsp_workspace_diagnostics<cr>]] },
+--   { "d", [[<cmd>TroubleToggle lsp_document_diagnostics<cr>]] },
+--   { "l", [[<cmd>TroubleToggle locallist<cr>]] },
+--   { "q", [[<cmd>TroubleToggle quickfix<cr>]] },
+-- }))
 
---- Helper function for ':nnoremap'
---- <pre>
----   vim.keymap.nmap { 'lhs', function() print("real lua function") end, silent = true }
---- </pre>
---@param opts (table): A table with keys
----     - [1] = left hand side: Must be a string
----     - [2] = right hand side: Can be a string OR a lua function to execute
----     - Other keys can be arguments to |:map|, such as "silent". See |nvim_set_keymap()|
----
----
-function keymap.nnoremap(opts)
-  return make_mapper("n", { noremap = true }, opts)
-end
+-- P(M.resolve({
+--   {
+--     "<leader>x",
+--     {
+--       { "x", [[<cmd>TroubleToggle<cr>]] },
+--       { "w", [[<cmd>TroubleToggle lsp_workspace_diagnostics<cr>]] },
+--       { "d", [[<cmd>TroubleToggle lsp_document_diagnostics<cr>]] },
+--       { "l", [[<cmd>TroubleToggle locallist<cr>]] },
+--       { "q", [[<cmd>TroubleToggle quickfix<cr>]] },
+--     },
+--   },
+-- }))
 
---- Helper function for ':vmap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.vmap(opts)
-  return make_mapper("v", { noremap = false }, opts)
-end
+vim.keymap = M
 
---- Helper function for ':vnoremap'
---@see |vim.keymap.nmap|
----
-function keymap.vnoremap(opts)
-  return make_mapper("v", { noremap = true }, opts)
-end
-
---- Helper function for ':xmap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.xmap(opts)
-  return make_mapper("x", { noremap = false }, opts)
-end
-
---- Helper function for ':xnoremap'
---@see |vim.keymap.nmap|
----
-function keymap.xnoremap(opts)
-  return make_mapper("x", { noremap = true }, opts)
-end
-
---- Helper function for ':smap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.smap(opts)
-  return make_mapper("s", { noremap = false }, opts)
-end
-
---- Helper function for ':snoremap'
---@see |vim.keymap.nmap|
----
-function keymap.snoremap(opts)
-  return make_mapper("s", { noremap = true }, opts)
-end
-
---- Helper function for ':omap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.omap(opts)
-  return make_mapper("o", { noremap = false }, opts)
-end
-
---- Helper function for ':onoremap'
---@see |vim.keymap.nmap|
----
-function keymap.onoremap(opts)
-  return make_mapper("o", { noremap = true }, opts)
-end
-
---- Helper function for ':imap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.imap(opts)
-  return make_mapper("i", { noremap = false }, opts)
-end
-
---- Helper function for ':inoremap'
---@see |vim.keymap.nmap|
----
-function keymap.inoremap(opts)
-  return make_mapper("i", { noremap = true }, opts)
-end
-
---- Helper function for ':lmap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.lmap(opts)
-  return make_mapper("l", { noremap = false }, opts)
-end
-
---- Helper function for ':lnoremap'
---@see |vim.keymap.nmap|
----
-function keymap.lnoremap(opts)
-  return make_mapper("l", { noremap = true }, opts)
-end
-
---- Helper function for ':cmap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.cmap(opts)
-  return make_mapper("c", { noremap = false }, opts)
-end
-
---- Helper function for ':cnoremap'
---@see |vim.keymap.nmap|
----
-function keymap.cnoremap(opts)
-  return make_mapper("c", { noremap = true }, opts)
-end
-
---- Helper function for ':tmap'.
----
---@see |vim.keymap.nmap|
----
-function keymap.tmap(opts)
-  return make_mapper("t", { noremap = false }, opts)
-end
-
---- Helper function for ':tnoremap'
---@see |vim.keymap.nmap|
----
-function keymap.tnoremap(opts)
-  return make_mapper("t", { noremap = true }, opts)
-end
-
-vim.keymap = vim.keymap or keymap
-
-return keymap
+return M

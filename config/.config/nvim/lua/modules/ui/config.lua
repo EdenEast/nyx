@@ -99,15 +99,20 @@ function config.gitsigns()
 end
 
 function config.bufferline()
-  local nnoremap = vim.keymap.nnoremap
+  vim.keymap({
+    { "]b", ":BufferLineCycleNext<cr>" },
+    { "[b", ":BufferLineCyclePrev<cr>" },
 
-  nnoremap({ "]b", ":BufferLineCycleNext<cr>", silent = true })
-  nnoremap({ "[b", ":BufferLineCyclePrev<cr>", silent = true })
-
-  nnoremap({ "<leader>bl", ":BufferLineMoveNext<cr>", silent = true })
-  nnoremap({ "<leader>bh", ":BufferLineMovePrev<cr>", silent = true })
-  nnoremap({ "<leader>be", ":BufferLineSortByExtension<CR><cr>", silent = true })
-  nnoremap({ "<leader>bd", ":BufferLineSortByDirectory<cr>", silent = true })
+    {
+      "<leader>b",
+      {
+        { "l", ":BufferLineMoveNext<cr>" },
+        { "h", ":BufferLineMovePrev<cr>" },
+        { "e", ":BufferLineSortByExtension<CR><cr>" },
+        { "d", ":BufferLineSortByDirectory<cr>" },
+      },
+    },
+  })
 
   require("bufferline").setup({
     options = {
@@ -148,8 +153,7 @@ function config.nvim_tree()
       untracked = "★",
     },
   }
-
-  vim.keymap.nnoremap({ "<leader>te", "<cmd>NvimTreeToggle<cr>", silent = true })
+  vim.keymap("<leader>te", "<cmd>NvimTreeToggle<cr>")
 end
 
 function config.truezen()
@@ -160,16 +164,16 @@ function config.truezen()
     },
   })
 
-  local nnoremap = vim.keymap.nnoremap
-
-  nnoremap({ "<leader>bm", [[<cmd>TZFocus<cr>]] })
-  nnoremap({ "<leader>tz", [[<cmd>TZAtaraxis<cr>]] })
+  vim.keymap({
+    { "<leader>bm", [[<cmd>TZFocus<cr>]] },
+    { "<leader>tz", [[<cmd>TZAtaraxis<cr>]] },
+  })
 end
 
 function config.zenmode()
   require("zen-mode").setup()
 
-  vim.keymap.nnoremap({ "<leader>tz", [[<cmd>ZenMode<cr>]] })
+  vim.keymap("<leader>tz", [[<cmd>ZenMode<cr>]])
 end
 
 return config
