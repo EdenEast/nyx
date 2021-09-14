@@ -1,94 +1,107 @@
-local keymap = vim.keymap
-local nnoremap, xnoremap, tnoremap = keymap.nnoremap, keymap.xnoremap, keymap.tnoremap
+vim.keymap({
+  silent = false,
+  {
+    -- 'j' and 'k' moves up and down visible lines in editor not actual lines
+    -- This is noticable when text wraps to next line
+    { "j", "gj" },
+    { "k", "gk" },
 
--- 'j' and 'k' moves up and down visible lines in editor not actual lines
--- This is noticable when text wraps to next line
-nnoremap({ "j", "gj" })
-nnoremap({ "k", "gk" })
+    -- Read the current line and execute that in your $SHELL.  The resulting output of the command will replace the line
+    -- that you were on. This is very handy. Also I dont use Ex mode.
+    { "Q", [[!!$SHELL <cr>]] },
 
--- Read the current line and execute that in your $SHELL.  The resulting output of the command will replace the line
--- that you were on. This is very handy. Also I dont use Ex mode.
-nnoremap({ "Q", [[!!$SHELL <cr>]] })
+    -- Witn colemak having 'hjkl' all not on the home row, and all on the right
+    -- index finger, having a 'nav' layer helpr with navigation
+    {
+      mode = "_",
+      {
+        { "<left>", "h" },
+        { "<down>", "j" },
+        { "<up>", "k" },
+        { "<right>", "l" },
+      },
+    },
 
--- Witn colemak having 'hjkl' all not on the home row, and all on the right
--- index finger, having a 'nav' layer helpr with navigation
-keymap.map({ "<left>", "h" })
-keymap.map({ "<down>", "j" })
-keymap.map({ "<up>", "k" })
-keymap.map({ "<right>", "l" })
+    -- Map Y to be the same as D and C
+    { "Y", "yg_", mode = "nx" },
 
--- Map Y to be the same as D and C
-nnoremap({ "Y", "yg_" })
-xnoremap({ "Y", "yg_" })
+    -- Center search
+    { "n", "nzzzv" },
+    { "N", "Nzzzv" },
 
--- Center search
-nnoremap({ "n", "nzzzv" })
-nnoremap({ "N", "Nzzzv" })
+    -- Switch between the last two buffers
+    { "<leader><leader>", "<c-^>" },
 
--- Switch between the last two buffers
-nnoremap({ "<leader><leader>", "<c-^>" })
+    -- Keep selection when indent/outdent
+    { mode = "x", {
+      { ">", ">gv" },
+      { "<", "<gv" },
+    } },
 
--- Keep selection when indent/outdent
-xnoremap({ ">", ">gv" })
-xnoremap({ "<", "<gv" })
+    -- Search for selected text
+    { "*", '"xy/<c-r><cr>', mode = "x" },
 
--- Search for selected text
-xnoremap({ "*", '"xy/<c-r><cr>' })
+    -- Clone paragraph
+    { "cp", [[vap:t'><cr>{j]] },
 
--- Clone paragraph
-nnoremap({ "cp", [[vap:t'><cr>{j]] })
+    -- Redirect change operation to blackhole register
+    { mode = "nx", {
+      { "c", [["_c]] },
+      { "C", [["_C]] },
+    } },
 
--- Redirect change operation to blackhole register
-nnoremap({ "c", [["_c]] })
-nnoremap({ "C", [["_C]] })
-xnoremap({ "c", [["_c]] })
-xnoremap({ "C", [["_C]] })
+    -- Toggle highlight search
+    {
+      "<leader>th",
+      function()
+        vim.opt.hlsearch = not vim.o.hlsearch
+      end,
+    },
 
--- Toggle highlight search
-nnoremap({
-  "<leader>th",
-  function()
-    vim.opt.hlsearch = not vim.o.hlsearch
-  end,
+    { "<leader>w", [[:<c-u>w<cr>]] },
+    { "<leader>q", [[:<c-u>q<cr>]] },
+    { "<leader>!", [[:<c-u>q!<cr>]] },
+
+    {
+      "<leader>tn",
+      function()
+        require("core.util").toggle_numbers()
+      end,
+    },
+
+    -- Jump list -------------------------------------------------------------------
+    -- Because currently in alacritty we cannot tell the difference between <tab>
+    -- and <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
+    --
+    -- https://vi.stackexchange.com/a/23344
+    { "<m-i>", "<c-i>" },
+    { "<m-o>", "<c-o>" },
+
+    { "[t", ":tabprevious<cr>" },
+    { "]t", ":tabnext<cr>" },
+
+    -- Move around splits without having to press <C-w> before each movement"
+    { "<c-h>", "<c-w>h" },
+    { "<c-j>", "<c-w>j" },
+    { "<c-k>", "<c-w>k" },
+    { "<c-l>", "<c-w>l" },
+
+    -- Exec current file
+    { "<F1>", ":lua require('core.util').exec_file()<cr>" },
+    { "<F2>", ":lua require('core.util').open_url_under_cursor()<cr>" },
+    { "<F3>", ":lua require('core.pack').reload_plugins()<cr>" },
+
+    {
+      mode = "t",
+      {
+        -- Terminal
+        { "<esc>", [[<c-\><c-n>]] },
+        { "<c-q>", [[<c-\><c-n>:bdelete!<cr>]] },
+        { "<c-h>", [[<c-\><c-n><c-w>h]] },
+        { "<c-j>", [[<c-\><c-n><c-w>j]] },
+        { "<c-k>", [[<c-\><c-n><c-w>k]] },
+        { "<c-l>", [[<c-\><c-n><c-w>l]] },
+      },
+    },
+  },
 })
-
-nnoremap({ "<leader>w", [[:<c-u>w<cr>]] })
-nnoremap({ "<leader>q", [[:<c-u>q<cr>]] })
-nnoremap({ "<leader>!", [[:<c-u>q!<cr>]] })
-
-nnoremap({
-  "<leader>tn",
-  function()
-    require("core.util").toggle_numbers()
-  end,
-})
-
--- Jump list -------------------------------------------------------------------
--- Because currently in alacritty we cannot tell the difference between <tab>
--- and <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
---
--- https://vi.stackexchange.com/a/23344
-nnoremap({ "<m-i>", "<c-i>" })
-nnoremap({ "<m-o>", "<c-o>" })
-
-nnoremap({ "[t", ":tabprevious<cr>" })
-nnoremap({ "]t", ":tabnext<cr>" })
-
--- Move around splits without having to press <C-w> before each movement"
-nnoremap({ "<c-h>", "<c-w>h" })
-nnoremap({ "<c-j>", "<c-w>j" })
-nnoremap({ "<c-k>", "<c-w>k" })
-nnoremap({ "<c-l>", "<c-w>l" })
-
--- Exec current file
-nnoremap({ "<F1>", ":lua require('core.util').exec_file()<cr>" })
-nnoremap({ "<F2>", ":lua require('core.util').open_url_under_cursor()<cr>" })
-nnoremap({ "<F3>", ":lua require('core.pack').reload_plugins()<cr>" })
-
--- Terminal
-tnoremap({ "<esc>", [[<c-\><c-n>]] })
-tnoremap({ "<c-q>", [[<c-\><c-n>:bdelete!<cr>]] })
-tnoremap({ "<c-h>", [[<c-\><c-n><c-w>h]] })
-tnoremap({ "<c-j>", [[<c-\><c-n><c-w>j]] })
-tnoremap({ "<c-k>", [[<c-\><c-n><c-w>k]] })
-tnoremap({ "<c-l>", [[<c-\><c-n><c-w>l]] })

@@ -22,64 +22,17 @@ local sig_config = {}
 
 local enhance_attach = function(client, bufnr)
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
-  local nnoremap = vim.keymap.nnoremap
-  local vnoremap = vim.keymap.vnoremap
-  local inoremap = vim.keymap.inoremap
-  local caps = client.resolved_capabilities
+  -- local caps = client.resolved_capabilities
 
   status.on_attach(client)
   require("lsp_signature").on_attach(sig_config)
 
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-  nnoremap({ "K", [[<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>]], silent = true })
-  nnoremap({ "<c-f>", [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]], silent = true })
-  nnoremap({ "<c-b>", [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]], silent = true })
-
-  inoremap({ "<c-s>", [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], silent = true })
-  nnoremap({ "gD", [[<cmd>lua vim.lsp.buf.declaration()<cr>]], silent = true })
-  nnoremap({ "gi", [[<cmd>lua vim.lsp.buf.implementation()<cr>]], silent = true })
-  nnoremap({ "gy", [[<cmd>lua vim.lsp.buf.type_definition()<cr>]], silent = true })
-  nnoremap({ "ga", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent = true })
-
-  if has_tscope then
-    nnoremap({ "gd", [[<cmd>Telescope lsp_definitions<cr>]], silent = true })
-    nnoremap({ "gr", [[<cmd>Telescope lsp_references<cr>]], silent = true })
-  else
-    nnoremap({ "gd", [[<cmd>lua vim.lsp.buf.definition()<cr>]], silent = true })
-    nnoremap({ "gr", [[<cmd>lua vim.lsp.buf.references()<cr>]], silent = true })
-  end
-
-  nnoremap({ "[e", [[<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>]], silent = true })
-  nnoremap({ "]e", [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]], silent = true })
-
-  if has_tscope then
-    nnoremap({ "<leader>ce", [[<cmd>Telescope lsp_workspace_diagnostics<cr>]], silent = true })
-  else
-    nnoremap({ "<leader>ce", [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]], silent = true })
-  end
-
-  if caps.document_formatting then
-    vim.cmd([[
-      augroup !LSPFormatOnSave
-        autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()
-      augroup END
-    ]])
-  end
   -- if caps.document_formatting then
   --   nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.formatting()<cr>]], silent = true })
   -- elseif caps.document_range_formatting then
   --   nnoremap({ "<leader>cf", [[<cmd>lua vim.lsp.buf.range_formatting()<cr>]], silent = true })
-  -- end
-
-  if caps.rename then
-    nnoremap({ "<leader>cn", [[<cmd>lua require('lspsaga.rename').rename()<cr>]], silent = true })
-  end
-
-  nnoremap({ "<leader>ca", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]], silent = true })
-  vnoremap({ "<leader>ca", [[:<c-u><cmd>lua require('lspsaga.codeaction').range_code_action()<cr>]], silent = true })
-
-  -- if caps.document_highlight then
   -- end
 
   -- Rust is currently the only thing w/ inlay hints
@@ -91,6 +44,35 @@ local enhance_attach = function(client, bufnr)
     )
   end
 end
+
+vim.keymap({
+  { "K", [[<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>]] },
+  { "<c-f>", [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>]] },
+  { "<c-b>", [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>]] },
+
+  { "<c-s>", [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], mode = "i" },
+  { "gD", [[<cmd>lua vim.lsp.buf.declaration()<cr>]] },
+  { "gi", [[<cmd>lua vim.lsp.buf.implementation()<cr>]] },
+  { "gy", [[<cmd>lua vim.lsp.buf.type_definition()<cr>]] },
+  { "ga", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]] },
+
+  { "[e", [[<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>]] },
+  { "]e", [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]] },
+
+  { "<leader>cn", [[<cmd>lua require('lspsaga.rename').rename()<cr>]] },
+  { "<leader>ca", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]] },
+  { "<leader>ca", [[:<c-u><cmd>lua require('lspsaga.codeaction').range_code_action()<cr>]], mode = "v" },
+
+  has_tscope and {
+    { "gd", [[<cmd>Telescope lsp_definitions<cr>]] },
+    { "gr", [[<cmd>Telescope lsp_references<cr>]] },
+    { "<leader>ce", [[<cmd>Telescope lsp_workspace_diagnostics<cr>]] },
+  } or {
+    { "gd", [[<cmd>lua vim.lsp.buf.definition()<cr>]] },
+    { "gr", [[<cmd>lua vim.lsp.buf.references()<cr>]] },
+    { "<leader>ce", [[<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>]] },
+  },
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true

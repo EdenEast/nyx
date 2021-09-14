@@ -44,4 +44,4 @@ _G.toggle_terminal = function(name)
   terminals[name]:toggle()
 end
 
-vim.keymap.nnoremap({ "<c-space>", [[<cmd>lua toggle_terminal('default')<cr>]] })
+vim.keymap({ "<c-space>", [[<cmd>lua toggle_terminal('default')<cr>]] })

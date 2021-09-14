@@ -4,30 +4,30 @@ function config.mkpreview()
   vim.g.mkdp_auto_close = 0
   vim.g.mkdp_echo_preview_url = 1
 
-  vim.keymap.nnoremap({ "<leader>tp", ":MarkdownPreviewToggle<cr>" })
+  vim.keymap("<leader>tp", ":MarkdownPreviewToggle<cr>")
 end
 
 function config.fugitive()
-  local nnoremap = vim.keymap.nnoremap
+  vim.keymap("<leader>g", {
+    -- Stage current file
+    { "a", ":Git add %:p<cr>" },
 
-  -- Stage current file
-  nnoremap({ "<leader>ga", ":Git add %:p<cr>" })
+    -- Diff current file
+    { "d", ":Gdiffsplit<cr>" },
 
-  -- Diff current file
-  nnoremap({ "<leader>gd", ":Gdiffsplit<cr>" })
+    -- Create a git commit from staged changes
+    { "c", ":Git commit<cr>" },
 
-  -- Create a git commit from staged changes
-  nnoremap({ "<leader>gc", ":Git commit<cr>" })
-
-  -- Blame each line in file
-  nnoremap({ "<leader>gb", ":Git blame<cr>" })
+    -- Blame each line in file
+    { "b", ":Git blame<cr>" },
+  })
 end
 
 function config.messenger()
   vim.g.git_messenger_no_default_mapping = false
 
   -- Show commit message for current line
-  vim.keymap.nnoremap({ "<leader>gm", "<Plug>(git-messenger)" })
+  vim.keymap("<leader>gm", "<Plug>(git-messenger)")
 end
 
 function config.committia() end
@@ -42,7 +42,7 @@ end
 function config.gitblame()
   vim.g.gitblame_enabled = 0
 
-  vim.keymap.nnoremap({ "<leader>tg", "<cmd>GitBlameToggle<cr>", silent = true })
+  vim.keymap("<leader>tg", "<cmd>GitBlameToggle<cr>")
 end
 
 function config.neogit()
@@ -52,7 +52,7 @@ function config.neogit()
     },
   })
 
-  vim.keymap.nnoremap({ "<leader>gn", "<cmd>Neogit<cr>" })
+  vim.keymap("<leader>gn", "<cmd>Neogit<cr>")
 end
 
 return config
