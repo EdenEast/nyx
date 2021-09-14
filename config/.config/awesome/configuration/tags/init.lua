@@ -7,6 +7,8 @@ local beautiful = require("beautiful")
 local machi = require("modules.layout-machi")
 beautiful.layout_machi = machi.get_icon()
 
+local tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
@@ -36,6 +38,14 @@ awful.layout.layouts = {
 -- Configure Tag Properties
 awful.screen.connect_for_each_screen(function(s)
   -- Each screen has its own tag table.
-  awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+  for i, _ in ipairs(tags) do
+    awful.tag.add(i, {
+      layout = awful.layout.layouts[1],
+      gap_single_client = false,
+      gap = beautiful.useless_gap,
+      screen = s,
+      selected = i == 1,
+    })
+  end
 end)
 -- }}}
