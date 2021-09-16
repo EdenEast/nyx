@@ -20,8 +20,8 @@ line.setup({
     },
     lualine_y = { "filetype" },
     lualine_z = {
-      { "progress", right_padding = 0, separator = "" },
-      { "location", left_padding = 0 },
+      { "progress", padding = { right = 0 }, separator = "" },
+      { "location", padding = { left = 0 } },
     },
   },
   inactive_sections = {

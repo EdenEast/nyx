@@ -33,7 +33,8 @@ ui["glepnir/dashboard-nvim"] = {
   cond = "not vim.g.started_by_firenvim",
 }
 
-ui["hoob3rt/lualine.nvim"] = {
+-- Using this fork until https://github.com/hoob3rt/lualine.nvim/pull/311 is merged
+ui["shadmansaleh/lualine.nvim"] = {
   config = [[require('modules.ui.lualine')]],
   requires = { "nvim-lua/lsp-status.nvim" },
 }
