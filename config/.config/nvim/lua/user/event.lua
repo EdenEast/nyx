@@ -1,6 +1,6 @@
 local global = require("core.global")
 
-vim.augroup({
+vim.aug({
   packer = {
     {
       "BufWritePost",

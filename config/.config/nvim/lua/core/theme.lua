@@ -1,6 +1,5 @@
 local global = require("core.global")
 local path = require("core.path")
-local augroup = require("core.event")
 
 local default = "nightfox"
 local cache = path.join(global.cachehome, "theme.txt")
@@ -27,7 +26,7 @@ theme.init = function()
     theme.reload()
   end
 
-  augroup(event_group)
+  vim.aug(event_group)
 end
 
 theme.reload = function()
