@@ -55,13 +55,13 @@ local load_core = function()
   pack.ensure_plugins()
   pack.init_commands()
 
-  require("core.theme").init()
-
   -- Load keymap in vim.keymap
   require("core.keymap")
 
-  -- Load opt into vim.opt
+  -- Load vim.au and vim.aug
   require("core.event")
+
+  require("core.theme").init()
 
   -- load base neovim user configuration
   require("user.keymap")
