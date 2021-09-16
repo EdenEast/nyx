@@ -17,14 +17,15 @@ local event_group = {
 
 theme.hook = function()
   if vim.g.colors_name then
+    P(vim.g.colors_name)
     vim.fn.writefile({ vim.g.colors_name }, cache)
   end
 end
 
 theme.init = function()
-  -- if not vim.g.colors_name then
-  --   theme.reload()
-  -- end
+  if not vim.g.colors_name then
+    theme.reload()
+  end
 
   augroup(event_group)
 end

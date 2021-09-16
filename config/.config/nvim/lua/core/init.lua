@@ -55,7 +55,7 @@ local load_core = function()
   pack.ensure_plugins()
   pack.init_commands()
 
-  -- require("core.theme").init()
+  require("core.theme").init()
 
   -- Load keymap in vim.keymap
   require("core.keymap")
