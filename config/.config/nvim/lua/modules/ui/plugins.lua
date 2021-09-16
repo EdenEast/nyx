@@ -13,7 +13,6 @@ ui[load("EdenEast/nightfox.nvim")] = {
         TSPunctDelimiter = { fg = "${red}" },
       },
     })
-    nightfox.load()
   end,
 }
 ui["Pocco81/Catppuccino.nvim"] = {
