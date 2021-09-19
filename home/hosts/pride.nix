@@ -7,6 +7,7 @@
     modules = {
       app = {
         alacritty.fontSize = 8;
+        obs.enable = true;
       };
       shell = {
         git = {
