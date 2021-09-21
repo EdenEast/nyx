@@ -16,7 +16,6 @@ local event_group = {
 
 theme.hook = function()
   if vim.g.colors_name then
-    P(vim.g.colors_name)
     vim.fn.writefile({ vim.g.colors_name }, cache)
   end
 end
