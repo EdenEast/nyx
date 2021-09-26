@@ -20,7 +20,7 @@ _G.load_config = function()
   -- ADD INIT.LUA SETTINGS THAT ARE _NECESSARY_ FOR REPRODUCING THE ISSUE
 end
 if vim.fn.isdirectory(install_path) == 0 then
-  print("Installing Telescope and dependencies.")
+  print("Installing dependencies.")
   vim.fn.system({ "git", "clone", "--depth=1", "https://github.com/wbthomason/packer.nvim", install_path })
 end
 load_plugins()
