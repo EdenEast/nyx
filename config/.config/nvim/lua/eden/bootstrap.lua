@@ -12,6 +12,13 @@ _G.P = function(...)
   return ...
 end
 
+-- Debugging module by reloading it. Convience wrapper
+-- around `eden.core.reload`.
+_G.R = function(name)
+  require("eden.core.reload").reload_module(name)
+  return require(name)
+end
+
 local path = require("eden.core.path")
 local pack = require("eden.core.pack")
 
