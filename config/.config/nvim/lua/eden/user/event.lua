@@ -1,12 +1,13 @@
 local path = require("eden.core.path")
-local aug = require("eden.core.event").aug
+local event = require("eden.core.event")
 
-aug({
+event.aug({
   packer = {
     {
       "BufWritePost",
-      string.format("%s/lua/eden/modules/*.lua", path.confighome),
-      "lua require('eden.core.pack').auto_compile()",
+      string.format("%s/lua/eden/modules/**", path.confighome),
+      "echo asdfjklasdjfklasjdkfl",
+      --"lua require('eden.core.pack').auto_compile()",
     },
   },
 

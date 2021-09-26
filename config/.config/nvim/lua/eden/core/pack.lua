@@ -43,8 +43,9 @@ end
 
 -- Execute `PackerCompile` if file exists in `path.module_path`
 M.auto_compile = function()
+  P("something")
   local file = vim.fn.expand("%:p")
-  if file:match(eden.path.module_path) then
+  if file:match(path.module_path) then
     M.clean()
     M.compile()
   end
@@ -138,8 +139,6 @@ M.bootstrap = function(cb)
   if cb then
     cb(installed)
   end
-
-  M.trigger_after()
 end
 
 return M
