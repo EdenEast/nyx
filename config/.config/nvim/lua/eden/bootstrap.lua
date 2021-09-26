@@ -105,6 +105,10 @@ local function init()
   init_runtimepath()
   init_leader_keys()
 
+  -- Initialize edn.keymap, edn.au, and edn.aug
+  require("eden.core.event")
+  require("eden.core.keymap")
+
   pack.bootstrap(function(installed)
     if installed then
       vim.cmd([[autocmd User PackerComplete ++once lua require("eden.main")]])
