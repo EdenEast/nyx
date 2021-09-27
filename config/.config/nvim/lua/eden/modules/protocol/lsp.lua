@@ -1,3 +1,5 @@
+local pack = require("eden.core.pack")
+local path = require("eden.core.path")
 local nlsp = require("lspconfig")
 
 require("lspkind")
@@ -79,12 +81,11 @@ for server, config in pairs(simple_servers) do
   nlsp[server].setup(vim.tbl_deep_extend("force", default, config))
 end
 
-local mod_path = edn.path.module_path
-local server_paths = vim.split(vim.fn.globpath(mod_path, "protocol/servers/*.lua"), "\n")
-for _, p in ipairs(server_paths) do
-  local requ = p:match("nvim/lua/(.+).lua$"):gsub("[\\/]", ".")
-  local name = requ:match([[servers.(.+)$]])
-  nlsp[name].setup(require(requ).setup(vim.deepcopy(default)))
+local modname = pack.modname .. ".protocol.servers"
+local modlist = path.get_mod_list(modname)
+for _, mod in ipairs(modlist) do
+  local name = mod:match("servers.(.+)$")
+  nlsp[name].setup(require(mod).setup(vim.deepcopy(default)))
 end
 
 local lspsync = require("lspsync")
