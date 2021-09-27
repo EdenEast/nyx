@@ -1,3 +1,5 @@
+local nlsp = require("lspconfig")
+
 local M = {}
 
 M.setup = function(config)
@@ -9,7 +11,7 @@ M.setup = function(config)
       return cwd
     end
 
-    local util = nvim_lsp.util
+    local util = nlsp.util
     return util.find_git_ancestor(filename) or util.path.dirname(filename)
   end
 
