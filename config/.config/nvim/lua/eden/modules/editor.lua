@@ -3,6 +3,7 @@ local M = {}
 M.plugins = {
   {
     "editorconfig/editorconfig-vim",
+    "christoomey/vim-tmux-navigator",
   },
   {
     "ahmedkhalf/project.nvim",
@@ -53,6 +54,9 @@ M.plugins = {
       edn.keymap("<leader>tp", ":MarkdownPreviewToggle<cr>")
     end,
   },
+
+  -- Profiling
+  { "tweekmonster/startuptime.vim", cmd = { "StartupTime" } },
 }
 
 M.before = function()
