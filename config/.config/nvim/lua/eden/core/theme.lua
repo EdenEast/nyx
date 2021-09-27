@@ -24,13 +24,6 @@ local function init()
         require("eden.core.theme").hook()
       end,
     },
-    {
-      "User",
-      "PackerComplete",
-      function()
-        require("eden.core.theme").reload()
-      end,
-    },
   }
 end
 
