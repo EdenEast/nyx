@@ -46,4 +46,29 @@ M.open_url_under_cursor = function()
   end
 end
 
+M.toggle_numbers = function()
+  local o = vim.wo
+  if o.number then
+    o.number = false
+    o.relativenumber = false
+  else
+    o.number = true
+    o.relativenumber = true
+  end
+end
+
+M.set_relnumber = function()
+  local o = vim.wo
+  if o.number then
+    o.relativenumber = true
+  end
+end
+
+M.set_no_relnumber = function()
+  local o = vim.wo
+  if o.number then
+    o.relativenumber = false
+  end
+end
+
 return M

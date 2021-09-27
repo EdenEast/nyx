@@ -56,18 +56,18 @@ event.aug({
     { "BufReadPost", "*", [[if line("'\"") > 0 && line("'\"") <= line("$") | execute 'normal! g`"zvzz' | endif]] },
   },
 
-  -- user_toggle = {
-  --   {
-  --     { "BufEnter", "FocusGained", "InsertLeave" },
-  --     function()
-  --       require("eden.core.util").set_relnumber()
-  --     end,
-  --   },
-  --   {
-  --     { "BufLeave", "FocusLost", "InsertEnter" },
-  --     function()
-  --       require("eden.core.util").set_no_relnumber()
-  --     end,
-  --   },
-  -- },
+  user_toggle = {
+    {
+      { "BufEnter", "FocusGained", "InsertLeave" },
+      function()
+        require("eden.core.util").set_relnumber()
+      end,
+    },
+    {
+      { "BufLeave", "FocusLost", "InsertEnter" },
+      function()
+        require("eden.core.util").set_no_relnumber()
+      end,
+    },
+  },
 })
