@@ -41,10 +41,27 @@ M.plugins = {
       edn.keymap("<leader>bq", [[<cmd>BufDel<cr>]])
     end,
   },
+
+  {
+    "iamcco/markdown-preview.nvim",
+    run = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+    ft = { "markdown", "vimwiki" },
+    cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
+    config = function()
+      edn.keymap("<leader>tp", ":MarkdownPreviewToggle<cr>")
+    end,
+  },
 }
 
 M.before = function()
+  -- Editorconfig
   vim.g.EditorConfig_exclude_patterns = { "fugitive://.*", "scp://.*" }
+
+  -- Markdown preview
+  vim.g.mkdp_auto_close = 0
+  vim.g.mkdp_echo_preview_url = 1
 end
 
 return M
