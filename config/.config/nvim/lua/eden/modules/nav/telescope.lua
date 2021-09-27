@@ -1,7 +1,7 @@
 local actions = require("telescope.actions")
 local sorters = require("telescope.sorters")
 
--- local trouble = require("trouble.providers.telescope")
+local trouble = require("trouble.providers.telescope")
 
 require("telescope").setup({
   defaults = {
@@ -23,7 +23,7 @@ require("telescope").setup({
         ["<C-x>"] = false,
         ["<C-s>"] = actions.select_horizontal,
 
-        -- ["<c-t>"] = trouble.open_with_trouble,
+        ["<c-t>"] = trouble.open_with_trouble,
 
         -- Experimental
         -- ["<tab>"] = actions.toggle_selection,
@@ -45,6 +45,7 @@ require("telescope").setup({
 })
 
 require("telescope").load_extension("fzy_native")
+require("telescope").load_extension("projects")
 
 edn.keymap("<leader>f", {
   { "f", [[<cmd>Telescope find_files<cr>]] },
