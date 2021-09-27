@@ -6,20 +6,32 @@ local cache = path.join(path.cachehome, "theme.txt")
 
 local theme = {}
 
-local event_group = {
-  theme = {
-    { "VimEnter", "*", [[lua require('eden.core.theme').reload()]] },
-    { "ColorScheme", "*", [[lua require('eden.core.theme').hook()]] },
-    { "User", "PackerComplete", [[lua require('eden.core.theme').reload()]] },
-  },
-}
-
 local function init()
   if not vim.g.colors_name then
     theme.reload()
   end
 
-  event.aug(event_group)
+  event.aug.user_theme = {
+    {
+      "VimEnter",
+      function()
+        require("eden.core.theme").reload()
+      end,
+    },
+    {
+      "ColorScheme",
+      function()
+        require("eden.core.theme").hook()
+      end,
+    },
+    {
+      "User",
+      "PackerComplete",
+      function()
+        require("eden.core.theme").reload()
+      end,
+    },
+  }
 end
 
 theme.hook = function()
