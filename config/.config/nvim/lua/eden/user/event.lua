@@ -1,17 +1,17 @@
-local path = require("eden.core.path")
 local event = require("eden.core.event")
 
 event.aug({
-  packer = {
+  user_packer = {
     {
       "BufWritePost",
-      string.format("%s/lua/eden/modules/**", path.confighome),
-      "echo asdfjklasdjfklasjdkfl",
-      --"lua require('eden.core.pack').auto_compile()",
+      "*/lua/eden/modules/*",
+      function()
+        require("eden.core.pack").auto_compile()
+      end,
     },
   },
 
-  bufs = {
+  user_bufs = {
     { "BufWritePre", "/tmp/*", "setlocal noundofile" },
     { "BufWritePre", "COMMIT_EDITMSG", "setlocal noundofile" },
     { "BufWritePre", "MERGE_MSG", "setlocal noundofile" },
@@ -22,39 +22,52 @@ event.aug({
   wins = {
     -- Highlight current line only on focused window
     {
-      "WinEnter,BufEnter,InsertLeave",
-      "*",
+      { "WinEnter", "BufEnter", "InsertLeave" },
       [[if ! &cursorline && &filetype !~# '^\(dashboard\|startify\|clap_\)' && ! &pvw | setlocal cursorline | endif]],
     },
     {
-      "WinLeave,BufLeave,InsertEnter",
-      "*",
+      { "WinLeave", "BufLeave", "InsertEnter" },
       [[if &cursorline && &filetype !~# '^\(dashboard\|startify\|clap_\)' && ! &pvw | setlocal nocursorline | endif]],
     },
     -- Equalize window dimensions when resizing vim window
-    { "VimResized", "*", [[tabdo wincmd =]] },
+    { "VimResized", [[tabdo wincmd =]] },
     -- Force write shada on leaving nvim
-    { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+    { "VimLeave", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
     -- Check if file changed when its window is focus, more eager than 'autoread'
     { "FocusGained", "checktime" },
   },
 
-  yank = {
-    { "TextYankPost", "*", [[silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=300})]] },
+  user_yank = {
+    {
+      "TextYankPost",
+      function()
+        vim.highlight.on_yank({ hlgroup = "IncSearch", timeout = 300 })
+      end,
+    },
   },
 
-  whitespace = {
-    { "BufWinEnter", "*", "match Error /\\s\\+%#@<!$/" },
-    { "InsertEnter", "*", "match Error /\\s\\+%#@<!$/" },
-    { "InsertLeave", "*", "match Error /\\s\\+$/" },
+  user_whitespace = {
+    { "BufWinEnter", "match Error /\\s\\+%#@<!$/" },
+    { "InsertEnter", "match Error /\\s\\+%#@<!$/" },
+    { "InsertLeave", "match Error /\\s\\+$/" },
   },
 
-  linereturn = {
+  user_linereturn = {
     { "BufReadPost", "*", [[if line("'\"") > 0 && line("'\"") <= line("$") | execute 'normal! g`"zvzz' | endif]] },
   },
 
-  --  numtoggoe = {
-  --    { "BufEnter,FocusGained,InsertLeave", "*", [[lua require('core.util').set_relnumber()]] },
-  --    { "BufLeave,FocusLost,InsertEnter", "*", [[lua require('core.util').set_no_relnumber()]] },
-  --  },
+  -- user_toggle = {
+  --   {
+  --     { "BufEnter", "FocusGained", "InsertLeave" },
+  --     function()
+  --       require("eden.core.util").set_relnumber()
+  --     end,
+  --   },
+  --   {
+  --     { "BufLeave", "FocusLost", "InsertEnter" },
+  --     function()
+  --       require("eden.core.util").set_no_relnumber()
+  --     end,
+  --   },
+  -- },
 })
