@@ -48,7 +48,7 @@ end
 -- @param runtimepath [string]
 -- @return string
 M.get_mod_filepath = function(modpath, runtimepath)
-  runtimepath = runtimepath or m.confighome
+  runtimepath = runtimepath or M.confighome
   local partialpath = vim.split(modpath, ".", true)
   return M.join(runtimepath, table.concat(partialpath, M.sep))
 end
