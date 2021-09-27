@@ -4,7 +4,6 @@ local M = {}
 
 M.plugins = {
   -- Language Servers ---------------------------------------------------------
-
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -22,7 +21,6 @@ M.plugins = {
   { dev("EdenEast/nvim-lspsync") },
 
   -- Debug Adaptor ------------------------------------------------------------
-
   {
     "mfussenegger/nvim-dap",
     config = function()
@@ -32,6 +30,27 @@ M.plugins = {
       "theHamsta/nvim-dap-virtual-text",
       "rcarriga/nvim-dap-ui",
       "jbyuki/one-small-step-for-vimkind",
+    },
+  },
+
+  -- Treesitter ---------------------------------------------------------------
+  {
+    {
+      "nvim-treesitter/nvim-treesitter",
+      event = "BufRead",
+      run = ":TSUpdate",
+      config = function()
+        require("eden.modules.protocol.treesitter")
+      end,
+      requires = {
+        { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },
+        { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
+        { "nvim-treesitter/nvim-treesitter-textobjects", opt = true },
+      },
+    },
+    {
+      "nvim-treesitter/playground",
+      cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
     },
   },
 }
