@@ -3,16 +3,26 @@ local M = {}
 M.plugins = {
   {
     "shadmansaleh/lualine.nvim",
-    config = [[require('eden.modules.ui.lualine')]],
+    config = function()
+      require("eden.modules.ui.lualine")
+    end,
     requires = { "nvim-lua/lsp-status.nvim" },
+  },
+  {
+    "folke/which-key.nvim",
+    config = function()
+      require("eden.modules.ui.whichkey")
+    end,
   },
   {
     "glepnir/dashboard-nvim",
     cond = [[vim.g.started_by_firenvim]],
   },
+  { "Yggdroot/indentLine" },
 }
 
 M.before = function()
+  -- Dashboard ----------------------------------------------------------------
   vim.g.dashboard_custom_header = {
     "███████╗██████╗ ███████╗███╗   ██╗",
     "██╔════╝██╔══██╗██╔════╝████╗  ██║",
@@ -30,6 +40,28 @@ M.before = function()
     e = { description = { "  File Browser       " }, command = "Telescope file_browser" },
   }
   vim.g.dashboard_custom_footer = { "github.com/EdenEast" }
+
+  -- Indent Line --------------------------------------------------------------
+
+  -- vim.g.indentLine_char = '│'  -- U+2502
+  -- vim.g.indentLine_char = '┆'  -- U+2506
+  vim.g.indentLine_char = "┊" -- U+250A
+
+  vim.g.indentLine_enabled = 1
+  vim.g.indentLine_concealcursor = "niv"
+  vim.g.indentLine_showFirstIndentLevel = 0
+  vim.g.indentLine_fileTypeExclude = {
+    "defx",
+    "denite",
+    "startify",
+    "dashboard",
+    "tagbar",
+    "vista_kind",
+    "vista",
+    "Help",
+    "term",
+    "toggerm",
+  }
 end
 
 return M
