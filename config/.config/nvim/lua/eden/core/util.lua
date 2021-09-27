@@ -37,12 +37,12 @@ M.open_url_under_cursor = function()
 
   -- If string starts with https://
   if string.match(url, [[^https://.*]]) then
-    return util.open_url(url)
+    return M.open_url(url)
   end
 
   -- If string matches `user/repo`
   if string.match(url, [[.*/.*]]) then
-    return util.open_url("https://github.com/" .. url)
+    return M.open_url("https://github.com/" .. url)
   end
 end
 
