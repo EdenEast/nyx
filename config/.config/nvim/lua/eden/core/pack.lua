@@ -43,12 +43,8 @@ end
 
 -- Execute `PackerCompile` if file exists in `path.module_path`
 M.auto_compile = function()
-  P("something")
-  local file = vim.fn.expand("%:p")
-  if file:match(path.module_path) then
-    M.clean()
-    M.compile()
-  end
+  M.clean()
+  M.compile()
 end
 
 -- Check local development plugin location (pack.local_plugins)

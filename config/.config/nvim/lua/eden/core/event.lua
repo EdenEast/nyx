@@ -7,7 +7,7 @@ local store = {}
 local function store_fn(fn)
   table.insert(store, fn)
   local index = #store
-  return fmt([[lua require('core.event')._exec(%d)]], index)
+  return fmt([[lua require('eden.core.event')._exec(%d)]], index)
 end
 
 local function exec_fn(index)
@@ -31,9 +31,8 @@ local function construct_group(name, cmds)
   cmd("augroup " .. name)
   cmd("autocmd!")
   for _, au in ipairs(cmds) do
-    local event = au[1]
-    local spec = #au == 2 and au[2] or { au[2], au[3] }
-    construct_cmd(event, spec)
+    local event = table.remove(au, 1)
+    construct_cmd(event, #au == 1 and au[1] or au)
   end
   cmd("augroup END")
 end
