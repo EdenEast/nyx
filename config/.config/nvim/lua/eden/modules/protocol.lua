@@ -18,6 +18,11 @@ M.plugins = {
     },
   },
 
+  {
+    "weilbith/nvim-code-action-menu",
+    cmd = "CodeActionMenu",
+  },
+
   { dev("EdenEast/nvim-lspsync") },
 
   -- Debug Adaptor ------------------------------------------------------------

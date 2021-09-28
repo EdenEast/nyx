@@ -48,8 +48,9 @@ local function on_attach(client, bufnr)
       { "]e", [[<cmd>lua vim.lsp.diagnostic.goto_next()<cr>]] },
 
       { "<leader>cn", [[<cmd>lua require('lspsaga.rename').rename()<cr>]] },
-      { "<leader>ca", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]] },
-      { "<leader>ca", [[:<c-u><cmd>lua require('lspsaga.codeaction').range_code_action()<cr>]], mode = "v" },
+      -- { "<leader>ca", [[<cmd>lua require('lspsaga.codeaction').code_action()<cr>]] },
+      -- { "<leader>ca", [[:<c-u><cmd>lua require('lspsaga.codeaction').range_code_action()<cr>]], mode = "v" },
+      { "<leader>ca", [[<cmd>CodeActionMenu<cr>]], mode = "nv" },
 
       { "gd", [[<cmd>Telescope lsp_definitions<cr>]] },
       { "gr", [[<cmd>Telescope lsp_references<cr>]] },
