@@ -70,9 +70,11 @@ M.load_plugins = function()
     end
   end
 
-  local list = {}
-  M.modlist = path.get_mod_list(M.modname)
+  if M.modlist == nil then
+    M.modlist = path.modlist(M.modname)
+  end
 
+  local list = {}
   for _, modname in ipairs(M.modlist) do
     local mod = require(modname)
     if mod.plugins then
@@ -126,6 +128,9 @@ M.bootstrap = function(cb)
   M.ensure("lewis6991", "impatient.nvim", function()
     require("impatient")
   end)
+
+  -- Fill in modlist before the `before` trigger is well... triggered
+  M.modlist = path.modlist(M.modname)
 
   local installed = M.ensure("wbthomason", "packer.nvim", function()
     M.trigger_before()
