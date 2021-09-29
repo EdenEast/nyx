@@ -19,7 +19,7 @@ M.plugins = {
   },
 
   {
-    "embark-theme/vim",
+    { "embark-theme/vim", as = "embark" },
     "eddyekofo94/gruvbox-flat.nvim",
     "rose-pine/neovim",
   },
