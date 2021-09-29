@@ -2,8 +2,7 @@ local pack = require("eden.core.pack")
 local path = require("eden.core.path")
 local nlsp = require("lspconfig")
 
-require("lspkind")
-require("lspsaga").init_lsp_saga()
+require("lspsaga").init_lsp_saga({})
 
 local status = require("eden.modules.protocol.status")
 status.activate()
@@ -17,7 +16,7 @@ local function on_attach(client, bufnr)
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
 
   status.on_attach(client)
-  require("lsp_signature").on_attach()
+  require("lsp_signature").on_attach({})
 
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
