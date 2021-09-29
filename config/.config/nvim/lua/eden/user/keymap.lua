@@ -32,7 +32,7 @@ keymap({
     { "N", "Nzzzv" },
 
     -- Switch between the last two buffers
-    { "<leader><leader>", "<c-^>" },
+    { "<leader><leader>", [[<c-^>\"zz]] },
 
     -- Keep selection when indent/outdent
     { mode = "x", {
