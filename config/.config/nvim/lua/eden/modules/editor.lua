@@ -5,6 +5,30 @@ M.plugins = {
     "editorconfig/editorconfig-vim",
     "christoomey/vim-tmux-navigator",
   },
+
+  {
+    "hrsh7th/nvim-compe",
+    event = "InsertEnter",
+    config = function()
+      require("eden.modules.editor.completion")
+    end,
+    requires = {
+      { "hrsh7th/vim-vsnip", opt = true },
+      { "hrsh7th/vim-vsnip-integ", opt = true },
+      { "rafamadriz/friendly-snippets", opt = true },
+    },
+  },
+
+  {
+    "windwp/nvim-autopairs",
+    config = function()
+      require("nvim-autopairs").setup({
+        disable_filetype = { "TelescopePrompt", "vim" },
+        enable_check_bracket_line = true,
+      })
+    end,
+  },
+
   {
     "ahmedkhalf/project.nvim",
     config = function()
@@ -16,21 +40,14 @@ M.plugins = {
       })
     end,
   },
-  {
-    "windwp/nvim-autopairs",
-    config = function()
-      require("nvim-autopairs").setup({
-        disable_filetype = { "TelescopePrompt", "vim" },
-        enable_check_bracket_line = true,
-      })
-    end,
-  },
+
   {
     "akinsho/nvim-toggleterm.lua",
     config = function()
       require("eden.modules.editor.toggleterm")
     end,
   },
+
   {
     "ojroques/nvim-bufdel",
     config = function()
@@ -67,6 +84,7 @@ M.plugins = {
       { "nvim-lua/plenary.nvim" },
     },
   },
+
   -- Profiling
   { "tweekmonster/startuptime.vim", cmd = { "StartupTime" } },
 }
