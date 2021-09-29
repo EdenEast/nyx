@@ -16,7 +16,7 @@ M.plugins = {
   },
   {
     "glepnir/dashboard-nvim",
-    cond = [[vim.g.started_by_firenvim]],
+    cond = "not vim.g.started_by_firenvim",
   },
   { "Yggdroot/indentLine" },
 }
