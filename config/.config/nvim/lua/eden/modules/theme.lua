@@ -18,7 +18,11 @@ M.plugins = {
     end,
   },
 
-  { "embark-theme/vim", "eddyekofo94/gruvbox-flat.nvim" },
+  {
+    "embark-theme/vim",
+    "eddyekofo94/gruvbox-flat.nvim",
+    "rose-pine/neovim",
+  },
 
   {
     "sunjon/shade.nvim",
@@ -35,5 +39,9 @@ M.plugins = {
     end,
   },
 }
+
+M.before = function()
+  vim.g.rose_pine_variant = "moon"
+end
 
 return M
