@@ -83,7 +83,7 @@ for server, config in pairs(simple_servers) do
 end
 
 local modname = pack.modname .. ".protocol.servers"
-local modlist = path.get_mod_list(modname)
+local modlist = path.modlist(modname)
 for _, mod in ipairs(modlist) do
   local name = mod:match("servers.(.+)$")
   nlsp[name].setup(require(mod).setup(vim.deepcopy(default)))

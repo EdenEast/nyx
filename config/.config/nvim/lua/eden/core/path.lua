@@ -47,18 +47,18 @@ end
 -- @param modpath string
 -- @param runtimepath [string]
 -- @return string
-M.get_mod_filepath = function(modpath, runtimepath)
+M.modfilepath = function(modpath, runtimepath)
   runtimepath = runtimepath or M.confighome
   local partialpath = vim.split(modpath, ".", true)
   return M.join(runtimepath, table.concat(partialpath, M.sep))
 end
 
 -- Get all module names in the file directory
-M.get_mod_list = function(modpath, runtimepath)
+M.modlist = function(modpath, runtimepath)
   runtimepath = runtimepath or M.confighome
   runtimepath = M.join(runtimepath, "lua")
 
-  local filepath = M.get_mod_filepath(modpath, runtimepath)
+  local filepath = M.modfilepath(modpath, runtimepath)
   local fs, fail = uv.fs_scandir(filepath)
   if fail then
     vim.api.nvim_err_writeln(fail)
