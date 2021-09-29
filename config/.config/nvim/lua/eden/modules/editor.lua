@@ -1,32 +1,64 @@
 local M = {}
 
 M.plugins = {
+
+  -- Completion ---------------------------------------------------------------
   {
-    "editorconfig/editorconfig-vim",
-    "christoomey/vim-tmux-navigator",
+    "rafamadriz/friendly-snippets",
+    event = "InsertEnter",
   },
 
   {
-    "hrsh7th/nvim-compe",
-    event = "InsertEnter",
+    "hrsh7th/nvim-cmp",
+    after = "friendly-snippets",
     config = function()
-      require("eden.modules.editor.completion")
+      require("eden.modules.editor.cmp")
     end,
-    requires = {
-      { "hrsh7th/vim-vsnip", opt = true },
-      { "hrsh7th/vim-vsnip-integ", opt = true },
-      { "rafamadriz/friendly-snippets", opt = true },
-    },
+  },
+
+  {
+    "L3MON4D3/LuaSnip",
+    wants = "friendly-snippets",
+    after = "nvim-cmp",
+    config = function()
+      require("luasnip").config.set_config({
+        history = true,
+        updateevents = "TextChanged,TextChangedI",
+      })
+      require("luasnip/loaders/from_vscode").load()
+    end,
+  },
+
+  -- Sources
+  {
+    { "saadparwaiz1/cmp_luasnip", after = "LuaSnip" },
+    { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
+    { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+    { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+    { "hrsh7th/cmp-path", after = "nvim-cmp" },
+    { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
   },
 
   {
     "windwp/nvim-autopairs",
+    after = "nvim-cmp",
     config = function()
       require("nvim-autopairs").setup({
         disable_filetype = { "TelescopePrompt", "vim" },
         enable_check_bracket_line = true,
       })
+
+      require("nvim-autopairs.completion.cmp").setup({
+        map_complete = true, -- Insert () func completion
+        map_cr = true,
+      })
     end,
+  },
+  -- --------------------------------------------------------------------------
+
+  {
+    "editorconfig/editorconfig-vim",
+    "christoomey/vim-tmux-navigator",
   },
 
   {
