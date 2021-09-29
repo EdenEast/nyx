@@ -28,6 +28,16 @@ M.plugins = {
   },
 
   {
+    "rhysd/git-messenger.vim",
+    config = function()
+      -- Show commit message for current line
+      edn.keymap("<leader>gm", "<cmd>GitMessenger<cr>")
+    end,
+    cmd = { "GitMessenger" },
+    keys = { "<leader>gm" },
+  },
+
+  {
     "AndrewRadev/linediff.vim",
     config = function()
       edn.keymap("<leader>gp", [[<cmd>LinediffPick<cr>]])
@@ -35,6 +45,7 @@ M.plugins = {
     cmd = { "LinediffPick" },
     keys = { "<leader>gp" },
   },
+
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -70,5 +81,9 @@ M.plugins = {
     end,
   },
 }
+
+M.begin = function()
+  vim.g.git_messenger_no_default_mapping = false
+end
 
 return M
