@@ -80,6 +80,14 @@ M.plugins = {
       })
     end,
   },
+
+  {
+    "pwntester/octo.nvim",
+    cmd = { "Octo" },
+    config = function()
+      require("octo").setup()
+    end,
+  },
 }
 
 M.begin = function()
