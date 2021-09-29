@@ -3,7 +3,17 @@ local M = {}
 M.plugins = {
   -- Git integrations -------------------------------------------------------------------------------
   -- The wrapper around git
-  { "tpope/vim-fugitive" },
+  {
+    "tpope/vim-fugitive",
+    config = function()
+      edn.keymap("<leader>g", {
+        { "a", ":Git add %:p<cr>" }, -- Stage current file
+        { "d", ":Gdiffsplit<cr>" }, -- Diff current file
+        { "c", ":Git commit<cr>" }, -- Create a git commit from staged changes
+        { "b", ":Git blame<cr>" }, -- Blame each line in file
+      })
+    end,
+  },
 
   -- Better view for editing commit messages
   { "rhysd/committia.vim" },
