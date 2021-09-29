@@ -9,7 +9,6 @@ M.plugins = {
   { "glts/vim-textobj-comment" }, -- Text objects for comments
   { "wellle/targets.vim" }, -- Add text objects for pair, quote, seperator, argument, and tag
   { "kana/vim-textobj-user" }, -- Create own user text objects
-  { "AndrewRadev/sideways.vim" }, -- Move the item under the cursor left or right, where an "item" is defined by a delimiter.
 }
 
 M.after = function()
@@ -60,16 +59,6 @@ M.after = function()
       -- Text objects to select a text surrounded by user-specified characters.
       { "im", "<Plug>(textobj-sandwich-literal-query-i)" },
       { "am", "<Plug>(textobj-sandwich-literal-query-a)" },
-    },
-  })
-
-  -- ---------------------------------------------------
-
-  edn.keymap({
-    mode = "xo",
-    {
-      { "aa", "<Plug>SidewaysArgumentTextobjA" },
-      { "ia", "<Plug>SidewaysArgumentTextobjI" },
     },
   })
 end
