@@ -8,9 +8,6 @@ local premod = "eden.modules.protocol.lsp."
 require(premod .. "cosmetics")
 require(premod .. "handlers")
 
-local saga = require("lspsaga")
-saga.init_lsp_saga()
-
 local status = require("eden.modules.protocol.lsp.status")
 status.activate()
 
