@@ -11,7 +11,7 @@ M.plugins = {
     end,
     requires = {
       "nvim-lua/lsp_extensions.nvim",
-      "glepnir/lspsaga.nvim",
+      "tami5/lspsaga.nvim",
       "ray-x/lsp_signature.nvim",
       "nvim-lua/lsp-status.nvim",
     },
