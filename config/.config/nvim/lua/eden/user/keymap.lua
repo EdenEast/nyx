@@ -83,10 +83,10 @@ keymap({
     { "]t", ":tabnext<cr>" },
 
     -- Move around splits without having to press <C-w> before each movement"
-    { "<c-h>", "<c-w>h" },
-    { "<c-j>", "<c-w>j" },
-    { "<c-k>", "<c-w>k" },
-    { "<c-l>", "<c-w>l" },
+    { "<A-h>", "<cmd>lua require('eden.fn.winmove')('left')<cr>" },
+    { "<A-j>", "<cmd>lua require('eden.fn.winmove')('down')<cr>" },
+    { "<A-k>", "<cmd>lua require('eden.fn.winmove')('up')<cr>" },
+    { "<A-l>", "<cmd>lua require('eden.fn.winmove')('right')<cr>" },
 
     -- Exec current file
     { "<F1>", ":lua require('eden.core.util').exec_file()<cr>" },
