@@ -1,6 +1,6 @@
 local dap = require("dap")
 local dutils = require("dap.utils")
-local util = require("eden.modules.protocol.util")
+local util = require("eden.modules.protocol.dap.util")
 
 local function rust_crate()
   local metadata_json = vim.fn.system("cargo metadata --format-version 1 --no-deps")
