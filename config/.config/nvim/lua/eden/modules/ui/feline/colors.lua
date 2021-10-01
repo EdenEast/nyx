@@ -12,6 +12,7 @@ local M = {}
 
 M.colors = {
   bg = fromhl("StatusLine", "#2E3440", true),
+  alt = fromhl("PmenuSel", "#475062", true),
   fg = fromhl("StatusLine", "#8FBCBB"),
   hint = fromhl("DiagnosticHint", "#5E81AC"),
   info = fromhl("DiagnosticInfo", "#81A1C1"),

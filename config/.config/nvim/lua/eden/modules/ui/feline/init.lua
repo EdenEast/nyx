@@ -50,9 +50,12 @@ active.left = {
     return vim.b.gitsigns_status_dict ~= nil
   end,
 }
-active.left = { provider = { name = "file_info", opts = { type = "relative" } } }
--- active.left = { provider = "", hl = { fg = "bg", bg = "black" } }
-active.left = { provider = "】", hl = { fg = "black", bg = "bg" } }
+active.left = {
+  provider = { name = "file_info", opts = { type = "relative" } },
+  hl = { fg = "fg", bg = "alt" },
+  left_sep = { str = " ", hl = { fg = "bg", bg = "alt" } },
+  right_sep = { str = "", hl = { fg = "bg", bg = "alt" } },
+}
 
 active.right = {
   provider = function()
