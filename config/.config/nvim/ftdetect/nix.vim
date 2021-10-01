@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *.nix setf nix
+au BufRead,BufNewFile *.nix set filetype=nix
