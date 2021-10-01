@@ -11,6 +11,8 @@ require(premod .. "handlers")
 local status = require("eden.modules.protocol.lsp.status")
 status.activate()
 
+vim.opt.updatetime = 300
+
 local function on_init(client)
   client.config.flags = client.config.flags or {}
   client.config.flags.allow_incremental_sync = true
