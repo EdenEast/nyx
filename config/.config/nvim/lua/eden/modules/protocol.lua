@@ -55,6 +55,19 @@ M.plugins = {
       "nvim-treesitter/playground",
       cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
     },
+    {
+      "code-biscuits/nvim-biscuits",
+      after = "nvim-treesitter",
+      config = function()
+        P("doing the setup")
+        require("nvim-biscuits").setup({
+          cursor_line_only = true,
+        })
+        edn.keymap("<leader>tb", function()
+          require("nvim-biscuits").toggle_biscuits()
+        end)
+      end,
+    },
   },
 }
 
