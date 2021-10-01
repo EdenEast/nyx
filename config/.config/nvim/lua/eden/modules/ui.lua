@@ -33,6 +33,28 @@ M.plugins = {
     cond = "not vim.g.started_by_firenvim",
   },
   { "Yggdroot/indentLine" },
+  {
+    "norcalli/nvim-colorizer.lua",
+    ft = { "html", "css", "sass", "vim", "typescript", "typescriptreact", "lua" },
+    config = function()
+      require("colorizer").setup({
+        css = { rgb_fn = true },
+        lua = { names = false },
+        sass = { rgb_fn = true },
+        scss = { rgb_fn = true },
+        stylus = { rgb_fn = true },
+        tmux = { names = false },
+        vim = { names = true },
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        html = {
+          mode = "foreground",
+        },
+      })
+    end,
+  },
 }
 
 M.before = function()
