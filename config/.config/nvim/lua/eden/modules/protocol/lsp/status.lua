@@ -29,7 +29,7 @@ status.activate = function()
     indicator_hint = "!",
     indicator_ok = "",
     spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" },
-    status_symbol = " ~",
+    status_symbol = " ◦", -- ~ ◉ ⭗
   })
 
   nvim_status.register_progress()
