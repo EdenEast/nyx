@@ -20,10 +20,6 @@ local get_diag = function(str)
   return (count > 0) and " " .. count .. " " or ""
 end
 
-local vi_mode_provider = function()
-  return " " .. vi_mode.text[vim.fn.mode()] .. " "
-end
-
 local percentage_provider = function()
   local cursor = require("feline.providers.cursor")
   return " " .. cursor.line_percentage() .. " "
@@ -38,29 +34,39 @@ local vi_mode_hl = function()
   }
 end
 
-active.left = { provider = vi_mode_provider, hl = vi_mode_hl, right_sep = " " }
+active.left = {
+  provider = function()
+    return " " .. vi_mode.text[vim.fn.mode()] .. " "
+  end,
+  hl = vi_mode_hl,
+  right_sep = " ",
+}
 active.left = {
   provider = "git_branch",
   icon = " ",
   right_sep = "  ",
+  hl = { fg = "yellow", bg = "bg" },
   enabled = function()
     return vim.b.gitsigns_status_dict ~= nil
   end,
 }
 active.left = { provider = { name = "file_info", opts = { type = "relative" } } }
-active.left = { provider = "", hl = { fg = "bg", bg = "black" } }
+-- active.left = { provider = "", hl = { fg = "bg", bg = "black" } }
+active.left = { provider = "】", hl = { fg = "black", bg = "bg" } }
 
 active.right = {
   provider = function()
     return require("lsp-status").status()
   end,
+  hl = { fg = "bg", bg = "white", style = "bold" },
+  left_sep = { str = "", hl = { fg = "white", bg = "bg" }, always_visible = true },
+  right_sep = { str = "", hl = { fg = "err", bg = "white" }, always_visible = true },
 }
 active.right = {
   provider = function()
     return get_diag("Error")
   end,
   hl = { fg = "bg", bg = "err", style = "bold" },
-  left_sep = { str = "", hl = { fg = "err", bg = "bg" }, always_visible = true },
   right_sep = { str = "", hl = { fg = "warn", bg = "err" }, always_visible = true },
 }
 active.right = {
