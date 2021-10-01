@@ -3,8 +3,22 @@ local M = {}
 M.plugins = {
   {
     "shadmansaleh/lualine.nvim",
+    event = "VimEnter",
     config = function()
-      require("eden.modules.ui.lualine")
+      if vim.g.current_statusline == "lualine" then
+        require("eden.modules.ui.lualine")
+      end
+    end,
+    requires = { "nvim-lua/lsp-status.nvim" },
+  },
+  {
+    "famiu/feline.nvim",
+    tag = "v0.2.1",
+    event = "VimEnter",
+    config = function()
+      if vim.g.current_statusline == "feline" then
+        require("eden.modules.ui.feline")
+      end
     end,
     requires = { "nvim-lua/lsp-status.nvim" },
   },
@@ -22,6 +36,8 @@ M.plugins = {
 }
 
 M.before = function()
+  vim.g.current_statusline = "feline"
+
   -- Dashboard ----------------------------------------------------------------
   vim.g.dashboard_custom_header = {
     "███████╗██████╗ ███████╗███╗   ██╗",
