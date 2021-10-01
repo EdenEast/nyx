@@ -1,69 +1,67 @@
-local actions = require("telescope.actions")
-local sorters = require("telescope.sorters")
+vim.api.nvim_command("set foldmethod=expr")
+vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
 
-local trouble = require("trouble.providers.telescope")
+vim.cmd([[packadd nvim-ts-context-commentstring]])
+vim.cmd([[packadd nvim-treesitter-textobjects]])
 
-require("telescope").setup({
-  defaults = {
-    vimgrep_arguments = {
-      "rg",
-      "--color=never",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--hidden",
-      "--smart-case",
-    },
-
-    layout_strategy = "horizontal",
-
-    mappings = {
-      i = {
-        ["<C-x>"] = false,
-        ["<C-s>"] = actions.select_horizontal,
-
-        ["<c-t>"] = trouble.open_with_trouble,
-
-        -- Experimental
-        -- ["<tab>"] = actions.toggle_selection,
-
-        ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-        ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+-- Setting clang as the compiler to use as pre this solution
+-- https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support#troubleshooting
+-- NOTE: Had issues with clang and nix installed build-essentials and gcc and it works
+require("nvim-treesitter.install").compilers = { "gcc", "clang", "cl" }
+require("nvim-treesitter.configs").setup({
+  highlight = {
+    enable = true,
+  },
+  playground = {
+    enable = true,
+  },
+  query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = { "BufWrite", "CursorHold" },
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["ia"] = "@parameter.inner",
+        ["aa"] = "@parameter.outer",
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
       },
     },
-
-    file_sorter = sorters.get_fzy_sorter,
   },
-
-  extensions = {
-    fzy_native = {
-      override_generic_sorter = false,
-      override_file_sorter = true,
+  context_commentstring = {
+    enable = true,
+    config = {
+      c = "// %s",
+      lua = "-- %s",
+      nix = "# %s",
     },
+  },
+  ensure_installed = {
+    "bash",
+    "c",
+    "cmake",
+    "c_sharp",
+    "comment",
+    "cpp",
+    "go",
+    "haskell",
+    "json",
+    "lua",
+    "nix",
+    "python",
+    "query",
+    "regex",
+    "rust",
+    "toml",
+    "typescript",
   },
 })
 
-require("telescope").load_extension("fzy_native")
-
-edn.keymap("<leader>f", {
-  { "f", [[<cmd>Telescope find_files<cr>]] },
-  { "d", [[<cmd>Telescope git_files<cr>]] },
-  { "r", [[<cmd>Telescope live_grep<cr>]] },
-  { "s", [[<cmd>Telescope lsp_workspace_symbols<cr>]] },
-  { "b", [[<cmd>Telescope buffers<cr>]] },
-  { "B", [[<cmd>Telescope builtin<cr>]] },
-  { "h", [[<cmd>Telescope help_tags<cr>]] },
-  { "e", [[<cmd>Telescope file_browser<cr>]] },
-  { "q", [[<cmd>Telescope quickfix<cr>]] },
-  { "Q", [[<cmd>Telescope loclist<cr>]] },
-  {
-    "g",
-    {
-      { "b", [[<cmd>Telescope git_branches<cr>]] },
-      { "c", [[<cmd>Telescope git_commits<cr>]] },
-      { "l", [[<cmd>Telescope git_bcommits<cr>]] },
-      { "s", [[<cmd>Telescope git_status<cr>]] },
-    },
-  },
-})
+if not edn.platform.is_windows then
+  vim.cmd([[packadd nvim-treesitter-context]])
+  require("treesitter-context.config").setup()
+end
