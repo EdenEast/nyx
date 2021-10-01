@@ -31,7 +31,7 @@ M.plugins = {
         overlay_opacity = 75,
         opacity_step = 1,
         keys = {
-          toggle = "<Leader>ts",
+          toggle = "<Leader>tS",
         },
       })
     end,
