@@ -21,6 +21,7 @@ end
 status.activate = function()
   nvim_status.config({
     select_symbol = status.select_symbol,
+    kind_labels = require("eden.modules.protocol.lsp.kind").icons,
 
     indicator_errors = "",
     indicator_warnings = "",
@@ -28,6 +29,7 @@ status.activate = function()
     indicator_hint = "!",
     indicator_ok = "",
     spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" },
+    status_symbol = " ~",
   })
 
   nvim_status.register_progress()

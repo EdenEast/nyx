@@ -17,7 +17,11 @@ local config = {
   formatting = {
     format = function(entry, vim_item)
       -- load lspkind icons
-      vim_item.kind = string.format("%s %s", require("eden.modules.protocol.kind").icons[vim_item.kind], vim_item.kind)
+      vim_item.kind = string.format(
+        "%s %s",
+        require("eden.modules.protocol.lsp.kind").icons[vim_item.kind],
+        vim_item.kind
+      )
 
       vim_item.menu = ({
         nvim_lsp = "[LSP]",
