@@ -30,6 +30,7 @@ status.activate = function()
     indicator_ok = "",
     spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" },
     status_symbol = " ◦", -- ~ ◉ ⭗
+    diagnostics = vim.g.current_statusline == "lualine",
   })
 
   nvim_status.register_progress()
