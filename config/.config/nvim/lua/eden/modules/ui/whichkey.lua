@@ -2,7 +2,14 @@ local wk = require("which-key")
 
 vim.opt.timeoutlen = 300
 
-wk.setup()
+wk.setup({
+  plugins = {
+    spelling = {
+      enabled = true,
+    },
+  },
+})
+
 wk.register({
   ["space"] = "prev-buffer",
   ["!"] = "force-quit",
