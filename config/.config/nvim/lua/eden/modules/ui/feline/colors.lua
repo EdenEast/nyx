@@ -25,7 +25,7 @@ M.colors = {
   blue = term(4, "#5E81AC"),
   magenta = term(5, "#B48EAD"),
   cyan = term(6, "#88C0D0"),
-  whilte = term(7, "#ECEFF4"),
+  white = term(7, "#ECEFF4"),
 }
 
 return M
