@@ -13,6 +13,7 @@
     ./lf.nix
     ./lorri.nix
     ./neovim.nix
+    ./nushell.nix
     ./repo.nix
     ./ssh.nix
     ./starship.nix
