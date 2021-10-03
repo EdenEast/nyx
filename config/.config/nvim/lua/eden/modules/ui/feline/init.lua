@@ -1,6 +1,9 @@
 local vi_mode = require("eden.modules.ui.feline.vimode")
 local colors = require("eden.modules.ui.feline.colors")
 
+-- Generate highlight groups
+colors.gen_highlights()
+
 local compmap = { left = 1, mid = 2, right = 3 }
 
 local active = setmetatable({ {}, {}, {} }, {
@@ -26,12 +29,7 @@ local percentage_provider = function()
 end
 
 local vi_mode_hl = function()
-  return {
-    name = vi_mode.provider.get_mode_highlight_name(),
-    fg = "bg",
-    bg = vi_mode.provider.get_mode_color(),
-    style = "bold",
-  }
+  return vi_mode.colors[vim.fn.mode()] or "FeLnBlack"
 end
 
 active.left = {
@@ -45,64 +43,74 @@ active.left = {
   provider = "git_branch",
   icon = " ",
   right_sep = "  ",
-  hl = { fg = "yellow", bg = "bg" },
+  hl = "Type",
   enabled = function()
     return vim.b.gitsigns_status_dict ~= nil
   end,
 }
 active.left = {
   provider = { name = "file_info", opts = { type = "relative" } },
-  hl = { fg = "fg", bg = "alt" },
-  left_sep = { str = " ", hl = { fg = "bg", bg = "alt" } },
-  right_sep = { str = "", hl = { fg = "bg", bg = "alt" } },
+  hl = "FeLnFileInfo",
+  left_sep = { str = " ", hl = "FeLnGitSeperator" },
+  right_sep = { str = "", hl = "FeLnGitSeperator" },
 }
 
 active.right = {
   provider = function()
     return require("lsp-status").status()
   end,
-  hl = { fg = "bg", bg = "white", style = "bold" },
-  left_sep = { str = "", hl = { fg = "white", bg = "bg" }, always_visible = true },
-  right_sep = { str = "", hl = { fg = "err", bg = "white" }, always_visible = true },
+  hl = "FelnWhite",
+  left_sep = { str = "", hl = "FeLnStatusBg", always_visible = true },
+  right_sep = { str = "", hl = "FeLnErrorStatus", always_visible = true },
 }
 active.right = {
   provider = function()
     return get_diag("Error")
   end,
-  hl = { fg = "bg", bg = "err", style = "bold" },
-  right_sep = { str = "", hl = { fg = "warn", bg = "err" }, always_visible = true },
+  hl = "FeLnError",
+  right_sep = { str = "", hl = "FeLnWarnError", always_visible = true },
 }
 active.right = {
   provider = function()
     return get_diag("Warning")
   end,
-  hl = { fg = "bg", bg = "warn", style = "bold" },
-  right_sep = { str = "", hl = { fg = "info", bg = "warn" }, always_visible = true },
+  hl = "FeLnWarn",
+  right_sep = { str = "", hl = "FeLnInfoWarn", always_visible = true },
 }
 active.right = {
   provider = function()
     return get_diag("Information")
   end,
-  hl = { fg = "bg", bg = "info", style = "bold" },
-  right_sep = { str = "", hl = { fg = "hint", bg = "info" }, always_visible = true },
+  hl = "FeLnInfo",
+  right_sep = { str = "", hl = "FeLnHintInfo", always_visible = true },
 }
 active.right = {
   provider = function()
     return get_diag("Hint")
   end,
-  hl = { fg = "bg", bg = "hint", style = "bold" },
-  right_sep = { str = "", hl = { fg = "bg", bg = "hint" }, always_visible = true },
+  hl = "FeLnHint",
+  right_sep = { str = "", hl = "FeLnBgHint", always_visible = true },
 }
-active.right = { provider = "file_encoding", left_sep = " " }
-active.right = { provider = "position", left_sep = " ", right_sep = " " }
+active.right = { provider = "file_encoding", hl = "StatusLine", left_sep = " " }
+active.right = { provider = "position", hl = "StatusLine", left_sep = " ", right_sep = " " }
 active.right = { provider = percentage_provider, hl = vi_mode_hl }
 
-inactive.left = { provider = "file_info" }
-inactive.right = { provider = "position", left_sep = " ", right_sep = " " }
+inactive.left = { provider = "file_info", hl = "StatusLine" }
+inactive.right = { provider = "position", hl = "StatusLine", left_sep = " ", right_sep = " " }
+
+-- Define autocmd that generates the highlight groups from the new colorscheme
+-- Then reset the highlights for feline
+edn.aug.FelineColorschemeReload = {
+  {
+    { "SessionLoadPost", "ColorScheme" },
+    function()
+      require("eden.modules.ui.feline.colors").gen_highlights()
+      require("feline").reset_highlights()
+    end,
+  },
+}
 
 require("feline").setup({
-  colors = colors.colors,
-  vi_mode_colors = vi_mode.colors,
   components = { active = active, inactive = inactive },
   force_inactive = {
     filetypes = {
