@@ -1,6 +1,4 @@
-local provider = require("feline.providers.vi_mode")
-
-local M = { provider = provider }
+local M = {}
 
 M.text = {
   n = "NORMAL",
@@ -21,21 +19,22 @@ M.text = {
 }
 
 M.colors = {
-  NORMAL = "cyan",
-  OP = "cyan",
-  INSERT = "white",
-  VISUAL = "magenta",
-  LINES = "magenta",
-  BLOCK = "magenta",
-  REPLACE = "red",
-  ["V-REPLACE"] = "red",
-  ENTER = "blue",
-  MORE = "blue",
-  SELECT = "magenta",
-  COMMAND = "yellow",
-  SHELL = "blue",
-  TERM = "blue",
-  NONE = "orange",
+  n = "FeLnCyan",
+  no = "FeLnCyan",
+  i = "FeLnWhite",
+  v = "FeLnMagenta",
+  V = "FeLnMagenta",
+  [""] = "FeLnMagenta",
+  R = "FeLnRed",
+  Rv = "FeLnRed",
+  r = "FeLnBlue",
+  rm = "FeLnBlue",
+  s = "FeLnMagenta",
+  S = "FeLnMagenta",
+  [""] = "FelnMagenta",
+  c = "FeLnYellow",
+  ["!"] = "FeLnBlue",
+  t = "FeLnBlue",
 }
 
 return M

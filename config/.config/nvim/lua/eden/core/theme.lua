@@ -13,12 +13,6 @@ local function init()
 
   event.aug.user_theme = {
     {
-      "VimEnter",
-      function()
-        require("eden.core.theme").reload()
-      end,
-    },
-    {
       "ColorScheme",
       function()
         require("eden.core.theme").hook()
