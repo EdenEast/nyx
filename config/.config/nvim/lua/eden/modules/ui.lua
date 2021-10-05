@@ -1,3 +1,4 @@
+local dev = require("eden.core.pack").dev
 local M = {}
 
 M.plugins = {
@@ -13,7 +14,7 @@ M.plugins = {
   },
   {
     "famiu/feline.nvim",
-    tag = "v0.2.1",
+    tag = "v0.3",
     event = "VimEnter",
     config = function()
       if vim.g.current_statusline == "feline" then
