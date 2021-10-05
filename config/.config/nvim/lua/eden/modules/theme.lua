@@ -23,19 +23,6 @@ M.plugins = {
     "eddyekofo94/gruvbox-flat.nvim",
     "rose-pine/neovim",
   },
-
-  {
-    "sunjon/shade.nvim",
-    config = function()
-      require("shade").setup({
-        overlay_opacity = 75,
-        opacity_step = 1,
-        keys = {
-          toggle = "<Leader>tS",
-        },
-      })
-    end,
-  },
 }
 
 M.before = function()
