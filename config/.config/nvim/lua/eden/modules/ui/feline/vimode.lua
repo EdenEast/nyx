@@ -19,6 +19,25 @@ M.text = {
 }
 
 M.colors = {
+  n = "FeLnViCyan",
+  no = "FeLnViCyan",
+  i = "FeLnViWhite",
+  v = "FeLnViMagenta",
+  V = "FeLnViMagenta",
+  [""] = "FeLnViMagenta",
+  R = "FeLnViRed",
+  Rv = "FeLnViRed",
+  r = "FeLnViBlue",
+  rm = "FeLnViBlue",
+  s = "FeLnViMagenta",
+  S = "FeLnViMagenta",
+  [""] = "FelnMagenta",
+  c = "FeLnViYellow",
+  ["!"] = "FeLnViBlue",
+  t = "FeLnViBlue",
+}
+
+M.sep = {
   n = "FeLnCyan",
   no = "FeLnCyan",
   i = "FeLnWhite",
