@@ -51,8 +51,8 @@ end
 -- if plugin exists. Returns abs path to local file if it exists.
 -- @param slug string
 -- @return string
-M.dev = function(slug)
-  local name = string.match(slug, ".*/(.*)")
+M.dev = function(slug, as)
+  local name = as and as or string.match(slug, ".*/(.*)")
   local abs = path.join(M.local_plugins, name)
   local exists = path.exists(abs)
   return exists and abs or slug
