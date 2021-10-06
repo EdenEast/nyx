@@ -7,13 +7,18 @@ local function highlight(group, color)
   local sp = color.sp and "guisp=" .. color.sp or ""
   local hl = "highlight " .. group .. " " .. style .. " " .. fg .. " " .. bg .. " " .. sp
   vim.cmd(hl)
+
+  if color.link then
+    vim.cmd("highlight! link " .. group .. " " .. color.link)
+  end
 end
 
 local function fromhl(hl)
   local result = {}
   local list = vim.api.nvim_get_hl_by_name(hl, true)
   for k, v in pairs(list) do
-    result[k] = string.format("#%06x", v)
+    local name = k == "background" and "bg" or "fg"
+    result[name] = string.format("#%06x", v)
   end
   return result
 end
@@ -25,9 +30,9 @@ end
 
 local function colors_from_theme()
   return {
-    bg = fromhl("StatusLine").background, -- or "#2E3440",
-    alt = fromhl("PmenuSel").background, -- or "#475062",
-    fg = fromhl("StatusLine").foreground, -- or "#8FBCBB",
+    bg = fromhl("StatusLine").bg, -- or "#2E3440",
+    alt = fromhl("PmenuSel").bg, -- or "#475062",
+    fg = fromhl("StatusLine").fg, -- or "#8FBCBB",
     hint = fromhl("DiagnosticHint").bg or "#5E81AC",
     info = fromhl("DiagnosticInfo").bg or "#81A1C1",
     warn = fromhl("DiagnosticWarn").bg or "#EBCB8B",
@@ -43,10 +48,20 @@ local function colors_from_theme()
   }
 end
 
+local function tabline_colors_from_theme()
+  return {
+    tabl = fromhl("TabLine"),
+    norm = fromhl("Normal"),
+    sel = fromhl("TabLineSel"),
+    fill = fromhl("TabLineFill"),
+  }
+end
+
 M.gen_highlights = function()
   local c = colors_from_theme()
   local sfg = vim.o.background == "dark" and c.black or c.white
   local sbg = vim.o.background == "dark" and c.white or c.black
+  local ct = tabline_colors_from_theme()
   M.colors = c
   local groups = {
     FeLnViBlack = { fg = c.white, bg = c.black, style = "bold" },
@@ -85,10 +100,31 @@ M.gen_highlights = function()
     FeLnFileInfo = { fg = c.fg, bg = c.alt },
     FeLnGitBranch = { fg = c.yellow, bg = c.bg },
     FeLnGitSeperator = { fg = c.bg, bg = c.alt },
+
+    -- Tabby
+    TbyHead = { fg = ct.fill.bg, bg = c.cyan },
+    TbyHeadSep = { fg = c.cyan, ct.fill.bg },
+    TbyActive = { fg = ct.sel.fg, bg = ct.sel.bg, style = "bold" },
+    TbyActiveSep = { fg = ct.sel.bg, bg = ct.fill.bg },
+    TbyBoldLine = { fg = ct.tabl.fg, bg = ct.tabl.bg, style = "bold" },
+    TbyLineSep = { fg = ct.tabl.bg, bg = ct.fill.bg },
   }
   for k, v in pairs(groups) do
     highlight(k, v)
   end
 end
+
+M.gen_highlights()
+
+-- Define autocmd that generates the highlight groups from the new colorscheme
+-- Then reset the highlights for feline
+edn.aug.EdenUiColorschemeReload = {
+  {
+    { "SessionLoadPost", "ColorScheme" },
+    function()
+      require("eden.modules.ui.colors").gen_highlights()
+    end,
+  },
+}
 
 return M

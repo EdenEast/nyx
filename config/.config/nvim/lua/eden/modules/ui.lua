@@ -64,6 +64,14 @@ M.plugins = {
     cmd = { "SymbolsOutline" },
     keys = { "<leader>ts" },
   },
+  {
+    "nanozuki/tabby.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    after = "feline.nvim",
+    config = function()
+      require("eden.modules.ui.tabby")
+    end,
+  },
 }
 
 M.before = function()
