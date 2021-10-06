@@ -5,6 +5,11 @@ local trouble = require("trouble.providers.telescope")
 
 require("telescope").setup({
   defaults = {
+    pickers = {
+      live_grep = {
+        only_sort_text = true,
+      },
+    },
     vimgrep_arguments = {
       "rg",
       "--color=never",
