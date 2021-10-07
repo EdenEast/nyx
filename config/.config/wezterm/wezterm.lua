@@ -3,7 +3,7 @@ local wt = require("wezterm")
 local function windows_launch_menu()
   local launch_menu = { {
     label = "Powershell",
-    args = { "powershell.exe", "--NoLogo" },
+    args = { "powershell.exe", "-NoLogo" },
   } }
 
   local success, wsl_list, wsl_err = wt.run_child_process({ "wsl.exe", "-l" })
