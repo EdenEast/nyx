@@ -75,7 +75,7 @@ M.plugins = {
 }
 
 M.before = function()
-  vim.g.current_statusline = "feline"
+  vim.g.current_statusline = edn.platform.is_windows and "lualine" or "feline"
 
   -- Dashboard ----------------------------------------------------------------
   vim.g.dashboard_custom_header = {
