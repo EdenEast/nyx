@@ -103,7 +103,7 @@ M.gen_highlights = function()
 
     -- Tabby
     TbyHead = { fg = ct.fill.bg, bg = c.cyan },
-    TbyHeadSep = { fg = c.cyan, ct.fill.bg },
+    TbyHeadSep = { fg = c.cyan, bg = ct.fill.bg },
     TbyActive = { fg = ct.sel.fg, bg = ct.sel.bg, style = "bold" },
     TbyActiveSep = { fg = ct.sel.bg, bg = ct.fill.bg },
     TbyBoldLine = { fg = ct.tabl.fg, bg = ct.tabl.bg, style = "bold" },
