@@ -9,6 +9,7 @@ require("toggleterm").setup({
     end
   end,
   direction = "horizontal",
+  shade_terminals = vim.o.background == "dark",
   float_opts = {
     border = "double",
     highlights = {
