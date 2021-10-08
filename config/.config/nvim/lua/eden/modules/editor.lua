@@ -78,6 +78,8 @@ M.plugins = {
     config = function()
       require("eden.modules.editor.toggleterm")
     end,
+    cmd = { "ToggleTerm" },
+    keys = { "<c-space>" },
   },
 
   {
