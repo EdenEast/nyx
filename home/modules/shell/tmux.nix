@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.nyx.modules.shell.tmux;
+let
+  cfg = config.nyx.modules.shell.tmux;
 in
 {
   options.nyx.modules.shell.tmux = {
@@ -47,4 +48,3 @@ in
     };
   };
 }
-

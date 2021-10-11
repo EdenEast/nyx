@@ -1,5 +1,20 @@
 local wt = require("wezterm")
 
+local function extend(...)
+  local ret = {}
+  for i = 1, select('#', ...) do
+    local tbl = select(i, ...)
+    if tbl then
+      for k, v in pairs(tbl) do
+        ret[k] = v
+      end
+    end
+  end
+  return ret
+end
+
+local nyx  = dofile(string.format("%s/.local/share/wezterm/nyx.lua", os.getenv("HOME")))
+
 local function windows_launch_menu()
   local launch_menu = { {
     label = "Powershell",
@@ -30,7 +45,7 @@ local function windows_launch_menu()
 end
 
 local config = {
-  colors = {
+  colors = nyx.colors and nyx.colors or {
     background = "#192330",
     foreground = "#afc0d5",
 
@@ -71,4 +86,6 @@ if wt.target_triple == "x86_64-pc-windows-msvc" then
   config.default_prog = { "wsl.exe" }
 end
 
-return config
+local result = extend(config, nyx)
+
+return result
