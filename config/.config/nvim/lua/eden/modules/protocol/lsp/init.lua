@@ -35,6 +35,13 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("keep", capabilities, status.capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+-- Packadding cmp-nvim-lsp if not added yet and updating capabilities
+vim.cmd("packadd cmp-nvim-lsp")
+local has_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
+if has_cmp then
+  capabilities = cmp_lsp.update_capabilities(capabilities)
+end
+
 local default = { on_init = on_init, on_attach = on_attach, capabilities = capabilities }
 local ext = edn.platform.is_windows and ".cmd" or ""
 
