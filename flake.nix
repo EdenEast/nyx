@@ -22,8 +22,10 @@
 
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
-  };
 
+    eww.url = "github:elkowar/eww";
+    eww.inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs = { self, ... }@inputs:
     with inputs.nixpkgs.lib;
@@ -44,6 +46,7 @@
             (inputs.neovim-nightly.overlay)
             (inputs.fenix.overlay)
             (inputs.nur.overlay)
+            (_:_: { inherit (inputs.eww.packages."${system}") eww; })
           ]
           ++ (attrValues (mapModules ./nix/overlays import));
 
