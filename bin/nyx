@@ -109,7 +109,7 @@ EOF
       debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
       sudo nixos-rebuild build --flake .
     else
-      debug "Nixos not detected, building target based on $USER"
+      debug "Nixos not detected, building target based on \$USER: $USER"
       # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
       # infer then nix build will just run and build the default package.
       # TODO: This is wrong and should save what top target should be built for the machine.
@@ -406,10 +406,11 @@ EOF
         unlink                              # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
         sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
       else
+        debug "Nixos not detected, switching target based on \$USER: $USER"
         # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
         # infer then nix build will just run and build the default package.
         # TODO: This is wrong and should save what top target should be built for the machine.
-        nix build ".#top.$USER" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}" && unlink && ./result/activate
+        nix build ".#top.$USER" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}" && { unlink ; ./result/activate; }
 
         # # Could not infer and building the default package
         # debug "Could not infer target to build, building default package for the flake"
@@ -540,6 +541,10 @@ COMMANDS:
   switch - Switch to configuration
   update - Update flake inputs
   unlink - Remove custom link from the \`link\` command
+
+OPTIONS:
+  -v, --verbose  - Output verbose information
+  -h, --help     - Output help information
 EOF
 
   printf "%s\n" "$msg"
