@@ -1,0 +1,182 @@
+#!/usr/bin/env bash
+
+main()
+{
+  if [ -n "$*" ]; then
+    key="$1"
+    case $key in
+      -h | --help) usage 0 ;;
+      -p | --pane) panes ;;
+      -v | --view) view ;;
+      -s | --spectrum) spectrum ;;
+      -e | --extended) extended ;;
+      *) echo "Unknown option $key" ;  usage 1 ;;
+    esac
+    shift
+  fi
+  default
+}
+
+usage()
+{
+    cat << 'EOF'
+Test output color codes for your terminal.
+Usage: color [OPTIONS]
+
+OPTIONS:
+  -p, --pane       View pane output
+  -v, --view       View color view output
+  -s, --spectrum   View spectrum output
+EOF
+  # -c, --colors [bits]  Force the color bits that it will output (8, 16, 256)
+    exit "$1"
+}
+
+
+# Default:
+#
+# Shows the escape characters of the color as well as the color against the
+# background of all the other colors.
+#
+# Example:
+#
+#        def     40m     41m     42m     43m     44m     45m     46m     47m
+#    m   •••     •••     •••     •••     •••     •••     •••     •••     •••
+#   1m   •••     •••     •••     •••     •••     •••     •••     •••     •••
+default()
+{
+  T='•••' # The text for the color test
+
+  echo -e "\n         def     40m     41m     42m     43m     44m     45m     46m     47m"
+
+  for FGs in '    m' '   1m' '  30m' '1;30m' '  31m' '1;31m' '  32m' \
+    '1;32m' '  33m' '1;33m' '  34m' '1;34m' '  35m' '1;35m' \
+    '  36m' '1;36m' '  37m' '1;37m'; do
+    FG=${FGs// /}
+    echo -en " $FGs \033[$FG  $T  "
+
+    for BG in 40m 41m 42m 43m 44m 45m 46m 47m; do
+      echo -en "$EINS \033[$FG\033[$BG  $T  \033[0m"
+    done
+    echo
+  done
+  echo
+  exit 0
+}
+
+# Panes:
+#
+# Shows colors in panes with the base color as the front pane and the alt
+# color as the back pane.
+panes()
+{
+    f=3 b=4
+    for j in f b; do
+      for i in {0..7}; do
+        printf -v $j$i %b "\e[${!j}${i}m"
+      done
+    done
+    d=$'\e[1m'
+    t=$'\e[0m'
+    v=$'\e[7m'
+
+    cat << EOF
+     $f0████$d▄$t  $f1████$d▄$t  $f2████$d▄$t  $f3████$d▄$t  $f4████$d▄$t  $f5████$d▄$t  $f6████$d▄$t  $f7████$d▄$t
+     $f0████$d█$t  $f1████$d█$t  $f2████$d█$t  $f3████$d█$t  $f4████$d█$t  $f5████$d█$t  $f6████$d█$t  $f7████$d█$t
+     $f0████$d█$t  $f1████$d█$t  $f2████$d█$t  $f3████$d█$t  $f4████$d█$t  $f5████$d█$t  $f6████$d█$t  $f7████$d█$t
+     $d$f0 ▀▀▀▀  $d$f1 ▀▀▀▀   $f2▀▀▀▀   $f3▀▀▀▀   $f4▀▀▀▀   $f5▀▀▀▀   $f6▀▀▀▀   $f7▀▀▀▀$t
+EOF
+  exit 0
+}
+
+# View:
+#
+# Iterates though all colors on all background colors.
+#
+# Example:
+#
+#     ┌──────────────────────────────────────────────────────────────────────────┐
+# DFT │   black     red     green    yellow    blue   magenta    cyan    white   │
+#     │   black     red     green    yellow    blue   magenta    cyan    white   │
+#     ├──────────────────────────────────────────────────────────────────────────┤
+view()
+{
+  FGNAMES=(' black ' '  red  ' ' green ' ' yellow' '  blue ' 'magenta' '  cyan ' ' white ')
+  BGNAMES=('DFT' 'BLK' 'RED' 'GRN' 'YEL' 'BLU' 'MAG' 'CYN' 'WHT')
+
+  echo "     ┌──────────────────────────────────────────────────────────────────────────┐"
+  for b in {0..8}; do
+    ((b>0)) && bg=$((b+39))
+
+    echo -en "\033[0m ${BGNAMES[b]} │ "
+
+    for f in {0..7}; do
+      echo -en "\033[${bg}m\033[$((f+30))m ${FGNAMES[f]} "
+    done
+
+    echo -en "\033[0m │"
+    echo -en "\033[0m\n\033[0m     │ "
+
+    for f in {0..7}; do
+      echo -en "\033[${bg}m\033[1;$((f+30))m ${FGNAMES[f]} "
+    done
+
+    echo -en "\033[0m │"
+    echo -e "\033[0m"
+
+    ((b<8)) &&
+    echo "     ├──────────────────────────────────────────────────────────────────────────┤"
+  done
+  echo "     └──────────────────────────────────────────────────────────────────────────┘"
+  exit 0
+}
+
+# Spectrum:
+#
+# Preview blending colors from one to another for both standard
+# and alt colors.
+#
+# Example:
+#
+# ██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██
+#
+# ██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██
+spectrum()
+{
+  echo
+
+  for f in {0..6}; do
+    echo -en "\033[$((f+41))m\033[$((f+30))m██▓▒░"
+  done
+  echo -en "\033[37m██\n"
+
+  echo
+
+  for f in {0..6}; do
+    echo -en "\033[$((f+41))m\033[1;$((f+30))m██▓▒░"
+  done
+  echo -en "\033[1;37m██"
+
+  echo -e "\033[0m"
+  exit 0
+}
+
+
+# Extended:
+#
+# Output every visual escape code option.
+extended()
+{
+  for x in {0..8}; do
+    for i in {30..37}; do
+      for a in {40..47}; do
+        echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m\033[0m"
+      done
+      echo
+    done
+  done
+  echo ""
+  exit 0
+}
+
+main "$@"
