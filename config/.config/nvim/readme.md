@@ -35,7 +35,7 @@ My configuration is broken up into several sections.
 The interesting part of my configuration is how plugins are defined and configured. All of this is
 defined in the file [pack.lua](./lua/eden/core/pack.lua). To set up packer we check all the files
 located in the path `lua/eden/modules/*.lua` All these files return a table with a `plugins` key.
-The values of these keys are collected and sent to packer. In these files they can also optionaly
+The values of these keys are collected and sent to packer. In these files they can also optionally
 return a `before` and `after` key. These are defined as function that will be executed before plugin
 loading and after plugin loading.
 
@@ -47,6 +47,18 @@ is already installed then the bootstrap will just require `eden.main`.
 See [boostrap.lua](./lua/eden/boostrap.lua) and [pack.lua](./lua/eden/core/pack.lua) for more
 information.
 
+Other areas of note:
+- `protocol` - [packer](./lua/eden/modules/protocol.lua) plugin definitions
+  - [`lsp`](./lua/eden/modules/protocol/lsp/init.lua) (language server protocol)
+  - [`dap`](./lua/eden/modules/protocol/dap/init.lua) (debug adaptor protocol)
+  - [`treesitter`](./lua/eden/modules/protocol/treesitter.lua)
+- `nav` - [packer](./lua/eden/modules/nav.lua) plugin definitions
+  - [`telescope`](./lua/eden/modules/nav/telescope.lua)
+- `editor` - [packer](./lua/eden/modules/editor.lua) plugin definitions
+  - [`cmp`](./lua/eden/modules/nav/cmp.lua) autocompletion
+- `ui` - [packer](./lua/eden/modules/ui.lua) plugin definitions
+  - [`statusline`](./lua/eden/modules/ui/feline/init.lua)
+  - [`tabline`](./lua/eden/modules/ui/tabby.lua)
 
 ## Why neovim?
 
