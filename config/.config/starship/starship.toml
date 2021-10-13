@@ -49,9 +49,9 @@ diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 behind = "⇣${count}"
 
 [nix_shell]
-symbol = "❅"
-impure_msg = "[❅](red)"
-pure_msg = "[❅](green)"
+symbol = ""
+impure_msg = "[](red)"
+pure_msg = "[](green)"
 format = 'via [$symbol \($name\)](bold blue) '
 
 # https://github.com/starship/starship/discussions/1252#discussioncomment-194627
