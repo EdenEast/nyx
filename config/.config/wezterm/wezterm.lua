@@ -13,7 +13,13 @@ local function extend(...)
   return ret
 end
 
-local nyx  = dofile(string.format("%s/.local/share/wezterm/nyx.lua", os.getenv("HOME")))
+local function exists(name)
+  local f = io.open(name, "r")
+  if f ~= nil then io.close(f) return true else return false end
+end
+
+local name = string.format("%s/.local/share/wezterm/nyx.lua", os.getenv("HOME"))
+local nyx = exists(name) and dofile(name) or {}
 
 local function windows_launch_menu()
   local launch_menu = { {
