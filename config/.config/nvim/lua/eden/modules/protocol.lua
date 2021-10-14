@@ -40,7 +40,6 @@ M.plugins = {
   {
     {
       "nvim-treesitter/nvim-treesitter",
-      event = "BufRead",
       run = ":TSUpdate",
       config = function()
         require("eden.modules.protocol.treesitter")
