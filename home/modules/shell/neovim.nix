@@ -8,6 +8,14 @@ in
   options.nyx.modules.shell.neovim = {
     enable = mkEnableOption "neovim configuration";
 
+    extraPkgs = mkOption {
+      description = "List of extra packages required for neovim config";
+      type = with types; listOf package;
+      default = with pkgs; [
+        # sqlite
+      ];
+    };
+
     # Rust is handled by the dev/rust.nix file as there is more to setup for that env
     lspServers = mkOption {
       description = "List of language server packages";
@@ -50,10 +58,11 @@ in
     xdg.configFile."nvim".source = ../../../config/.config/nvim;
     home.packages = with pkgs; [
       neovim-unwrapped
-    ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters;
+    ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters ++ cfg.extraPkgs;
 
     # Add Treesitter parsers
     home.file = {
+      "${config.xdg.dataHome}/nvim/lib/libsqlite3.so".source = "${pkgs.sqlite.out}/lib/libsqlite3.so";
       "${config.xdg.dataHome}/nvim/parser/bash.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-bash}/parser";
       "${config.xdg.dataHome}/nvim/parser/c.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-c}/parser";
       "${config.xdg.dataHome}/nvim/parser/cpp.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-cpp}/parser";

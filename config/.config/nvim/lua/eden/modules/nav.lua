@@ -10,6 +10,7 @@ M.plugins = {
       { "nvim-lua/popup.nvim" },
       { "nvim-lua/plenary.nvim" },
       { "nvim-telescope/telescope-fzy-native.nvim" },
+      { "nvim-telescope/telescope-frecency.nvim", requires = { "tami5/sqlite.lua", opt = true }, opt = true },
     },
   },
   {
@@ -29,5 +30,13 @@ M.plugins = {
     requires = "kyazdani42/nvim-web-devicons",
   },
 }
+
+M.before = function()
+  local libsql_path = edn.path.join(edn.path.datahome, "lib", "libsqlite3.so")
+  if edn.path.exists(libsql_path) then
+    vim.g.sqlite_found = true
+    vim.g.sqlite_clib_path = edn.path.join(edn.path.datahome, "lib", "libsqlite3.so")
+  end
+end
 
 return M
