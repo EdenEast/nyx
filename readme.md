@@ -50,9 +50,11 @@ locations. Some configurations of note:
 | ------------- | ------ | ------------------------------------------------ |
 | [sloth]       | System | An old lenovo T530 Laptop                        |
 | [eden]        | Home   | Generic home config for non nixos machines (wsl) |
+| [pride]       | System | Asus UX331U notebook laptop                      |
 
 [sloth]: ./nixos/hosts/sloth
 [eden]: ./home/hosts/eden.nix
+[pride]: ./nixos/hosts/pride
 
 ## Ci/Cd
 
