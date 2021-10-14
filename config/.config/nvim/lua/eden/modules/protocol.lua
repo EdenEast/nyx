@@ -58,7 +58,6 @@ M.plugins = {
       "code-biscuits/nvim-biscuits",
       after = "nvim-treesitter",
       config = function()
-        P("doing the setup")
         require("nvim-biscuits").setup({
           cursor_line_only = true,
         })
