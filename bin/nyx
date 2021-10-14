@@ -584,7 +584,7 @@ function is_nixos() {
 }
 
 function debug() {
-  [ -n "$DEBUG" ] && echo_e "${BLU}[DEBUG]: $*${RST}"
+  if [ -n "$DEBUG" ]; then echo_e "${BLU}[DEBUG]: $*${RST}"; fi
 }
 
 function info() {
