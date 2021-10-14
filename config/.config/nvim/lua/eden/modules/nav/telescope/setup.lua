@@ -1,10 +1,6 @@
 local actions = require("telescope.actions")
 local sorters = require("telescope.sorters")
 
-local trouble = require("trouble.providers.telescope")
-
-require("eden.modules.nav.telescope.remaps")
-
 require("telescope").setup({
   defaults = {
     pickers = {
@@ -30,8 +26,6 @@ require("telescope").setup({
         ["<C-x>"] = false,
         ["<C-s>"] = actions.select_horizontal,
 
-        ["<c-t>"] = trouble.open_with_trouble,
-
         -- Experimental
         -- ["<tab>"] = actions.toggle_selection,
 
@@ -53,3 +47,12 @@ require("telescope").setup({
 
 require("telescope").load_extension("fzy_native")
 require("telescope").load_extension("projects")
+
+if vim.g.sqlite_found then
+  vim.cmd("packadd sqlite.lua")
+  vim.cmd("packadd telescope-frecency.nvim")
+  require("telescope").load_extension("frecency")
+end
+
+-- Load telescope mappings
+require("eden.modules.nav.telescope.remaps")
