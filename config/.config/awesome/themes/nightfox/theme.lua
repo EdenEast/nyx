@@ -27,7 +27,7 @@ theme.colors = {
 
 -- stylua: ignore
 theme.bright = {
-  black_br   = "#7f8c98",
+  black_br   = "#475072",
   red_br     = "#D6616B",
   green_br   = "#58cd8b",
   yellow_br  = "#FFE37E",
