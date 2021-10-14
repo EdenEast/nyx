@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # color chart https://stackoverflow.com/a/5947802
 RED='\033[0;31m'
 GRN='\033[0;32m'
@@ -68,6 +70,7 @@ function main() {
 # --- Commands ----------------------------------------------------------------
 
 function build() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx build [target]
@@ -78,6 +81,7 @@ either the nixos system configuration or the toplevel host config.
 OPTIONS:
   -h, --help      Show help message
 EOF
+  set -e
 
   local -a args
   while [[ $# -gt 0 ]]; do
@@ -97,32 +101,32 @@ EOF
   (
     cd "$NYX_ROOT"
 
+    # If a build target has been specified then tell nix build this target
     if [[ ${#args[@]} -gt 0 ]]; then
       debug "target argument was passed to build. Building ${args[0]}"
       nix build ".#top.${args[0]}" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
-      exit 0
-    fi
-
-    # There was no target passed to build so infer what do build
-
-    if is_nixos >/dev/null; then
-      debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
-      sudo nixos-rebuild build --flake .
     else
-      debug "Nixos not detected, building target based on \$USER: $USER"
-      # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
-      # infer then nix build will just run and build the default package.
-      # TODO: This is wrong and should save what top target should be built for the machine.
-      nix build ".#top.$USER" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
+      # There was no target passed to build so infer what do build
+      if is_nixos >/dev/null; then
+        debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
+        sudo nixos-rebuild build --flake .
+      else
+        debug "Nixos not detected, building target based on \$USER: $USER"
+        # When not on nixos it is harder to infer what we are supposed to build for the platform if we cant
+        # infer then nix build will just run and build the default package.
+        # TODO: This is wrong and should save what top target should be built for the machine.
+        nix build ".#top.$USER" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
 
-      # # Could not infer and building the default package
-      # debug "Could not infer target to build, building default package for the flake"
-      # nix build "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
+        # # Could not infer and building the default package
+        # debug "Could not infer target to build, building default package for the flake"
+        # nix build "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
+      fi
     fi
   )
 }
 
 function check() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx check
@@ -132,6 +136,7 @@ Execute flake check output.
 OPTIONS:
   -h, --help      Show help message
 EOF
+  set -e
 
   local -a args
   while [[ $# -gt 0 ]]; do
@@ -156,6 +161,7 @@ EOF
 }
 
 function fmt() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx fmt [OPTIONS] [target...]
@@ -165,6 +171,7 @@ Execute formatters for file types.
 OPTIONS:
   -h, --help      Show help message
 EOF
+  set -e
 
   local -a args
   while [[ $# -gt 0 ]]; do
@@ -195,6 +202,7 @@ EOF
 }
 
 function gc() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx gc [OPTIONS] [target...]
@@ -206,6 +214,7 @@ OPTIONS:
   -a, --all       GC both user and system profiles
   -s, --system    Only gc system profile
 EOF
+  set -e
 
   local -a args
   while [[ $# -gt 0 ]]; do
@@ -244,6 +253,7 @@ EOF
 }
 
 function link() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx link [OPTIONS] [target...]
@@ -353,9 +363,12 @@ EOF
       done
     fi
   )
+
+  set -e
 }
 
 function switch() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx switch [OPTIONS] [target...]
@@ -366,6 +379,7 @@ OPTIONS:
   -h, --help      Show help message
   -l, --link      Link after switch
 EOF
+  set -e
 
   local -a args
   while [[ $# -gt 0 ]]; do
@@ -388,29 +402,32 @@ EOF
   (
     cd "$NYX_ROOT"
 
-    # The switch will fail is there is links that point to the config folder they need to be removed before the switch
+    # Making sure that the target builds before trying to unlink and switch
+    build "${NYX_ARGS[@]}"
 
+    # Since the build completed with no issues then it is safe to unlink
+    # and switch to the new config
+    unlink
+
+    # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
-      debug "target argument was passed to switch. Switiching to ${args[0]}"
-      if is_nixos >/dev/null; then
-        unlink # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
+      if is_nixos > /dev/null; then
+        debug "Switching to defined target ${args[0]} on nixos system"
         sudo nixos-rebuild switch --flake ".#top.${args[0]}"
       else
-        nix build ".#top.${args[0]}" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}" && unlink && ./result/activate
-        exit 0
+        debug "Switching to defined target ${args[0]} on non nixos system"
+        ./result/activate
       fi
     else
-      # There was no target passed to build so infer what do build
-      if is_nixos >/dev/null; then
+      if is_nixos > /dev/null; then
         debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
-        unlink                              # TODO: Should this be a build, unlink and then switch just to make sure that the build completes?
         sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
       else
         debug "Nixos not detected, switching target based on \$USER: $USER"
         # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
         # infer then nix build will just run and build the default package.
         # TODO: This is wrong and should save what top target should be built for the machine.
-        nix build ".#top.$USER" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}" && { unlink ; ./result/activate; }
+        ./result/activate
 
         # # Could not infer and building the default package
         # debug "Could not infer target to build, building default package for the flake"
@@ -418,13 +435,12 @@ EOF
       fi
     fi
 
-    [ "$?" -ne 0 ] && exit "$?"
-
     [ -n "$do_link" ] && link
   )
 }
 
 function update() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx update [OPTIONS] [inputs...]
@@ -434,6 +450,7 @@ Update flake.lock file
 OPTIONS:
   -h, --help      Show help message
 EOF
+  set -e
 
   local -a args
   while [[ $# -gt 0 ]]; do
@@ -459,6 +476,7 @@ EOF
 }
 
 function unlink() {
+  set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE: nyx unlink [OPTIONS] [targets...]
@@ -519,6 +537,8 @@ EOF
       done
     fi
   )
+
+  set -e
 }
 
 function help() {
@@ -526,6 +546,7 @@ function help() {
     $1 '--help'
   fi
 
+  set +e
   local msg
   IFS='' read -r -d '' msg <<EOF
 Utility script to work with my nix configuration more effectively
@@ -546,6 +567,7 @@ OPTIONS:
   -v, --verbose  - Output verbose information
   -h, --help     - Output help information
 EOF
+  set -e
 
   printf "%s\n" "$msg"
   exit 1
