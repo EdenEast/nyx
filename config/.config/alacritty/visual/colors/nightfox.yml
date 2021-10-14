@@ -1,7 +1,7 @@
 theme_neon: &theme_nightfox
   primary:
     background: '0x192330'
-    foreground: '0xafc0d5'
+    foreground: '0xcdcecf'
   normal:
     black:   '0x393b44'
     red:     '0xc94f6d'
@@ -13,7 +13,7 @@ theme_neon: &theme_nightfox
     white:   '0xdfdfe0'
 
   bright:
-    black:   '0x7f8c98'
+    black:   '0x475072'
     red:     '0xd6616b'
     green:   '0x58cd8b'
     yellow:  '0xffe37e'
@@ -21,6 +21,9 @@ theme_neon: &theme_nightfox
     magenta: '0xb8a1e3'
     cyan:    '0x59f0ff'
     white:   '0xf2f2f2'
+  indexed_colors:
+    - { index: 16, color: '0xf4a261' }
+    - { index: 17, color: '0xd67ad2' }
 
 colors:
   *theme_nightfox
