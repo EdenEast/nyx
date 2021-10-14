@@ -4,7 +4,7 @@ M.plugins = {
   {
     "nvim-telescope/telescope.nvim",
     config = function()
-      require("eden.modules.nav.telescope")
+      require("eden.modules.nav.telescope.setup")
     end,
     requires = {
       { "nvim-lua/popup.nvim" },
