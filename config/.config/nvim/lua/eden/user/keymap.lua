@@ -91,7 +91,7 @@ keymap({
     -- Exec current file
     { "<F1>", ":lua require('eden.core.util').exec_file()<cr>" },
     { "<F2>", ":lua require('eden.core.util').open_url_under_cursor()<cr>" },
-    -- { "<F3>", ":lua require('eden.core.pack').reload_plugins()<cr>" },
+    { "<F3>", ":lua R('packer_compiled')<cr>" },
 
     {
       mode = "t",
