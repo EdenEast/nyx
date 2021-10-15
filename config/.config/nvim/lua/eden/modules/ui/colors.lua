@@ -1,3 +1,16 @@
+-- Ui highlight color groups
+--
+-- This file contains the highlight group definitions for both:
+--   - feline (statusline)
+--   - tabby (tabline)
+--
+-- The colors are pulled from the current applied colorscheme.  This requires
+-- that your colorscheme defines the highlight groups queried as well as
+-- neovim's vim.g.terminal_color_* (s).
+--
+-- There is an autocmd that regenerates the highlight group colors on
+-- colorscheme change.
+
 local M = {}
 
 local function highlight(group, color)
