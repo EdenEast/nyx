@@ -14,7 +14,6 @@ M.plugins = {
   },
   {
     "famiu/feline.nvim",
-    tag = "v0.3",
     event = "VimEnter",
     config = function()
       if vim.g.current_statusline == "feline" then
