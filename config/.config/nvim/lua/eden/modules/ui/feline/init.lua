@@ -1,6 +1,5 @@
 -- local colors = require("eden.modules.ui.feline.colors")
 local u = require("eden.modules.ui.feline.util")
-local colors = require("eden.modules.ui.colors")
 local fmt = string.format
 
 -- "┃", "█", "", "", "", "", "", "", "●"
@@ -164,16 +163,6 @@ local inactive = {
 require("feline").setup({
   components = { active = active, inactive = inactive },
   highlight_reset_triggers = {},
-  default_hl = {
-    active = {
-      bg = colors.colors.bg,
-      fg = colors.colors.fg,
-    },
-    inactive = {
-      bg = colors.colors.bg,
-      fg = colors.colors.fg,
-    },
-  },
   force_inactive = {
     filetypes = {
       "NvimTree",
