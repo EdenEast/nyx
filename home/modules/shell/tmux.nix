@@ -25,9 +25,11 @@ in
       prefix = "C-a";
       terminal = "screen-256color";
       plugins = with pkgs.tmuxPlugins; [
-        nord
-        tmux-fzf
+        copycat
         extrakto
+        nord
+        prefix-highlight
+        tmux-fzf
         vim-tmux-navigator
       ];
       extraConfig = ''
