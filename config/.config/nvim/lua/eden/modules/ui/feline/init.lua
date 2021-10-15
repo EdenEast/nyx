@@ -10,11 +10,11 @@ local get_diag = function(str)
 end
 
 local function vi_mode_hl()
-  return vimode.colors[vim.fn.mode()] or "FeLnViBlack"
+  return vimode.colors[vim.fn.mode()] or "FlnViBlack"
 end
 
 local function vi_sep_hl()
-  return vimode.sep[vim.fn.mode()] or "FeLnBlack"
+  return vimode.sep[vim.fn.mode()] or "FlnBlack"
 end
 
 local c = {
@@ -28,17 +28,17 @@ local c = {
   gitbranch = {
     provider = "git_branch",
     icon = " ",
-    hl = "FeLnGitBranch",
-    right_sep = { str = "  ", hl = "FeLnGitBranch" },
+    hl = "FlnGitBranch",
+    right_sep = { str = "  ", hl = "FlnGitBranch" },
     enabled = function()
       return vim.b.gitsigns_status_dict ~= nil
     end,
   },
   fileinfo = {
     provider = { name = "file_info", opts = { type = "relative" } },
-    hl = "FeLnFileInfo",
-    left_sep = { str = " ", hl = "FeLnGitSeperator" },
-    right_sep = { str = "", hl = "FeLnGitSeperator" },
+    hl = "FlnAlt",
+    left_sep = { str = " ", hl = "FlnAltSep" },
+    right_sep = { str = "", hl = "FlnAltSep" },
   },
   file_enc = {
     provider = "file_encoding",
@@ -67,37 +67,37 @@ local c = {
     provider = function()
       return require("lsp-status").status()
     end,
-    hl = "FeLnStatus",
-    left_sep = { str = "", hl = "FeLnStatusBg", always_visible = true },
-    right_sep = { str = "", hl = "FeLnErrorStatus", always_visible = true },
+    hl = "FlnStatus",
+    left_sep = { str = "", hl = "FlnStatusBg", always_visible = true },
+    right_sep = { str = "", hl = "FlnErrorStatus", always_visible = true },
   },
   lsp_error = {
     provider = function()
       return get_diag("Error")
     end,
-    hl = "FeLnError",
-    right_sep = { str = "", hl = "FeLnWarnError", always_visible = true },
+    hl = "FlnError",
+    right_sep = { str = "", hl = "FlnWarnError", always_visible = true },
   },
   lsp_warn = {
     provider = function()
       return get_diag("Warning")
     end,
-    hl = "FeLnWarn",
-    right_sep = { str = "", hl = "FeLnInfoWarn", always_visible = true },
+    hl = "FlnWarn",
+    right_sep = { str = "", hl = "FlnInfoWarn", always_visible = true },
   },
   lsp_info = {
     provider = function()
       return get_diag("Information")
     end,
-    hl = "FeLnInfo",
-    right_sep = { str = "", hl = "FeLnHintInfo", always_visible = true },
+    hl = "FlnInfo",
+    right_sep = { str = "", hl = "FlnHintInfo", always_visible = true },
   },
   lsp_hint = {
     provider = function()
       return get_diag("Hint")
     end,
-    hl = "FeLnHint",
-    right_sep = { str = "", hl = "FeLnBgHint", always_visible = true },
+    hl = "FlnHint",
+    right_sep = { str = "", hl = "FlnBgHint", always_visible = true },
   },
 
   in_fileinfo = {
