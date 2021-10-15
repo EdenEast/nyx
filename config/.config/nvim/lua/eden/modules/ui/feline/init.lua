@@ -1,4 +1,10 @@
--- local colors = require("eden.modules.ui.feline.colors")
+-- Feline statusline definition.
+--
+-- Note: This statusline does not define any colors. Instead the statusline is
+-- built on custom highlight groups that I define. The colors for these
+-- highlight groups are pulled from the current colorscheme applied. Check the
+-- file: `lua/eden/modules/ui/colors.lua` to see how they are defined.
+
 local u = require("eden.modules.ui.feline.util")
 local fmt = string.format
 
