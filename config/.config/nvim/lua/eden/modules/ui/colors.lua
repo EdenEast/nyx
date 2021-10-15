@@ -96,10 +96,10 @@ M.gen_highlights = function()
     FlnWhite = { fg = c.white, bg = c.bg, style = "bold" },
 
     -- Diagnostics
-    FlnHint = { fg = c.bg, bg = c.hint, style = "bold" },
-    FlnInfo = { fg = c.bg, bg = c.info, style = "bold" },
-    FlnWarn = { fg = c.bg, bg = c.warn, style = "bold" },
-    FlnError = { fg = c.bg, bg = c.err, style = "bold" },
+    FlnHint = { fg = c.black, bg = c.hint, style = "bold" },
+    FlnInfo = { fg = c.black, bg = c.info, style = "bold" },
+    FlnWarn = { fg = c.black, bg = c.warn, style = "bold" },
+    FlnError = { fg = c.black, bg = c.err, style = "bold" },
     FlnStatus = { fg = sfg, bg = sbg, style = "bold" },
 
     -- Dianostic Seperators
