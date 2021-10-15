@@ -1,6 +1,7 @@
 -- local colors = require("eden.modules.ui.feline.colors")
-local vimode = require("eden.modules.ui.feline.vimode")
+local u = require("eden.modules.ui.feline.util")
 local colors = require("eden.modules.ui.colors")
+local fmt = string.format
 
 -- "┃", "█", "", "", "", "", "", "", "●"
 
@@ -10,17 +11,17 @@ local get_diag = function(str)
 end
 
 local function vi_mode_hl()
-  return vimode.colors[vim.fn.mode()] or "FlnViBlack"
+  return u.vi.colors[vim.fn.mode()] or "FlnViBlack"
 end
 
 local function vi_sep_hl()
-  return vimode.sep[vim.fn.mode()] or "FlnBlack"
+  return u.vi.sep[vim.fn.mode()] or "FlnBlack"
 end
 
 local c = {
   vimode = {
     provider = function()
-      return string.format(" %s ", vimode.text[vim.fn.mode()])
+      return string.format(" %s ", u.vi.text[vim.fn.mode()])
     end,
     hl = vi_mode_hl,
     right_sep = { str = " ", hl = vi_sep_hl },
@@ -34,6 +35,12 @@ local c = {
       return vim.b.gitsigns_status_dict ~= nil
     end,
   },
+  file_type = {
+    provider = function()
+      return fmt(" %s ", vim.bo.filetype:upper())
+    end,
+    hl = "FlnAlt",
+  },
   fileinfo = {
     provider = { name = "file_info", opts = { type = "relative" } },
     hl = "FlnAlt",
@@ -41,23 +48,27 @@ local c = {
     right_sep = { str = "", hl = "FlnAltSep" },
   },
   file_enc = {
-    provider = "file_encoding",
+    provider = function()
+      local os = u.icons[vim.bo.fileformat] or ""
+      return fmt(" %s %s ", os, vim.bo.fileencoding)
+    end,
     hl = "StatusLine",
-    left_sep = { str = " ", hl = "StatusLine" },
+    left_sep = { str = u.icons.left_filled, hl = "FlnAltSep" },
   },
   cur_position = {
-    provider = "position",
-    hl = "StatusLine",
-    left_sep = { str = " ┃", hl = "StatusLine" },
-    right_sep = { str = " ", hl = "StatusLine" },
+    provider = function()
+      -- TODO: What about 4+ diget line numbers?
+      return fmt(" %3d:%-2d ", unpack(vim.api.nvim_win_get_cursor(0)))
+    end,
+    hl = vi_mode_hl,
+    left_sep = { str = u.icons.left_filled, hl = vi_sep_hl },
   },
   cur_percent = {
     provider = function()
-      return " " .. require("feline.providers.cursor").line_percentage() .. " "
+      return " " .. require("feline.providers.cursor").line_percentage() .. "  "
     end,
     hl = vi_mode_hl,
-    left_sep = { str = "", hl = vi_sep_hl },
-    right_sep = { str = " ", hl = vi_mode_hl },
+    left_sep = { str = u.icons.left, hl = vi_mode_hl },
   },
   default = { -- needed to pass the parent StatusLine hl group to right hand side
     provider = "",
@@ -115,7 +126,7 @@ local active = {
     c.vimode,
     c.gitbranch,
     c.fileinfo,
-    c.default,
+    c.default, -- must be last
   },
   { -- right
     c.lsp_status,
@@ -123,6 +134,7 @@ local active = {
     c.lsp_warn,
     c.lsp_info,
     c.lsp_hint,
+    c.file_type,
     c.file_enc,
     c.cur_position,
     c.cur_percent,

@@ -90,14 +90,14 @@ M.gen_highlights = function()
     FlnStatus = { fg = sfg, bg = sbg, style = "bold" },
 
     -- Dianostic Seperators
-    FlnBgHint = { fg = c.bg, bg = c.hint },
+    FlnBgHint = { fg = ct.sel.bg, bg = c.hint },
     FlnHintInfo = { fg = c.hint, bg = c.info },
     FlnInfoWarn = { fg = c.info, bg = c.warn },
     FlnWarnError = { fg = c.warn, bg = c.err },
     FlnErrorStatus = { fg = c.err, bg = sbg },
     FlnStatusBg = { fg = sbg, bg = c.bg },
 
-    FlnAlt = { fg = ct.sel.fg, bg = ct.sel.bg },
+    FlnAlt = { fg = sbg, bg = ct.sel.bg },
     FlnFileInfo = { fg = c.fg, bg = c.alt },
     FlnAltSep = { fg = c.bg, bg = ct.sel.bg },
     FlnGitBranch = { fg = c.yellow, bg = c.bg },
