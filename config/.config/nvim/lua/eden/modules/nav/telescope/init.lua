@@ -10,6 +10,7 @@ local function find_with_cwd(cwd, prompt)
   local opts = {
     prompt_title = prompt,
     shorten_path = false,
+    hidden = true,
     cwd = cwd,
 
     layout_strategy = "flex",
