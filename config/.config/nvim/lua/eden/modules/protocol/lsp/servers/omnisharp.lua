@@ -2,10 +2,15 @@ local M = {}
 
 local pid = vim.fn.getpid()
 
-M.setup = function(config)
-  local ext = edn.platform.is_windows and ".cmd" or ""
-  config.cmd = { "omnisharp" .. ext, "--languageserver", "--hostPID", tostring(pid) }
+M.setup = function(config, opts)
+  local cmd = {
+    "omnisharp",
+    "--languageserver",
+    "--hostPID",
+    tostring(pid),
+  }
 
+  config.cmd = opts.cmd and opts.cmd or cmd
   return config
 end
 

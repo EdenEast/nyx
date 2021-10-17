@@ -2,9 +2,8 @@ local nlsp = require("lspconfig")
 
 local M = {}
 
-M.setup = function(config)
-  local ext = edn.platform.is_windows and ".cmd" or ""
-  config.cmd = { "lua-language-server" .. ext }
+M.setup = function(config, opts)
+  config.cmd = { "lua-language-server" } -- nix installed wraps all of the comamnd line args needed
   config.root_dir = function(filename, _)
     local cwd = vim.fn.getcwd()
     if string.match(cwd, "nyx/config/.config") then
@@ -40,6 +39,10 @@ M.setup = function(config)
       },
     },
   }
+
+  if opts.cmd then
+    config.cmd = opts.cmd
+  end
 
   return config
 end
