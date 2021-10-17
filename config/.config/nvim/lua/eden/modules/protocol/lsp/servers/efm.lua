@@ -15,7 +15,11 @@ local shellcheck = {
   },
 }
 
-M.setup = function(config)
+M.setup = function(config, opts)
+  if opts.cmd then
+    config.cmd = opts.cmd
+  end
+
   config.init_options = { documentFormatting = true }
 
   config.filetypes = {

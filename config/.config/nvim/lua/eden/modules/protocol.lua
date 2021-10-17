@@ -10,6 +10,7 @@ M.plugins = {
       require("eden.modules.protocol.lsp")
     end,
     requires = {
+      "williamboman/nvim-lsp-installer",
       "nvim-lua/lsp_extensions.nvim",
       "ray-x/lsp_signature.nvim",
       "nvim-lua/lsp-status.nvim",
@@ -20,8 +21,6 @@ M.plugins = {
     "weilbith/nvim-code-action-menu",
     cmd = "CodeActionMenu",
   },
-
-  { dev("EdenEast/nvim-lspsync") },
 
   -- Debug Adaptor ------------------------------------------------------------
   {

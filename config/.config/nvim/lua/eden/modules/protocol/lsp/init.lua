@@ -42,33 +42,56 @@ if has_cmp then
   capabilities = cmp_lsp.update_capabilities(capabilities)
 end
 
-local default = { on_init = on_init, on_attach = on_attach, capabilities = capabilities }
-local ext = edn.platform.is_windows and ".cmd" or ""
+-- Server setup ----------------------------------------------------------------
+--
+-- A note on my setup for language servers. I use nix to manage my dotfiles. This
+-- also make it easy to install the required language servers. See
+--   `home/modules/shell/neovim.nix` on this nix module that controls my neovim
+-- deployment. Because windows is awful and does not support nix I have setup
+-- `nvim-lsp-installer`. This makes installing language servers on windows sane.
 
-local simple_servers = {
-  bashls = { cmd = { "bash-language-server" .. ext, "start" } },
-  cmake = { cmd = { "cmake-language-server" .. ext } },
-  elmls = { cmd = { "elm-language-server" .. ext } },
-  gopls = {},
-  pyright = {},
-  rnix = {},
-  rust_analyzer = { cmd = { "rust-analyzer" .. ext } },
-  tsserver = {},
-  vimls = {},
-}
+local installer = require("nvim-lsp-installer")
+installer.settings({
+  log_level = vim.log.levels.DEBUG,
+  ui = {
+    icons = {
+      server_installed = "",
+      server_pending = "",
+      server_uninstalled = "",
+    },
+  },
+})
 
-for server, config in pairs(simple_servers) do
-  nlsp[server].setup(vim.tbl_deep_extend("force", default, config))
+local installed = {}
+for _, v in ipairs(installer.get_installed_servers()) do
+  installed[v.name] = v
 end
 
-local modname = pack.modname .. ".protocol.lsp.servers"
-local modlist = path.modlist(modname)
+local servers = { "bashls", "cmake", "elmls", "gopls", "pyright", "rnix", "rust_analyzer", "tsserver", "vimls" }
+local modlist = path.modlist(pack.modname .. ".protocol.lsp.servers")
 for _, mod in ipairs(modlist) do
   local name = mod:match("servers.(.+)$")
-  nlsp[name].setup(require(mod).setup(vim.deepcopy(default)))
+  servers[name] = require(mod)
 end
 
-local lspsync = require("lspsync")
-lspsync.init({
-  install_root = edn.path.join(edn.path.cachehome, "lspsync"),
-})
+local default = { on_init = on_init, on_attach = on_attach, capabilities = capabilities }
+
+local function basic_options(config, opts)
+  return vim.tbl_deep_extend("force", config, opts)
+end
+
+-- Setup servers in the server list
+for k, v in pairs(servers) do
+  local is_basic = type(k) == "number"
+  local name = is_basic and v or k
+  local func = is_basic and basic_options or v["setup"]
+  local opts = installed[name] and installed[name]._default_options or {}
+  local config = func(vim.deepcopy(default), opts)
+  nlsp[name].setup(config)
+  installed[name] = nil
+end
+
+-- Setup any installed servers that are not in the server list
+for _, server in ipairs(installed) do
+  server:setup()
+end
