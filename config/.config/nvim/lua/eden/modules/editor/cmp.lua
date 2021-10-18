@@ -64,30 +64,17 @@ local config = {
   },
   sources = {
     { name = "nvim_lsp" },
+    { name = "treesitter" },
     { name = "luasnip" },
-    { name = "buffer" },
     { name = "path" },
+    { name = "buffer", opts = {
+      get_bufnr = function()
+        return vim.api.nvim_list_bufs()
+      end,
+    } },
   },
 }
 
-edn.aug.CmpFileTypes = {
-  -- Emoji source in markdown and text files
-  {
-    "FileType",
-    { "text", "markdown" },
-    function()
-      require("cmp").setup.buffer({ sources = { { name = "emoji" } } })
-    end,
-  },
-
-  -- nvim_lua source for lua file
-  {
-    "FileType",
-    "lua",
-    function()
-      require("cmp").setup.buffer({ sources = { { name = "nvim_lua" } } })
-    end,
-  },
-}
+-- For filetype specific overrides see ftplugin folder
 
 cmp.setup(config)

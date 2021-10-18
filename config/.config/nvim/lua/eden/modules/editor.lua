@@ -37,6 +37,8 @@ M.plugins = {
     { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
     { "hrsh7th/cmp-path", after = "nvim-cmp" },
     { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
+    { "f3fora/cmp-spell", after = "nvim-cmp" },
+    { "ray-x/cmp-treesitter", after = "nvim-cmp" },
   },
 
   {
