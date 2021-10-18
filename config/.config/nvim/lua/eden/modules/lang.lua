@@ -11,6 +11,7 @@ M.plugins = {
       require("orgmode").setup()
     end,
   },
+  { "Saecki/crates.nvim", ft = { "rust", "toml" } },
 }
 
 M.before = function()
