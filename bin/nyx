@@ -29,6 +29,8 @@ TARGETS['nvim']="$HOME/.config/nvim"
 SOURCES['nvim']="$NYX_ROOT/config/.config/nvim"
 TARGETS['awesome']="$HOME/.config/awesome"
 SOURCES['awesome']="$NYX_ROOT/config/.config/awesome"
+TARGETS['wezterm']="$HOME/.config/wezterm"
+SOURCES['wezterm']="$NYX_ROOT/config/.config/wezterm"
 
 function main() {
   # Parse command line options

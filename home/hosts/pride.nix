@@ -7,6 +7,7 @@
     modules = {
       app = {
         alacritty.fontSize = 8;
+        wezterm.fontSize = 14;
         obs.enable = true;
       };
       shell = {
