@@ -1,5 +1,7 @@
 local wt = require("wezterm")
 
+local datahome = string.format("%s/.local/share/wezterm/", os.getenv("HOME"))
+
 local function extend(...)
   local ret = {}
   for i = 1, select('#', ...) do
@@ -18,8 +20,12 @@ local function exists(name)
   if f ~= nil then io.close(f) return true else return false end
 end
 
-local name = string.format("%s/.local/share/wezterm/nyx.lua", os.getenv("HOME"))
-local nyx = exists(name) and dofile(name) or {}
+local function load_file(name)
+  return exists(name) and dofile(name) or {}
+end
+
+local nyx = load_file(datahome .. "nyx.lua")
+local local_config = load_file(datahome .. "config.lua")
 
 local function windows_launch_menu()
   local launch_menu = { {
@@ -92,6 +98,7 @@ if wt.target_triple == "x86_64-pc-windows-msvc" then
   config.default_prog = { "wsl.exe" }
 end
 
-local result = extend(config, nyx)
+local result = extend(config, nyx, local_config)
+print(result.font_size)
 
 return result
