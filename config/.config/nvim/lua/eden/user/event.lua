@@ -35,6 +35,8 @@ event.aug({
     { "VimLeave", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
     -- Check if file changed when its window is focus, more eager than 'autoread'
     { "FocusGained", "checktime" },
+    -- Change project root when switching tabs
+    { "TabEnter", [[ProjectRoot]] },
   },
 
   user_yank = {
