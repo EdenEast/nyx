@@ -85,9 +85,8 @@ local config = {
   },
 
   window_padding = {
-    left = 5,
-    right = 5,
-    bottom = 5,
+    left = 8,
+    right = 8,
   },
 }
 
