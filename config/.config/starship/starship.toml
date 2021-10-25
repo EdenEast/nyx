@@ -8,7 +8,6 @@ $username\
 $hostname\
 $shlvl\
 $directory\
-${custom.giturl}\
 $git_branch\
 $git_commit\
 $git_state\
