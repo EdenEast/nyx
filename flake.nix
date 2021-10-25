@@ -1,7 +1,7 @@
 {
   description = ''
-    Nyx is the personal configuration for James Simpson. This repository holdes .dotfile configuration as well as both
-    nix (with home-manager) and nixos configurations.
+    Nyx is the personal configuration. This repository holdes .dotfile configuration as well as both nix (with
+    home-manager) and nixos configurations.
   '';
 
   inputs = {
