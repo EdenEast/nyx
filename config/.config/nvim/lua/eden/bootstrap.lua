@@ -1,9 +1,20 @@
+-- This is the entry point for my neovim configuration. This file is meant to
+-- initialize / bootstrap the rest of my configuration. This would include
+-- setting up the following:
+--   - Disable builtin/shipped neovim plugins
+--   - Initialize my runtimepath/packpath variable to include $XDG_CACHE_HOME
+--   - Set leader key and remove all mappings attached to it (`space`)
+--   - Load custom api's for working with keymaps, and autocommands
+--   - Ensure that required bootstrapping plugins are installed
+--   - Setup/Load packer modules
+--     - Install plugins if ensured plugins were missing
+--   - Load main configuration after packer setup is complete
+
 -- Global state, config and function store for my config
 _G.edn = {}
 
--- Debug printing with vim.inspect. This needs to be
--- defined before anything else as I use this thoughout
--- my config when debugging.
+-- Debug printing with vim.inspect. This needs to be defined before anything
+-- else as I use this throughout my config when debugging.
 _G.P = function(...)
   for _, v in ipairs({ ... }) do
     print(vim.inspect(v))
@@ -12,7 +23,7 @@ _G.P = function(...)
   return ...
 end
 
--- Debugging module by reloading it. Convience wrapper
+-- Debugging module by reloading it. Convenience wrapper
 -- around `eden.core.reload`.
 _G.R = function(name)
   require("eden.core.reload").reload_module(name)
@@ -47,10 +58,9 @@ end
 --   - datahome
 --   - cachehome
 --
--- This is required because some platforms *cough windows*
--- Do not look in confighome and datahome. This also adds
--- cachehome as that is where all the downloaded cached files
--- are added (plugins, etc).
+-- This is required because some platforms *cough windows* Do not look in
+-- confighome and datahome. This also adds cachehome as that is where all the
+-- downloaded cached files are added (plugins, etc).
 local function init_runtimepath()
   local rtp = vim.opt.runtimepath:get()
 
