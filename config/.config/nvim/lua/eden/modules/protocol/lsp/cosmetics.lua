@@ -10,5 +10,4 @@ vim.diagnostic.config({
   signs = true,
   virtual_text = { spacing = 2, prefix = "❰" },
   underline = true,
-  update_in_insert = true,
 })
