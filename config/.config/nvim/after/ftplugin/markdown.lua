@@ -11,9 +11,6 @@ vim.opt_local.spelllang = { "en_us" }
 
 require("cmp").setup.buffer({
   sources = {
-    { name = "luasnip" },
-    { name = "buffer" },
-    { name = "path" },
     { name = "emoji" },
     { name = "spell" },
   },
