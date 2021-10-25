@@ -32,7 +32,9 @@ M.plugins = {
 }
 
 M.before = function()
+  -- This path comes from the nix. Check my `neovim.nix` file for more information
   local libsql_path = edn.path.join(edn.path.datahome, "lib", "libsqlite3.so")
+  -- TODO: Check where sqlite is installed on windows
   if edn.path.exists(libsql_path) then
     vim.g.sqlite_found = true
     vim.g.sqlite_clib_path = edn.path.join(edn.path.datahome, "lib", "libsqlite3.so")
