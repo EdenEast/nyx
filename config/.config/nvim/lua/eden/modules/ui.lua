@@ -89,9 +89,10 @@ M.before = function()
   vim.g.dashboard_custom_section = {
     a = { description = { "  Recently Used Files" }, command = "Telescope oldfiles" },
     b = { description = { "  Find File          " }, command = "Telescope find_files" },
-    c = { description = { "  Load Last Session  " }, command = "SessionLoad" },
-    d = { description = { "  Find Word          " }, command = "Telescope live_grep" },
-    e = { description = { "  File Browser       " }, command = "Telescope file_browser" },
+    c = { description = { "⚒  Find Project       " }, command = "Telescope projects" },
+    d = { description = { "  Load Last Session  " }, command = "SessionLoad" },
+    e = { description = { "  Find Word          " }, command = "Telescope live_grep" },
+    f = { description = { "  File Browser       " }, command = "NvimTreeToggle" },
   }
   vim.g.dashboard_custom_footer = { "github.com/EdenEast" }
 
