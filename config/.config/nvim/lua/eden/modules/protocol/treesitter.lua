@@ -3,18 +3,16 @@ vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
 
 vim.cmd([[packadd nvim-ts-context-commentstring]])
 vim.cmd([[packadd nvim-treesitter-textobjects]])
+vim.cmd([[packadd nvim-ts-autotag]])
 
 -- Setting clang as the compiler to use as pre this solution
 -- https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support#troubleshooting
 -- NOTE: Had issues with clang and nix installed build-essentials and gcc and it works
 require("nvim-treesitter.install").compilers = { "gcc", "clang", "cl" }
 require("nvim-treesitter.configs").setup({
-  highlight = {
-    enable = true,
-  },
-  playground = {
-    enable = true,
-  },
+  autotag = { enable = true },
+  highlight = { enable = true },
+  playground = { enable = true },
   query_linter = {
     enable = true,
     use_virtual_text = true,
@@ -49,6 +47,7 @@ require("nvim-treesitter.configs").setup({
     "cpp",
     "go",
     "haskell",
+    "javascript",
     "json",
     "lua",
     "nix",
@@ -58,6 +57,7 @@ require("nvim-treesitter.configs").setup({
     "rust",
     "toml",
     "typescript",
+    "tsx",
   },
 })
 
