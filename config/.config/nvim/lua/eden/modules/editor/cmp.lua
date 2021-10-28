@@ -1,5 +1,6 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
+local pairs = require("nvim-autopairs.completion.cmp")
 
 vim.opt.completeopt = "menuone,noselect"
 
@@ -87,3 +88,4 @@ local config = {
 -- For filetype specific overrides see ftplugin folder
 
 cmp.setup(config)
+cmp.event:on("confirm_done", pairs.on_confirm_done())
