@@ -47,6 +47,7 @@ M.plugins = {
         { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },
         { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
         { "nvim-treesitter/nvim-treesitter-textobjects", opt = true },
+        { "windwp/nvim-ts-autotag", opt = true },
       },
     },
     {
