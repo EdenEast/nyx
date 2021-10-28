@@ -11,6 +11,7 @@ M.plugins = {
   {
     "hrsh7th/nvim-cmp",
     after = "friendly-snippets",
+    wants = "nvim-autopairs",
     config = function()
       require("eden.modules.editor.cmp")
     end,
@@ -43,16 +44,11 @@ M.plugins = {
 
   {
     "windwp/nvim-autopairs",
-    after = "nvim-cmp",
+    event = "InsertEnter",
     config = function()
       require("nvim-autopairs").setup({
         disable_filetype = { "TelescopePrompt", "vim" },
         enable_check_bracket_line = true,
-      })
-
-      require("nvim-autopairs.completion.cmp").setup({
-        map_complete = true, -- Insert () func completion
-        map_cr = true,
       })
     end,
   },
