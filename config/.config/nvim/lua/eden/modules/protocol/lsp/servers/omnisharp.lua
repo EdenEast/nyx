@@ -2,7 +2,7 @@ local M = {}
 
 local pid = vim.fn.getpid()
 
-M.setup = function(config, opts)
+M.setup = function(config, _, opts)
   local cmd = {
     "omnisharp",
     "--languageserver",

@@ -3,12 +3,12 @@
 --
 -- Otherwise doesn't do anything.
 
-if vim.fn.executable("stylua") == 0 then
-  return
-end
+-- if vim.fn.executable("stylua") == 0 then
+--   return
+-- end
 
-vim.cmd([[
-  augroup StyluaAuto
-    autocmd BufWritePre *.lua :lua require("eden.fn.stylua").format()
-  augroup END
-]])
+-- vim.cmd([[
+--   augroup StyluaAuto
+--     autocmd BufWritePre *.lua :lua require("eden.fn.stylua").format()
+--   augroup END
+-- ]])
