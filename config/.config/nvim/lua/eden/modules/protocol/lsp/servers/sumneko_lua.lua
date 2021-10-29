@@ -2,7 +2,7 @@ local nlsp = require("lspconfig")
 
 local M = {}
 
-M.setup = function(config, opts)
+M.setup = function(config, _, opts)
   config.cmd = { "lua-language-server" } -- nix installed wraps all of the comamnd line args needed
   config.root_dir = function(filename, _)
     local cwd = vim.fn.getcwd()

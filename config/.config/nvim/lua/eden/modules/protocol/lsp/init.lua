@@ -29,6 +29,16 @@ local function on_attach(client, bufnr)
   filetype_attach[filetype](client)
 
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+  if client.resolved_capabilities.document_formatting then
+    -- TODO: edn.au and edn.aug support buffer
+    vim.cmd([[
+      augroup LspAutoFormatting
+        autocmd!
+        autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+      augroup END
+    ]])
+  end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -67,7 +77,7 @@ for _, v in ipairs(installer.get_installed_servers()) do
   installed[v.name] = v
 end
 
-local servers = { "bashls", "cmake", "elmls", "gopls", "pyright", "rnix", "rust_analyzer", "tsserver", "vimls" }
+local servers = { "bashls", "cmake", "elmls", "gopls", "pyright", "rnix", "rust_analyzer", "vimls" }
 local modlist = path.modlist(pack.modname .. ".protocol.lsp.servers")
 for _, mod in ipairs(modlist) do
   local name = mod:match("servers.(.+)$")
@@ -76,7 +86,7 @@ end
 
 local default = { on_init = on_init, on_attach = on_attach, capabilities = capabilities }
 
-local function basic_options(config, opts)
+local function basic_options(config, _, opts)
   return vim.tbl_deep_extend("force", config, opts)
 end
 
@@ -86,7 +96,7 @@ for k, v in pairs(servers) do
   local name = is_basic and v or k
   local func = is_basic and basic_options or v["setup"]
   local opts = installed[name] and installed[name]._default_options or {}
-  local config = func(vim.deepcopy(default), opts)
+  local config = func(vim.deepcopy(default), on_attach, opts)
   nlsp[name].setup(config)
   installed[name] = nil
 end

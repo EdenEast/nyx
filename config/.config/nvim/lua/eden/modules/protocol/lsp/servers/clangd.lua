@@ -1,6 +1,6 @@
 local M = {}
 
-M.setup = function(config, opts)
+M.setup = function(config, _, opts)
   local clangd = opts.cmd and opts.cmd or "clangd"
   local cmd = {
     clangd,

@@ -49,6 +49,8 @@ in
         stylua
         shfmt
         nixpkgs-fmt
+        my.prettierd
+        nodePackages.eslint_d
       ];
     };
   };
