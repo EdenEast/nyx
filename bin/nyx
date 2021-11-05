@@ -11,7 +11,13 @@ MTA='\033[0;35m'
 CYN='\033[0;36m'
 RST='\033[0m'
 
-NYX_ROOT="$(dirname $(dirname "$(readlink -f "$0")"))"
+[[ $(uname -s) == "Darwin" ]] && is_mac=true || is_mac=false
+
+if $is_mac; then
+  NYX_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." >/dev/null 2>&1 && pwd)"
+else
+  NYX_ROOT="$(dirname $(dirname "$(readlink -f "$0")"))"
+fi
 HOME_MANAGER_BACKUP_EXT="nbak"
 
 # shellcheck shell=bash
@@ -25,6 +31,8 @@ NIXBUILDARGS=(
 
 declare -A TARGETS
 declare -A SOURCES
+TARGETS['git']="$HOME/.config/git"
+SOURCES['git']="$NYX_ROOT/config/.config/git"
 TARGETS['nvim']="$HOME/.config/nvim"
 SOURCES['nvim']="$NYX_ROOT/config/.config/nvim"
 TARGETS['awesome']="$HOME/.config/awesome"
@@ -333,8 +341,13 @@ EOF
     fi
 
     if [[ -d $1 ]]; then
-      warn "path: \`$1\` is a directory. Skipping"
-      return
+      echo "path is: $1"
+      if [[ $1 =~ 'git$' ]]; then
+        rm -r "$1"
+      else
+        warn "path: \`$1\` is a directory. Skipping"
+        return
+      fi
     fi
 
     ln -s "$2" "$1"
@@ -413,7 +426,7 @@ EOF
 
     # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
-      if is_nixos > /dev/null; then
+      if is_nixos >/dev/null; then
         debug "Switching to defined target ${args[0]} on nixos system"
         sudo nixos-rebuild switch --flake ".#top.${args[0]}"
       else
@@ -421,7 +434,7 @@ EOF
         ./result/activate
       fi
     else
-      if is_nixos > /dev/null; then
+      if is_nixos >/dev/null; then
         debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
         sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
       else
