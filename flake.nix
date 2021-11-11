@@ -10,6 +10,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     nur.url = "github:nix-community/nur";
     nur.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -55,6 +58,10 @@
           sloth = { config = ./nixos/hosts/sloth; };
         };
 
+        darwinConfigurations = mapAttrs' mkDarwin {
+          theman = { config = ./darwin/hosts/theman; };
+        };
+
         top =
           let
             nixtop = genAttrs
@@ -63,7 +70,10 @@
             hometop = genAttrs
               (builtins.attrNames inputs.self.homeManagerConfigurations)
               (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+            darwintop = genAttrs
+              (builtins.attrNames inputs.self.darwinConfigurations)
+              (attr: inputs.self.darwinConfigurations.${attr}.system);
           in
-            nixtop // hometop;
+            nixtop // hometop // darwintop;
       };
 }
