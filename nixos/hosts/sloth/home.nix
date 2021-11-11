@@ -1,10 +1,12 @@
 { ... }:
 
 {
-  home.stateVersion = "20.09";
-
   nyx = {
     modules = {
+      # Set the default theme for this host
+      theme.colors = with builtins;
+        fromJSON (readFile ../../../home/modules/theme/nightfox.json);
+
       shell = {
         git = {
           userName = "James Simpson";
@@ -15,12 +17,17 @@
         gnupg = {
           enable = true;
           enableService = false;
-          publicKey = ../../config/.gnupg/public.key;
+          publicKey = ../../../config/.gnupg/public.key;
         };
       };
     };
     profiles = {
       extended.enable = true;
+      desktop = {
+        enable = true;
+        laptop = true;
+      };
+      development.enable = true;
     };
   };
 }

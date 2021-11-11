@@ -3,6 +3,8 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+  # Hardware ------------------------------------------------------------------
+
   boot = {
     kernelModules = [ "kvm-intel" ];
     initrd = {
@@ -29,6 +31,14 @@
 
   swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
 
+  # ---------------------------------------------------------------------------
+
+  nyx.modules.systemUser = {
+    name = "eden";
+    home = ./home.nix;
+    hashedPassword = "$6$nF.UDyrpHmh6M$yKCw56auQ7Dm1FfvmQg6y3Y59mWsoiHJyAYhqF9e8nKjfeKwUoFocwHhogKUTq.A3hVe9S.smv7u1NLV/yPTd0";
+  };
+
   networking.enableIPv6 = true;
   networking.interfaces.enp0s25.useDHCP = true;
   networking.interfaces.wlp3s0.useDHCP = true;
@@ -44,6 +54,4 @@
   '';
 
   nyx.profiles.desktop.enable = true;
-
-  system.stateVersion = "21.05";
 }
