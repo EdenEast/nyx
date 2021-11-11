@@ -37,7 +37,7 @@
           import inputs.nixpkgs {
             inherit system;
             config.allowUnfree = true;
-            overlays = with inputs; [neovim-nightly.overlay fenix.overlay];
+            overlays = with inputs; [ nur.overlay neovim-nightly.overlay fenix.overlay ];
           }
       );
     in
@@ -46,21 +46,23 @@
         lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
 
         homeManagerConfigurations = mapAttrs' mkHome {
-          eden = {config = ./home/hosts/eden.nix; username = "eden";};
+          eden = { config = ./home/hosts/eden.nix; username = "eden"; };
+        };
+
+        # TODO: Add users to system
+        nixosConfigurations = mapAttrs' mkSystem {
+          pride = { config = ./nixos/hosts/pride; };
         };
 
         top =
           let
-        #     nixtop = genAttrs
-        #       (builtins.attrNames inputs.self.nixosConfigurations)
-        #       (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
-
+            nixtop = genAttrs
+              (builtins.attrNames inputs.self.nixosConfigurations)
+              (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
             hometop = genAttrs
               (builtins.attrNames inputs.self.homeManagerConfigurations)
               (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
           in
-            # nixtop //
-            hometop;
-
+            nixtop // hometop;
       };
 }

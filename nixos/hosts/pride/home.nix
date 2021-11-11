@@ -1,8 +1,6 @@
 { ... }:
 
 {
-  home.stateVersion = "20.09";
-
   nyx = {
     modules = {
       app = {
@@ -20,7 +18,7 @@
         gnupg = {
           enable = true;
           enableService = false;
-          publicKey = ../../config/.gnupg/public.key;
+          publicKey = ../../../config/.gnupg/public.key;
         };
       };
     };
