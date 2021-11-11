@@ -95,4 +95,22 @@ rec {
           specialArgs = let self = inputs.self; in { inherit name system inputs self; };
         }
     );
+
+  mkDarwin = name: { config }:
+    nameValuePair name (
+      let
+        system = "x86_64-darwin";
+        pkgs = inputs.self.pkgsBySystem."${system}";
+      in
+        inputs.darwin.lib.darwinSystem {
+          inherit system;
+          modules = [
+            (inputs.home-manager.darwinModules.home-manager)
+            (import ../darwin/modules)
+            (import ../darwin/profiles)
+            (import config)
+          ];
+          inputs = let self = inputs.self; in { inherit name system inputs self; };
+        }
+    );
 }
