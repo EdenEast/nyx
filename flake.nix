@@ -28,70 +28,39 @@
   };
 
   outputs = { self, ... }@inputs:
-    with inputs.nixpkgs.lib;
+    with self.lib;
     let
-      inherit (lib.my) mkHomeConfig mkHostConfig mkSystemConfig mapModules mkPkgs;
-
-      system = "x86_64-linux";
-      pkgs = mkPkgs system;
-
-      lib = inputs.nixpkgs.lib.extend
-        (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
+      systems = [ "x86_64-linux" "x86_64-darwin" ];
+      foreachSystem = genAttrs systems;
+      pkgsBySystem = foreachSystem (
+        system:
+          import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = with inputs; [neovim-nightly.overlay fenix.overlay];
+          }
+      );
     in
-      {
-        lib = lib.my;
+      rec {
+        inherit pkgsBySystem;
+        lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
 
-        internal = {
-          overlays = [
-            (inputs.neovim-nightly.overlay)
-            (inputs.fenix.overlay)
-            (inputs.nur.overlay)
-            (_:_: { inherit (inputs.eww.packages."${system}") eww; })
-          ]
-          ++ (attrValues (mapModules ./nix/overlays import));
-
-          hostConfigurations = inputs.nixpkgs.lib.mapAttrs' mkHostConfig {
-            eden = { inherit system; config = ./home/hosts/eden.nix; };
-            wsl = { inherit system; config = ./home/hosts/wsl.nix; };
-            pride = { inherit system; config = ./home/hosts/pride.nix; };
-            sloth = { inherit system; config = ./home/hosts/sloth.nix; };
-          };
-        };
-
-        overlay = final: prev: {
-          my = self.packages."${system}";
-        };
-
-        packages."${system}" = mapModules ./nix/pkgs (p: pkgs.callPackage p {});
-
-        devShell."${system}" = import ./shell.nix { inherit pkgs; };
-
-        homeManagerConfigurations = mapAttrs' mkHomeConfig {
-          eden = { inherit system; };
-        };
-
-        nixosConfigurations = mapAttrs' mkSystemConfig {
-          wsl = { inherit system; config = ./nixos/hosts/wsl; };
-          pride = { inherit system; config = ./nixos/hosts/pride; };
-          sloth = { inherit system; config = ./nixos/hosts/sloth; };
+        homeManagerConfigurations = mapAttrs' mkHome {
+          eden = {config = ./home/hosts/eden.nix; username = "eden";};
         };
 
         top =
           let
-            nixtop = genAttrs
-              (builtins.attrNames inputs.self.nixosConfigurations)
-              (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
+        #     nixtop = genAttrs
+        #       (builtins.attrNames inputs.self.nixosConfigurations)
+        #       (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
 
             hometop = genAttrs
               (builtins.attrNames inputs.self.homeManagerConfigurations)
               (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
           in
-            nixtop // hometop;
+            # nixtop //
+            hometop;
 
-        # Can be executed with `nix run . -- <args>`
-        defaultApp."${system}" = {
-          type = "app";
-          program = ./bin/nyx;
-        };
       };
 }

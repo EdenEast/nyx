@@ -28,7 +28,7 @@ in
       synergy
       xdotool
       eww
-      my.deadhead-font
+      # my.deadhead-font
     ] ++ optionals cfg.laptop laptopPkgs;
 
     xdg.configFile."awesome".source = ../../config/.config/awesome;
