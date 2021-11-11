@@ -76,7 +76,7 @@ in
     ];
 
     nyx.modules = {
-      user.enable = true;
+      # user.enable = true;
       yubikey.enable = true;
     };
 

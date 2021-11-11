@@ -60,5 +60,6 @@ in
       caps.enable = true;
       disk.enable = true;
     };
+
   };
 }
