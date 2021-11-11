@@ -52,6 +52,7 @@
         # TODO: Add users to system
         nixosConfigurations = mapAttrs' mkSystem {
           pride = { config = ./nixos/hosts/pride; };
+          sloth = { config = ./nixos/hosts/sloth; };
         };
 
         top =
