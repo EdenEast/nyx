@@ -48,6 +48,19 @@
         inherit pkgsBySystem;
         lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
 
+        devShell = foreachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
+
+        packages = foreachSystem (
+          system: let
+            pkgs = pkgsBySystem."${system}";
+            dirs = filterAttrs (
+              n: v: v != null && !(hasPrefix "_" n) && (v == "directory")
+            ) (builtins.readDir ./nix/pkgs);
+            paths = mapAttrs (name: value: "${toString ./nix/pkgs}/${name}") dirs;
+          in
+            mapAttrs (name: value: pkgs.callPackage value {}) paths
+        );
+
         homeManagerConfigurations = mapAttrs' mkHome {
           eden = { config = ./home/hosts/eden.nix; username = "eden"; };
         };
