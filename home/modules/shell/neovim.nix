@@ -23,7 +23,7 @@ in
       default = with pkgs; [
         # cmake-language-server
         # elmPackages.elm-language-server
-        # my.efm-lsp
+        efm-lsp
         nodePackages.bash-language-server
         nodePackages.pyright
         nodePackages.typescript-language-server
@@ -49,7 +49,7 @@ in
         stylua
         shfmt
         nixpkgs-fmt
-        # my.prettierd
+        prettierd
         nodePackages.eslint_d
       ];
     };
