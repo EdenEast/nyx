@@ -12,12 +12,8 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        # Power consumption and management diagnosis tool.
-        powertop
         # Bandwidth monitor and rate estimator.
         bmon
-        # Top-like I/O monitor.
-        iotop
         # Dump traffic on a network.
         tcpdump
         # A command-line tool to generate, analyze, convert and manipulate colors.
@@ -35,13 +31,18 @@ in
         # A TUI file explorer
         # xplr
         # lookatme
+      ] ++ optionals pkgs.stdenv.isLinux [
+        # Power consumption and management diagnosis tool.
+        powertop
+        # Top-like I/O monitor.
+        iotop
       ];
     };
 
     nyx.modules = {
       shell.fzf.enable = true;
       shell.glow.enable = true;
-      shell.keybase.enable = true;
+      # shell.keybase.enable = true;
       shell.lf.enable = true;
       # shell.repo.enable = true;
       shell.tmux.enable = true;
