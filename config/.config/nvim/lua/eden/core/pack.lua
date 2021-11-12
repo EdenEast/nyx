@@ -13,6 +13,7 @@ local M = {
     package_root = path.packroot,
     compile_path = path.packer_compiled,
     git = { clone_timeout = 120 },
+    max_jobs = 10,
   },
   local_plugins = path.join(path.home, "dev", "plugins"),
 }
