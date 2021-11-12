@@ -40,7 +40,8 @@
           import inputs.nixpkgs {
             inherit system;
             config.allowUnfree = true;
-            overlays = with inputs; [ nur.overlay neovim-nightly.overlay fenix.overlay ];
+            overlays = self.overlays."${system}";
+            # overlays = with inputs; [ nur.overlay neovim-nightly.overlay fenix.overlay ];
           }
       );
     in
@@ -50,19 +51,26 @@
 
         devShell = foreachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
 
-        packages = foreachSystem (
-          system: let
-            pkgs = pkgsBySystem."${system}";
-            dirs = filterAttrs (
-              n: v: v != null && !(hasPrefix "_" n) && (v == "directory")
-            ) (builtins.readDir ./nix/pkgs);
-            paths = mapAttrs (name: value: "${toString ./nix/pkgs}/${name}") dirs;
+        packages = foreachSystem (system: import ./nix/pkgs self system);
+        overlay = foreachSystem (system: _final: _prev: self.packages."${system}");
+        overlays = foreachSystem (
+          system: with inputs; let
+            ovs = attrValues (import ./nix/overlays self);
           in
-            mapAttrs (name: value: pkgs.callPackage value {}) paths
+            [
+              (self.overlay."${system}")
+              (nur.overlay)
+              (neovim-nightly.overlay)
+              (fenix.overlay)
+              (_:_: { inherit (eww.packages."${system}") eww; })
+            ] ++ ovs
         );
 
         homeManagerConfigurations = mapAttrs' mkHome {
-          eden = { config = ./home/hosts/eden.nix; username = "eden"; };
+          eden = {
+            config = ./home/hosts/eden.nix;
+            username = "eden";
+          };
         };
 
         # TODO: Add users to system
