@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let cfg = config.nyx.modules.shell.xdg;
@@ -9,7 +9,7 @@ in
   config = mkIf cfg.enable {
     xdg = {
       enable = true;
-      mime.enable = true;
+      mime.enable = pkgs.stdenv.isLinux;
     };
   };
 }

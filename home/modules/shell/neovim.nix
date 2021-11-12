@@ -28,8 +28,9 @@ in
         nodePackages.pyright
         nodePackages.typescript-language-server
         nodePackages.vim-language-server
-        omnisharp-roslyn
         rnix-lsp
+      ] ++ optionals pkgs.stdenv.isLinux [
+        omnisharp-roslyn
         sumneko-lua-language-server
       ];
     };
