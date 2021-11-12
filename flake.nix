@@ -71,6 +71,11 @@
             config = ./home/hosts/eden.nix;
             username = "eden";
           };
+          theman = {
+            config = ./home/hosts/theman.nix;
+            username = "james.simpson";
+            system = "x86_64-darwin";
+          };
         };
 
         # TODO: Add users to system
@@ -79,9 +84,9 @@
           sloth = { config = ./nixos/hosts/sloth; };
         };
 
-        darwinConfigurations = mapAttrs' mkDarwin {
-          theman = { config = ./darwin/hosts/theman; };
-        };
+        # darwinConfigurations = mapAttrs' mkDarwin {
+        #   theman = { config = ./darwin/hosts/theman; };
+        # };
 
         top =
           let
@@ -91,10 +96,10 @@
             hometop = genAttrs
               (builtins.attrNames inputs.self.homeManagerConfigurations)
               (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
-            darwintop = genAttrs
-              (builtins.attrNames inputs.self.darwinConfigurations)
-              (attr: inputs.self.darwinConfigurations.${attr}.system);
+            # darwintop = genAttrs
+            #   (builtins.attrNames inputs.self.darwinConfigurations)
+            #   (attr: inputs.self.darwinConfigurations.${attr}.system);
           in
-            nixtop // hometop // darwintop;
+            nixtop // hometop; # // darwintop;
       };
 }

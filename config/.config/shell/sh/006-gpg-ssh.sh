@@ -16,5 +16,7 @@ if [[ $(uname -r) =~ microsoft ]]; then
     (setsid nohup socat UNIX-LISTEN:$GPG_AGENT_SOCK,fork EXEC:"$HOME/.ssh/wsl2-ssh-pageant.exe --gpg S.gpg-agent" >/dev/null 2>&1 &)
   fi
 else
-  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  if [[ $(uname -s) != "Darwin" ]]; then
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  fi
 fi
