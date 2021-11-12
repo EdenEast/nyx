@@ -11,7 +11,7 @@ require("dapui").setup()
 
 dap.set_log_level = "TRACE"
 
-vim.g.dap_virtual_text = true
+require("nvim-dap-virtual-text").setup()
 
 vim.fn.sign_define("DapBreakpointRejected", { text = "ﰸ", texthl = "DiagnosticError", linehl = "", numhl = "" })
 vim.fn.sign_define("DapBreakpoint", { text = "⬤", texthl = "DiagnosticError", linehl = "", numhl = "" })
