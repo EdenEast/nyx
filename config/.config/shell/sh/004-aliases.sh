@@ -52,11 +52,11 @@ alias ta="tmux -u attach"
 } || {
     # have to check if we are on a bsd system (cough, cough... mac) as
     # it does not have color mode because of course...
-    [[ -n "$(command ls --color=auto)" ]] && ls_color='--color=always'
-    alias l="ls --group-directories-first -ahCF $ls_color"
-    alias ls="ls --group-directories-first -hCFG $ls_color"
-    alias ll="ls --group-directories-first -alh $ls_color"
-    alias lll="ls --group-directories-first -lh $ls_color"
+    [[ -n "$(command ls --color=auto)" ]] && ls_color='--color=always --group-directories-first'
+    alias l="ls -ahCF $ls_color"
+    alias ls="ls -hCFG $ls_color"
+    alias ll="ls -alh $ls_color"
+    alias lll="ls -lh $ls_color"
     unset ls_color
 }
 
