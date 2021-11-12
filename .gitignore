@@ -3,3 +3,5 @@ installer
 .env
 symmetric.key
 .direnv/
+config/.config/zsh/.zcompdump
+config/.config/zsh/.zsh_sessions/

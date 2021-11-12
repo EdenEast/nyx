@@ -22,6 +22,7 @@
       };
     };
     profiles = {
+      common.enable = true;
       extended.enable = true;
       desktop = {
         enable = true;

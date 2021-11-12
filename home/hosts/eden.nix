@@ -20,6 +20,7 @@
       };
     };
     profiles = {
+      common.enable = true;
       extended.enable = true;
       development.enable = true;
     };
