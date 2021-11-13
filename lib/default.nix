@@ -23,9 +23,11 @@ rec {
   };
 
   # Top level derivation for just home-manager
-  mkHome = name: { config, username, system ? "x86_64-linux" }:
+  mkHome = name: { config, user ? ../user/eden.nix, system ? "x86_64-linux" }:
     let
       pkgs = inputs.self.pkgsBySystem."${system}";
+      userConf = import user;
+      username = userConf.name;
       homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
     in
       nameValuePair name (
@@ -34,14 +36,19 @@ rec {
           configuration = { ... }: {
             imports = let home = mkUserHome { inherit config system; }; in [ home ];
           };
-          extraSpecialArgs = let self = inputs.self; in { inherit name system inputs self; };
+          extraSpecialArgs = let
+            self = inputs.self;
+            user = userConf;
+          in
+            { inherit inputs name self system user; };
         }
       );
 
-  mkSystem = name: { config, system ? "x86_64-linux" }:
+  mkSystem = name: { config, user ? ../user/eden.nix, system ? "x86_64-linux" }:
     nameValuePair name (
       let
         pkgs = inputs.self.pkgsBySystem."${system}";
+        userConf = import user;
       in
         nixosSystem {
           inherit system;
@@ -92,15 +99,20 @@ rec {
             (import ../nixos/profiles)
             (import config)
           ];
-          specialArgs = let self = inputs.self; in { inherit name system inputs self; };
+          specialArgs = let
+            self = inputs.self;
+            user = userConf;
+          in
+            { inherit inputs name self system user; };
         }
     );
 
-  mkDarwin = name: { config }:
+  mkDarwin = name: { config, user ? ../user/eden.nix }:
     nameValuePair name (
       let
         system = "x86_64-darwin";
         pkgs = inputs.self.pkgsBySystem."${system}";
+        userConf = import user;
       in
         inputs.darwin.lib.darwinSystem {
           inherit system;
@@ -110,7 +122,11 @@ rec {
             (import ../darwin/profiles)
             (import config)
           ];
-          inputs = let self = inputs.self; in { inherit name system inputs self; };
+          inputs = let
+            self = inputs.self;
+            user = userConf;
+          in
+            { inherit inputs name self system user; };
         }
     );
 }

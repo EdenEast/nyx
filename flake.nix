@@ -69,11 +69,10 @@
         homeManagerConfigurations = mapAttrs' mkHome {
           eden = {
             config = ./home/hosts/eden.nix;
-            username = "eden";
           };
           theman = {
             config = ./home/hosts/theman.nix;
-            username = "james.simpson";
+            user = ./user/work.nix;
             system = "x86_64-darwin";
           };
         };
