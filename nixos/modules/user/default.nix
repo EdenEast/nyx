@@ -1,4 +1,4 @@
-{ config, inputs, system, lib, self, name, pkgs, ... }:
+{ config, inputs, lib, name, pkgs, self, system, user, ... }:
 
 with lib;
 let
@@ -72,6 +72,7 @@ in
         home-manager = {
           # useUserPackages = true;
           useGlobalPkgs = true;
+          extraSpecialArgs = { inherit inputs name self system user; };
           users."${name}" = self.lib.mkUserHome { inherit system; config = cfg.home; };
         };
       }
