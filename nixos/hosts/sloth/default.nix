@@ -33,11 +33,7 @@
 
   # ---------------------------------------------------------------------------
 
-  nyx.modules.systemUser = {
-    name = "eden";
-    home = ./home.nix;
-    hashedPassword = "$6$nF.UDyrpHmh6M$yKCw56auQ7Dm1FfvmQg6y3Y59mWsoiHJyAYhqF9e8nKjfeKwUoFocwHhogKUTq.A3hVe9S.smv7u1NLV/yPTd0";
-  };
+  nyx.modules.systemUser.home = ./home.nix;
 
   networking.enableIPv6 = true;
   networking.interfaces.enp0s25.useDHCP = true;

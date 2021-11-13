@@ -1,6 +1,6 @@
-{ config, inputs, lib, name, pkgs, self, system, user, ... }:
+{ config, inputs, lib, pkgs, self, system, user, ... }:
 
-with lib;
+with self.lib;
 let
   cfg = config.nyx.modules.systemUser;
 
@@ -9,6 +9,9 @@ let
     name = "passwdEntry ${type.name}";
     description = "${type.description}, not containing newlines or colons";
   };
+
+  defaultName = existsOrDefault "name" user null;
+  defaultHashedPassword = existsOrDefault "hashedPassword" user null;
 
   defaultExtraGroups = [
     "audio"
@@ -23,7 +26,7 @@ in
   options.nyx.modules.systemUser = {
     name = mkOption {
       type = types.str;
-      default = null;
+      default = defaultName;
       description = "User's name";
     };
 
@@ -35,7 +38,7 @@ in
 
     hashedPassword = mkOption {
       type = with types; nullOr (passwdEntry str);
-      default = null;
+      default = defaultHashedPassword;
       description = ''
         Specifies the hashed password for the user.
       '';
@@ -51,7 +54,7 @@ in
   config = mkMerge [
     {
       users = {
-        users."${name}" = with cfg; {
+        users."${cfg.name}" = with cfg; {
           inherit hashedPassword extraGroups;
           description = "James Simpson";
           isNormalUser = true;
@@ -65,16 +68,11 @@ in
         mutableUsers = false;
       };
 
-      nix.trustedUsers = [ "${name}" ];
+      nix.trustedUsers = [ "${cfg.name}" ];
     }
     (
       mkIf (cfg.home != null) {
-        home-manager = {
-          # useUserPackages = true;
-          useGlobalPkgs = true;
-          extraSpecialArgs = { inherit inputs name self system user; };
-          users."${name}" = self.lib.mkUserHome { inherit system; config = cfg.home; };
-        };
+        home-manager.users."${cfg.name}" = self.lib.mkUserHome { inherit system; config = cfg.home; };
       }
     )
   ];
