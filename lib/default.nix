@@ -2,6 +2,10 @@
 
 with inputs.nixpkgs.lib;
 rec {
+  firstOrDefault = first: default: if !isNull first then first else default;
+
+  existsOrDefault = x: set: default: if hasAttr x set then getAttr x set else default;
+
   # Derivation agnostic settings for all types of top level derivations (nixos, home-manager && darwin).
   mkUserHome = { config, system ? "x86_64-linux" }:
   { ... }: {
@@ -95,6 +99,20 @@ rec {
               }
             )
             (inputs.home-manager.nixosModules.home-manager)
+            (
+              {
+                home-manager = {
+                  # useUserPackages = true;
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = let
+                    self = inputs.self;
+                    user = userConf;
+                  in
+                    # NOTE: Cannot pass name to home-manager as it passes `name` in to set the `hmModule`
+                    { inherit inputs self system user; };
+                };
+              }
+            )
             (import ../nixos/modules)
             (import ../nixos/profiles)
             (import config)
@@ -118,6 +136,20 @@ rec {
           inherit system;
           modules = [
             (inputs.home-manager.darwinModules.home-manager)
+            (
+              {
+                home-manager = {
+                  # useUserPackages = true;
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = let
+                    self = inputs.self;
+                    user = userConf;
+                  in
+                    # NOTE: Cannot pass name to home-manager as it passes `name` in to set the `hmModule`
+                    { inherit inputs self system user; };
+                };
+              }
+            )
             (import ../darwin/modules)
             (import ../darwin/profiles)
             (import config)
