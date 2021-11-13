@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, user, ... }:
 
 with lib;
 let
@@ -7,7 +7,8 @@ let
   signModule = types.submodule {
     options = {
       key = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
+        default = null;
         description = "The default GPG signing key fingerprint.";
       };
 
@@ -18,7 +19,7 @@ let
       };
 
       gpgPath = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
         default = "${pkgs.gnupg}/bin/gpg2";
         defaultText = "\${pkgs.gnupg}/bin/gpg2";
         description = "Path to GnuPG binary to use.";
@@ -30,27 +31,33 @@ in
   options.nyx.modules.shell.git = {
     enable = mkEnableOption "git configuration";
 
+    inheritUser = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Inherit username, email and signingKey from user";
+    };
+
     minimal = mkOption {
       type = types.bool;
       default = false;
       description = "Minimal install without extra packages";
     };
 
-    userName = mkOption {
-      type = types.nullOr types.str;
-      default = null;
+    username = mkOption {
+      type = types.str;
+      default = "James Simpson";
       description = "Default user name to use.";
     };
 
-    userEmail = mkOption {
+    email = mkOption {
       type = types.nullOr types.str;
       default = null;
       description = "Default user email to use.";
     };
 
     signing = mkOption {
-      type = types.nullOr signModule;
-      default = null;
+      type = signModule;
+      default = {};
       description = "Options related to signing commits using GnuPG.";
     };
   };
@@ -75,11 +82,11 @@ in
             gitAndTools.tig
             (mkIf config.nyx.modules.shell.gnupg.enable gitAndTools.git-crypt)
           ] else
-            [ ];
+            [];
 
         total = minimal ++ extra;
       in
-      total;
+        total;
 
     xdg.configFile."git" = {
       source = ../../../config/.config/git;
@@ -89,32 +96,27 @@ in
 
     xdg.dataFile."git/nyx-gen".text =
       let
-        userSection =
-          if (cfg.userName != null && cfg.userEmail != null) then ''
-            [user]
-            name = ${cfg.userName}
-            email = ${cfg.userEmail}
-          '' else
-            "";
-
-        signingSection =
-          if (cfg.signing != null) then ''
-            [user]
-            signingKey = ${cfg.signing.key}
-
-            [commit]
-            gpgSign = ${if cfg.signing.signByDefault then "true" else "false"}
-
-            [gpg]
-            program = ${cfg.signing.gpgPath}
-          '' else
-            "";
-
+        firstOrDefault = x: y: if !isNull x then x else if cfg.inheritUser then y else null;
+        username = cfg.username;
+        email = firstOrDefault cfg.email user.email;
+        signkey = firstOrDefault cfg.signing.key (if hasAttr "signingKey" user then user.signingKey else null);
       in
-      ''
-        ${userSection}
-        ${signingSection}
-      '';
+        ''
+          [user]
+          name = "${cfg.username}"
+          ${if isNull email then "" else ''
+          [user]
+          email = "${email}"
+        ''}
+          ${if isNull signkey then "" else ''
+          [user]
+          signingKey = "${signkey}"
+        ''}
+          ${if !cfg.signing.signByDefault then "" else ''
+          [commit]
+          gpgSign = true
+        ''}
+        '';
 
     nyx.modules.shell.bash.profileExtra = ''
       source "${pkgs.git}/share/bash-completion/completions/git"
