@@ -23,6 +23,13 @@
   programs.man.enable = true;
 
   nyx.modules = {
+    app = {
+      wezterm = {
+        enable = true;
+        package = null;
+        fontSize = 14;
+      };
+    };
     shell = {
       bash.enable = true;
       direnv.enable = true;

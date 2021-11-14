@@ -98,6 +98,5 @@ if wt.target_triple == "x86_64-pc-windows-msvc" then
 end
 
 local result = extend(config, nyx, local_config)
-print(result.font_size)
 
 return result
