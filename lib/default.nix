@@ -143,10 +143,23 @@ rec {
         system = "x86_64-darwin";
         pkgs = inputs.self.pkgsBySystem."${system}";
         userConf = import user;
+        nixConf = import ../nix/conf.nix;
       in
       inputs.darwin.lib.darwinSystem {
         inherit system;
         modules = [
+          (
+            { pkgs, ... }: {
+              # Don't rely on the configuration to enable a flake-compatible version of Nix.
+              nix = {
+                inherit (nixConf) binaryCaches binaryCachePublicKeys;
+                package = pkgs.nixFlakes;
+                extraOptions = "experimental-features = nix-command flakes";
+              };
+              services.nix-daemon.enable = true;
+              # users.nix.configureBuildUsers = true; # Not sure I am ready for this
+            }
+          )
           (inputs.home-manager.darwinModules.home-manager)
           (
             {
@@ -159,7 +172,7 @@ rec {
                     user = userConf;
                   in
                   # NOTE: Cannot pass name to home-manager as it passes `name` in to set the `hmModule`
-                  { inherit inputs self system user; };
+                  { inherit inputs pkgs self system user; };
               };
             }
           )
@@ -167,7 +180,7 @@ rec {
           (import ../darwin/profiles)
           (import config)
         ];
-        inputs =
+        specialArgs =
           let
             self = inputs.self;
             user = userConf;
