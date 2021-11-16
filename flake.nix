@@ -36,68 +36,65 @@
       foreachSystem = genAttrs systems;
       pkgsBySystem = foreachSystem (
         system:
-          import inputs.nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = self.overlays."${system}";
-            # overlays = with inputs; [ nur.overlay neovim-nightly.overlay fenix.overlay ];
-          }
+        import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = self.overlays."${system}";
+        }
       );
     in
-      rec {
-        inherit pkgsBySystem;
-        lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
+    rec {
+      inherit pkgsBySystem;
+      lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
 
-        devShell = foreachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
+      devShell = foreachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
 
-        packages = foreachSystem (system: import ./nix/pkgs self system);
-        overlay = foreachSystem (system: _final: _prev: self.packages."${system}");
-        overlays = foreachSystem (
-          system: with inputs; let
-            ovs = attrValues (import ./nix/overlays self);
-          in
-            [
-              (self.overlay."${system}")
-              (nur.overlay)
-              (neovim-nightly.overlay)
-              (fenix.overlay)
-              (_:_: { inherit (eww.packages."${system}") eww; })
-            ] ++ ovs
-        );
+      packages = foreachSystem (system: import ./nix/pkgs self system);
+      overlay = foreachSystem (system: _final: _prev: self.packages."${system}");
+      overlays = foreachSystem (
+        system: with inputs; let
+          ovs = attrValues (import ./nix/overlays self);
+        in
+        [
+          (self.overlay."${system}")
+          (nur.overlay)
+          (neovim-nightly.overlay)
+          (fenix.overlay)
+          (_:_: { inherit (eww.packages."${system}") eww; })
+        ] ++ ovs
+      );
 
-        homeManagerConfigurations = mapAttrs' mkHome {
-          eden = {
-            config = ./home/hosts/eden.nix;
-          };
-          theman = {
-            config = ./home/hosts/theman.nix;
-            user = ./user/work.nix;
-            system = "x86_64-darwin";
-          };
+      homeManagerConfigurations = mapAttrs' mkHome {
+        eden = {
+          config = ./home/hosts/eden.nix;
         };
-
-        # TODO: Add users to system
-        nixosConfigurations = mapAttrs' mkSystem {
-          pride = { config = ./nixos/hosts/pride; };
-          sloth = { config = ./nixos/hosts/sloth; };
-        };
-
-        # darwinConfigurations = mapAttrs' mkDarwin {
-        #   theman = { config = ./darwin/hosts/theman; };
-        # };
-
-        top =
-          let
-            nixtop = genAttrs
-              (builtins.attrNames inputs.self.nixosConfigurations)
-              (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
-            hometop = genAttrs
-              (builtins.attrNames inputs.self.homeManagerConfigurations)
-              (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
-            # darwintop = genAttrs
-            #   (builtins.attrNames inputs.self.darwinConfigurations)
-            #   (attr: inputs.self.darwinConfigurations.${attr}.system);
-          in
-            nixtop // hometop; # // darwintop;
       };
+
+      # TODO: Add users to system
+      nixosConfigurations = mapAttrs' mkSystem {
+        pride = { config = ./nixos/hosts/pride; };
+        sloth = { config = ./nixos/hosts/sloth; };
+      };
+
+      darwinConfigurations = mapAttrs' mkDarwin {
+        theman = {
+          config = ./darwin/hosts/theman;
+          user = ./user/work.nix;
+        };
+      };
+
+      top =
+        let
+          nixtop = genAttrs
+            (builtins.attrNames inputs.self.nixosConfigurations)
+            (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
+          hometop = genAttrs
+            (builtins.attrNames inputs.self.homeManagerConfigurations)
+            (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+          darwintop = genAttrs
+            (builtins.attrNames inputs.self.darwinConfigurations)
+            (attr: inputs.self.darwinConfigurations.${attr}.system);
+        in
+        nixtop // hometop // darwintop;
+    };
 }
