@@ -3,6 +3,7 @@
 {
   home.packages = with pkgs; [
     bat
+    bash
     coreutils-full
     moreutils
     ripgrep
@@ -29,6 +30,9 @@
         package = null;
         fontSize = 14;
       };
+    };
+    dev = {
+      python.enable = true;
     };
     shell = {
       bash.enable = true;
