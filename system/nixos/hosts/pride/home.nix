@@ -12,7 +12,7 @@
         gnupg = {
           enable = true;
           enableService = false;
-          publicKey = ../../../config/.gnupg/public.key;
+          publicKey = ../../../../config/.gnupg/public.key;
         };
       };
     };

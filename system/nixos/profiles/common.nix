@@ -2,7 +2,7 @@
 
 with lib;
 let
-  nixConf = import ../../nix/conf.nix;
+  nixConf = import ../../../nix/conf.nix;
 in
 {
   config = {

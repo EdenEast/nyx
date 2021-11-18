@@ -124,8 +124,10 @@ rec {
               };
             }
           )
-          (import ../nixos/modules)
-          (import ../nixos/profiles)
+          (import ../system/common/modules)
+          (import ../system/common/profiles)
+          (import ../system/nixos/modules)
+          (import ../system/nixos/profiles)
           (import config)
         ];
         specialArgs =
@@ -176,8 +178,10 @@ rec {
               };
             }
           )
-          (import ../darwin/modules)
-          (import ../darwin/profiles)
+          (import ../system/common/modules)
+          (import ../system/common/profiles)
+          (import ../system/darwin/modules)
+          (import ../system/darwin/profiles)
           (import config)
         ];
         specialArgs =
