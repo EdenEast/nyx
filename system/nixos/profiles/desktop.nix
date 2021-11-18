@@ -6,21 +6,9 @@ let
   cfg = config.nyx.profiles.desktop;
 in
 {
-  options.nyx.profiles.desktop = {
-    enable = mkEnableOption "desktop profile";
-  };
-
+  # Enable and common options are defined in ../../common/profiles/desktop.nix
+  # options.nyx.profiles.desktop = { };
   config = mkIf cfg.enable {
-    fonts = {
-      fonts = with pkgs; [
-        (
-          nerdfonts.override {
-            fonts = [ "Hack" "Meslo" "UbuntuMono" ];
-          }
-        )
-      ];
-    };
-
     services.xserver = {
       enable = true;
       layout = "us";
@@ -53,7 +41,6 @@ in
         package = pkgs.pulseaudioFull;
       };
     };
-
 
     services.printing.enable = true;
 

@@ -11,7 +11,7 @@ vim.cmd([[packadd nvim-ts-autotag]])
 require("nvim-treesitter.install").compilers = { "gcc", "clang", "cl" }
 require("nvim-treesitter.configs").setup({
   autotag = { enable = true },
-  highlight = { enable = true },
+  highlight = { enable = true, disable = { "yaml" } },
   playground = { enable = true },
   query_linter = {
     enable = true,
@@ -58,6 +58,7 @@ require("nvim-treesitter.configs").setup({
     "toml",
     "typescript",
     "tsx",
+    "yaml",
   },
 })
 

@@ -70,15 +70,14 @@
         };
       };
 
-      # TODO: Add users to system
       nixosConfigurations = mapAttrs' mkSystem {
-        pride = { config = ./nixos/hosts/pride; };
-        sloth = { config = ./nixos/hosts/sloth; };
+        pride = { config = ./system/nixos/hosts/pride; };
+        sloth = { config = ./system/nixos/hosts/sloth; };
       };
 
       darwinConfigurations = mapAttrs' mkDarwin {
         theman = {
-          config = ./darwin/hosts/theman;
+          config = ./system/darwin/hosts/theman;
           user = ./user/work.nix;
         };
       };
