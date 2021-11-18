@@ -5,13 +5,13 @@
     modules = {
       # Set the default theme for this host
       theme.colors = with builtins;
-        fromJSON (readFile ../../../home/modules/theme/nightfox.json);
+        fromJSON (readFile ../../../../home/modules/theme/nightfox.json);
 
       shell = {
         gnupg = {
           enable = true;
           enableService = false;
-          publicKey = ../../../config/.gnupg/public.key;
+          publicKey = ../../../../config/.gnupg/public.key;
         };
       };
     };
