@@ -2,7 +2,7 @@
 
 with self.lib;
 let
-  cfg = config.nyx.modules.systemUser;
+  cfg = config.nyx.modules.user;
 
   isPasswdCompatible = str: !(hasInfix ":" str || hasInfix "\n" str);
   passwdEntry = type: lib.types.addCheck type isPasswdCompatible // {
@@ -23,7 +23,7 @@ let
   ];
 in
 {
-  options.nyx.modules.systemUser = {
+  options.nyx.modules.user = {
     name = mkOption {
       type = types.str;
       default = defaultName;
