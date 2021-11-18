@@ -65,21 +65,16 @@
       );
 
       homeManagerConfigurations = mapAttrs' mkHome {
-        eden = {
-          config = ./home/hosts/eden.nix;
-        };
+        eden = { };
       };
 
       nixosConfigurations = mapAttrs' mkSystem {
-        pride = { config = ./system/nixos/hosts/pride; };
-        sloth = { config = ./system/nixos/hosts/sloth; };
+        pride = { };
+        sloth = { };
       };
 
       darwinConfigurations = mapAttrs' mkDarwin {
-        theman = {
-          config = ./system/darwin/hosts/theman;
-          user = ./user/work.nix;
-        };
+        theman = { user = "work"; };
       };
 
       top =
