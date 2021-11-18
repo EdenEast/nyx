@@ -1,66 +1,49 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, pkgs, ... }:
 
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  imports = [ ./hardware.nix ];
 
-  # Hardware ------------------------------------------------------------------
-  boot = {
-    # Change kernal to zen kernal
-    kernelPackages = pkgs.linuxPackages_zen;
-    kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [];
-    initrd = {
-      availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
-      kernelModules = [];
-    };
-
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-  };
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-label/boot";
-      fsType = "vfat";
-    };
-  };
-
-  swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-
-  # ---------------------------------------------------------------------------
-
-  nyx.modules.systemUser.home = ./home.nix;
-
-  programs.steam.enable = true;
-
-  networking.enableIPv6 = true;
   networking.interfaces.wlp3s0.useDHCP = true;
-  # networking.interfaces.enp0s20f0u1.useDHCP = true;
 
-  # GPG and SSH
-  # Enable for smartcard mode
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-  environment.shellInit = ''
-    export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
-  '';
+  nyx.modules = {
+    user.home = ./home.nix;
 
-  nyx.modules.nvidia = {
-    enable = true;
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:1:0:0";
+    caps.enable = true;
+    nvidia = {
+      enable = true;
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
+    yubikey.enable = true;
   };
 
-  nyx.profiles.desktop = {
+  services.printing.enable = true;
+  services.xserver = {
     enable = true;
+    desktopManager.plasma5.enable = true;
+    displayManager.lightdm.enable = true;
   };
+
+  fonts = {
+    fonts = with pkgs; [
+      (
+        nerdfonts.override {
+          fonts = [ "Hack" "Meslo" "UbuntuMono" ];
+        }
+      )
+    ];
+  };
+
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
+  hardware = {
+    pulseaudio = {
+      enable = true;
+      support32Bit = true;
+      package = pkgs.pulseaudioFull;
+    };
+  };
+
+  # programs.steam.enable = true;
 }
