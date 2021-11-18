@@ -1,6 +1,16 @@
 { inputs, ... }:
 
 with inputs.nixpkgs.lib;
+let
+  strToPath = x: path:
+    if builtins.typeOf x == "string"
+    then builtins.toPath ("${toString path}/${x}")
+    else x;
+  strToFile = x: path:
+    if builtins.typeOf x == "string"
+    then builtins.toPath ("${toString path}/${x}.nix")
+    else x;
+in
 rec {
   firstOrDefault = first: default: if !isNull first then first else default;
 
@@ -27,10 +37,10 @@ rec {
     };
 
   # Top level derivation for just home-manager
-  mkHome = name: { config, user ? ../user/eden.nix, system ? "x86_64-linux" }:
+  mkHome = name: { config ? name, user ? "eden", system ? "x86_64-linux" }:
     let
       pkgs = inputs.self.pkgsBySystem."${system}";
-      userConf = import user;
+      userConf = import (strToFile user ../user);
       username = userConf.name;
       homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
     in
@@ -38,7 +48,7 @@ rec {
       inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs system username homeDirectory;
         configuration = { ... }: {
-          imports = let home = mkUserHome { inherit config system; }; in [ home ];
+          imports = let home = mkUserHome { inherit system; config = strToPath (config ../home/hosts); }; in [ home ];
           xdg.configFile."nix/nix.conf".text =
             let
               nixConf = import ../nix/conf.nix;
@@ -58,11 +68,11 @@ rec {
       }
     );
 
-  mkSystem = name: { config, user ? ../user/eden.nix, system ? "x86_64-linux" }:
+  mkSystem = name: { config ? name, user ? "eden", system ? "x86_64-linux" }:
     nameValuePair name (
       let
         pkgs = inputs.self.pkgsBySystem."${system}";
-        userConf = import user;
+        userConf = import (strToFile user ../user);
       in
       nixosSystem {
         inherit system;
@@ -128,7 +138,7 @@ rec {
           (import ../system/common/profiles)
           (import ../system/nixos/modules)
           (import ../system/nixos/profiles)
-          (import config)
+          (import (strToPath config ../system/nixos/hosts))
         ];
         specialArgs =
           let
@@ -139,12 +149,12 @@ rec {
       }
     );
 
-  mkDarwin = name: { config, user ? ../user/eden.nix }:
+  mkDarwin = name: { config ? name, user ? "eden" }:
     nameValuePair name (
       let
         system = "x86_64-darwin";
         pkgs = inputs.self.pkgsBySystem."${system}";
-        userConf = import user;
+        userConf = import (strToFile user ../user);
         nixConf = import ../nix/conf.nix;
       in
       inputs.darwin.lib.darwinSystem {
@@ -182,7 +192,7 @@ rec {
           (import ../system/common/profiles)
           (import ../system/darwin/modules)
           (import ../system/darwin/profiles)
-          (import config)
+          (import (strToPath config ../system/darwin/hosts))
         ];
         specialArgs =
           let
