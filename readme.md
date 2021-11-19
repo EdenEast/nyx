@@ -4,9 +4,9 @@
 [![NixOS 21.05](https://img.shields.io/badge/NixOS-v21.05-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
 [![Licence](https://img.shields.io/badge/license-Unlicense-blue)](https://github.com/EdenEast/nyx/blob/main/LICENSE)
 
-This repository contains my configuration for all my systems, written primarily in [Nix].
-This repository defines machines running [NixOS][nix], or unix machines running nix and
-[home-manager], or Windows.
+This repository contains configuration for all my unix systems (NixOS, Linux and MacOS) written in [`nix`][nix].
+This repository also contains my dotfiles which are used on all the systems liked above as well as windows. On systems
+that support [`nix`][nix] my dotfiles are managed by [home-manager].
 
 [nix]: https://nixos.org/
 [home-manager]: https://github.com/nix-community/home-manager
@@ -23,13 +23,24 @@ This repository defines machines running [NixOS][nix], or unix machines running 
   - `secrets/` - A folder of secrets used by the user
 - `lib/` - List of helper functions
 - `nix/` - Nix package manager configurations
+  - `isos` - Nix configuration that builds `iso` as output
   - `overlays/` - Nix overlays
   - `pkgs/` - Self packaged applications
-- `nixos/` - Machine configurations
-  - `hosts/` - The definition of a nixos machine
-  - `modules/` - Nixos modules
-  - `profiles/` - A collection of module configurations
-  - `secrets/` - Secrets used for a machine host
+- `system` - Machine configuration for both `nixos` and `macos`
+  - `common` - Configuration that is common between `nixos` and `macos`
+    - `modules` - Common modules between the two operating systems
+    - `profiles` - Common profiles between the two operating systems
+  - `darwin` - MacOS machine configuration
+    - `hosts/` - The definition of a MacOS machine
+    - `modules/` - MacOS modules
+    - `profiles/` - A collection of module configurations
+    - `secrets/` - Secrets used for a machine host
+  - `nixos` - Nixos machine configuration
+    - `hosts/` - The definition of a nixos machine
+    - `modules/` - Nixos modules
+    - `profiles/` - A collection of module configurations
+    - `secrets/` - Secrets used for a machine host
+- `user` - Configuration values linked to a specific user
 
 ## Dotfiles
 
@@ -52,9 +63,9 @@ locations. Some configurations of note:
 | [eden]        | Home   | Generic home config for non nixos machines (wsl) |
 | [pride]       | System | Asus UX331U notebook laptop                      |
 
-[sloth]: ./nixos/hosts/sloth
+[sloth]: ./system/nixos/hosts/sloth
 [eden]: ./home/hosts/eden.nix
-[pride]: ./nixos/hosts/pride
+[pride]: ./system/nixos/hosts/pride
 
 ## Ci/Cd
 

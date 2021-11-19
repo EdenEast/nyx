@@ -77,6 +77,8 @@
         theman = { user = "work"; };
       };
 
+      # Convenience output that aggregates the outputs for home, nixos, and darwin configurations.
+      # Also used in ci to build targets generally.
       top =
         let
           nixtop = genAttrs
