@@ -48,7 +48,13 @@ rec {
       inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs system username homeDirectory;
         configuration = { ... }: {
-          imports = let home = mkUserHome { inherit system; config = strToPath (config ../home/hosts); }; in [ home ];
+          imports =
+            let
+              userConf = strToFile config ../home/hosts;
+              home = mkUserHome { inherit system; config = userConf; };
+            in
+            [ home ];
+
           xdg.configFile."nix/nix.conf".text =
             let
               nixConf = import ../nix/conf.nix;
