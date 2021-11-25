@@ -100,6 +100,7 @@ in
         username = cfg.username;
         email = firstOrDefault cfg.email user.email;
         signkey = firstOrDefault cfg.signing.key (if hasAttr "signingKey" user then user.signingKey else null);
+        signByDefault = (!isNull signkey) || cfg.signing.signByDefault;
       in
         ''
           [user]
@@ -112,8 +113,10 @@ in
           [user]
           signingKey = "${signkey}"
         ''}
-          ${if !cfg.signing.signByDefault then "" else ''
+          ${if !signByDefault then "" else ''
           [commit]
+          gpgSign = true
+          [tag]
           gpgSign = true
         ''}
         '';
