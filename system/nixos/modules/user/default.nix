@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, self, system, user, ... }:
+{ config, lib, pkgs, self, user, ... }:
 
 with self.lib;
 let
@@ -10,7 +10,6 @@ let
     description = "${type.description}, not containing newlines or colons";
   };
 
-  defaultName = existsOrDefault "name" user null;
   defaultHashedPassword = existsOrDefault "hashedPassword" user null;
 
   defaultExtraGroups = [
@@ -24,12 +23,6 @@ let
 in
 {
   options.nyx.modules.user = {
-    name = mkOption {
-      type = types.str;
-      default = defaultName;
-      description = "User's name";
-    };
-
     extraGroups = mkOption {
       type = types.listOf types.str;
       default = defaultExtraGroups;
@@ -42,12 +35,6 @@ in
       description = ''
         Specifies the hashed password for the user.
       '';
-    };
-
-    home = mkOption {
-      type = with types; nullOr types.path;
-      default = null;
-      description = "Path of home manager home file";
     };
   };
 
@@ -70,10 +57,5 @@ in
 
       nix.trustedUsers = [ "${cfg.name}" ];
     }
-    (
-      mkIf (cfg.home != null) {
-        home-manager.users."${cfg.name}" = self.lib.mkUserHome { inherit system; config = cfg.home; };
-      }
-    )
   ];
 }
