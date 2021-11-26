@@ -46,6 +46,12 @@
       xdg.enable = true;
       zoxide.enable = true;
       zsh.enable = true;
+
+      gnupg = {
+        enable = true;
+        publicKey = ../../../../config/.gnupg/public.key;
+        publicKeyName = "personal.key";
+      };
     };
   };
 }

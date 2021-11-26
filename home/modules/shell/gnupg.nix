@@ -9,7 +9,13 @@ in
   options.nyx.modules.shell.gnupg = {
     enable = mkEnableOption "gnupg configuration";
 
-    enableService = mkEnableTrueOption "gnupg service";
+    enableService = mkEnableOption "gnupg service";
+
+    publicKeyName = mkOption {
+      type = types.str;
+      default = "public.key";
+      description = "Gpg public key";
+    };
 
     publicKey = mkOption {
       type = with types; nullOr path;
@@ -19,15 +25,6 @@ in
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (mkIf (cfg.publicKey != null) {
-      home.file.".gnupg/public.key".source = cfg.publicKey;
-      home.activation.gpgtrust = hm.dag.entryAfter [ "linkGeneration" ] (
-        ''
-          gpg --import ~/.gnupg/public.key
-        ''
-      );
-    })
-
     {
       programs.gpg = {
         enable = true;
@@ -56,13 +53,24 @@ in
         };
       };
 
+    }
+
+    (mkIf (cfg.publicKey != null) {
+      home.file.".gnupg/${cfg.publicKeyName}".source = cfg.publicKey;
+      home.activation.gpgtrust = hm.dag.entryAfter [ "linkGeneration" ] (
+        ''
+          gpg --import ~/.gnupg/${cfg.publicKeyName}
+        ''
+      );
+    })
+    (mkIf cfg.enableService {
       services.gpg-agent = {
-        enable = cfg.enableService;
+        enable = true;
         enableExtraSocket = true;
         enableScDaemon = false;
         enableSshSupport = true;
         verbose = true;
       };
-    }
+    })
   ]);
 }

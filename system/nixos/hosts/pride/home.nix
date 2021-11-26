@@ -11,7 +11,6 @@
       shell = {
         gnupg = {
           enable = true;
-          enableService = false;
           publicKey = ../../../../config/.gnupg/public.key;
         };
       };
