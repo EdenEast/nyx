@@ -1,0 +1,421 @@
+#!/usr/bin/env bash
+
+set -e
+
+# shellcheck shell=bash
+INTERNAL_COMMANDS="^(add|attach|list|remove)$"
+
+CACHE_HOME="$HOME/.cache/tmux"
+PROJECTS_PATH="$CACHE_HOME/projects"
+DIGEST_PATH="$CACHE_HOME/digests"
+
+function main() {
+  TA_COMMAND="default"
+  TA_ARGS=()
+
+  # Parse command line options
+  # if [ -z "$*" ]; then
+  #   help # There is no arguments passed print help
+  # el
+  if [[ $1 == '--help' ]]; then
+    HELP=true
+  elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
+    TA_COMMAND="${1//-/_}"
+    shift
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+      -v | --verbose) # used by all commands
+        DEBUG="YES"
+        ;;
+      -h | --help)
+        CMD_HELP=true
+        ;;
+      *)
+        TA_ARGS+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$HELP" ] && help
+
+  $TA_COMMAND "${TA_ARGS[@]}"
+  exit 0
+}
+
+# --- Commands ----------------------------------------------------------------
+
+function add() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE: tat add [DIRECTORY]
+
+Add a directory to tat's project list. If no directory is passed then it
+will default to the current directory.
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local dir_to_add
+  if [[ -n ${args[0]} ]]; then
+    dir_to_add="$(realpath ${args[0]})"
+  else
+    dir_to_add="$(pwd)"
+  fi
+
+  name=$(basename $dir_to_add)
+
+  mkdir -p "$CACHE_HOME"
+  [[ ! -f $PROJECTS_PATH ]] && touch $PROJECTS_PATH
+
+  # Check if this is already added
+  if [[ -z $(grep -e "^$name" $PROJECTS_PATH) ]]; then
+    echo "$name $dir_to_add" >>$PROJECTS_PATH
+  fi
+}
+
+function attach() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE: tat attach [NAME]
+
+Attach to an existing tmux session
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  sessions=($(tmux list-sessions -F "#{session_name}"))
+  write-list ${sessions[@]}
+
+  if [[ ${#sessions[@]} -eq 1 ]]; then
+    attach-session ${sessions[0]}
+  else
+    name=$(write-list ${sessions[@]} | fzf-down)
+    attach-session $name
+  fi
+}
+
+function list() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE: tat list
+
+List project paths that have been registered to tat
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  declare -A list
+
+  while IFS= read -r line; do
+    name="$(echo $line | awk '{print $1}')"
+    path="$(echo $line | awk '{print $2}')"
+    list[$name]="$path"
+  done <$PROJECTS_PATH
+
+  local max=0
+  for name in "${!list[@]}"; do
+    local count=$(echo $name | wc -m)
+    if [[ $count -gt $max ]]; then
+      max=$count
+    fi
+  done
+
+  local pad=$(printf '%0.1s' " "{1..60})
+  for name in "${!list[@]}"; do
+    local count=$(echo $name | wc -m)
+    local padding=$((max - count))
+    printf '%s ' "$name"
+    printf '%*.*s' 0 $((max - count)) "$pad"
+    printf '%s\n' "${list[$name]}"
+  done
+}
+
+function remove() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE: tat remove [NAME]
+
+Remove registered project from tat
+
+OPTIONS:
+  -i, --interactive  Interactivly select project names
+  -h, --help         Show help message
+
+ARGS:
+  <NAME>             Name of the project path to be removed
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -i | --interactive)
+        do_interactive=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  declare -A list
+  while IFS= read -r line; do
+    name="$(echo $line)"
+    path="$(echo $line)"
+    list[$name]="$path"
+  done <$PROJECTS_PATH
+
+  if [[ -n $do_interactive ]] && [[ $do_interactive == "true" ]]; then
+    echo "interactive mode $do_interactive"
+    names=($(write-names | fzf-down -m))
+    do_interactive=false
+    remove ${names[@]} ${args[0]}
+    exit 0
+  fi
+
+  if [[ -z ${args[@]} ]]; then
+    echo "one"
+    path=$(pwd)
+    name=$(basename $path)
+
+    local before="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
+    remove-line $name
+    local after="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
+
+    if [[ $before == "$after" ]]; then
+      echo "Failed to find and remove: $name"
+    fi
+  else
+    for name in "${args[@]}"; do
+      local before="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
+      remove-line $name
+      local after="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
+
+      if [[ $before == "$after" ]]; then
+        echo "Failed to find and remove: $name"
+      else
+        echo "Removed: $name"
+      fi
+    done
+  fi
+}
+
+function help() {
+  if [[ $1 =~ $INTERNAL_COMMANDS ]]; then
+    $1 '--help'
+  fi
+
+  set +e
+  local msg
+  IFS='' read -r -d '' msg <<EOF
+Utility script to work with my nix configuration more effectively
+
+USAGE: nyx <COMMAND> [OPTIONS...]
+
+COMMANDS:
+  add    - Register directory as a project
+  list   - List register projects
+  remove - Remove registered project
+
+OPTIONS:
+  -v, --verbose  - Output verbose information
+  -h, --help     - Output help information
+EOF
+  set -e
+
+  printf "%s\n" "$msg"
+  exit 1
+}
+
+function default() {
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  declare -A list
+  while IFS= read -r line; do
+    name="$(echo $line | awk '{print $1}')"
+    path="$(echo $line | awk '{print $2}')"
+    list[$name]="$path"
+  done <$PROJECTS_PATH
+
+  local name path
+  if [[ ${#args[@]} -gt 0 ]]; then
+    if [[ ${args[0]} == '.' ]]; then
+      name=$(basename $(pwd))
+    else
+      results=($(write-names | grep ${args[0]}))
+
+      if [[ -z ${results[@]} ]]; then
+        name=$(write-names | fzf-down)
+      elif [[ ${#results[@]} -gt 1 ]]; then
+        name=$(write-list ${results[@]} | fzf-down)
+      else
+        name="${args[@]}"
+      fi
+    fi
+  else
+    name=$(write-names | fzf-down)
+  fi
+
+  path=${list[$name]}
+  if [[ -z $path ]]; then
+    echo "Unknown project: $name"
+    exit 1
+  fi
+
+  # Check if tmux session exists
+  if [[ $(tmux has-session -t $name &>/dev/null) ]]; then
+    attach-session $name
+  else
+    create-session $name $path
+  fi
+}
+
+# --- Utility -----------------------------------------------------------------
+
+function write-names() {
+  while IFS= read -r line; do
+    name="$(echo $line | awk '{print $1}')"
+    echo $name
+  done <$PROJECTS_PATH
+}
+
+function create-session() { # session-name path
+  (
+    cd "$2"
+
+    # Make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
+    # (Inspired by: https://gist.github.com/lann/6771001)
+    local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
+    if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
+      ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
+    fi
+
+    # Check for .tmux file (poor man's Tmuxinator).
+    if [ -x .tmux ]; then
+      local DIGEST="$(openssl dgst -sha512 .tmux)"
+      [[ ! -f $DIGEST_PATH ]] && touch $DIGEST_PATH
+
+      # Prompt the first time we see a given .tmux file before running it.
+      if ! grep -q "$DIGEST" $DIGEST_PATH 2>/dev/null; then
+        cat .tmux
+        echo
+
+        # I only care about zsh and bash
+        # https://stackoverflow.com/a/11097703
+        local current_shell="$(ps -p $$ -ocomm=)"
+        if [[ $current_shell == "bash" ]]; then
+          read -n 1 -p "REPLY?Trust and execute [y/N]: "
+        elif [[ $current_shell == "zsh" ]]; then
+          read -q "REPLY?Trust and execute [y/N]: "
+        fi
+
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+          echo "$DIGEST" >>$DIGEST_PATH
+          env SSH_AUTH_SOCK=$SOCK_SYMLINK ./.tmux
+        fi
+      else
+        env SSH_AUTH_SOCK=$SOCK_SYMLINK ./.tmux
+      fi
+    else
+      env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$1"
+    fi
+  )
+}
+
+function attach-session() { # session-name
+  tmux attach-session -t "$1"
+}
+
+function fzf-down() {
+  fzf --height 40% --reverse "$@"
+}
+
+function write-list() {
+  while [[ $# -gt 0 ]]; do
+    echo "$1"
+    shift
+  done
+}
+
+function remove-line() {
+  # sed -i "/^$1\\s/d" $PROJECTS_PATH
+  grep -v "^$1\\s" >$PROJECTS_PATH
+}
+
+# --- Execute main process ----------------------------------------------------
+main $*
+
+# vim: et sw=2 ts=2 sts=2
