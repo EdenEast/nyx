@@ -46,7 +46,15 @@ in
 
         # setting option without (on/off) will toggle option
         bind-key b set-option status
+
+        bind-key o run-shell -b "~/.config/tmux/scripts/session-menu"
       '';
+    };
+
+    xdg.configFile."tmux/scripts" = {
+      source = ../../../config/.config/tmux/scripts;
+      recursive = true;
+      executable = true;
     };
   };
 }
