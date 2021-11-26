@@ -1,0 +1,42 @@
+{
+  "name": "duskfox",
+  "bg": "232136",
+  "fg": "e0def4",
+  "comment": "817c9c",
+  "base": {
+    "black": "393552",
+    "red": "eb6f92",
+    "green": "a3be8c",
+    "yellow": "f6c177",
+    "blue": "569fba",
+    "magenta": "c4a7e7",
+    "cyan": "9ccfd8",
+    "white": "e0def4",
+    "orange": "ea9a97",
+    "pink": "eb98c3"
+  },
+  "bright": {
+    "black": "433c6e",
+    "red": "ef7c9d",
+    "green": "aecb93",
+    "yellow": "f8c886",
+    "blue": "5fabc7",
+    "magenta": "c8aeeb",
+    "cyan": "a3d6df",
+    "white": "e1dff6",
+    "orange": "eda19e",
+    "pink": "eea1c9"
+  },
+  "dim": {
+    "black": "333047",
+    "red": "e36387",
+    "green": "93b07b",
+    "yellow": "eeb76a",
+    "blue": "519eba",
+    "magenta": "b290df",
+    "cyan": "8cc7d1",
+    "white": "c1bdea",
+    "orange": "e18380",
+    "pink": "e284b5"
+  }
+}

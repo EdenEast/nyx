@@ -1,42 +1,42 @@
 {
-   "name":"nightfox",
-   "bg":"192330",
-   "fg":"cdcecf",
-   "comment":"526175",
-   "base":{
-      "black":"393b44",
-      "red":"c94f6d",
-      "green":"81b29a",
-      "yellow":"dbc074",
-      "blue":"719cd6",
-      "magenta":"9d79d6",
-      "cyan":"63cdcf",
-      "white":"dfdfe0",
-      "orange":"f4a261",
-      "pink":"d67ad2"
-   },
-   "bright":{
-      "black":"475072",
-      "red":"d6616b",
-      "green":"58cd8b",
-      "yellow":"ffe37e",
-      "blue":"84cee4",
-      "magenta":"b8a1e3",
-      "cyan":"59f0ff",
-      "white":"f2f2f2",
-      "orange":"f6a878",
-      "pink":"df97db"
-   },
-   "dim":{
-      "black":"32343b",
-      "red":"ad425c",
-      "green":"689c83",
-      "yellow":"c7a957",
-      "blue":"5483c1",
-      "magenta":"835dc1",
-      "cyan":"4ab8ba",
-      "white":"bdbdc0",
-      "orange":"e28940",
-      "pink":"c15dbc"
-   }
+  "name": "nightfox",
+  "bg": "192330",
+  "fg": "cdcecf",
+  "comment": "526175",
+  "base": {
+    "black": "393b44",
+    "red": "c94f6d",
+    "green": "81b29a",
+    "yellow": "dbc074",
+    "blue": "719cd6",
+    "magenta": "9d79d6",
+    "cyan": "63cdcf",
+    "white": "dfdfe0",
+    "orange": "f4a261",
+    "pink": "d67ad2"
+  },
+  "bright": {
+    "black": "475072",
+    "red": "d6616b",
+    "green": "58cd8b",
+    "yellow": "ffe37e",
+    "blue": "84cee4",
+    "magenta": "b8a1e3",
+    "cyan": "59f0ff",
+    "white": "f2f2f2",
+    "orange": "f6a878",
+    "pink": "df97db"
+  },
+  "dim": {
+    "black": "32343b",
+    "red": "ad425c",
+    "green": "689c83",
+    "yellow": "c7a957",
+    "blue": "5483c1",
+    "magenta": "835dc1",
+    "cyan": "4ab8ba",
+    "white": "bdbdc0",
+    "orange": "e28940",
+    "pink": "c15dbc"
+  }
 }
