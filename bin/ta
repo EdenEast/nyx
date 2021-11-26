@@ -3,11 +3,12 @@
 set -e
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(add|attach|list|remove)$"
+INTERNAL_COMMANDS="^(add|attach|kill|list|remove)$"
 
 declare -A INTERNAL_ALIASES
 INTERNAL_ALIASES['a']="attach"
 INTERNAL_ALIASES['d']="add"
+INTERNAL_ALIASES['k']="kill"
 INTERNAL_ALIASES['l']="list"
 INTERNAL_ALIASES['r']="remove"
 
@@ -135,7 +136,6 @@ EOF
   }
 
   sessions=($(tmux list-sessions -F "#{session_name}"))
-  write-list ${sessions[@]}
 
   if [[ ${#sessions[@]} -eq 1 ]]; then
     attach-session ${sessions[0]}
@@ -143,6 +143,42 @@ EOF
     name=$(write-list ${sessions[@]} | fzf-down)
     attach-session $name
   fi
+}
+
+function kill() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE: tat kill
+
+Kill a running session
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  sessions=($(tmux list-sessions -F "#{session_name}"))
+  names=($(write-list ${sessions[@]} | fzf-down -m))
+  for name in ${names[@]}; do
+    tmux kill-session -t "$name"
+    echo "Killed session: $name"
+  done
 }
 
 function list() {
@@ -290,8 +326,10 @@ USAGE: nyx <COMMAND> [OPTIONS...]
 
 COMMANDS:
   add    - Register directory as a project
+  attach - Attach to existing session
   list   - List register projects
   remove - Remove registered project
+  kill   - Kill a running session
 
 OPTIONS:
   -v, --verbose  - Output verbose information
