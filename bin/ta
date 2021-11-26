@@ -5,6 +5,12 @@ set -e
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(add|attach|list|remove)$"
 
+declare -A INTERNAL_ALIASES
+INTERNAL_ALIASES['a']="attach"
+INTERNAL_ALIASES['d']="add"
+INTERNAL_ALIASES['l']="list"
+INTERNAL_ALIASES['r']="remove"
+
 CACHE_HOME="$HOME/.cache/tmux"
 PROJECTS_PATH="$CACHE_HOME/projects"
 DIGEST_PATH="$CACHE_HOME/digests"
@@ -14,14 +20,19 @@ function main() {
   TA_ARGS=()
 
   # Parse command line options
-  # if [ -z "$*" ]; then
-  #   help # There is no arguments passed print help
-  # el
-  if [[ $1 == '--help' ]]; then
-    HELP=true
-  elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
-    TA_COMMAND="${1//-/_}"
-    shift
+  if [ -n "$*" ]; then
+    if [[ $1 == '--help' ]]; then
+      HELP=true
+    elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
+      TA_COMMAND="${1//-/_}"
+      shift
+    else
+      internal_command="${INTERNAL_ALIASES[$1]}"
+      if [ -n "$internal_command" ]; then
+        TA_COMMAND="$internal_command"
+        shift
+      fi
+    fi
   fi
 
   while [[ $# -gt 0 ]]; do
