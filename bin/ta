@@ -371,7 +371,7 @@ function default() {
       elif [[ ${#results[@]} -gt 1 ]]; then
         name=$(write-list ${results[@]} | fzf-down)
       else
-        name="${args[@]}"
+        name="${results[@]}"
       fi
     fi
   else
