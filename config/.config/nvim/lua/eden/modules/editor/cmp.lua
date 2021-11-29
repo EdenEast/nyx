@@ -75,7 +75,7 @@ local config = {
     {
       name = "buffer",
       keyword_length = 5,
-      opts = {
+      option = {
         get_bufnr = function()
           return vim.api.nvim_list_bufs()
         end,
