@@ -67,7 +67,7 @@ in
 
     home.packages = with pkgs;
       let
-        minimal = [ git ];
+        minimal = [ git jq ];
 
         extra =
           if !cfg.minimal then [

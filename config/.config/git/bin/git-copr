@@ -1,0 +1,56 @@
+#! /usr/bin/env bash
+
+set -e
+
+function run() {
+  local jq_template pr_number
+
+  jq_template='"'\
+'#\(.number) - \(.title)'\
+'\t'\
+'Author: \(.user.login)\n'\
+'Created: \(.created_at)\n'\
+'Updated: \(.updated_at)\n\n'\
+'\(.body)'\
+'"'
+
+  pr_number=$(
+    gh api 'repos/:owner/:repo/pulls' |
+      jq ".[] | $jq_template" |
+      sed -e 's/"\(.*\)"/\1/' -e 's/\\t/\t/' |
+      fzf \
+        --with-nth=1 \
+        --delimiter='\t' \
+        --preview='echo -e {2}' \
+        --preview-window=top:wrap |
+      sed 's/^#\([0-9]\+\).*/\1/'
+  )
+
+  if [ -n "$pr_number" ]; then
+    gh pr checkout "$pr_number"
+  fi
+}
+
+function die() { # (code, message...)
+  code=$1
+  shift
+  echo 1>&2 "$@"
+  exit $code
+}
+
+function requires() { # (cmd)
+  hash "$1" &>/dev/null || die 2 "Command not found: $1"
+}
+
+function main() {
+  requires gh
+  requires fzf
+  requires jq
+
+  run $@
+}
+
+# shellcheck disable=SC2068
+main $@
+
+# vim: sw=2 ts=2 sts=2 et
