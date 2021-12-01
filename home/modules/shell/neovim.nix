@@ -39,6 +39,7 @@ in
       description = "List of debug adaptor packages";
       type = with types; listOf package;
       default = with pkgs; [
+      ] ++ optionals pkgs.stdenv.isLinux [
         lldb
       ];
     };
