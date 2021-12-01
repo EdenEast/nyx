@@ -50,5 +50,8 @@ jobs:
       - name: Output build failure
         if: failure()
         run: |
-          nix log $(grep "For full logs, run" /tmp/nix-build-err.log | grep -oE "/nix/store/.*.drv")
+          drv=$(grep "For full logs, run" /tmp/nix-pr-build.log | grep -oE "/nix/store/.*.drv")
+          nix log $drv
+          echo $drv
           exit 1
+
