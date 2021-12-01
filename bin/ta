@@ -401,7 +401,7 @@ function write-names() {
   done <$PROJECTS_PATH
 }
 
-function create-session() { # session-name path
+function create-session() { # (session-name path)
   (
     cd "$2"
 
@@ -439,13 +439,22 @@ function create-session() { # session-name path
         env SSH_AUTH_SOCK=$SOCK_SYMLINK ./.tmux
       fi
     else
-      env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$1"
+      env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$1" -d
+      attach-session "$1"
     fi
   )
 }
 
+function switch-session() { # (session-name)
+  tmux switch-client -t "$1"
+}
+
 function attach-session() { # session-name
-  tmux attach-session -t "$1"
+  if [[ -z $TMUX ]]; then
+    tmux attach-session -t "$1"
+  else
+    switch-session "$1"
+  fi
 }
 
 function fzf-down() {
