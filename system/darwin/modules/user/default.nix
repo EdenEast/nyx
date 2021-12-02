@@ -14,6 +14,9 @@ in
         shell = pkgs.zsh;
         home = "/Users/${cfg.name}";
       };
+
+      # Enable zsh in order to add /run/current-system/sw/bin to $PATH
+      programs.zsh.enable = true;
     }
   ];
 }
