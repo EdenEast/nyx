@@ -27,8 +27,6 @@ function main() {
     done
   }
 
-  # This is just until `programs.zsh.enable` can be added to darwin.
-  append_path "/run/current-system/sw/bin"
   append_path "$HOME/.config/git/bin"
   append_path "$HOME/.cargo/bin"
 
