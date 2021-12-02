@@ -117,7 +117,10 @@ EOF
       nix build ".#top.${args[0]}" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
     else
       # There was no target passed to build so infer what do build
-      if is_nixos >/dev/null; then
+      if is_darwin >/dev/null; then
+        debug "Darwin detected building DarwinConfiguration for the host machine: $(hostname)"
+        darwin-rebuild build --flake .
+      elif is_nixos >/dev/null; then
         debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
         sudo nixos-rebuild build --flake .
       else
@@ -426,15 +429,21 @@ EOF
 
     # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
-      if is_nixos >/dev/null; then
+      if is_darwin >/dev/null; then
+        debug "Switching to defined target ${args[0]} on darwin system"
+        darwin-rebuild switch --flake ".#${args[0]}"
+      elif is_nixos >/dev/null; then
         debug "Switching to defined target ${args[0]} on nixos system"
-        sudo nixos-rebuild switch --flake ".#top.${args[0]}"
+        sudo nixos-rebuild switch --flake ".#${args[0]}"
       else
         debug "Switching to defined target ${args[0]} on non nixos system"
         ./result/activate
       fi
     else
-      if is_nixos >/dev/null; then
+      if is_darwin >/dev/null; then
+        debug "Darwin detected switching DarwinConfiguration for the host machine: $(hostname)"
+        darwin-rebuild switch --flake .
+      elif is_nixos >/dev/null; then
         debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
         sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
       else
@@ -596,6 +605,10 @@ function get_distro() {
 
 function is_nixos() {
   [ "$(get_distro)" == "nixos" ] && echo 1
+}
+
+function is_darwin() {
+  [ "$(uname -s)" == "Darwin" ] && echo 1
 }
 
 function debug() {
