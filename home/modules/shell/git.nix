@@ -57,7 +57,7 @@ in
 
     signing = mkOption {
       type = signModule;
-      default = {};
+      default = { };
       description = "Options related to signing commits using GnuPG.";
     };
   };
@@ -82,11 +82,11 @@ in
             gitAndTools.tig
             (mkIf config.nyx.modules.shell.gnupg.enable gitAndTools.git-crypt)
           ] else
-            [];
+            [ ];
 
         total = minimal ++ extra;
       in
-        total;
+      total;
 
     xdg.configFile."git" = {
       source = ../../../config/.config/git;
@@ -102,7 +102,7 @@ in
         signkey = firstOrDefault cfg.signing.key (if hasAttr "signingKey" user then user.signingKey else null);
         signByDefault = (!isNull signkey) || cfg.signing.signByDefault;
       in
-        ''
+      ''
           [user]
           name = "${cfg.username}"
           ${if isNull email then "" else ''
@@ -119,7 +119,9 @@ in
           [tag]
           gpgSign = true
         ''}
-        '';
+          [gpg]
+          program = ${cfg.signing.gpgPath}
+      '';
 
     nyx.modules.shell.bash.profileExtra = ''
       source "${pkgs.git}/share/bash-completion/completions/git"
