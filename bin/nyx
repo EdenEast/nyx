@@ -23,6 +23,17 @@ HOME_MANAGER_BACKUP_EXT="nbak"
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(build|check|fmt|gc|help|link|switch|test|update|unlink)$"
 
+declare -A INTERNAL_ALIASES
+INTERNAL_ALIASES['b']="build"
+INTERNAL_ALIASES['c']="check"
+INTERNAL_ALIASES['f']="fmt"
+INTERNAL_ALIASES['g']="gc"
+INTERNAL_ALIASES['l']="link"
+INTERNAL_ALIASES['s']="switch"
+INTERNAL_ALIASES['t']="test"
+INTERNAL_ALIASES['ul']="unlink"
+INTERNAL_ALIASES['up']="update"
+
 NIXARGS=(--experimental-features "nix-command flakes")
 NIXBUILDARGS=(
   --option 'extra-substituters' 'https://cachix.cachix.org https://nix-community.cachix.org https://edeneast.cachix.org'
@@ -48,28 +59,31 @@ function main() {
     HELP=true
   elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
     NYX_COMMAND="${1//-/_}"
-    NYX_ARGS=()
     shift
-
-    while [[ $# -gt 0 ]]; do
-      key="$1"
-      case $key in
-        -v | --verbose) # used by all commands
-          DEBUG="YES"
-          ;;
-        -h | --help)
-          CMD_HELP=true
-          ;;
-        *)
-          NYX_ARGS+=("$1")
-          ;;
-      esac
-      shift
-    done
+  elif [[ -n ${INTERNAL_ALIASES[$1]} ]]; then
+    NYX_COMMAND="${INTERNAL_ALIASES[$1]}"
+    shift
   else
     failure "Unknown command: \`$1\`"
     help
   fi
+
+  NYX_ARGS=()
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+      -v | --verbose) # used by all commands
+        DEBUG="YES"
+        ;;
+      -h | --help)
+        CMD_HELP=true
+        ;;
+      *)
+        NYX_ARGS+=("$1")
+        ;;
+    esac
+    shift
+  done
 
   [ -n "$HELP" ] && help
 
