@@ -7,10 +7,10 @@
     # Change kernal to zen kernal
     kernelPackages = pkgs.linuxPackages_zen;
     kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [];
+    extraModulePackages = [ ];
     initrd = {
       availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
-      kernelModules = [];
+      kernelModules = [ ];
     };
 
     loader = {
@@ -30,7 +30,7 @@
     };
   };
 
-  swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
+  swapDevices = [{ device = "/dev/disk/by-label/swap"; }];
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
   # ---------------------------------------------------------------------------

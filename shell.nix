@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 let
   nixConf = import ./nix/conf.nix;
   options = [
@@ -16,8 +16,8 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    PATH=${pkgs.writeShellScriptBin "nix" ''
-    ${pkgs.nixFlakes}/bin/nix ${builtins.concatStringsSep " " options} "$@"
-  ''}/bin:$PATH
+      PATH=${pkgs.writeShellScriptBin "nix" ''
+      ${pkgs.nixFlakes}/bin/nix ${builtins.concatStringsSep " " options} "$@"
+    ''}/bin:$PATH
   '';
 }
