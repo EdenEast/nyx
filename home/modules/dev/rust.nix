@@ -34,7 +34,7 @@ in
     nightlyComponents = mkOption {
       description = "Which nightly components to add, such as rustc, clippy or cargo";
       type = with types; listOf str;
-      default = [];
+      default = [ ];
     };
 
     rust-analyzer = mkOption {
