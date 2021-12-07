@@ -1,3 +1,7 @@
 .gitattributes !filter !diff
-nixos/secrets/** filter=git-crypt diff=git-crypt
+
+system/nixos/secrets/** filter=git-crypt diff=git-crypt
+system/nixos/hosts/**/secrets.nix filter=git-crypt diff=git-crypt
+system/darwin/secrets/** filter=git-crypt diff=git-crypt
+system/darwin/hosts/**/secrets/nix filter=git-crypt diff=git-crypt
 home/secrets/** filter=git-crypt diff=git-crypt
