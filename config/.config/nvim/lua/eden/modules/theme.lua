@@ -12,13 +12,7 @@ M.plugins = {
   },
 
   {
-    "Pocco81/Catppuccino.nvim",
-    config = function()
-      require("catppuccino").setup({ colorscheme = "neon_latte" })
-    end,
-  },
-
-  {
+    { "catppuccin/nvim", as = "catppuccin" },
     { "embark-theme/vim", as = "embark" },
     "eddyekofo94/gruvbox-flat.nvim",
     "rose-pine/neovim",
