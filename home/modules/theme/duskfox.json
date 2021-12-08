@@ -16,27 +16,27 @@
     "pink": "eb98c3"
   },
   "bright": {
-    "black": "433c6e",
-    "red": "ef7c9d",
-    "green": "aecb93",
-    "yellow": "f8c886",
-    "blue": "5fabc7",
-    "magenta": "c8aeeb",
-    "cyan": "a3d6df",
-    "white": "e1dff6",
-    "orange": "eda19e",
-    "pink": "eea1c9"
+    "black": "47407d",
+    "red": "f083a2",
+    "green": "b1d196",
+    "yellow": "f9cb8c",
+    "blue": "65b1cd",
+    "magenta": "ccb1ed",
+    "cyan": "a6dae3",
+    "white": "e2e0f7",
+    "orange": "f0a4a2",
+    "pink": "f0a6cc"
   },
   "dim": {
-    "black": "333047",
-    "red": "e36387",
-    "green": "93b07b",
-    "yellow": "eeb76a",
-    "blue": "519eba",
-    "magenta": "b290df",
-    "cyan": "8cc7d1",
-    "white": "c1bdea",
-    "orange": "e18380",
-    "pink": "e284b5"
+    "black": "322e42",
+    "red": "d84f76",
+    "green": "8aa872",
+    "yellow": "e6a852",
+    "blue": "4a869c",
+    "magenta": "a580d2",
+    "cyan": "7bb8c1",
+    "white": "b1acde",
+    "orange": "d6746f",
+    "pink": "d871a6"
   }
 }
