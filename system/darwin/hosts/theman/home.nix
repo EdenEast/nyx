@@ -24,7 +24,12 @@
   programs.man.enable = true;
 
   nyx.modules = {
+    theme.name = "duskfox";
     app = {
+      kitty = {
+        enable = true;
+        fontSize = 14;
+      };
       wezterm = {
         enable = true;
         package = null;
