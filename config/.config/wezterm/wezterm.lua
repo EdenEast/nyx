@@ -4,7 +4,7 @@ local datahome = string.format("%s/.local/share/wezterm/", os.getenv("HOME"))
 
 local function extend(...)
   local ret = {}
-  for i = 1, select('#', ...) do
+  for i = 1, select("#", ...) do
     local tbl = select(i, ...)
     if tbl then
       for k, v in pairs(tbl) do
@@ -17,7 +17,12 @@ end
 
 local function exists(name)
   local f = io.open(name, "r")
-  if f ~= nil then io.close(f) return true else return false end
+  if f ~= nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
 end
 
 local function load_file(name)
@@ -71,6 +76,8 @@ local config = {
     ansi = { "#393b44", "#c94f6d", "#81b29a", "#dbc074", "#719cd6", "#9d79d6", "#63cdcf", "#dfdfe0" },
     brights = { "#475072", "#d6616b", "#58cd8b", "#ffe37e", "#84cee4", "#b8a1e3", "#59f0ff", "#f2f2f2" },
   },
+
+  exit_behavior = "Close",
 
   font = wt.font_with_fallback({
     "Hack Nerd Font Mono",
