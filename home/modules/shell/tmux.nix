@@ -48,6 +48,9 @@ in
         bind-key b set-option status
 
         bind-key o run-shell -b "~/.config/tmux/scripts/session-menu"
+
+        # left status is only length of 10
+        set -g status-left-length 50
       '';
     };
 
