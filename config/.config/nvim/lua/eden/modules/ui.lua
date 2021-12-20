@@ -3,22 +3,10 @@ local M = {}
 
 M.plugins = {
   {
-    "shadmansaleh/lualine.nvim",
-    event = "VimEnter",
-    config = function()
-      if vim.g.current_statusline == "lualine" then
-        require("eden.modules.ui.lualine")
-      end
-    end,
-    requires = { "nvim-lua/lsp-status.nvim" },
-  },
-  {
     "famiu/feline.nvim",
     event = "VimEnter",
     config = function()
-      if vim.g.current_statusline == "feline" then
-        require("eden.modules.ui.feline")
-      end
+      require("eden.modules.ui.feline")
     end,
     requires = { "nvim-lua/lsp-status.nvim" },
   },
@@ -29,8 +17,11 @@ M.plugins = {
     end,
   },
   {
-    "glepnir/dashboard-nvim",
+    "startup-nvim/startup.nvim",
     cond = "not vim.g.started_by_firenvim",
+    config = function()
+      require("eden.modules.ui.startup")
+    end,
   },
   { "Yggdroot/indentLine" },
   {
@@ -74,8 +65,6 @@ M.plugins = {
 }
 
 M.before = function()
-  vim.g.current_statusline = edn.platform.is_windows and "lualine" or "feline"
-
   -- Dashboard ----------------------------------------------------------------
   vim.g.dashboard_custom_header = {
     "███████╗██████╗ ███████╗███╗   ██╗",

@@ -11,7 +11,9 @@ local fmt = string.format
 -- "┃", "█", "", "", "", "", "", "", "●"
 
 local get_diag = function(str)
-  local count = vim.lsp.diagnostic.get_count(0, str)
+  local diagnostics = vim.diagnostic.get(0, { severity = vim.diagnostic.severity[str] })
+  local count = #diagnostics
+
   return (count > 0) and " " .. count .. " " or ""
 end
 
@@ -89,28 +91,28 @@ local c = {
   },
   lsp_error = {
     provider = function()
-      return get_diag("Error")
+      return get_diag("ERROR")
     end,
     hl = "FlnError",
     right_sep = { str = "", hl = "FlnWarnError", always_visible = true },
   },
   lsp_warn = {
     provider = function()
-      return get_diag("Warning")
+      return get_diag("WARN")
     end,
     hl = "FlnWarn",
     right_sep = { str = "", hl = "FlnInfoWarn", always_visible = true },
   },
   lsp_info = {
     provider = function()
-      return get_diag("Information")
+      return get_diag("INFO")
     end,
     hl = "FlnInfo",
     right_sep = { str = "", hl = "FlnHintInfo", always_visible = true },
   },
   lsp_hint = {
     provider = function()
-      return get_diag("Hint")
+      return get_diag("HINT")
     end,
     hl = "FlnHint",
     right_sep = { str = "", hl = "FlnBgHint", always_visible = true },
