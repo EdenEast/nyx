@@ -52,6 +52,12 @@ M.set = function(client, bufnr)
       },
       { "<leader>ce", [[<cmd>Telescope lsp_workspace_diagnostics<cr>]] },
       {
+        "<leader>cf",
+        function()
+          vim.lsp.buf.formatting()
+        end,
+      },
+      {
         "<leader>cn",
         function()
           vim.lsp.buf.rename()
