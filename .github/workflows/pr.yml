@@ -34,7 +34,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v16
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.4/install
+          install_url: https://releases.nixos.org/nix/nix-2.5.1/install
           extra_nix_config: |
             experimental-features = nix-command flakes
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
@@ -84,7 +84,7 @@ jobs:
       - name: Scan for security issues
         id: security
         run: |
-          nix run nixpkgs/nixos-20.09#vulnix -- -w https://raw.githubusercontent.com/ckauhaus/nixos-vulnerability-roundup/master/whitelists/nixos-20.09.toml ./profile | tee /tmp/security.txt
+          nix run nixpkgs/nixos-unstable#vulnix -- -w https://raw.githubusercontent.com/ckauhaus/nixos-vulnerability-roundup/master/whitelists/nixos-unstable.toml ./profile | tee /tmp/security.txt
           OUTPUT_SECURITY="$(cat /tmp/security.txt)"
           OUTPUT_SECURITY="${OUTPUT_SECURITY//'%'/'%25'}"
           OUTPUT_SECURITY="${OUTPUT_SECURITY//$'\n'/'%0A'}"
