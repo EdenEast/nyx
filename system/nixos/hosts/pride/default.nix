@@ -9,6 +9,7 @@
     modules = {
       user.home = ./home.nix;
 
+      bluetooth.enable = true;
       caps.enable = true;
       nvidia = {
         enable = true;
