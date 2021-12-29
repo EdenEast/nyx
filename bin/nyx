@@ -21,7 +21,7 @@ fi
 HOME_MANAGER_BACKUP_EXT="nbak"
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(build|check|fmt|gc|help|link|switch|test|update|unlink)$"
+INTERNAL_COMMANDS="^(build|check|fmt|gc|help|link|rollback|switch|test|update|unlink)$"
 
 declare -A INTERNAL_ALIASES
 INTERNAL_ALIASES['b']="build"
@@ -397,6 +397,50 @@ EOF
   )
 
   set -e
+}
+
+function rollback() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE: nyx rollback [OPTIONS]
+
+Rollback the current generation.
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  (
+    cd "$NYX_ROOT"
+
+    if is_darwin >/dev/null; then
+      sudo darwin-rebuild --rollback
+    elif is_nixos >/dev/null; then
+      sudo nixos-rebuild --rollback
+    else
+      local current=$(nix-env --list-generations --profile "/nix/var/nix/profiles/per-user/$USER/home-manager" | grep '(current)' | awk '{print $1}')
+      local prev="$((current - 1))"
+      local prev_store_path=$(home-manager generations | grep "id $prev ->" | awk '{print $NF}')
+      $prev_store_path/activate
+    fi
+  )
 }
 
 function switch() {
