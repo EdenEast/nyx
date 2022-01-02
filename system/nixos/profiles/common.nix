@@ -48,7 +48,6 @@ in
     environment.systemPackages = with pkgs; [
       curl
       git
-      firefox
       pciutils
       vim
     ];

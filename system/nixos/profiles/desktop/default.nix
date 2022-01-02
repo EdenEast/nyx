@@ -27,7 +27,11 @@ in
 
     # Sound setting
     sound.enable = true;
-    environment.systemPackages = with pkgs; [ pamixer ];
+
+    environment.systemPackages = with pkgs; [
+      pamixer
+      firefox
+    ];
 
     hardware = {
       pulseaudio = {
