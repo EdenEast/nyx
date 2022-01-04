@@ -5,34 +5,32 @@ with builtins;
 let
   cfg = config.nyx.modules.shell.repo;
 
+  quote = c: ''"${c}"'';
+
+  nullOrEmpty = c: str: optional (c != null && c != [ ]) str;
+
   remoteToStr = r: ''
     [[remotes]]
     name = "${r.name}"
     url = "${r.url}"
   '';
 
-  projectToStr = p: ''
-    name = "${p.name}"
-    ${optionalString (p.path != null) ''path = "${p.path}"''}
-    ${optionalString (p.clone != null) ''clone = "${p.clone}"''}
-    ${optionalString (p.work != null) ''work = "${p.work}"''}
-    ${optionalString (p.cli != null) ''cli = "${toString p.cli}"''}
-    ${optionalString (count p.tags != 0) ''
-    tags = [
-      ${concatStringsSep "," (map (x: ''"${x}"'') p.tags)}
-    ]
-    ''}
-    ${concatStringsSep "\n" (map remoteToStr p.remotes)}
-  '';
+  projectToStr = p: concatStringsSep "\n" ([ "name = ${p.name}" ]
+    ++ nullOrEmpty p.path "path = ${quote p.path}"
+    ++ nullOrEmpty p.clone "clone = ${quote p.clone}"
+    ++ nullOrEmpty p.work "work = ${quote p.work}"
+    ++ nullOrEmpty p.cli "cli = ${toString p.cli}"
+    ++ nullOrEmpty p.tags "tags = [${concatStringsSep ", " (map (x: quote x) p.tags)}]"
+    ++ [""]
+    ++ (map remoteToStr p.remotes));
 
-  tagToStr = t: ''
-    name = ${t.name}
-    ${optionalString (t.path != null) ''path = "${t.path}"''}
-    ${optionalString (t.clone != null) ''clone = "${t.clone}"''}
-    ${optionalString (t.work != null) ''work = "${t.work}"''}
-    ${optionalString (t.cli != null) ''cli = "${toString t.cli}"''}
-    ${optionalString (t.priority != null) ''priority = "${toString t.priority}"''}
-  '';
+  tagToStr = t: concatStringsSep "\n" (["name = ${t.name}"]
+    ++ nullOrEmpty t.path "path = ${quote t.path}"
+    ++ nullOrEmpty t.clone "clone = ${quote t.clone}"
+    ++ nullOrEmpty t.work "work = ${quote t.work}"
+    ++ nullOrEmpty t.cli "cli = ${toString t.cli}"
+    ++ nullOrEmpty t.priority "priority = ${toString t.priority}"
+  );
 
   writeFiles = prefix: f: list:
     listToAttrs (map
@@ -220,18 +218,17 @@ in
         projectFiles = writeFiles "repo/repository" projectToStr cfg.projects;
         tagFiles = writeFiles "repo/tag" tagToStr cfg.tags;
       in
-      # projectFiles // tagFiles;
       projectFiles // tagFiles // {
-        "repo/config.toml".text = ''
-          root = ${toString cfg.root}
-          ${optionalString (cfg.cli != null) ''cli = "${toString cfg.cli}"''}
-          ${optionalString (cfg.defaultHost != null) ''default_host = "${cfg.defaultHost}"''}
-          default_scheme = "${cfg.defaultScheme}
-          default_ssh_user = "${cfg.defaultSshUser}
-          include = [ ${concatStringsSep "," (map (x: ''"${x}"'') cfg.include)} ]
-          exclude = [ ${concatStringsSep "," (map (x: ''"${x}"'') cfg.exclude)} ]
-          ${optionalString (cfg.shell != null) ''shell = [ ${concatStringsSep "," (map (x: ''"${x}"'') cfg.shell)} ]''}
-        '';
+        "repo/config.toml".text = concatStringsSep "\n" (
+          [ "root = ${toString cfg.root}" ]
+          ++ nullOrEmpty cfg.cli "cli = ${toString cfg.cli}"
+          ++ nullOrEmpty cfg.defaultHost "default_host = ${quote cfg.defaultHost}"
+          ++ nullOrEmpty cfg.defaultScheme "default_scheme = ${quote cfg.defaultScheme}"
+          ++ nullOrEmpty cfg.defaultSshUser "default_ssh_user = ${quote cfg.defaultSshUser}"
+          ++ nullOrEmpty cfg.shell "shell = [${concatStringsSep ", " (map (x: quote x) cfg.shell)}]"
+          ++ nullOrEmpty cfg.include "include = [${concatStringsSep ", " (map (x: quote x) cfg.include)}]"
+          ++ nullOrEmpty cfg.exclude "exclude = [${concatStringsSep ", " (map (x: quote x) cfg.exclude)}]"
+        );
       };
   };
 }
