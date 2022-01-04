@@ -9,6 +9,8 @@ let
 
   nullOrEmpty = c: str: optional (c != null && c != [ ]) str;
 
+  strFromBool = b: if b then "true" else "false";
+
   remoteToStr = r:
     let
       name = if r ? name then r.name else "origin";
@@ -24,7 +26,7 @@ let
     ++ nullOrEmpty p.path "path = ${quote p.path}"
     ++ nullOrEmpty p.clone "clone = ${quote p.clone}"
     ++ nullOrEmpty p.work "work = ${quote p.work}"
-    ++ nullOrEmpty p.cli "cli = ${toString p.cli}"
+    ++ nullOrEmpty p.cli "cli = ${strFromBool p.cli}"
     ++ nullOrEmpty p.tags "tags = [${concatStringsSep ", " (map (x: quote x) p.tags)}]"
     ++ [ "" ]
     ++ (if isList p.remote then map remoteToStr p.remote else [ (remoteToStr p.remote) ]));
@@ -33,7 +35,7 @@ let
     ++ nullOrEmpty t.path "path = ${quote t.path}"
     ++ nullOrEmpty t.clone "clone = ${quote t.clone}"
     ++ nullOrEmpty t.work "work = ${quote t.work}"
-    ++ nullOrEmpty t.cli "cli = ${toString t.cli}"
+    ++ nullOrEmpty t.cli "cli = ${strFromBool t.cli}"
     ++ nullOrEmpty t.priority "priority = ${toString t.priority}"
   );
 
@@ -230,7 +232,7 @@ in
       projectFiles // tagFiles // {
         "repo/config.toml".text = concatStringsSep "\n" (
           [ "root = ${toString cfg.root}" ]
-          ++ nullOrEmpty cfg.cli "cli = ${toString cfg.cli}"
+          ++ nullOrEmpty cfg.cli "cli = ${strFromBool cfg.cli}"
           ++ nullOrEmpty cfg.defaultHost "default_host = ${quote cfg.defaultHost}"
           ++ nullOrEmpty cfg.defaultScheme "default_scheme = ${quote cfg.defaultScheme}"
           ++ nullOrEmpty cfg.defaultSshUser "default_ssh_user = ${quote cfg.defaultSshUser}"
