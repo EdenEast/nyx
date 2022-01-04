@@ -30,6 +30,9 @@ rec {
       home.sessionVariables."NIX_PATH" =
         "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
 
+      # Use the same Nix configuration for the user
+      xdg.configFile."nixpkgs/config.nix".source = ../nix/config.nix;
+
       # TODO: Note sure where this should go
       home.sessionPath = [ "$HOME/.local/nyx/bin" "$XDG_BIN_HOME" ];
 
@@ -64,6 +67,11 @@ rec {
               extra-trusted-public-keys = ${builtins.concatStringsSep " " nixConf.binaryCachePublicKeys}
               experimental-features = nix-command flakes
             '';
+
+          nixpkgs = {
+            config = import ../nix/config.nix;
+            overlays = inputs.self.overlays."${system}";
+          };
         };
         extraSpecialArgs =
           let
