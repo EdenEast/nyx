@@ -9,11 +9,16 @@ let
 
   nullOrEmpty = c: str: optional (c != null && c != [ ]) str;
 
-  remoteToStr = r: ''
-    [[remotes]]
-    name = "${r.name}"
-    url = "${r.url}"
-  '';
+  remoteToStr = r:
+    let
+      name = if r ? name then r.name else "origin";
+      url = if r ? url then r.url else r;
+    in
+    ''
+      [[remotes]]
+      name = "${name}"
+      url = "${url}"
+    '';
 
   projectToStr = p: concatStringsSep "\n" ([ "name = ${quote p.name}" ]
     ++ nullOrEmpty p.path "path = ${quote p.path}"
@@ -22,7 +27,7 @@ let
     ++ nullOrEmpty p.cli "cli = ${toString p.cli}"
     ++ nullOrEmpty p.tags "tags = [${concatStringsSep ", " (map (x: quote x) p.tags)}]"
     ++ [ "" ]
-    ++ (map remoteToStr p.remotes));
+    ++ (if isList p.remote then map remoteToStr p.remote else [ (remoteToStr p.remote) ]));
 
   tagToStr = t: concatStringsSep "\n" ([ "name = ${quote t.name}" ]
     ++ nullOrEmpty t.path "path = ${quote t.path}"
@@ -108,10 +113,10 @@ let
         description = "Name of project";
       };
 
-      remotes = mkOption {
-        type = types.nonEmptyListOf remoteConfig;
+      remote = mkOption {
+        type = with types; either (nonEmptyListOf remoteConfig) str;
         default = [ ];
-        description = "List of remotes";
+        description = "Either a list of remotes or a string for 'origin' url";
       };
 
       tags = mkOption {
@@ -220,7 +225,6 @@ in
     xdg.configFile =
       let
         projectFiles = writeFiles "repo/repository" projectToStr cfg.projects;
-        # tagFiles = writeFiles "repo/tag" tagToStr cfg.tags;
         tagFiles = writeFiles "repo/tag" tagToStr cfg.tags;
       in
       projectFiles // tagFiles // {
