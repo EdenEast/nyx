@@ -38,7 +38,7 @@
         system:
         import inputs.nixpkgs {
           inherit system;
-          config.allowUnfree = true;
+          config = import ./nix/config.nix;
           overlays = self.overlays."${system}";
         }
       );
