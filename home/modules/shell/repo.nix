@@ -231,7 +231,7 @@ in
       in
       projectFiles // tagFiles // {
         "repo/config.toml".text = concatStringsSep "\n" (
-          [ "root = ${toString cfg.root}" ]
+          [ "root = ${quote (toString cfg.root)}" ]
           ++ nullOrEmpty cfg.cli "cli = ${strFromBool cfg.cli}"
           ++ nullOrEmpty cfg.defaultHost "default_host = ${quote cfg.defaultHost}"
           ++ nullOrEmpty cfg.defaultScheme "default_scheme = ${quote cfg.defaultScheme}"
