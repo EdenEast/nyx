@@ -15,16 +15,16 @@ let
     url = "${r.url}"
   '';
 
-  projectToStr = p: concatStringsSep "\n" ([ "name = ${p.name}" ]
+  projectToStr = p: concatStringsSep "\n" ([ "name = ${quote p.name}" ]
     ++ nullOrEmpty p.path "path = ${quote p.path}"
     ++ nullOrEmpty p.clone "clone = ${quote p.clone}"
     ++ nullOrEmpty p.work "work = ${quote p.work}"
     ++ nullOrEmpty p.cli "cli = ${toString p.cli}"
     ++ nullOrEmpty p.tags "tags = [${concatStringsSep ", " (map (x: quote x) p.tags)}]"
-    ++ [""]
+    ++ [ "" ]
     ++ (map remoteToStr p.remotes));
 
-  tagToStr = t: concatStringsSep "\n" (["name = ${t.name}"]
+  tagToStr = t: concatStringsSep "\n" ([ "name = ${quote t.name}" ]
     ++ nullOrEmpty t.path "path = ${quote t.path}"
     ++ nullOrEmpty t.clone "clone = ${quote t.clone}"
     ++ nullOrEmpty t.work "work = ${quote t.work}"
@@ -32,13 +32,17 @@ let
     ++ nullOrEmpty t.priority "priority = ${toString t.priority}"
   );
 
-  writeFiles = prefix: f: list:
-    listToAttrs (map
-      (p: {
-        name = "${prefix}/${p.name}";
-        value = { text = f p; };
-      })
-      list);
+  writeFiles = prefix: f: set:
+    mapAttrs'
+      (name: value:
+        let
+          nameValue = if value.name != null then value.name else name;
+        in
+        nameValuePair ("${prefix}/${name}") ({
+          text = f ((filterAttrs (n: v: n != "name") value) // { name = nameValue; });
+        })
+      )
+      set;
 
   remoteConfig = types.submodule {
     options = {
@@ -59,8 +63,8 @@ let
   tagConfig = types.submodule {
     options = {
       name = mkOption {
-        type = types.nonEmptyStr;
-        default = "";
+        type = types.nullOr types.str;
+        default = null;
         description = "Name of tag";
       };
 
@@ -99,8 +103,8 @@ let
   projectConfig = types.submodule {
     options = {
       name = mkOption {
-        type = types.nonEmptyStr;
-        default = "";
+        type = types.nullOr types.str;
+        default = null;
         description = "Name of project";
       };
 
@@ -148,15 +152,15 @@ in
     enable = mkEnableOption "repo configuration";
 
     projects = mkOption {
-      type = with types; listOf projectConfig;
-      default = [ ];
-      description = "List of projects";
+      type = with types; attrsOf projectConfig;
+      default = { };
+      description = "Set of projects";
     };
 
     tags = mkOption {
-      type = with types; listOf tagConfig;
-      default = [ ];
-      description = "List of tags";
+      type = with types; attrsOf tagConfig;
+      default = { };
+      description = "Set of tags";
     };
 
     root = mkOption {
@@ -216,6 +220,7 @@ in
     xdg.configFile =
       let
         projectFiles = writeFiles "repo/repository" projectToStr cfg.projects;
+        # tagFiles = writeFiles "repo/tag" tagToStr cfg.tags;
         tagFiles = writeFiles "repo/tag" tagToStr cfg.tags;
       in
       projectFiles // tagFiles // {
