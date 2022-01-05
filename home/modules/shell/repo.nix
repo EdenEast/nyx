@@ -45,7 +45,7 @@ let
         let
           nameValue = if value.name != null then value.name else name;
         in
-        nameValuePair ("${prefix}/${name}") ({
+        nameValuePair ("${prefix}/${name}.toml") ({
           text = f ((filterAttrs (n: v: n != "name") value) // { name = nameValue; });
         })
       )
