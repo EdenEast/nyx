@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -46,6 +46,7 @@
       git.enable = true;
       lf.enable = true;
       neovim.enable = true;
+      nushell.enable = true;
       starship.enable = true;
       tmux.enable = true;
       xdg.enable = true;
@@ -56,6 +57,12 @@
         enable = true;
         publicKey = ../../../../config/.gnupg/public.key;
         publicKeyName = "personal.key";
+      };
+
+      repo = {
+        enable = true;
+        cli = true;
+        root = "${config.home.homeDirectory}/dev";
       };
     };
   };
