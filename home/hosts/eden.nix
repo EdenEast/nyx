@@ -10,6 +10,12 @@
           enable = true;
           publicKey = ../../config/.gnupg/public.key;
         };
+        repo = let r = import ../common/repo.nix; in
+          {
+            enable = true;
+            projects = r.projects;
+            tags = r.tags;
+          };
       };
     };
     profiles = {
