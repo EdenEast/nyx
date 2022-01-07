@@ -13,7 +13,7 @@
           enable = true;
           publicKey = ../../../../config/.gnupg/public.key;
         };
-        repo = let r = import ../common/repo.nix; in
+        repo = let r = import ../../../../home/common/repo.nix; in
           {
             enable = true;
             projects = r.projects;
