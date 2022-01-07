@@ -46,7 +46,7 @@ require("nvim-treesitter.configs").setup({
     "comment",
     "cpp",
     "go",
-    "haskell",
+    -- "haskell",
     "javascript",
     "json",
     "lua",
