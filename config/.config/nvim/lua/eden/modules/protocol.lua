@@ -11,7 +11,6 @@ M.plugins = {
     end,
     requires = {
       "williamboman/nvim-lsp-installer",
-      "nvim-lua/lsp_extensions.nvim",
       "ray-x/lsp_signature.nvim",
       "nvim-lua/lsp-status.nvim",
     },
