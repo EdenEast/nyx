@@ -41,13 +41,13 @@ M.set = function(client, bufnr)
       {
         "[e",
         function()
-          vim.lsp.diagnostic.goto_prev()
+          vim.diagnostic.goto_prev()
         end,
       },
       {
         "]e",
         function()
-          vim.lsp.diagnostic.goto_next()
+          vim.diagnostic.goto_next()
         end,
       },
       { "<leader>ce", [[<cmd>Telescope lsp_workspace_diagnostics<cr>]] },
