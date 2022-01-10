@@ -71,6 +71,13 @@ keymap({
       end,
     },
 
+    {
+      "<leader>bm",
+      function()
+        require("eden.fn.bufmax").toggle()
+      end,
+    },
+
     -- Jump list -------------------------------------------------------------------
     -- Because currently in alacritty we cannot tell the difference between <tab>
     -- and <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
