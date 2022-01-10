@@ -27,6 +27,22 @@ jobs:
             target: theman
 
     steps:
+      - name: Create nix mount point
+        if: contains(matrix.os, 'ubuntu')
+        run: sudo mkdir /nix
+
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@v4
+        if: contains(matrix.os, 'ubuntu')
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-haskell: "true"
+          build-mount-path: "/nix"
+          overprovision-lvm: "true"
+
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
