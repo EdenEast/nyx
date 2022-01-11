@@ -26,6 +26,10 @@
   nyx.modules = {
     theme.name = "duskfox";
     app = {
+      alacritty = {
+        enable = true;
+        package = null;
+      };
       kitty = {
         enable = true;
         fontSize = 14;
