@@ -102,6 +102,6 @@ for k, v in pairs(servers) do
 end
 
 -- Setup any installed servers that are not in the server list
-for _, server in ipairs(installed) do
-  server:setup()
+for _, server in pairs(installed) do
+  server:setup({})
 end
