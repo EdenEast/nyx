@@ -7,6 +7,11 @@ in
 {
   options.nyx.modules.app.alacritty = {
     enable = mkEnableOption "alacritty configuration";
+    package = mkOption {
+      description = "Package for alacritty";
+      type = with types; nullOr package;
+      default = pkgs.alacritty;
+    };
     fontSize = mkOption {
       description = "Override font size";
       type = with types; nullOr int;
@@ -15,7 +20,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.alacritty ];
+    home.packages = mkIf (cfg.package != null) [ cfg.package ];
     xdg.configFile."alacritty".source = ../../../config/.config/alacritty;
 
     xdg.dataFile."alacritty/nyx-config.yml".text =
