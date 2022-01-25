@@ -41,7 +41,8 @@ function HandleSymlink([string]$path, [string]$target) {
 
 # Get the root directory of nyx
 $NyxRootDir = (get-item $PSScriptRoot).parent.parent.parent.FullName
-$WinDir = [IO.Path]::Combine($NyxRootDir, "extras", "scripts", "windows")
+$WinDir = [IO.Path]::Combine($NyxRootDir, "bin", "windows")
+
 
 $ConfigHome = Join-Path -Path $HOME -ChildPath .config
 $LocalHome = Join-Path -Path $HOME -ChildPath .local
@@ -71,7 +72,7 @@ $AutohotkeyTarget = [IO.Path]::Combine($WinDir, "caps-to-ctrl+esc.ahk")
 HandleSymlink $AutohotkeySource $AutohotkeyTarget
 
 # KMonad settings on startup
-$KMonadSource = [IO.Path]::Combine($StartupDir, "kmonad-startup.ps1")
-$KMonadTarget = [IO.Path]::Combine($WinDir, "kmonad-startup.ps1")
-HandleSymlink $KMonadSource $KMonadTarget
+# $KMonadSource = [IO.Path]::Combine($StartupDir, "kmonad-startup.ps1")
+# $KMonadTarget = [IO.Path]::Combine($WinDir, "kmonad-startup.ps1")
+# HandleSymlink $KMonadSource $KMonadTarget
 
