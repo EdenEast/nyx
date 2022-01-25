@@ -41,7 +41,7 @@ function HandleSymlink([string]$path, [string]$target) {
 
 # Get the root directory of nyx
 $NyxRootDir = (get-item $PSScriptRoot).parent.parent.parent.FullName
-$WinDir = [IO.Path]::Combine($NyxRootDir, "bin", "windows")
+$WinDir = [IO.Path]::Combine($NyxRootDir, "windows", "bin")
 
 
 $ConfigHome = Join-Path -Path $HOME -ChildPath .config
