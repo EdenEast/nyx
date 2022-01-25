@@ -15,7 +15,7 @@ M.set = function(client, bufnr)
         function()
           vim.lsp.buf.signature_help()
         end,
-        mde = "i",
+        mode = "i",
       },
       { "gd", [[<cmd>Telescope lsp_definitions<cr>]] },
       { "gr", [[<cmd>Telescope lsp_references<cr>]] },
