@@ -78,8 +78,7 @@ M.new = function(...)
   for _, r in ipairs(resolved) do
     -- TODO: Validate that there is a lhs and rhs
     if r.buffer then
-      local bufnr = (r.buffer == 0) and 0 or r.buffer
-      vim.api.nvim_buf_set_keymap(bufnr, r.mode, r.prefix, r.rhs, r.opts)
+      vim.api.nvim_buf_set_keymap(0, r.mode, r.prefix, r.rhs, r.opts)
     else
       vim.api.nvim_set_keymap(r.mode, r.prefix, r.rhs, r.opts)
     end
