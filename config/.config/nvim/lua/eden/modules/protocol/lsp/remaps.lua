@@ -54,7 +54,13 @@ M.set = function(client, bufnr)
       {
         "<leader>cf",
         function()
-          vim.lsp.buf.formatting()
+          require("eden.modules.protocol.lsp.extensions.format").format()
+        end,
+      },
+      {
+        "<leader>tcf",
+        function()
+          require("eden.modules.protocol.lsp.extensions.format").toggle_format()
         end,
       },
       {
