@@ -27,6 +27,7 @@
     fenix.inputs.nixpkgs.follows = "nixpkgs";
 
     eww.url = "github:elkowar/eww";
+    eww.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, ... }@inputs:
