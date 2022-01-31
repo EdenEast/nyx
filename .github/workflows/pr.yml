@@ -79,7 +79,7 @@ jobs:
       - name: Fetch current main and build it in a profile
         env:
           TARGET: "github:EdenEast/nyx#top.${{ matrix.target }}"
-        run: nix build $TARGET -v --log-format raw --profile ./profile
+        run: nix build $TARGET -v --log-format raw --profile ./profile --show-trace
 
       - name: Apply pr to profile
         env:
