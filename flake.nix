@@ -26,7 +26,7 @@
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
 
-    eww.url = "github:elkowar/eww";
+    # eww.url = "github:elkowar/eww";
   };
 
   outputs = { self, ... }@inputs:
@@ -60,7 +60,7 @@
           (nur.overlay)
           (neovim-nightly.overlay)
           (fenix.overlay)
-          (_:_: { inherit (eww.packages."${system}") eww; })
+          # (_:_: { inherit (eww.packages."${system}") eww; })
         ] ++ ovs
       );
 
