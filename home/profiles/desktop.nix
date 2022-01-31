@@ -27,7 +27,7 @@ in
       networkmanagerapplet
       synergy
       xdotool
-      eww
+      # eww
       deadhead-font
     ] ++ optionals cfg.laptop laptopPkgs;
 
