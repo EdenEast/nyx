@@ -24,7 +24,7 @@
   programs.man.enable = true;
 
   nyx.modules = {
-    theme.name = "duskfox";
+    # theme.name = "duskfox";
     app = {
       alacritty = {
         enable = true;
