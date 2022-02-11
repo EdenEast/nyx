@@ -48,6 +48,12 @@ map("<leader>fs", "lsp_workspace_symbols")
 map("<leader>fR", "reloader")
 map("<leader>fB", "builtin")
 
+vim.api.nvim_exec([[
+    augroup telescope
+        autocmd!
+        autocmd FileType TelescopePrompt inoremap <buffer> <silent> <C-r> <C-r>
+    augroup END]], false)
+
 -- edn.keymap("<leader>f", {
 --   { "f", [[<cmd>Telescope find_files<cr>]] },
 --   { "d", [[<cmd>Telescope git_files<cr>]] },
