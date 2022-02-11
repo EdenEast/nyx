@@ -48,6 +48,8 @@ TARGETS['nvim']="$HOME/.config/nvim"
 SOURCES['nvim']="$NYX_ROOT/config/.config/nvim"
 TARGETS['awesome']="$HOME/.config/awesome"
 SOURCES['awesome']="$NYX_ROOT/config/.config/awesome"
+TARGETS['alacritty']="$HOME/.config/alacritty"
+SOURCES['alacritty']="$NYX_ROOT/config/.config/alacritty"
 TARGETS['wezterm']="$HOME/.config/wezterm"
 SOURCES['wezterm']="$NYX_ROOT/config/.config/wezterm"
 
