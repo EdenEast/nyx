@@ -22,18 +22,23 @@ in
     networking.networkmanager.enable = true;
 
     nix = {
-      inherit (nixConf) binaryCaches binaryCachePublicKeys;
+      # inherit (nixConf) binaryCaches binaryCachePublicKeys;
 
-      # Save space by hardlinking store files
-      autoOptimiseStore = true;
+      settings = {
+        substituters = nixConf.binaryCaches;
+        trusted-public-keys = nixConf.binaryCachePublicKeys;
+
+        # Save space by hardlinking store files
+        auto-optimise-store = true;
+
+        allowed-users = [ "root" ];
+      };
 
       gc = {
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 30d";
       };
-
-      allowedUsers = [ "root" ];
     };
 
     time.timeZone = "America/Toronto";

@@ -55,7 +55,7 @@ in
         mutableUsers = false;
       };
 
-      nix.trustedUsers = [ "${cfg.name}" ];
+      nix.settings.trusted-users = [ "${cfg.name}" ];
     }
   ];
 }
