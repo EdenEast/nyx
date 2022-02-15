@@ -54,6 +54,8 @@ function main() {
 
   [ -n "$HELP" ] && help
 
+  validate-cache-files
+
   $TA_COMMAND "${TA_ARGS[@]}"
   exit 0
 }
@@ -64,9 +66,9 @@ function add() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: tat add [DIRECTORY]
+USAGE: ta add [DIRECTORY]
 
-Add a directory to tat's project list. If no directory is passed then it
+Add a directory to ta's project list. If no directory is passed then it
 will default to the current directory.
 
 OPTIONS:
@@ -91,19 +93,20 @@ EOF
 
   local dir_to_add
   if [[ -n ${args[0]} ]]; then
-    dir_to_add="$(realpath ${args[0]})"
+    dir_to_add="$(realpath "${args[0]}")"
   else
     dir_to_add="$(pwd)"
   fi
 
-  name=$(basename $dir_to_add)
+  local name
+  name=$(basename "$dir_to_add")
 
   mkdir -p "$CACHE_HOME"
-  [[ ! -f $PROJECTS_PATH ]] && touch $PROJECTS_PATH
+  [[ ! -f $PROJECTS_PATH ]] && touch "$PROJECTS_PATH"
 
   # Check if this is already added
-  if [[ -z $(grep -e "^$name" $PROJECTS_PATH) ]]; then
-    echo "$name $dir_to_add" >>$PROJECTS_PATH
+  if ! grep -q "^$name" "$PROJECTS_PATH"; then
+    echo "$name $dir_to_add" >>"$PROJECTS_PATH"
   fi
 }
 
@@ -111,7 +114,7 @@ function attach() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: tat attach [NAME]
+USAGE: ta attach [NAME]
 
 Attach to an existing tmux session
 
@@ -135,13 +138,13 @@ EOF
     exit 1
   }
 
-  sessions=($(tmux list-sessions -F "#{session_name}"))
+  sessions=("$(tmux list-sessions -F "#{session_name}")")
 
   if [[ ${#sessions[@]} -eq 1 ]]; then
-    attach-session ${sessions[0]}
+    attach-tmux-session "${sessions[0]}"
   else
-    name=$(write-list ${sessions[@]} | fzf-down)
-    attach-session $name
+    name="$(write-list "${sessions[@]}" | fzf-down)"
+    attach-tmux-session "$name"
   fi
 }
 
@@ -149,7 +152,7 @@ function kill() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: tat kill
+USAGE: ta kill
 
 Kill a running session
 
@@ -173,9 +176,9 @@ EOF
     exit 1
   }
 
-  sessions=($(tmux list-sessions -F "#{session_name}"))
-  names=($(write-list ${sessions[@]} | fzf-down -m))
-  for name in ${names[@]}; do
+  sessions=("$(tmux list-sessions -F "#{session_name}")")
+  names=("$(write-list "${sessions[@]}" | fzf-down -m)")
+  for name in "${names[@]}"; do
     tmux kill-session -t "$name"
     echo "Killed session: $name"
   done
@@ -185,9 +188,9 @@ function list() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: tat list
+USAGE: ta list
 
-List project paths that have been registered to tat
+List project paths that have been registered to ta
 
 OPTIONS:
   -h, --help      Show help message
@@ -212,23 +215,26 @@ EOF
   declare -A list
 
   while IFS= read -r line; do
-    name="$(echo $line | awk '{print $1}')"
-    path="$(echo $line | awk '{print $2}')"
+    name="$(echo "$line" | awk '{print $1}')"
+    path="$(echo "$line" | awk '{print $2}')"
     list[$name]="$path"
-  done <$PROJECTS_PATH
+  done <"$PROJECTS_PATH"
 
   local max=0
   for name in "${!list[@]}"; do
-    local count=$(echo $name | wc -m)
+    # local count=$(echo "$name" | wc -m)
+    local count="${#name}"
     if [[ $count -gt $max ]]; then
       max=$count
     fi
   done
 
-  local pad=$(printf '%0.1s' " "{1..60})
+  local pad
+  pad=$(printf '%0.1s' " "{1..60})
+
   for name in "${!list[@]}"; do
-    local count=$(echo $name | wc -m)
-    local padding=$((max - count))
+    # local count=$(echo $name | wc -m)
+    local count="${#name}"
     printf '%s ' "$name"
     printf '%*.*s' 0 $((max - count)) "$pad"
     printf '%s\n' "${list[$name]}"
@@ -239,9 +245,9 @@ function remove() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: tat remove [NAME]
+USAGE: ta remove [NAME]
 
-Remove registered project from tat
+Remove registered project from ta
 
 OPTIONS:
   -i, --interactive  Interactivly select project names
@@ -272,36 +278,41 @@ EOF
 
   declare -A list
   while IFS= read -r line; do
-    name="$(echo $line)"
-    path="$(echo $line)"
+    name="$(echo "$line" | awk '{print $1}')"
+    path="$(echo "$line" | awk '{print $2}')"
     list[$name]="$path"
-  done <$PROJECTS_PATH
+  done <"$PROJECTS_PATH"
 
   if [[ -n $do_interactive ]] && [[ $do_interactive == "true" ]]; then
-    echo "interactive mode $do_interactive"
+    debug "interactive mode $do_interactive"
+    # shellcheck disable=SC2207
     names=($(write-names | fzf-down -m))
     do_interactive=false
-    remove ${names[@]} ${args[0]}
+    remove "${names[@]}" "${args[0]}"
     exit 0
   fi
 
-  if [[ -z ${args[@]} ]]; then
+  if [[ -z ${args[*]} ]]; then
     echo "one"
     path=$(pwd)
-    name=$(basename $path)
+    name=$(basename "$path")
 
-    local before="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
-    remove-line $name
-    local after="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
+    local before
+    local after
+    before="$(openssl dgst -sha512 "$PROJECTS_PATH" | awk '{print $NF}')"
+    remove-line "$name"
+    after="$(openssl dgst -sha512 "$PROJECTS_PATH" | awk '{print $NF}')"
 
     if [[ $before == "$after" ]]; then
       echo "Failed to find and remove: $name"
     fi
   else
     for name in "${args[@]}"; do
-      local before="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
-      remove-line $name
-      local after="$(openssl dgst -sha512 $PROJECTS_PATH | awk '{print $NF}')"
+      local before
+      local after
+      before="$(openssl dgst -sha512 "$PROJECTS_PATH" | awk '{print $NF}')"
+      remove-line "$name"
+      after="$(openssl dgst -sha512 "$PROJECTS_PATH" | awk '{print $NF}')"
 
       if [[ $before == "$after" ]]; then
         echo "Failed to find and remove: $name"
@@ -354,24 +365,24 @@ function default() {
 
   declare -A list
   while IFS= read -r line; do
-    name="$(echo $line | awk '{print $1}')"
-    path="$(echo $line | awk '{print $2}')"
+    name="$(echo "$line" | awk '{print $1}')"
+    path="$(echo "$line" | awk '{print $2}')"
     list[$name]="$path"
-  done <$PROJECTS_PATH
+  done <"$PROJECTS_PATH"
 
   local name path
   if [[ ${#args[@]} -gt 0 ]]; then
     if [[ ${args[0]} == '.' ]]; then
-      name=$(basename $(pwd))
+      name="$(basename "$(pwd)")"
     else
-      results=($(write-names | grep ${args[0]}))
+      results=("$(write-names | grep "${args[0]}")")
 
-      if [[ -z ${results[@]} ]]; then
+      if [[ -z ${results[*]} ]]; then
         name=$(write-names | fzf-down)
       elif [[ ${#results[@]} -gt 1 ]]; then
-        name=$(write-list ${results[@]} | fzf-down)
+        name=$(write-list "${results[@]}" | fzf-down)
       else
-        name="${results[@]}"
+        name="${results[0]}"
       fi
     fi
   else
@@ -385,10 +396,10 @@ function default() {
   fi
 
   # Check if tmux session exists
-  if [[ $(tmux has-session -t $name &>/dev/null) ]]; then
-    attach-session $name
+  if [[ $(tmux has-session -t "$name" &>/dev/null) ]]; then
+    attach-tmux-session "$name"
   else
-    create-session $name $path
+    create-tmux-session "$name" "$path"
   fi
 }
 
@@ -396,43 +407,46 @@ function default() {
 
 function write-names() {
   while IFS= read -r line; do
-    name="$(echo $line | awk '{print $1}')"
-    echo $name
-  done <$PROJECTS_PATH
+    name="$(echo "$line" | awk '{print $1}')"
+    echo "$name"
+  done <"$PROJECTS_PATH"
 }
 
-function create-session() { # (session-name path)
+function create-tmux-session() { # (session-name path)
   (
     cd "$2"
 
     # Make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
     # (Inspired by: https://gist.github.com/lann/6771001)
     local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
+    # shellcheck disable=SC2166
     if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
       ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
     fi
 
     # Check for .tmux file (poor man's Tmuxinator).
     if [ -x .tmux ]; then
-      local DIGEST="$(openssl dgst -sha512 .tmux)"
-      [[ ! -f $DIGEST_PATH ]] && touch $DIGEST_PATH
+      local DIGEST
+      DIGEST="$(openssl dgst -sha512 .tmux)"
+      [[ ! -f $DIGEST_PATH ]] && touch "$DIGEST_PATH"
 
       # Prompt the first time we see a given .tmux file before running it.
-      if ! grep -q "$DIGEST" $DIGEST_PATH 2>/dev/null; then
+      if ! grep -q "$DIGEST" "$DIGEST_PATH" 2>/dev/null; then
         cat .tmux
         echo
 
         # I only care about zsh and bash
         # https://stackoverflow.com/a/11097703
-        local current_shell="$(ps -p $$ -ocomm=)"
+        local current_shell
+        current_shell="$(ps -p $$ -ocomm=)"
         if [[ $current_shell == "bash" ]]; then
-          read -n 1 -p "REPLY?Trust and execute [y/N]: "
+          read -r -n 1 -p "REPLY?Trust and execute [y/N]: "
         elif [[ $current_shell == "zsh" ]]; then
-          read -q "REPLY?Trust and execute [y/N]: "
+          read -r -q "REPLY?Trust and execute [y/N]: "
         fi
 
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-          echo "$DIGEST" >>$DIGEST_PATH
+          echo "$DIGEST" >>"$DIGEST_PATH"
           env SSH_AUTH_SOCK=$SOCK_SYMLINK ./.tmux
         fi
       else
@@ -440,20 +454,20 @@ function create-session() { # (session-name path)
       fi
     else
       env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$1" -d
-      attach-session "$1"
+      attach-tmux-session "$1"
     fi
   )
 }
 
-function switch-session() { # (session-name)
+function switch-tmux-session() { # (session-name)
   tmux switch-client -t "$1"
 }
 
-function attach-session() { # session-name
+function attach-tmux-session() { # session-name
   if [[ -z $TMUX ]]; then
     tmux attach-session -t "$1"
   else
-    switch-session "$1"
+    switch-tmux-session "$1"
   fi
 }
 
@@ -470,10 +484,24 @@ function write-list() {
 
 function remove-line() {
   # sed -i "/^$1\\s/d" $PROJECTS_PATH
-  grep -v "^$1\\s" >$PROJECTS_PATH
+  grep -v "^$1\\s" >"$PROJECTS_PATH"
+}
+
+function validate-cache-files() {
+  mkdir -p "$CACHE_HOME"
+  [[ -f "$PROJECTS_PATH" ]] || touch "$PROJECTS_PATH"
+}
+
+function debug() {
+  if [ -n "$DEBUG" ]; then echo_e "${BLU}[DEBUG]: $*${RST}"; fi
+}
+
+function echo_e() {
+  IFS=' '
+  printf '%b\n' "$*"
 }
 
 # --- Execute main process ----------------------------------------------------
-main $*
+main "$@"
 
 # vim: et sw=2 ts=2 sts=2
