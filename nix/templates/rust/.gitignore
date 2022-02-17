@@ -135,4 +135,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/rust,vim,visualstudiocode,windows,macos,linux,direnv
 
 # nix build result link to store
-result/
+result
