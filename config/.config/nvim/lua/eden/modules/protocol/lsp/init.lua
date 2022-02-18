@@ -9,7 +9,8 @@ require(premod .. "cosmetics")
 require(premod .. "handlers")
 
 local status = require("eden.modules.protocol.lsp.status")
-status.activate()
+status.activate(false)
+require("fidget").setup({text = { spinner = "dots_negative" }})
 
 vim.opt.updatetime = 300
 

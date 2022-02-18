@@ -18,7 +18,7 @@ status.select_symbol = function(cursor_pos, symbol)
   end
 end
 
-status.activate = function()
+status.activate = function(register)
   nvim_status.config({
     select_symbol = status.select_symbol,
     kind_labels = require("eden.modules.protocol.lsp.kind").icons,
@@ -33,7 +33,10 @@ status.activate = function()
     diagnostics = vim.g.current_statusline == "lualine",
   })
 
-  nvim_status.register_progress()
+  local should_register = register and register or true
+  if should_register then
+    nvim_status.register_progress()
+  end
 end
 
 status.on_attach = function(client)
