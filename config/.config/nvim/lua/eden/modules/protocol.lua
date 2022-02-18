@@ -13,6 +13,7 @@ M.plugins = {
       "williamboman/nvim-lsp-installer",
       "ray-x/lsp_signature.nvim",
       "nvim-lua/lsp-status.nvim",
+      "j-hui/fidget.nvim",
     },
   },
 
