@@ -29,9 +29,11 @@ end
 local function fromhl(hl)
   local result = {}
   local list = vim.api.nvim_get_hl_by_name(hl, true)
-  for k, v in pairs(list) do
-    local name = k == "background" and "bg" or "fg"
-    result[name] = string.format("#%06x", v)
+  if list.foreground then
+    result.fg = string.format("#%06x", list.foreground)
+  end
+  if list.background then
+    result.bg = string.format("#%06x", list.background)
   end
   return result
 end
