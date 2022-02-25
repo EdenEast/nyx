@@ -1,3 +1,5 @@
+local fmt = string.format
+
 -- Ui highlight color groups
 --
 -- This file contains the highlight group definitions for both:
@@ -13,16 +15,20 @@
 
 local M = {}
 
-local function highlight(group, color)
-  local style = color.style and "gui=" .. color.style or "gui=NONE"
-  local fg = color.fg and "guifg=" .. color.fg or "guifg=NONE"
-  local bg = color.bg and "guibg=" .. color.bg or "guibg=NONE"
-  local sp = color.sp and "guisp=" .. color.sp or ""
-  local hl = "highlight " .. group .. " " .. style .. " " .. fg .. " " .. bg .. " " .. sp
-  vim.cmd(hl)
-
-  if color.link then
-    vim.cmd("highlight! link " .. group .. " " .. color.link)
+local function highlight(group, opts)
+  if opts.link then
+    vim.cmd(fmt("highlight%s link %s %s", opts.force and "!" or "", group, opts.link))
+  else
+    vim.cmd(
+      fmt(
+        "highlight %s guifg=%s, guibg=%s gui=%s guisp=%s",
+        group,
+        opts.fg or "NONE",
+        opts.bg or "NONE",
+        opts.style or "NONE",
+        opts.sp or "NONE"
+      )
+    )
   end
 end
 
@@ -30,10 +36,10 @@ local function fromhl(hl)
   local result = {}
   local list = vim.api.nvim_get_hl_by_name(hl, true)
   if list.foreground then
-    result.fg = string.format("#%06x", list.foreground)
+    result.fg = fmt("#%06x", list.foreground)
   end
   if list.background then
-    result.bg = string.format("#%06x", list.background)
+    result.bg = fmt("#%06x", list.background)
   end
   return result
 end
@@ -45,9 +51,9 @@ end
 
 local function colors_from_theme()
   return {
-    bg = fromhl("StatusLine").bg, -- or "#2E3440",
-    alt = fromhl("CursorLine").bg, -- or "#475062",
-    fg = fromhl("StatusLine").fg, -- or "#8FBCBB",
+    bg = fromhl("StatusLine").bg or "#2E3440",
+    alt = fromhl("CursorLine").bg or "#475062",
+    fg = fromhl("StatusLine").fg or "#8FBCBB",
     hint = fromhl("DiagnosticHint").fg or "#5E81AC",
     info = fromhl("DiagnosticInfo").fg or "#81A1C1",
     warn = fromhl("DiagnosticWarn").fg or "#EBCB8B",
