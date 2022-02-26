@@ -17,18 +17,17 @@ local M = {}
 
 local function highlight(group, opts)
   if opts.link then
-    vim.cmd(fmt("highlight%s link %s %s", opts.force and "!" or "", group, opts.link))
+    vim.cmd(fmt("highlight! link %s %s", group, opts.link))
   else
-    vim.cmd(
-      fmt(
-        "highlight %s guifg=%s, guibg=%s gui=%s guisp=%s",
-        group,
-        opts.fg or "NONE",
-        opts.bg or "NONE",
-        opts.style or "NONE",
-        opts.sp or "NONE"
-      )
+    local cmd = fmt(
+      "highlight %s gui=%s guifg=%s guibg=%s guisp=%s",
+      group,
+      opts.style or "NONE",
+      opts.fg or "NONE",
+      opts.bg or "NONE",
+      opts.sp or "NONE"
     )
+    vim.cmd(cmd)
   end
 end
 
