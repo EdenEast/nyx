@@ -23,6 +23,16 @@ _G.P = function(...)
   return ...
 end
 
+-- Debug print with vim.inspect and yank the printed results into a register.
+-- The default register is `*`
+_G.Y = function(value, reg)
+  reg = reg or [[*]]
+  local inspect = vim.inspect(value)
+  vim.fn.setreg(reg, inspect, "l")
+  print(inspect)
+  return value
+end
+
 -- Debugging module by reloading it. Convenience wrapper
 -- around `eden.core.reload`.
 _G.R = function(name)
