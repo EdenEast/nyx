@@ -52,7 +52,7 @@ local c = {
     provider = { name = "file_info", opts = { type = "relative" } },
     hl = "FlnAlt",
     left_sep = { str = " ", hl = "FlnAltSep" },
-    right_sep = { str = "", hl = "FlnAltSep" },
+    right_sep = { str = " ", hl = "FlnAltSep" },
   },
   file_enc = {
     provider = function()
