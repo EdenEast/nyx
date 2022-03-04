@@ -1,7 +1,8 @@
 -- `minimal_init.lua` used for reproducing neovim issues
 -- Open with `nvim --clean -u minimal_init.lua`
 
-local install_path = "/tmp/nvim/site/pack/packer/start/packer.nvim"
+local root_tmp = vim.fn.has("win32") == 1 and os.getenv("TEMP") or "/tmp"
+local install_path = root_tmp .. "/nvim/site/pack/packer/start/packer.nvim"
 local compile_path = install_path .. "/plugin/packer_compiled.lua"
 vim.opt.packpath = "/tmp/nvim/site"
 
@@ -9,7 +10,7 @@ local function load_plugins()
   local packer = require("packer")
   local use = packer.use
   packer.reset()
-  packer.init({ compile_path = compile_path, package_root = "/tmp/nvim/site/pack" })
+  packer.init({ compile_path = compile_path, package_root = root_tmp .. "/nvim/site/pack" })
 
   use("wbthomason/packer.nvim")
   -- ADD PLUGINS THAT ARE _NECESSARY_ FOR REPRODUCING THE ISSUE
