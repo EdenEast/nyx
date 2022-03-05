@@ -32,8 +32,8 @@
         # ----------------------------------------------------------------------
         # TODO: Pick a toolchain to support
         toolchain = fenix.packages."${system}".stable;
-        # toolchain = fenix.packages."$system".latest;
-        # toolchain = fenix.packages."$system".fromToolchainFile { dir = ./.; };
+        # toolchain = fenix.packages."${system}".latest;
+        # toolchain = fenix.packages."${system}".fromToolchainFile { dir = ./.; };
         # ----------------------------------------------------------------------
 
         naersk-lib = naersk.lib."${system}".override {
@@ -67,9 +67,11 @@
             clippy-preview
 
             # Cargo extensions
+            cargo-bloat
             cargo-edit
             cargo-limit
             cargo-watch
+            cargo-whatfeatures
 
             # ------------------------------------------------------------------
             # These might be required.
