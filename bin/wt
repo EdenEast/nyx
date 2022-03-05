@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(clone)$"
+INTERNAL_COMMANDS="^(add|clone|help|remove|root|source|switch)$"
 
 function main() {
   WT_COMMAND="help"
@@ -43,6 +43,61 @@ function main() {
 
 # --- Commands ----------------------------------------------------------------
 
+function cmd_add() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+Add a new worktree
+
+USAGE:
+  wt add [FLAGS] [name] [path]
+
+FLAGS:
+  -h, --help            Show help message
+
+ARGS:
+  <name>                The name of the branch
+  <path>                The name of the new directory to clone into
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local root=$(get_root_dir)
+
+  local name
+  local path
+  name="${args[0]}"
+  path="${args[1]}"
+
+  if [ -z "$name" ]; then
+    name=$(git ls-remote --heads ./. | awk '{print $2}' | cut -c 12- | fzf-down)
+  fi
+
+  if [ -z "$path" ]; then
+    path="$name"
+  fi
+
+  local full="$root/$path"
+
+  if [ ! -e "$full" ]; then
+    echo git worktree add "$full" "$name"
+  fi
+}
+
 function cmd_clone() {
   set +e
   local help_msg
@@ -53,7 +108,7 @@ USAGE:
   wt clone [FLAGS] [OPTIONS] <repository> [path]
 
 FLAGS:
-  -h, --help      Show help message
+  -h, --help            Show help message
 
 OPTIONS:
   -b, --branch <name>   Initial branch to clone to
@@ -138,7 +193,13 @@ Utility script to work with git worktree's
 USAGE: wt <COMMAND> [OPTIONS...]
 
 COMMANDS:
-  clone    - Clone a repository into a new directory
+  add            - Add a new worktree
+  clone          - Clone a repository into a new directory
+  help           - Utility script to work with git worktree's
+  remove         - Remove worktree
+  root           - Return the root of the repository
+  source         - Output wt wrapper function to be source in rc file
+  switch         - Switch directory to a different worktree
 
 OPTIONS:
   -v, --verbose  - Output verbose information
@@ -148,6 +209,176 @@ EOF
 
   printf "%s\n" "$msg"
   exit 1
+}
+
+function cmd_remove() {
+  set +e
+  local msg
+  IFS='' read -r -d '' msg <<EOF
+Remove worktree
+
+USAGE: wt remove [path]
+
+OPTIONS:
+  -v, --verbose  - Output verbose information
+  -h, --help     - Output help information
+  -f, --force    - Force removal of worktree
+
+ARGS:
+  <path>          Fuzzy name of switch target
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -f | --force)
+        force=true
+        shift
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local path
+  path="${args[0]}"
+
+  if [ -z "$name" ]; then
+    path=$(git worktree list | tail -2 | fzf-down | awk '{print $1}')
+  fi
+
+  git worktree remove $path
+}
+
+function cmd_root() {
+  set +e
+  local msg
+  IFS='' read -r -d '' msg <<EOF
+Return the root of the repository
+
+USAGE: wt root
+
+OPTIONS:
+  -v, --verbose  - Output verbose information
+  -h, --help     - Output help information
+EOF
+  set -e
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  echo $(get_root_dir)
+}
+
+function cmd_source() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+Output wt wrapper function to be source in rc file
+
+USAGE:
+  wt source [FLAGS]
+
+FLAGS:
+  -h, --help      Show help message
+EOF
+  set -e
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  cat <<EOF
+function wt() {
+  if [ "\$1" = "switch" ]; then
+    SCRIPT="\$(command wt \$@)"
+    [ \$? -eq 0 ] && eval "\$SCRIPT" || printf "\$SCRIPT"
+  else
+    command wt \$@
+  fi
+}
+
+# =============================================================================
+#
+# To initialize wt, add this to your configuration (usually ~/.bashrc):
+#
+# [ -x "\$(command -v wt)" ] && eval "\$(wt source)"
+EOF
+}
+
+function cmd_switch() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+Switch directory to a different worktree
+
+USAGE:
+  wt switch [FLAGS] [name]
+
+FLAGS:
+  -h, --help      Show help message
+
+ARGS:
+  <name>          Fuzzy name of switch target
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local selected
+  selected="$(git worktree list | fzf-down)"
+
+  if [[ $selected =~ \(bare\)$ ]]; then
+    selected="$(echo "$selected" | awk '{print $1}')"
+    selected="$(dirname $selected)"
+  else
+    selected="$(echo "$selected" | awk '{print $1}')"
+  fi
+
+  echo "cd \"$selected\""
+}
+
+# --- Utility -----------------------------------------------------------------
+
+function get_root_dir() {
+  local top
+  top=$(git worktree list | head -n 1)
+  if [[ $top =~ \(bare\)$ ]]; then
+    top="$(echo "$top" | awk '{print $1}')"
+    top="$(dirname $top)"
+  else
+    top="$(echo "$top" | awk '{print $1}')"
+  fi
+
+  echo $top
+}
+
+function fzf-down() {
+  fzf --height 40% --reverse "$@"
 }
 
 # --- Execute main process ----------------------------------------------------
