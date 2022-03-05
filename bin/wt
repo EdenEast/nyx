@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+
+set -e
+
+# shellcheck shell=bash
+INTERNAL_COMMANDS="^(clone)$"
+
+function main() {
+  WT_COMMAND="help"
+  WT_ARGS=()
+
+  # Parse command line options
+  if [ -n "$*" ]; then
+    if [[ $1 == '--help' ]]; then
+      echo "doign help"
+      # HELP=true
+    elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
+      WT_COMMAND="${1//-/_}"
+      shift
+    fi
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+      -h | --help)
+        CMD_HELP=true
+        ;;
+      *)
+        WT_ARGS+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$HELP" ] && cmd_help
+
+  "cmd_$WT_COMMAND" "${WT_ARGS[@]}"
+  # $WT_COMMAND "${WT_ARGS[@]}"
+
+  exit 0
+}
+
+# --- Commands ----------------------------------------------------------------
+
+function cmd_clone() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+Clone a repository into a new directory.
+
+USAGE:
+  wt clone [FLAGS] [OPTIONS] <repository> [path]
+
+FLAGS:
+  -h, --help      Show help message
+
+OPTIONS:
+  -b, --branch <name>   Initial branch to clone to
+  -u, --upstream <url>  Upstream remote to track
+
+ARGS:
+  <repository>          The (remote) repository to clone from
+  <path>                The name of the new directory to clone into
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -b | --branch)
+        default_branch="$2"
+        shift
+        ;;
+      -u | --upstream)
+        upstream="$2"
+        shift
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local url="${args[0]}"
+  local basename=${url##*/}
+  local name=${args[1]:-${basename%.git}}
+
+  mkdir "$name"
+  cd "$name"
+
+  # Move the top level .git folder (A.K.A the $GIT_DIR) to .bare directory
+  #
+  # The target folder structure looks like the following:
+  # .bare/
+  # main/
+  # feature/
+  git clone --bare "$url" .bare
+  echo "gitdir: ./.bare" >.git
+
+  # Explicitly sets the remote origin fetch so we can fetch remote branches
+  # This is required because cloning with `--bare` repository does not set
+  # The remote for origin
+  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+  git fetch origin
+
+  if [ -n "$upstream" ]; then
+    git remote add upstream "$upstream"
+    git fetch upstream
+  fi
+
+  if [ -z "$default_branch" ]; then
+    # Getting the default branch of the remote
+    local symref
+    symref="$(git symbolic-ref HEAD)"
+    default_branch="${symref##refs/heads/}"
+  fi
+  # Creating the first worktree with the default branch
+  git worktree add "$default_branch"
+}
+
+function cmd_help() {
+  if [[ $1 =~ $INTERNAL_COMMANDS ]]; then
+    $1 '--help'
+  fi
+
+  set +e
+  local msg
+  IFS='' read -r -d '' msg <<EOF
+Utility script to work with git worktree's
+
+USAGE: wt <COMMAND> [OPTIONS...]
+
+COMMANDS:
+  clone    - Clone a repository into a new directory
+
+OPTIONS:
+  -v, --verbose  - Output verbose information
+  -h, --help     - Output help information
+EOF
+  set -e
+
+  printf "%s\n" "$msg"
+  exit 1
+}
+
+# --- Execute main process ----------------------------------------------------
+main "$@"
+
+# vim: et sw=2 ts=2 sts=2
