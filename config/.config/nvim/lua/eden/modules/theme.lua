@@ -12,10 +12,19 @@ M.plugins = {
   },
 
   {
-    { "catppuccin/nvim", as = "catppuccin" },
+    {
+      "catppuccin/nvim",
+      as = "catppuccin",
+      config = function()
+        require("catppuccin").setup({
+          term_colors = true,
+        })
+      end,
+    },
     { "embark-theme/vim", as = "embark" },
     "eddyekofo94/gruvbox-flat.nvim",
     "rose-pine/neovim",
+    "rebelot/kanagawa.nvim",
   },
 }
 
