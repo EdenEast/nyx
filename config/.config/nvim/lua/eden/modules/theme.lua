@@ -5,26 +5,32 @@ M.plugins = {
   {
     dev("EdenEast/nightfox.nvim"),
     config = function()
-      require("nightfox").setup({
-        hlgroups = { TSPunctDelimiter = { fg = "${red}" } },
+      -- require("nightfox").setup({
+      --   hlgroups = { TSPunctDelimiter = { fg = "${red}" } },
+      -- })
+    end,
+  },
+  {
+    "catppuccin/nvim",
+    as = "catppuccin",
+    config = function()
+      require("catppuccin").setup({
+        term_colors = true,
       })
     end,
   },
-
   {
-    {
-      "catppuccin/nvim",
-      as = "catppuccin",
-      config = function()
-        require("catppuccin").setup({
-          term_colors = true,
-        })
-      end,
-    },
-    { "embark-theme/vim", as = "embark" },
-    "eddyekofo94/gruvbox-flat.nvim",
-    "rose-pine/neovim",
     "rebelot/kanagawa.nvim",
+    config = function()
+      local remap = {
+        samuraiRed = "#c94f6d",
+      }
+      local overrides = {
+        NvimTreeNormal = { link = "NormalFloat" },
+        NvimTreeNormalNC = { link = "NormalFloat" },
+      }
+      require("kanagawa").setup({ overrides = overrides, colors = remap })
+    end,
   },
 }
 
