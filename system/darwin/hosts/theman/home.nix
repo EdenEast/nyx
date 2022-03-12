@@ -41,7 +41,10 @@
       };
     };
     dev = {
-      python.enable = true;
+      python = {
+        enable = true;
+        extraPackages = with pkgs.python39Packages; [ pip pylint setuptools ];
+      };
     };
     shell = {
       bash.enable = true;
