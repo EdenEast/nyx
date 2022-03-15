@@ -23,7 +23,17 @@ M.plugins = {
       require("eden.modules.ui.startup")
     end,
   },
-  { "Yggdroot/indentLine" },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function()
+      require("indent_blankline").setup({
+        show_first_indent_level = false,
+        show_trailing_blankline_indent = false,
+        show_current_context = true,
+        show_current_context_start = false, -- underline the start
+      })
+    end,
+  },
   {
     "norcalli/nvim-colorizer.lua",
     ft = { "html", "css", "sass", "vim", "typescript", "typescriptreact", "lua" },
@@ -89,11 +99,12 @@ M.before = function()
 
   -- vim.g.indentLine_char = '│'  -- U+2502
   -- vim.g.indentLine_char = '┆'  -- U+2506
-  vim.g.indentLine_char = "┊" -- U+250A
+  -- vim.g.indentLine_char = "┊" -- U+250A
 
-  vim.g.indentLine_enabled = 1
-  vim.g.indentLine_concealcursor = "niv"
-  vim.g.indentLine_showFirstIndentLevel = 0
+  -- vim.g.indentLine_enabled = 1
+  -- vim.g.indentLine_concealcursor = "niv"
+  -- vim.g.indentLine_showFirstIndentLevel = 0
+  -- vim.g.incentLine_setColors = 0
   vim.g.indentLine_fileTypeExclude = {
     "defx",
     "denite",
