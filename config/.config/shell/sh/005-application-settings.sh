@@ -12,7 +12,7 @@
 
 # if git-delta is installed then use this as the git pager
 [[ -n "$(command -v delta)" ]] && {
-    export GIT_PAGER="delta --dark --theme TwoDark"
+    export GIT_PAGER="delta --dark"
 } || {
     export GIT_PAGER="less"
 }
