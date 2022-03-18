@@ -68,9 +68,17 @@ opt.breakindentopt = {
   shift = 2, -- wrapped line's beginning will be shifted by the given number of
 }
 
+-- https://www.compart.com/en/unicode/U+XXXX (unicode character code)
+-- stylua: ignore
 opt.fillchars = {
-  vert = "┃", -- BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
-  fold = "·", -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
+  fold = "·",      -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
+  horiz = "━",     -- BOX DRAWINGS HEAVY HORIZONTAL (U+2501, UTF-8: E2 94 81)
+  horizdown = "┳", -- BOX DRAWINGS HEAVY DOWN AND HORIZONTAL (U+2533, UTF-8: E2 94 B3)
+  horizup = "┻",   -- BOX DRAWINGS HEAVY UP AND HORIZONTAL (U+253B, UTF-8: E2 94 BB)
+  vert = "┃",      -- BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+  vertleft = "┫",  -- BOX DRAWINGS HEAVY VERTICAL AND LEFT (U+252B, UTF-8: E2 94 AB)
+  vertright = "┣", -- BOX DRAWINGS HEAVY VERTICAL AND RIGHT (U+2523, UTF-8: E2 94 A3)
+  verthoriz = "╋", -- BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL (U+254B, UTF-8: E2 95 8B)
 }
 
 opt.formatoptions = opt.formatoptions -- :help fo-table
