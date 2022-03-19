@@ -15,128 +15,152 @@ local fmt = string.format
 
 local M = {}
 
-local function highlight(group, opts)
-  if opts.link then
-    vim.cmd(fmt("highlight! link %s %s", group, opts.link))
-  else
-    local cmd = fmt(
-      "highlight %s gui=%s guifg=%s guibg=%s guisp=%s",
-      group,
-      opts.style or "NONE",
-      opts.fg or "NONE",
-      opts.bg or "NONE",
-      opts.sp or "NONE"
-    )
-    vim.cmd(cmd)
-  end
+local function first_to_upper(s)
+  return s:sub(1, 1):upper() .. s:sub(2)
 end
 
-local function fromhl(hl)
-  local result = {}
-  local list = vim.api.nvim_get_hl_by_name(hl, true)
-  if list.foreground then
-    result.fg = fmt("#%06x", list.foreground)
+local function set_highlights(groups)
+  local lines = {}
+  for group, opts in pairs(groups) do
+    if opts.link then
+      table.insert(lines, fmt("highlight! link %s %s", group, opts.link))
+    else
+      table.insert(
+        lines,
+        fmt(
+          "highlight %s guifg=%s guibg=%s gui=%s guisp=%s",
+          group,
+          opts.fg or "NONE",
+          opts.bg or "NONE",
+          opts.style or "NONE",
+          opts.sp or "NONE"
+        )
+      )
+    end
   end
-  if list.background then
-    result.bg = fmt("#%06x", list.background)
-  end
-  return result
+  vim.cmd(table.concat(lines, " | "))
 end
 
-local function term(num, default)
-  local key = "terminal_color_" .. num
-  return vim.g[key] and vim.g[key] or default
-end
+local function get_highlight(name)
+  local hl = vim.api.nvim_get_hl_by_name(name, true)
+  if hl.link then
+    return get_highlight(hl.link)
+  end
 
-local function colors_from_theme()
+  local hex = function(n)
+    if n then
+      return string.format("#%06x", n)
+    end
+  end
+
+  local names = { "underline", "undercurl", "bold", "italic", "reverse" }
+  local styles = {}
+  for _, n in ipairs(names) do
+    if hl[n] then
+      table.insert(styles, n)
+    end
+  end
+
   return {
-    bg = fromhl("StatusLine").bg or "#2E3440",
-    alt = fromhl("CursorLine").bg or "#475062",
-    fg = fromhl("StatusLine").fg or "#8FBCBB",
-    hint = fromhl("DiagnosticHint").fg or "#5E81AC",
-    info = fromhl("DiagnosticInfo").fg or "#81A1C1",
-    warn = fromhl("DiagnosticWarn").fg or "#EBCB8B",
-    err = fromhl("DiagnosticError").fg or "#EC5F67",
-    black = term(0, "#434C5E"),
-    red = term(1, "#EC5F67"),
-    green = term(2, "#8FBCBB"),
-    yellow = term(3, "#EBCB8B"),
-    blue = term(4, "#5E81AC"),
-    magenta = term(5, "#B48EAD"),
-    cyan = term(6, "#88C0D0"),
-    white = term(7, "#ECEFF4"),
+    fg = hex(hl.foreground),
+    bg = hex(hl.background),
+    sp = hex(hl.special),
+    style = #styles > 0 and table.concat(styles, ",") or "NONE",
   }
 end
 
-local function tabline_colors_from_theme()
-  return {
-    tabl = fromhl("TabLine"),
-    norm = fromhl("Normal"),
-    sel = fromhl("TabLineSel"),
-    fill = fromhl("TabLineFill"),
+local function generate_pallet_from_colorscheme()
+  -- stylua: ignore
+  local color_map = {
+    black   = { index = 0, default = "#393b44" },
+    red     = { index = 1, default = "#c94f6d" },
+    green   = { index = 2, default = "#81b29a" },
+    yellow  = { index = 3, default = "#dbc074" },
+    blue    = { index = 4, default = "#719cd6" },
+    magenta = { index = 5, default = "#9d79d6" },
+    cyan    = { index = 6, default = "#63cdcf" },
+    white   = { index = 7, default = "#dfdfe0" },
   }
+
+  local diagnostic_map = {
+    hint = { hl = "DiagnosticHint", default = color_map.green.default },
+    info = { hl = "DiagnosticInfo", default = color_map.blue.default },
+    warn = { hl = "DiagnosticWarn", default = color_map.yellow.default },
+    error = { hl = "DiagnosticError", default = color_map.red.default },
+  }
+
+  local pallet = {}
+  for name, value in pairs(color_map) do
+    local global_name = "terminal_color_" .. value.index
+    pallet[name] = vim.g[global_name] and vim.g[global_name] or value.default
+  end
+
+  for name, value in pairs(diagnostic_map) do
+    pallet[name] = get_highlight(value.hl).fg or value.default
+  end
+
+  pallet.sl = get_highlight("StatusLine")
+  pallet.tab = get_highlight("TabLine")
+  pallet.sel = get_highlight("TabLineSel")
+  pallet.fill = get_highlight("TabLineFill")
+
+  return pallet
 end
 
-M.gen_highlights = function()
-  local c = colors_from_theme()
-  local sfg = vim.o.background == "dark" and c.black or c.white
-  local sbg = vim.o.background == "dark" and c.white or c.black
-  local ct = tabline_colors_from_theme()
-  M.colors = c
+function M.generate_user_config_highlights()
+  local pal = generate_pallet_from_colorscheme()
+
+  -- stylua: ignore
+  local sl_colors = {
+    Black   = { fg = pal.black,   bg = pal.white },
+    Red     = { fg = pal.red,     bg = pal.sl.bg },
+    Green   = { fg = pal.green,   bg = pal.sl.bg },
+    Yellow  = { fg = pal.yellow,  bg = pal.sl.bg },
+    Blue    = { fg = pal.blue,    bg = pal.sl.bg },
+    Magenta = { fg = pal.magenta, bg = pal.sl.bg },
+    Cyan    = { fg = pal.cyan,    bg = pal.sl.bg },
+    White   = { fg = pal.white,   bg = pal.black },
+  }
+
+  local colors = {}
+  for name, value in pairs(sl_colors) do
+    colors["Eden" .. name] = { fg = value.fg, bg = value.bg, style = "bold" }
+    colors["EdenRv" .. name] = { fg = value.bg, bg = value.fg, style = "bold" }
+  end
+
+  local status = vim.o.background == "dark" and { fg = pal.black, bg = pal.white } or { fg = pal.white, bg = pal.black }
+
   local groups = {
-    FlnViBlack = { fg = c.white, bg = c.black, style = "bold" },
-    FlnViRed = { fg = c.bg, bg = c.red, style = "bold" },
-    FlnViGreen = { fg = c.bg, bg = c.green, style = "bold" },
-    FlnViYellow = { fg = c.bg, bg = c.yellow, style = "bold" },
-    FlnViBlue = { fg = c.bg, bg = c.blue, style = "bold" },
-    FlnViMagenta = { fg = c.bg, bg = c.magenta, style = "bold" },
-    FlnViCyan = { fg = c.bg, bg = c.cyan, style = "bold" },
-    FlnViWhite = { fg = c.bg, bg = c.white, style = "bold" },
+    EdenSLHint = { fg = pal.sl.bg, bg = pal.hint, style = "bold" },
+    EdenSLInfo = { fg = pal.sl.bg, bg = pal.info, style = "bold" },
+    EdenSLWarn = { fg = pal.sl.bg, bg = pal.warn, style = "bold" },
+    EdenSLError = { fg = pal.sl.bg, bg = pal.error, style = "bold" },
+    EdenSLStatus = { fg = status.fg, bg = status.bg, style = "bold" },
 
-    FlnBlack = { fg = c.black, bg = c.white, style = "bold" },
-    FlnRed = { fg = c.red, bg = c.bg, style = "bold" },
-    FlnGreen = { fg = c.green, bg = c.bg, style = "bold" },
-    FlnYellow = { fg = c.yellow, bg = c.bg, style = "bold" },
-    FlnBlue = { fg = c.blue, bg = c.bg, style = "bold" },
-    FlnMagenta = { fg = c.magenta, bg = c.bg, style = "bold" },
-    FlnCyan = { fg = c.cyan, bg = c.bg, style = "bold" },
-    FlnWhite = { fg = c.white, bg = c.bg, style = "bold" },
+    EdenSLFtHint = { fg = pal.sel.bg, bg = pal.hint },
+    EdenSLHintInfo = { fg = pal.hint, bg = pal.info },
+    EdenSLInfoWarn = { fg = pal.info, bg = pal.warn },
+    EdenSLWarnError = { fg = pal.warn, bg = pal.error },
+    EdenSLErrorStatus = { fg = pal.error, bg = status.bg },
+    EdenSLStatusBg = { fg = status.bg, bg = pal.sl.bg },
 
-    -- Diagnostics
-    FlnHint = { fg = c.black, bg = c.hint, style = "bold" },
-    FlnInfo = { fg = c.black, bg = c.info, style = "bold" },
-    FlnWarn = { fg = c.black, bg = c.warn, style = "bold" },
-    FlnError = { fg = c.black, bg = c.err, style = "bold" },
-    FlnStatus = { fg = sfg, bg = sbg, style = "bold" },
+    EdenSLAlt = pal.sel,
+    EdenSLAltSep = { fg = pal.sl.bg, bg = pal.sel.bg },
+    EdenSLGitBranch = { fg = pal.yellow, bg = pal.sl.bg },
 
-    -- Dianostic Seperators
-    FlnBgHint = { fg = ct.sel.bg, bg = c.hint },
-    FlnHintInfo = { fg = c.hint, bg = c.info },
-    FlnInfoWarn = { fg = c.info, bg = c.warn },
-    FlnWarnError = { fg = c.warn, bg = c.err },
-    FlnErrorStatus = { fg = c.err, bg = sbg },
-    FlnStatusBg = { fg = sbg, bg = c.bg },
-
-    FlnAlt = { fg = sbg, bg = ct.sel.bg },
-    FlnFileInfo = { fg = c.fg, bg = c.alt },
-    FlnAltSep = { fg = c.bg, bg = ct.sel.bg },
-    FlnGitBranch = { fg = c.yellow, bg = c.bg },
-    FlnGitSeperator = { fg = c.bg, bg = c.alt },
-
-    -- Tabby
-    TbyHead = { fg = ct.fill.bg, bg = c.cyan },
-    TbyHeadSep = { fg = c.cyan, bg = ct.fill.bg },
-    TbyActive = { fg = ct.sel.fg, bg = ct.sel.bg, style = "bold" },
-    TbyActiveSep = { fg = ct.sel.bg, bg = ct.fill.bg },
-    TbyBoldLine = { fg = ct.tabl.fg, bg = ct.tabl.bg, style = "bold" },
-    TbyLineSep = { fg = ct.tabl.bg, bg = ct.fill.bg },
+    -- tabline
+    EdenTLHead = { fg = pal.fill.bg, bg = pal.cyan },
+    EdenTLHeadSep = { fg = pal.cyan, bg = pal.fill.bg },
+    EdenTLActive = { fg = pal.sel.fg, bg = pal.sel.bg, style = "bold" },
+    EdenTLActiveSep = { fg = pal.sel.bg, bg = pal.fill.bg },
+    EdenTLBoldLine = { fg = pal.tab.fg, bg = pal.tab.bg, style = "bold" },
+    EdenTLLineSep = { fg = pal.tab.bg, bg = pal.fill.bg },
   }
-  for k, v in pairs(groups) do
-    highlight(k, v)
-  end
+
+  set_highlights(vim.tbl_extend("force", colors, groups))
 end
 
-M.gen_highlights()
+M.generate_user_config_highlights()
 
 -- Define autocmd that generates the highlight groups from the new colorscheme
 -- Then reset the highlights for feline
@@ -144,7 +168,7 @@ edn.aug.EdenUiColorschemeReload = {
   {
     { "SessionLoadPost", "ColorScheme" },
     function()
-      require("eden.modules.ui.colors").gen_highlights()
+      require("eden.modules.ui.colors").generate_user_config_highlights()
     end,
   },
 }
