@@ -33,10 +33,7 @@ theme.reload = function()
 end
 
 theme.set = function(scheme)
-  local installed_schemes = vim.fn["getcompletion"]("", "color")
-  if vim.tbl_contains(installed_schemes, scheme) then
-    vim.cmd("colorscheme " .. scheme)
-  end
+  pcall(vim.cmd, "colorscheme " .. scheme)
 end
 
 init()
