@@ -17,3 +17,4 @@
     export GIT_PAGER="less"
 }
 
+[[ -x "$(command -v wt)" ]] && eval "$(wt source)"

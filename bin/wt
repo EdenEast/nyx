@@ -94,7 +94,7 @@ EOF
   local full="$root/$path"
 
   if [ ! -e "$full" ]; then
-    echo git worktree add "$full" "$name"
+    git worktree add "$full" "$name"
   fi
 }
 
