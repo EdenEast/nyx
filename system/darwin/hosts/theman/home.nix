@@ -24,7 +24,7 @@
   programs.man.enable = true;
 
   nyx.modules = {
-    # theme.name = "duskfox";
+    theme.name = "frostfox";
     app = {
       alacritty = {
         enable = true;
@@ -49,9 +49,10 @@
     shell = {
       bash.enable = true;
       direnv.enable = true;
-      fzf.enable = true;
+      # fzf.enable = true;
       git.enable = true;
       lf.enable = true;
+      mcfly.enable = true;
       neovim.enable = true;
       nushell.enable = true;
       starship.enable = true;
