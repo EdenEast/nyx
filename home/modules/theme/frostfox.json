@@ -1,0 +1,42 @@
+{
+  "name": "frostfox",
+  "bg": "282e44",
+  "fg": "fffadf",
+  "comment": "7f848e",
+  "base": {
+    "black": "393552",
+    "red": "ff8089",
+    "green": "56e2c4",
+    "yellow": "fff38d",
+    "blue": "75beff",
+    "magenta": "c2acff",
+    "cyan": "79e0ff",
+    "white": "f1f1f1",
+    "orange": "ffa500",
+    "pink": "f5acff"
+  },
+  "bright": {
+    "black": "4b456c",
+    "red": "ff8089",
+    "green": "60fbda",
+    "yellow": "fff59e",
+    "blue": "8ac8ff",
+    "magenta": "cbb8ff",
+    "cyan": "8de5ff",
+    "white": "ffffff",
+    "orange": "ffb326",
+    "pink": "f6b8ff"
+  },
+  "dim": {
+    "black": "272538",
+    "red": "e6737b",
+    "green": "4cc8ae",
+    "yellow": "e6db7f",
+    "blue": "69abe6",
+    "magenta": "af9be6",
+    "cyan": "6dcae6",
+    "white": "d7d7d7",
+    "orange": "e69400",
+    "pink": "dd9be6"
+  }
+}
