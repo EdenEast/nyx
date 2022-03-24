@@ -1,7 +1,33 @@
 local wt = require("wezterm")
 
-local datahome = string.format("%s/.local/share/wezterm/", os.getenv("HOME"))
+local is_windows = wt.target_triple:match("windows") ~= nil
+local is_macos = wt.target_triple:match("darwin") ~= nil
 
+-- Utility functions -----------------------------------------------------------
+
+-- Join list of arguments into a path separated by the correct path seperator
+local function join(...)
+  local sep = is_windows and [[\]] or "/"
+  return table.concat({ ... }, sep)
+end
+
+-- Check if file exists
+local function exists(name)
+  local f = io.open(name, "r")
+  if f ~= nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
+end
+
+-- Load and execute file and return the resulting table
+local function load_file(name)
+  return exists(name) and dofile(name) or {}
+end
+
+-- Extend a table with anohter table
 local function extend(...)
   local ret = {}
   for i = 1, select("#", ...) do
@@ -15,22 +41,69 @@ local function extend(...)
   return ret
 end
 
-local function exists(name)
-  local f = io.open(name, "r")
-  if f ~= nil then
-    io.close(f)
-    return true
-  else
-    return false
-  end
-end
+-- Paths / Config files --------------------------------------------------------
 
-local function load_file(name)
-  return exists(name) and dofile(name) or {}
-end
+local home = wt.home_dir
+local confighome = wt.config_dir
+local datahome = join(home, ".local", "share", "wezterm")
 
-local nyx = load_file(datahome .. "nyx.lua")
-local local_config = load_file(datahome .. "config.lua")
+local nyx_file = join(datahome, "nyx.lua")
+local nyx_config = load_file(nyx_file)
+
+local local_file = join(datahome, "config.lua")
+local local_config = load_file(local_file)
+
+-- Setting extra config files to the reload watch list
+wt.add_to_config_reload_watch_list(nyx_file)
+wt.add_to_config_reload_watch_list(local_file)
+
+local config = {
+  -- I use nix for the most part this is something hanlded by that
+  check_for_updates = is_windows,
+
+  color_scheme_dirs = {
+    join(confighome, "colors"),
+    join(datahome, "colors"),
+  },
+
+  -- Default colorscheme is nightfox
+  colors = {
+    background = "#192330",
+    foreground = "#cdcecf",
+
+    cursor_border = "#cdcecf",
+    cursor_bg = "#cdcecf",
+    cursor_fg = "#192330",
+
+    selection_bg = "#223249",
+    selection_fg = "#cdcecf",
+    ansi = { "#393b44", "#c94f6d", "#81b29a", "#dbc074", "#719cd6", "#9d79d6", "#63cdcf", "#dfdfe0" },
+    brights = { "#575860", "#d16983", "#8ebaa4", "#e0c989", "#86abdc", "#baa1e2", "#7ad4d6", "#e4e4e5" },
+  },
+
+  exit_behavior = "Close",
+
+  font = wt.font_with_fallback({
+    "Hack Nerd Font Mono",
+    "UbuntuMono NF",
+    "JetBrains Mono",
+  }),
+
+  hide_tab_bar_if_only_one_tab = true,
+
+  keys = {
+    { key = "\\", mods = "ALT", action = "ShowLauncher" },
+  },
+
+  window_padding = {
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
+  },
+}
+
+-- Windows ---------------------------------------------------------------------
 
 local function windows_launch_menu()
   local launch_menu = { {
@@ -61,49 +134,11 @@ local function windows_launch_menu()
   return launch_menu
 end
 
-local config = {
-  colors = nyx.colors and nyx.colors or {
-    background = "#192330",
-    foreground = "#afc0d5",
-
-    cursor_border = "#7f8c98",
-    cursor_bg = "#7f8c98",
-    cursor_fg = "#afc0d5",
-
-    selection_bg = "#283648",
-    selection_fg = "#CDCECF",
-
-    ansi = { "#393b44", "#c94f6d", "#81b29a", "#dbc074", "#719cd6", "#9d79d6", "#63cdcf", "#dfdfe0" },
-    brights = { "#475072", "#d6616b", "#58cd8b", "#ffe37e", "#84cee4", "#b8a1e3", "#59f0ff", "#f2f2f2" },
-  },
-
-  exit_behavior = "Close",
-
-  font = wt.font_with_fallback({
-    "Hack Nerd Font Mono",
-    "UbuntuMono NF",
-    "JetBrains Mono",
-  }),
-
-  hide_tab_bar_if_only_one_tab = true,
-
-  keys = {
-    { key = "\\", mods = "ALT", action = "ShowLauncher" },
-  },
-
-  window_padding = {
-    left = 8,
-    right = 8,
-  },
-}
-
--- Windows --------------------------------------------------------------------
-
-if wt.target_triple == "x86_64-pc-windows-msvc" then
+if is_windows then
   config.launch_menu = windows_launch_menu()
   config.default_prog = { "wsl.exe" }
 end
 
-local result = extend(config, nyx, local_config)
+local result = extend(config, nyx_config, local_config)
 
 return result
