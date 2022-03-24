@@ -12,6 +12,7 @@
     ./keybase.nix
     ./lf.nix
     ./lorri.nix
+    ./mcfly.nix
     ./neovim.nix
     ./nushell.nix
     ./repo.nix
