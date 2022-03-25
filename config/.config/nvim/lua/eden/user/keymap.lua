@@ -1,116 +1,90 @@
-local keymap = require("eden.core.keymap")
+-- local keymap = require("eden.core.keymap")
+local keymap = require("eden.lib.keymap")
 
-keymap({
-  silent = false,
-  {
-    -- 'j' and 'k' moves up and down visible lines in editor not actual lines
-    -- This is noticable when text wraps to next line
-    { "j", "gj" },
-    { "k", "gk" },
+local map, nmap, xmap = keymap.map, keymap.nmap, keymap.xmap
 
-    -- Read the current line and execute that in your $SHELL.  The resulting output of the command will replace the line
-    -- that you were on. This is very handy. Also I dont use Ex mode.
-    { "Q", [[!!$SHELL <cr>]] },
+-- 'j' and 'k' moves up and down visible lines in editor not actual lines
+-- This is noticable when text wraps to next line
+nmap("j", "gj")
+nmap("k", "gk")
 
-    -- Witn colemak having 'hjkl' all not on the home row, and all on the right
-    -- index finger, having a 'nav' layer helpr with navigation
-    {
-      mode = "_",
-      {
-        { "<left>", "h" },
-        { "<down>", "j" },
-        { "<up>", "k" },
-        { "<right>", "l" },
-      },
-    },
+-- Read the current line and execute that in your $SHELL.  The resulting output of the command will replace the line
+-- that you were on. This is very handy. Also I dont use Ex mode.
+nmap("Q", [[!!$SHELL <cr>]])
 
-    -- Map Y to be the same as D and C
-    { "Y", "yg_", mode = "nx" },
+-- Witn colemak having 'hjkl' all not on the home row, and all on the right
+-- index finger, having a 'nav' layer help with navigation
+nmap("<left>", "h")
+nmap("<down>", "j")
+nmap("<up>", "k")
+nmap("<right>", "l")
 
-    -- Center search
-    { "n", "nzzzv" },
-    { "N", "Nzzzv" },
+-- Map Y to be the same as D and C
+map({ "n", "x" }, "Y", "yg_")
 
-    -- Switch between the last two buffers
-    { "<leader><leader>", [[<c-^>\"zz]] },
+-- Center search
+nmap("n", "nzzzv")
+nmap("N", "Nzzzv")
 
-    -- Keep selection when indent/outdent
-    { mode = "x", {
-      { ">", ">gv" },
-      { "<", "<gv" },
-    } },
+-- Switch between the last two buffers
+nmap("<leader><leader>", [[<c-^>\"zz]])
 
-    -- Search for selected text
-    { "*", '"xy/<c-r><cr>', mode = "x" },
+-- Keep selection when indent/outdent
+xmap(">", ">gv")
+xmap("<", "<gv")
 
-    -- Clone paragraph
-    { "cp", [[vap:t'><cr>{j]] },
+-- Search for selected text
+xmap("*", '"xy/<c-r><cr>')
 
-    -- Redirect change operation to blackhole register
-    { mode = "nx", {
-      { "c", [["_c]] },
-      { "C", [["_C]] },
-    } },
+-- Clone paragraph
+nmap("cp", [[vap:t'><cr>(j]])
 
-    -- Toggle highlight search
-    {
-      "<leader>th",
-      function()
-        vim.opt.hlsearch = not vim.o.hlsearch
-      end,
-    },
+-- Redirect change operation to blackhole register
+map({ "n", "x" }, "c", [["_c]])
+map({ "n", "x" }, "C", [["_C]])
 
-    { "<leader>w", [[:<c-u>w<cr>]] },
-    { "<leader>q", [[:<c-u>q<cr>]] },
-    { "<leader>!", [[:<c-u>q!<cr>]] },
+-- Toggle highlight search
+nmap("<leader>th", function()
+  vim.opt.hlsearch = not vim.o.hlsearch
+end)
 
-    {
-      "<leader>tn",
-      function()
-        require("core.util").toggle_numbers()
-      end,
-    },
+nmap("<leader>w", [[:<c-u>w<cr>]])
+nmap("<leader>q", [[:<c-u>q<cr>]])
+nmap("<leader>!", [[:<c-u>q!<cr>]])
 
-    {
-      "<leader>bm",
-      function()
-        require("eden.fn.bufmax").toggle()
-      end,
-    },
+nmap("<leader>tn", function()
+  require("core.util").toggle_numbers()
+end)
 
-    -- Jump list -------------------------------------------------------------------
-    -- Because currently in alacritty we cannot tell the difference between <tab>
-    -- and <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
-    --
-    -- https://vi.stackexchange.com/a/23344
-    { "<m-i>", "<c-i>" },
-    { "<m-o>", "<c-o>" },
+nmap("<leader>bm", function()
+  require("eden.fn.bufmax").toggle()
+end)
 
-    { "[t", ":tabprevious<cr>" },
-    { "]t", ":tabnext<cr>" },
+-- Jump list -------------------------------------------------------------------
+-- Because currently in alacritty we cannot tell the difference between <tab>
+-- and <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
+--
+-- https://vi.stackexchange.com/a/23344
+nmap("<m-i>", "<c-i>")
+nmap("<m-o>", "<c-o>")
 
-    -- Move around splits without having to press <C-w> before each movement"
-    { "<A-h>", "<cmd>lua require('eden.fn.winmove')('left')<cr>" },
-    { "<A-j>", "<cmd>lua require('eden.fn.winmove')('down')<cr>" },
-    { "<A-k>", "<cmd>lua require('eden.fn.winmove')('up')<cr>" },
-    { "<A-l>", "<cmd>lua require('eden.fn.winmove')('right')<cr>" },
+nmap("[t", ":tabprevious<cr>")
+nmap("]t", ":tabnext<cr>")
 
-    -- Exec current file
-    { "<F1>", ":lua require('eden.core.util').exec_file()<cr>" },
-    { "<F2>", ":lua require('eden.core.util').open_url_under_cursor()<cr>" },
-    { "<F3>", ":lua R('packer_compiled')<cr>" },
+-- -- Move around splits without having to press <C-w> before each movement"
+-- nmap("<A-h>", "<cmd>lua require('eden.fn.winmove')('left')<cr>")
+-- nmap("<A-j>", "<cmd>lua require('eden.fn.winmove')('down')<cr>")
+-- nmap("<A-k>", "<cmd>lua require('eden.fn.winmove')('up')<cr>")
+-- nmap("<A-l>", "<cmd>lua require('eden.fn.winmove')('right')<cr>")
 
-    {
-      mode = "t",
-      {
-        -- Terminal
-        { "<esc>", [[<c-\><c-n>]] },
-        { "<c-q>", [[<c-\><c-n>:bdelete!<cr>]] },
-        { "<c-h>", [[<c-\><c-n><c-w>h]] },
-        { "<c-j>", [[<c-\><c-n><c-w>j]] },
-        { "<c-k>", [[<c-\><c-n><c-w>k]] },
-        { "<c-l>", [[<c-\><c-n><c-w>l]] },
-      },
-    },
-  },
-})
+-- Exec current file
+nmap("<F1>", ":lua require('eden.core.util').exec_file()<cr>")
+nmap("<F2>", ":lua require('eden.core.util').open_url_under_cursor()<cr>")
+nmap("<F3>", ":lua R('packer_compiled')<cr>")
+
+map("t", "<esc>", [[<c-\><c-n>]])
+map("t", "<c-q>", [[<c-\><c-n>:bdelete!<cr>]])
+map("t", "<c-h>", [[<c-\><c-n><c-w>h]])
+map("t", "<c-j>", [[<c-\><c-n><c-w>j]])
+map("t", "<c-k>", [[<c-\><c-n><c-w>k]])
+map("t", "<c-l>", [[<c-\><c-n><c-w>l]])
