@@ -3,14 +3,20 @@ local M = {}
 M.plugins = {
 
   -- Completion ---------------------------------------------------------------
+
   {
-    "rafamadriz/friendly-snippets",
+    "windwp/nvim-autopairs",
     event = "InsertEnter",
+    config = function()
+      require("nvim-autopairs").setup({
+        disable_filetype = { "TelescopePrompt", "vim" },
+        enable_check_bracket_line = true,
+      })
+    end,
   },
 
   {
     "hrsh7th/nvim-cmp",
-    after = "friendly-snippets",
     wants = "nvim-autopairs",
     config = function()
       require("eden.modules.editor.cmp")
@@ -19,14 +25,13 @@ M.plugins = {
 
   {
     "L3MON4D3/LuaSnip",
-    wants = "friendly-snippets",
     after = "nvim-cmp",
     config = function()
+      -- require("eden.modules.editor.snips")
       require("luasnip").config.set_config({
         history = true,
         updateevents = "TextChanged,TextChangedI",
       })
-      require("luasnip/loaders/from_vscode").load()
     end,
   },
 
@@ -42,16 +47,6 @@ M.plugins = {
     { "ray-x/cmp-treesitter", after = "nvim-cmp" },
   },
 
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    config = function()
-      require("nvim-autopairs").setup({
-        disable_filetype = { "TelescopePrompt", "vim" },
-        enable_check_bracket_line = true,
-      })
-    end,
-  },
   -- --------------------------------------------------------------------------
 
   {
