@@ -1,0 +1,42 @@
+{
+  "name": "terafox",
+  "bg": "152528",
+  "fg": "e6eaea",
+  "comment": "6d7f8b",
+  "base": {
+    "black": "2f3239",
+    "red": "e85c51",
+    "green": "7aa4a1",
+    "yellow": "fda47f",
+    "blue": "5a93aa",
+    "magenta": "ad5c7c",
+    "cyan": "a1cdd8",
+    "white": "ebebeb",
+    "orange": "ff8349",
+    "pink": "cb7985"
+  },
+  "bright": {
+    "black": "4e5157",
+    "red": "eb746b",
+    "green": "8eb2af",
+    "yellow": "fdb292",
+    "blue": "73a3b7",
+    "magenta": "b97490",
+    "cyan": "afd4de",
+    "white": "eeeeee",
+    "orange": "ff9664",
+    "pink": "d38d97"
+  },
+  "dim": {
+    "black": "282a30",
+    "red": "c54e45",
+    "green": "688b89",
+    "yellow": "d78b6c",
+    "blue": "4d7d90",
+    "magenta": "934e69",
+    "cyan": "89aeb8",
+    "white": "c8c8c8",
+    "orange": "d96f3e",
+    "pink": "ad6771"
+  }
+}
