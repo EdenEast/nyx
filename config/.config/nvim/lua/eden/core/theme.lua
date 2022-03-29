@@ -7,6 +7,7 @@ local cache = path.join(path.cachehome, "theme.txt")
 local theme = {}
 
 local function init()
+  vim.opt.termguicolors = true
   if not vim.g.colors_name then
     theme.reload()
   end
