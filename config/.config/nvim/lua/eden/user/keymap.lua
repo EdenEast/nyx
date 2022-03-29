@@ -68,8 +68,11 @@ end)
 nmap("<m-i>", "<c-i>")
 nmap("<m-o>", "<c-o>")
 
-nmap("[t", ":tabprevious<cr>")
-nmap("]t", ":tabnext<cr>")
+nmap("[t", ":tabprevious<cr>", { silent = true })
+nmap("]t", ":tabnext<cr>", { silent = true })
+
+nmap("[q", ":cprev<cr>", { silent = true })
+nmap("]q", ":cnext<cr>", { silent = true })
 
 -- -- Move around splits without having to press <C-w> before each movement"
 -- nmap("<A-h>", "<cmd>lua require('eden.fn.winmove')('left')<cr>")
