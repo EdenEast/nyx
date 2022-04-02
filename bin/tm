@@ -66,6 +66,7 @@ Create or attach to a tmux session based on the path specified
 ALIAS: 'a'
 
 OPTIONS:
+  -e, --exist     Attach to existing tmux session
   -h, --help      Show help message
 
 ARGS:
@@ -76,6 +77,9 @@ eof
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      -e | --exist)
+        do_existing=true
+        ;;
       *)
         args+=("$1")
         ;;
@@ -87,6 +91,18 @@ eof
     printf "%s\n" "$help_msg"
     exit 1
   }
+
+  if [[ -n $do_existing ]]; then
+    local sessions name
+    sessions=("$(tmux list-sessions -F "#{session_name}")")
+    name="$(write-list "${sessions[@]}" | fzf-down)"
+    if [[ -z $TMUX ]]; then
+      tmux attach-session -t "$name"
+    else
+      tmux switch-client -t "$name"
+    fi
+    exit 0
+  fi
 
   local selected
   if [[ -n ${args[0]} ]]; then
@@ -146,7 +162,6 @@ Tmux utility script for session and window management
 COMMANDS:
   attach           Attach to new or existing tmux session
   kill             Kill a running session
-  list             List tmux sessions
   wcmd             Execute a command in a specific tmux window
 
 OPTIONS:
@@ -282,7 +297,7 @@ function write-list() {
 }
 
 function fzf-down() {
-  fzf --height 40% --reverse "$@"
+  fzf --height 50% --reverse "$@"
 }
 
 # --- Execute main process ----------------------------------------------------
