@@ -5,6 +5,12 @@ set -e
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(add|clone|help|remove|root|source|switch)$"
 
+declare -A INTERNAL_ALIASES
+INTERNAL_ALIASES['a']="add"
+INTERNAL_ALIASES['c']="clone"
+INTERNAL_ALIASES['r']="root"
+INTERNAL_ALIASES['s']="switch"
+
 function main() {
   WT_COMMAND="help"
   WT_ARGS=()
@@ -17,6 +23,12 @@ function main() {
     elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
       WT_COMMAND="${1//-/_}"
       shift
+    else
+      internal_command="${INTERNAL_ALIASES[$1]}"
+      if [ -n "$internal_command" ]; then
+        WT_COMMAND="$internal_command"
+        shift
+      fi
     fi
   fi
 
