@@ -1,0 +1,292 @@
+#!/usr/bin/env bash
+
+set -e
+
+# shellcheck shell=bash
+INTERNAL_COMMANDS="^(attach|help|kill|wcmd)$"
+
+declare -A INTERNAL_ALIASES
+INTERNAL_ALIASES['a']="attach"
+INTERNAL_ALIASES['w']="wcmd"
+INTERNAL_ALIASES['k']="kill"
+
+function main() {
+  TM_COMMAND="attach"
+  TM_ARGS=()
+
+  # Parse command line options
+  if [ -n "$*" ]; then
+    if [[ $1 == '--help' ]]; then
+      HELP=true
+    elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
+      TM_COMMAND="${1//-/_}"
+      shift
+    else
+      internal_command="${INTERNAL_ALIASES[$1]}"
+      if [ -n "$internal_command" ]; then
+        TM_COMMAND="$internal_command"
+        shift
+      fi
+    fi
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+      --)
+        shift
+        break
+        ;;
+      -h | --help)
+        CMD_HELP=true
+        ;;
+      *)
+        TM_ARGS+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$HELP" ] && help
+
+  "cmd_$TM_COMMAND" "${TM_ARGS[@]}" "$@"
+  exit 0
+}
+
+# --- Commands ----------------------------------------------------------------
+
+function cmd_attach() {
+  set +e
+  local help_msg
+  ifs='' read -r -d '' help_msg <<eof
+USAGE: tm attach [path]
+
+Create or attach to a tmux session based on the path specified
+
+ALIAS: 'a'
+
+OPTIONS:
+  -h, --help      Show help message
+
+ARGS:
+  <path>          Optional selected path to create or attach tmux session
+eof
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local selected
+  if [[ -n ${args[0]} ]]; then
+    if [[ -d ${args[0]} ]]; then
+      selected=${args[0]}
+
+      if [[ $selected == '.' ]]; then
+        selected="$(pwd)"
+      fi
+    else
+      echo "Unknown path: ${args[0]}"
+      exit 1
+    fi
+  else
+    local list_git_dirs=("$HOME/dev")
+    local selection_list=("$HOME/.local/nyx" "$HOME/.config/nvim" "$HOME/.config/awesome")
+
+    for d in "${list_git_dirs[@]}"; do
+      local tmp=("$(fd -t d --hidden --prune -d 4 '\.(bare|git)$' "$d" -x echo "{//}")")
+      selection_list=("${selection_list[@]} ${tmp[@]}")
+    done
+
+    selected=$(write-list "${selection_list[@]}" | fzf)
+    if [[ -z $selected ]]; then
+      exit 1
+    fi
+  fi
+
+  local selected_name tmux_running
+  selected_name=$(basename "$selected" | tr . _)
+  tmux_running=$(pgrep tmux || true)
+
+  if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s "$selected_name" -c "$selected"
+    exit 0
+  fi
+
+  if ! tmux has-session -t="$selected_name" 2>/dev/null; then
+    tmux new-session -d -s "$selected_name" -c "$selected"
+  fi
+
+  tmux switch-client -t "$selected_name"
+}
+
+function cmd_help() {
+  if [[ $1 =~ $INTERNAL_COMMANDS ]]; then
+    $1 '--help'
+  fi
+
+  set +e
+  local msg
+  IFS='' read -r -d '' msg <<EOF
+USAGE: tm <COMMAND> [OPTIONS...]
+
+Tmux utility script for session and window management
+
+COMMANDS:
+  attach           Attach to new or existing tmux session
+  kill             Kill a running session
+  list             List tmux sessions
+  wcmd             Execute a command in a specific tmux window
+
+OPTIONS:
+  -v, --verbose    Output verbose information
+  -h, --help       Output help information
+EOF
+  set -e
+
+  printf "%s\n" "$msg"
+  exit 1
+}
+
+function cmd_kill() {
+  set +e
+  local help_msg
+  ifs='' read -r -d '' help_msg <<eof
+USAGE: t kill
+
+Kill tmux session
+
+ALIAS: 'k'
+
+OPTIONS:
+  -h, --help      Show help message
+eof
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  sessions=("$(tmux list-sessions -F "#{session_name}")")
+  names=("$(write-list "${sessions[@]}" | fzf-down -m)")
+  for name in "${names[@]}"; do
+    tmux kill-session -t "$name"
+    echo "Killed session: $name"
+  done
+}
+
+function cmd_wcmd() {
+  set +e
+  local help_msg
+  ifs='' read -r -d '' help_msg <<eof
+USAGE: t wcmd <window> -- <cmd...>
+
+Send a command to a execute in a tmux window
+
+ALIAS: 'w'
+
+OPTIONS:
+  -h, --help      Show help message
+
+ARGS:
+  <window>        Name of the window to execute the command from.
+                  This name window name can be taken from a path.
+                  In this case the basename will be used. This is
+                  useful with git worktrees and different branches.
+
+  <cmd>           The command to be executed in the tmux window.
+                  Passing this after '--' will make sure that no
+                  option parsing is completed and the entire command
+                  is sent to the tmux window. This however does not
+                  have to be after '--'.
+
+EXAMPLES:
+  tm wcmd server cd backend
+  tm w foo/bar/baz -- make test
+eof
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --)
+        shift
+        args=("${args[@]}" "$@")
+        break
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  if [[ ${#args[@]} -lt 2 ]]; then
+    echo "Invalid number of arguments"
+    CMD_HELP=true
+  fi
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  branch_name="$(basename "${args[0]}")"
+  session_name=$(tmux display-message -p "#S")
+  clean_name=$(echo "$branch_name" | tr "./" "__")
+  target="$session_name:$clean_name"
+
+  if ! tmux has-session -t "$target" 2>/dev/null; then
+    tmux neww -dn "$clean_name"
+  fi
+
+  unset 'args[0]'
+
+  # This quote on the next line is required as I need to send an enter / new line
+  # character to tmux. Trying to send a ^M gets deleted by shfmt
+  tmux send-keys -t "$target" "${args[*]}
+"
+}
+
+# --- Utility -----------------------------------------------------------------
+
+function write-names() {
+  while IFS= read -r line; do
+    name="$(echo "$line" | awk '{print $1}')"
+    echo "$name"
+  done <"$PROJECTS_PATH"
+}
+
+function write-list() {
+  while [[ $# -gt 0 ]]; do
+    echo "$1"
+    shift
+  done
+}
+
+function fzf-down() {
+  fzf --height 40% --reverse "$@"
+}
+
+# --- Execute main process ----------------------------------------------------
+
+main "$@"
+
+# vim: et sw=2 ts=2 sts=2
