@@ -127,7 +127,7 @@ eof
 
     for d in "${list_git_dirs[@]}"; do
       local tmp=("$(fd -t d --hidden --prune -d 4 '\.(bare|git)$' "$d" -x echo "{//}")")
-      selection_list=("${selection_list[@]} ${tmp[@]}")
+      selection_list=("${selection_list[@]}" "${tmp[@]}")
     done
 
     # shellcheck disable=SC2086
@@ -150,7 +150,11 @@ eof
     tmux new-session -d -s "$selected_name" -c "$selected"
   fi
 
-  tmux switch-client -t "$selected_name"
+  if [[ -z $TMUX ]]; then
+    tmux attach-session -t "$selected_name"
+  else
+    tmux switch-client -t "$selected_name"
+  fi
 }
 
 function cmd_help() {
@@ -205,8 +209,11 @@ eof
     shift
   done
 
-  sessions=("$(tmux list-sessions -F "#{session_name}")")
-  names=("$(write-list "${sessions[@]}" | fzf-down -m)")
+  # shellcheck disable=SC2207
+  sessions=($(tmux list-sessions -F "#{session_name}"))
+
+  # shellcheck disable=SC2207
+  names=($(write-list "${sessions[@]}" | fzf-down -m))
   for name in "${names[@]}"; do
     tmux kill-session -t "$name"
     echo "Killed session: $name"
