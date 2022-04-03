@@ -66,11 +66,12 @@ Create or attach to a tmux session based on the path specified
 ALIAS: 'a'
 
 OPTIONS:
-  -e, --exist     Attach to existing tmux session
-  -h, --help      Show help message
+  -e, --exist       Attach to existing tmux session
+  -q, --query <str> Start searching query <str>
+  -h, --help        Show help message
 
 ARGS:
-  <path>          Optional selected path to create or attach tmux session
+  <path>            Optional selected path to create or attach tmux session
 eof
   set -e
 
@@ -79,6 +80,10 @@ eof
     case "$1" in
       -e | --exist)
         do_existing=true
+        ;;
+      -q | --query)
+        shift
+        do_query="--height 40% --reverse --select-1 --exit-0 --exact --query $1"
         ;;
       *)
         args+=("$1")
@@ -125,7 +130,8 @@ eof
       selection_list=("${selection_list[@]} ${tmp[@]}")
     done
 
-    selected=$(write-list "${selection_list[@]}" | fzf)
+    # shellcheck disable=SC2086
+    selected=$(write-list "${selection_list[@]}" | fzf $do_query)
     if [[ -z $selected ]]; then
       exit 1
     fi
