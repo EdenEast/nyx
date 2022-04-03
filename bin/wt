@@ -88,7 +88,8 @@ EOF
     exit 1
   }
 
-  local root=$(get_root_dir)
+  local root
+  root=$(get_root_dir)
 
   local name
   local path
@@ -245,7 +246,7 @@ EOF
   while [[ $# -gt 0 ]]; do
     case "$1" in
       -f | --force)
-        force=true
+        force="--force"
         shift
         ;;
       *)
@@ -267,7 +268,7 @@ EOF
     path=$(git worktree list | tail -2 | fzf-down | awk '{print $1}')
   fi
 
-  git worktree remove $path
+  git worktree remove "$path" $force
 }
 
 function cmd_root() {
@@ -289,7 +290,7 @@ EOF
     exit 1
   }
 
-  echo $(get_root_dir)
+  get_root_dir
 }
 
 function cmd_source() {
@@ -366,7 +367,7 @@ EOF
 
   if [[ $selected =~ \(bare\)$ ]]; then
     selected="$(echo "$selected" | awk '{print $1}')"
-    selected="$(dirname $selected)"
+    selected="$(dirname "$selected")"
   else
     selected="$(echo "$selected" | awk '{print $1}')"
   fi
@@ -381,16 +382,16 @@ function get_root_dir() {
   top=$(git worktree list | head -n 1)
   if [[ $top =~ \(bare\)$ ]]; then
     top="$(echo "$top" | awk '{print $1}')"
-    top="$(dirname $top)"
+    top="$(dirname "$top")"
   else
     top="$(echo "$top" | awk '{print $1}')"
   fi
 
-  echo $top
+  echo "$top"
 }
 
 function fzf-down() {
-  fzf --height 40% --reverse "$@"
+  fzf --height 40% --reverse
 }
 
 # --- Execute main process ----------------------------------------------------
