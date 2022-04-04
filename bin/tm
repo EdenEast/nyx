@@ -3,12 +3,16 @@
 set -e
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(attach|help|kill|wcmd)$"
+INTERNAL_COMMANDS="^(add|attach|help|kill|list|remove|wcmd)$"
 
 declare -A INTERNAL_ALIASES
 INTERNAL_ALIASES['a']="attach"
 INTERNAL_ALIASES['w']="wcmd"
 INTERNAL_ALIASES['k']="kill"
+
+CACHE_HOME="$HOME/.cache/tmux"
+WORKSPACE_CACHE_FILE="$CACHE_HOME/workspace"
+SINGLE_CACHE_FILE="$CACHE_HOME/single"
 
 function main() {
   TM_COMMAND="attach"
@@ -49,11 +53,79 @@ function main() {
 
   [ -n "$HELP" ] && help
 
+  validate-cache-folder
+
   "cmd_$TM_COMMAND" "${TM_ARGS[@]}" "$@"
   exit 0
 }
 
 # --- Commands ----------------------------------------------------------------
+
+function cmd_add() {
+  set +e
+  local help_msg
+  ifs='' read -r -d '' help_msg <<eof
+USAGE: tm add [options] [path...]
+
+Add a path to the list of folders to attach
+
+This path can either be a 'workspace' path or just a 'single' path. A workspace
+path will search for all git directories that are contained within. By default
+a path is a 'single' path.
+
+OPTIONS:
+  -h, --help        Show help message
+  -w, --workspace   Use path as a workspace path
+
+ARGS:
+  <path...>            Optional path to be added. Uses 'cwd' if not present
+eof
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -w | --workspace)
+        use_workspace=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local cachepath
+  if [[ -z $use_workspace ]]; then
+    cachepath="$SINGLE_CACHE_FILE"
+  else
+    cachepath="$WORKSPACE_CACHE_FILE"
+  fi
+
+  local paths
+  if [[ ${#args[@]} -eq 0 ]]; then
+    paths=("$(pwd)")
+  else
+    for p in "${args[@]}"; do
+      paths=("${paths[@]}" "$(realpath "$p")")
+    done
+  fi
+
+  for p in "${paths[@]}"; do
+    local sum path
+    sum="$(checksum "$p")"
+    if [[ -d $p ]]; then
+      if ! grep -q "^$sum" $cachepath; then
+        echo "$sum $p" >>$cachepath
+      fi
+    fi
+  done
+}
 
 function cmd_attach() {
   set +e
@@ -122,10 +194,13 @@ eof
       exit 1
     fi
   else
-    local list_git_dirs=("$HOME/dev")
-    local selection_list=("$HOME/.local/nyx" "$HOME/.config/nvim" "$HOME/.config/awesome")
+    local workspace_list
+    local selection_list
 
-    for d in "${list_git_dirs[@]}"; do
+    selection_list=($(write-paths "$SINGLE_CACHE_FILE"))
+    workspace_list=($(write-paths "$WORKSPACE_CACHE_FILE"))
+
+    for d in "${workspace_list[@]}"; do
       local tmp=("$(fd -t d --hidden --prune -d 4 '\.(bare|git)$' "$d" -x echo "{//}")")
       selection_list=("${selection_list[@]}" "${tmp[@]}")
     done
@@ -188,7 +263,7 @@ function cmd_kill() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: t kill
+USAGE: tm kill
 
 Kill tmux session
 
@@ -220,11 +295,124 @@ eof
   done
 }
 
+function cmd_list() {
+  set +e
+  local help_msg
+  ifs='' read -r -d '' help_msg <<eof
+USAGE: tm list
+
+List workspace and single paths registered to tm
+
+ALIAS: 'l'
+
+OPTIONS:
+  -h, --help      Show help message
+  -s, --single    Show only single paths
+  -w, --workspace Show only workspace paths
+eof
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -s | --single)
+        no_workspace=true
+        ;;
+      -w | --workspace)
+        no_single=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  if [[ -z $no_single ]]; then
+    echo "Single:"
+    write-paths "$SINGLE_CACHE_FILE"
+  fi
+
+  if [[ -z $no_workspace ]]; then
+    [[ -z $no_single ]] && echo ""
+
+    echo "Workspace:"
+    write-paths "$WORKSPACE_CACHE_FILE"
+  fi
+}
+
+function cmd_remove() {
+  set +e
+  local help_msg
+  ifs='' read -r -d '' help_msg <<eof
+USAGE: tm remove [path...]
+
+Remove registered path from tm
+
+OPTIONS:
+  -h, --help      Show help message
+  -s, --single    Remove only single paths
+  -w, --workspace Remove only workspace paths
+
+ARGS:
+  <path...>       The path to be removed. If no path is passed,
+                  tm will use fzf to select paths to remove
+eof
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -s | --single)
+        only_single=true
+        ;;
+      -w | --workspace)
+        only_workspace=true
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local paths
+  if [[ ${#args[@]} -eq 0 ]]; then
+    local total singles workspaces
+    if [[ -z $only_workspace ]]; then
+      singles=($(write-paths "$SINGLE_CACHE_FILE"))
+    fi
+    if [[ -z $only_single ]]; then
+      workspaces=($(write-paths "$WORKSPACE_CACHE_FILE"))
+    fi
+    paths=($(write-list "${singles[@]}" "${workspaces[@]}" | fzf-down -m))
+  else
+    path=("${args[@]}")
+  fi
+
+  local sum
+  for p in "${paths[@]}"; do
+    sum="$(checksum "$p")"
+    remove-line "$sum" "$SINGLE_CACHE_FILE"
+    remove-line "$sum" "$WORKSPACE_CACHE_FILE"
+  done
+}
+
 function cmd_wcmd() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: t wcmd <window> -- <cmd...>
+USAGE: tm wcmd <window> -- <cmd...>
 
 Send a command to a execute in a tmux window
 
@@ -295,11 +483,8 @@ eof
 
 # --- Utility -----------------------------------------------------------------
 
-function write-names() {
-  while IFS= read -r line; do
-    name="$(echo "$line" | awk '{print $1}')"
-    echo "$name"
-  done <"$PROJECTS_PATH"
+function checksum() {
+  sha256sum <<<"$1" | awk '{print $1}'
 }
 
 function write-list() {
@@ -307,6 +492,48 @@ function write-list() {
     echo "$1"
     shift
   done
+}
+
+function write-paths() {
+  while IFS= read -r line; do
+    path="$(echo "$line" | awk '{print $2}')"
+    echo "$path"
+  done <"$1"
+}
+
+function remove-line() {
+  local tmpfile="$CACHE_HOME/tmpfile"
+  awk "!/$1/" "$2" >"$tmpfile"
+  if [[ $(sha256sum "$2") != $(sha256sum "$tmpfile") ]]; then
+    mv -f "$tmpfile" "$2"
+  else
+    rm "$tmpfile"
+  fi
+}
+
+function validate-cache-folder() {
+  mkdir -p $CACHE_HOME
+
+  local default_workspaces=("$HOME/dev")
+  local default_singles=("$HOME/.local/nyx" "$HOME/.config/nvim" "$HOME/.config/awesome")
+
+  if [ ! -f "$WORKSPACE_CACHE_FILE" ]; then
+    touch "$WORKSPACE_CACHE_FILE"
+    for w in "${default_workspaces[@]}"; do
+      if [[ -d $w ]]; then
+        echo "$(checksum "$w") $w" >>$WORKSPACE_CACHE_FILE
+      fi
+    done
+  fi
+
+  if [ ! -f "$SINGLE_CACHE_FILE" ]; then
+    touch "$SINGLE_CACHE_FILE"
+    for s in "${default_singles[@]}"; do
+      if [[ -d $s ]]; then
+        echo "$(checksum "$s") $s" >>$SINGLE_CACHE_FILE
+      fi
+    done
+  fi
 }
 
 function fzf-down() {
