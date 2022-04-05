@@ -29,6 +29,13 @@ M.plugins = {
     end,
     requires = "kyazdani42/nvim-web-devicons",
   },
+  {
+    "theprimeagen/harpoon",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("eden.modules.nav.harpoon")
+    end,
+  },
 }
 
 M.before = function()
