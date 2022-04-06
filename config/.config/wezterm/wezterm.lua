@@ -46,6 +46,7 @@ end
 local home = wt.home_dir
 local confighome = wt.config_dir
 local datahome = join(home, ".local", "share", "wezterm")
+local cachehome = join(home, ".cache", "nyx")
 
 local nyx_file = join(datahome, "nyx.lua")
 local nyx_config = load_file(nyx_file)
@@ -53,9 +54,12 @@ local nyx_config = load_file(nyx_file)
 local local_file = join(datahome, "config.lua")
 local local_config = load_file(local_file)
 
+local theme_file = join(cachehome, "theme", "name")
+
 -- Setting extra config files to the reload watch list
 wt.add_to_config_reload_watch_list(nyx_file)
 wt.add_to_config_reload_watch_list(local_file)
+wt.add_to_config_reload_watch_list(theme_file)
 
 local config = {
   -- I use nix for the most part this is something hanlded by that
@@ -137,6 +141,13 @@ end
 if is_windows then
   config.launch_menu = windows_launch_menu()
   config.default_prog = { "wsl.exe" }
+end
+
+-- If the theme file exists use that name instead
+if exists(theme_file) then
+  local file = io.open(theme_file, "r")
+  config.color_scheme = file:read()
+  file:close()
 end
 
 local result = extend(config, nyx_config, local_config)
