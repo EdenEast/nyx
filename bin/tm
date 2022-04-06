@@ -21,7 +21,7 @@ function main() {
   # Parse command line options
   if [ -n "$*" ]; then
     if [[ $1 == '--help' ]]; then
-      HELP=true
+      TM_HELP=true
     elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
       TM_COMMAND="${1//-/_}"
       shift
@@ -51,7 +51,7 @@ function main() {
     shift
   done
 
-  [ -n "$HELP" ] && help
+  [ -n "$TM_HELP" ] && cmd_help
 
   validate-cache-folder
 
@@ -65,20 +65,20 @@ function cmd_add() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm add [options] [path...]
+USAGE: tm add [FLAGS] [PATH...]
 
-Add a path to the list of folders to attach
+Register a path to use when listing paths to attach.
 
 This path can either be a 'workspace' path or just a 'single' path. A workspace
 path will search for all git directories that are contained within. By default
 a path is a 'single' path.
 
-OPTIONS:
+FLAGS:
   -h, --help        Show help message
   -w, --workspace   Use path as a workspace path
 
 ARGS:
-  <path...>            Optional path to be added. Uses 'cwd' if not present
+  <PATH...>            Optional path to be added. Uses 'cwd' if not present
 eof
   set -e
 
@@ -131,19 +131,21 @@ function cmd_attach() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm attach [path]
+USAGE: tm attach [FLAGS] [OPTIONS] [QUERY]
 
 Create or attach to a tmux session based on the path specified
 
 ALIAS: 'a'
 
-OPTIONS:
+FLAGS:
   -e, --exist       Attach to existing tmux session
-  -q, --query <str> Start searching query <str>
   -h, --help        Show help message
 
+OPTIONS:
+  -p, --path <path> Exact path to create or attach tmux session
+
 ARGS:
-  <path>            Optional selected path to create or attach tmux session
+  <QUERY>           Query to search from
 eof
   set -e
 
@@ -153,9 +155,10 @@ eof
       -e | --exist)
         do_existing=true
         ;;
-      -q | --query)
+      -p | --path)
         shift
-        do_query="--height 40% --reverse --select-1 --exit-0 --exact --query $1"
+        do_path="$1"
+        # do_query="--height 40% --reverse --select-1 --exit-0 --exact --query $1"
         ;;
       *)
         args+=("$1")
@@ -182,15 +185,11 @@ eof
   fi
 
   local selected
-  if [[ -n ${args[0]} ]]; then
-    if [[ -d ${args[0]} ]]; then
-      selected=${args[0]}
-
-      if [[ $selected == '.' ]]; then
-        selected="$(pwd)"
-      fi
+  if [[ -n $do_path ]]; then
+    if [[ -d $do_path ]]; then
+      selected="$do_path"
     else
-      echo "Unknown path: ${args[0]}"
+      echo "Unknown path: $do_path"
       exit 1
     fi
   else
@@ -208,8 +207,13 @@ eof
       selection_list=("${selection_list[@]}" "${tmp[@]}")
     done
 
+    local extra_args
+    if [[ ${#args[@]} -gt 0 ]]; then
+      extra_args=("--height" "40%" "--reverse" "--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
+    fi
+
     # shellcheck disable=SC2086
-    selected=$(write-list "${selection_list[@]}" | fzf $do_query)
+    selected=$(write-list "${selection_list[@]}" | fzf "${extra_args[@]}")
     if [[ -z $selected ]]; then
       exit 1
     fi
@@ -243,17 +247,19 @@ function cmd_help() {
   set +e
   local msg
   IFS='' read -r -d '' msg <<EOF
-USAGE: tm <COMMAND> [OPTIONS...]
+USAGE: tm <COMMAND> [FLAGS...]
 
 Tmux utility script for session and window management
 
 COMMANDS:
+  add              Register a path to use when listing paths to attach
   attach           Attach to new or existing tmux session
   kill             Kill a running session
+  list             List registered paths
+  remove           Remove registered path
   wcmd             Execute a command in a specific tmux window
 
-OPTIONS:
-  -v, --verbose    Output verbose information
+FLAGS:
   -h, --help       Output help information
 EOF
   set -e
@@ -266,13 +272,13 @@ function cmd_kill() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm kill
+USAGE: tm kill [FLAGS]
 
-Kill tmux session
+Kill a running tmux session
 
 ALIAS: 'k'
 
-OPTIONS:
+FLAGS:
   -h, --help      Show help message
 eof
   set -e
@@ -302,13 +308,13 @@ function cmd_list() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm list
+USAGE: tm list [FLAGS]
 
 List workspace and single paths registered to tm
 
 ALIAS: 'l'
 
-OPTIONS:
+FLAGS:
   -h, --help      Show help message
   -s, --single    Show only single paths
   -w, --workspace Show only workspace paths
@@ -353,17 +359,17 @@ function cmd_remove() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm remove [path...]
+USAGE: tm remove [FLAGS] [PATH...]
 
 Remove registered path from tm
 
-OPTIONS:
+FLAGS:
   -h, --help      Show help message
   -s, --single    Remove only single paths
   -w, --workspace Remove only workspace paths
 
 ARGS:
-  <path...>       The path to be removed. If no path is passed,
+  <PATH...>       The path to be removed. If no path is passed,
                   tm will use fzf to select paths to remove
 eof
   set -e
@@ -418,22 +424,22 @@ function cmd_wcmd() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm wcmd <window> -- <cmd...>
+USAGE: tm wcmd [FLAGS] <WINDOW> -- <CMD...>
 
 Send a command to a execute in a tmux window
 
 ALIAS: 'w'
 
-OPTIONS:
+FLAGS:
   -h, --help      Show help message
 
 ARGS:
-  <window>        Name of the window to execute the command from.
+  <WINDOW>        Name of the window to execute the command from.
                   This name window name can be taken from a path.
                   In this case the basename will be used. This is
                   useful with git worktrees and different branches.
 
-  <cmd>           The command to be executed in the tmux window.
+  <CMD>           The command to be executed in the tmux window.
                   Passing this after '--' will make sure that no
                   option parsing is completed and the entire command
                   is sent to the tmux window. This however does not
