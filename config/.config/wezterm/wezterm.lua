@@ -146,7 +146,10 @@ end
 -- If the theme file exists use that name instead
 if exists(theme_file) then
   local file = io.open(theme_file, "r")
-  config.color_scheme = file:read()
+  local name = file:read()
+  if name then
+    config.color_scheme = file:read()
+  end
   file:close()
 end
 
