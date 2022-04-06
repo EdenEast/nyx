@@ -120,8 +120,8 @@ eof
     local sum path
     sum="$(checksum "$p")"
     if [[ -d $p ]]; then
-      if ! grep -q "^$sum" $cachepath; then
-        echo "$sum $p" >>$cachepath
+      if ! grep -q "^$sum" "$cachepath"; then
+        echo "$sum $p" >>"$cachepath"
       fi
     fi
   done
@@ -197,7 +197,10 @@ eof
     local workspace_list
     local selection_list
 
+    # shellcheck disable=SC2207
     selection_list=($(write-paths "$SINGLE_CACHE_FILE"))
+
+    # shellcheck disable=SC2207
     workspace_list=($(write-paths "$WORKSPACE_CACHE_FILE"))
 
     for d in "${workspace_list[@]}"; do
@@ -388,13 +391,16 @@ eof
 
   local paths
   if [[ ${#args[@]} -eq 0 ]]; then
-    local total singles workspaces
+    local singles workspaces
     if [[ -z $only_workspace ]]; then
+      # shellcheck disable=SC2207
       singles=($(write-paths "$SINGLE_CACHE_FILE"))
     fi
     if [[ -z $only_single ]]; then
+      # shellcheck disable=SC2207
       workspaces=($(write-paths "$WORKSPACE_CACHE_FILE"))
     fi
+    # shellcheck disable=SC2207
     paths=($(write-list "${singles[@]}" "${workspaces[@]}" | fzf-down -m))
   else
     path=("${args[@]}")
@@ -495,6 +501,7 @@ function write-list() {
 }
 
 function write-paths() {
+  local path
   while IFS= read -r line; do
     path="$(echo "$line" | awk '{print $2}')"
     echo "$path"
@@ -512,7 +519,7 @@ function remove-line() {
 }
 
 function validate-cache-folder() {
-  mkdir -p $CACHE_HOME
+  mkdir -p "$CACHE_HOME"
 
   local default_workspaces=("$HOME/dev")
   local default_singles=("$HOME/.local/nyx" "$HOME/.config/nvim" "$HOME/.config/awesome")
@@ -521,7 +528,7 @@ function validate-cache-folder() {
     touch "$WORKSPACE_CACHE_FILE"
     for w in "${default_workspaces[@]}"; do
       if [[ -d $w ]]; then
-        echo "$(checksum "$w") $w" >>$WORKSPACE_CACHE_FILE
+        echo "$(checksum "$w") $w" >>"$WORKSPACE_CACHE_FILE"
       fi
     done
   fi
@@ -530,7 +537,7 @@ function validate-cache-folder() {
     touch "$SINGLE_CACHE_FILE"
     for s in "${default_singles[@]}"; do
       if [[ -d $s ]]; then
-        echo "$(checksum "$s") $s" >>$SINGLE_CACHE_FILE
+        echo "$(checksum "$s") $s" >>"$SINGLE_CACHE_FILE"
       fi
     done
   fi
