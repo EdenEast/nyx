@@ -193,36 +193,42 @@ eof
 
   local selected
   if [[ -n $do_path ]]; then
-    if [[ -d $do_path ]]; then
-      selected="$do_path"
-    else
-      echo "Unknown path: $do_path"
+    selected="$(realpath "$do_path")"
+    if [[ ! -d $selected ]]; then
+      echo "Unknown path: $selected"
       exit 1
     fi
   else
     local workspace_list
     local selection_list
 
-    # shellcheck disable=SC2207
-    selection_list=($(write-paths "$SINGLE_CACHE_FILE"))
-
-    # shellcheck disable=SC2207
-    workspace_list=($(write-paths "$WORKSPACE_CACHE_FILE"))
-
-    for d in "${workspace_list[@]}"; do
-      local tmp=("$(fd -t d --hidden --prune -d 4 '\.(bare|git)$' "$d" -x echo "{//}")")
-      selection_list=("${selection_list[@]}" "${tmp[@]}")
-    done
-
     local extra_args
     if [[ ${#args[@]} -gt 0 ]]; then
-      extra_args=("--height" "40%" "--reverse" "--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
+      # Shortcut to start a tmux session in cwd
+      if [[ ${args[0]} == '.' ]]; then
+        selected="$(pwd)"
+      else
+        extra_args=("--height" "40%" "--reverse" "--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
+      fi
     fi
 
-    # shellcheck disable=SC2086
-    selected=$(write-list "${selection_list[@]}" | fzf "${extra_args[@]}")
     if [[ -z $selected ]]; then
-      exit 1
+      # shellcheck disable=SC2207
+      selection_list=($(write-paths "$SINGLE_CACHE_FILE"))
+
+      # shellcheck disable=SC2207
+      workspace_list=($(write-paths "$WORKSPACE_CACHE_FILE"))
+
+      for d in "${workspace_list[@]}"; do
+        local tmp=("$(fd -t d --hidden --prune -d 4 '\.(bare|git)$' "$d" -x echo "{//}")")
+        selection_list=("${selection_list[@]}" "${tmp[@]}")
+      done
+
+      # shellcheck disable=SC2086
+      selected=$(write-list "${selection_list[@]}" | fzf "${extra_args[@]}")
+      if [[ -z $selected ]]; then
+        exit 1
+      fi
     fi
   fi
 
