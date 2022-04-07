@@ -3,16 +3,19 @@
 set -e
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(add|attach|help|kill|list|remove|wcmd)$"
+INTERNAL_COMMANDS="^(add|attach|help|jump|kill|list|remove|wcmd)$"
 
 declare -A INTERNAL_ALIASES
 INTERNAL_ALIASES['a']="attach"
-INTERNAL_ALIASES['w']="wcmd"
+INTERNAL_ALIASES['j']="jump"
 INTERNAL_ALIASES['k']="kill"
+INTERNAL_ALIASES['l']="list"
+INTERNAL_ALIASES['w']="wcmd"
 
 CACHE_HOME="$HOME/.cache/tmux"
 WORKSPACE_CACHE_FILE="$CACHE_HOME/workspace"
 SINGLE_CACHE_FILE="$CACHE_HOME/single"
+JUMPLIST_CACHE_FILE="$CACHE_HOME/jumplist"
 
 function main() {
   TM_COMMAND="attach"
@@ -254,6 +257,7 @@ Tmux utility script for session and window management
 COMMANDS:
   add              Register a path to use when listing paths to attach
   attach           Attach to new or existing tmux session
+  jump             Jump to registed path in jumplist
   kill             Kill a running session
   list             List registered paths
   remove           Remove registered path
@@ -268,6 +272,83 @@ EOF
   exit 1
 }
 
+function cmd_jump() {
+  set +e
+  local help_msg
+  ifs='' read -r -d '' help_msg <<eof
+USAGE: tm jump [FLAGS] [OPTIONS]
+
+Store a list of paths and jump to that index. This is useful for keybindings
+where you set keybindingd to jump to index 1, 2, 3, ... and tm will check
+the list of stored paths and use that to jump to that tmux session.
+
+By default if no options are padded then the cwd is added to the jump list
+
+ALIAS: 'j'
+
+FLAGS:
+  -e, --edit        Open jump list file in "\$EDITOR"
+  -h, --help        Show help message
+
+OPTIONS:
+  -i, --index <idx> Jump to index in jump list. Index is 1 based
+  -p, --path <path> Add path to jump list
+eof
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -e | --edit)
+        open_editor=true
+        ;;
+      -i | --index)
+        shift
+        index="$1"
+        ;;
+      -p | --path)
+        shift
+        path="$1"
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  if [[ -n $open_editor ]]; then
+    $EDITOR "$JUMPLIST_CACHE_FILE"
+    exit 0
+  fi
+
+  if [[ -n $path ]]; then
+    if ! grep -qFx "$path" "$JUMPLIST_CACHE_FILE"; then
+      echo "$path" >>"$JUMPLIST_CACHE_FILE"
+    fi
+    exit 0
+  fi
+
+  if [[ -n $index ]]; then
+    local path
+    path="$(sed "${index}q;d" "$JUMPLIST_CACHE_FILE")"
+
+    if [[ -n $path ]]; then
+      cmd_attach --path "$path"
+    fi
+
+    exit 0
+  fi
+
+  if ! grep -qFx "$(pwd)" "$JUMPLIST_CACHE_FILE"; then
+    pwd >>"$JUMPLIST_CACHE_FILE"
+  fi
+}
 function cmd_kill() {
   set +e
   local help_msg
@@ -546,6 +627,10 @@ function validate-cache-folder() {
         echo "$(checksum "$s") $s" >>"$SINGLE_CACHE_FILE"
       fi
     done
+  fi
+
+  if [ ! -f "$JUMPLIST_CACHE_FILE" ]; then
+    touch "$JUMPLIST_CACHE_FILE"
   fi
 }
 
