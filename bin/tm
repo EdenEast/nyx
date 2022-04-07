@@ -178,7 +178,11 @@ eof
   if [[ -n $do_existing ]]; then
     local sessions name
     sessions=("$(tmux list-sessions -F "#{session_name}")")
-    name="$(write-list "${sessions[@]}" | fzf-down)"
+    if [[ ${#sessions[@]} -eq 1 ]]; then
+      name="${sessions[0]}"
+    else
+      name="$(write-list "${sessions[@]}" | fzf-down)"
+    fi
     if [[ -z $TMUX ]]; then
       tmux attach-session -t "$name"
     else
