@@ -39,21 +39,7 @@ in
         set -sg history-limit 50000              # increase scrollback
         set -g mouse on                          # enable mouse mode
 
-        # Reload tmux config file from XDG_CONFIG_HOME
-        bind-key r source-file ~/.config/tmux/tmux.conf \; display "config reloaded"
-
-        bind-key v split-window -h
-        bind-key s split-window -v
-        bind-key | split-window -h
-        bind-key - split-window -v
-
-        # setting option without (on/off) will toggle option
-        bind-key b set-option status
-
-        bind-key o run-shell -b "~/.config/tmux/scripts/session-menu"
-
-        # Instead of find-window launch tmux manager
-        bind-key f run-shell "tmux neww ~/.local/nyx/bin/tm"
+        source-file ~/.config/tmux/conf/keybindings.conf
 
         # left status is only length of 10
         set -g status-left-length 50
@@ -62,6 +48,11 @@ in
 
     xdg.configFile."tmux/scripts" = {
       source = ../../../config/.config/tmux/scripts;
+      recursive = true;
+      executable = true;
+    };
+    xdg.configFile."tmux/conf" = {
+      source = ../../../config/.config/tmux/conf;
       recursive = true;
       executable = true;
     };
