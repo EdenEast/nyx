@@ -18,8 +18,7 @@ function main() {
   # Parse command line options
   if [ -n "$*" ]; then
     if [[ $1 == '--help' ]]; then
-      echo "doign help"
-      # HELP=true
+      HELP=true
     elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
       WT_COMMAND="${1//-/_}"
       shift
@@ -48,7 +47,6 @@ function main() {
   [ -n "$HELP" ] && cmd_help
 
   "cmd_$WT_COMMAND" "${WT_ARGS[@]}"
-  # $WT_COMMAND "${WT_ARGS[@]}"
 
   exit 0
 }
@@ -62,14 +60,14 @@ function cmd_add() {
 Add a new worktree
 
 USAGE:
-  wt add [FLAGS] [name] [path]
+  wt add [OPTIONS] [name] [path]
 
-FLAGS:
-  -h, --help            Show help message
+OPTIONS:
+  -h, --help    Prints help information
 
 ARGS:
-  <name>                The name of the branch
-  <path>                The name of the new directory to clone into
+  <name>        The name of the branch
+  <path>        The name of the new directory to clone into
 EOF
   set -e
 
@@ -118,14 +116,14 @@ function cmd_clone() {
 Clone a repository into a new directory.
 
 USAGE:
-  wt clone [FLAGS] [OPTIONS] <repository> [path]
+  wt clone [OPTIONS] <repository> [path]
 
-FLAGS:
-  -h, --help            Show help message
+ALIAS: 'c'
 
 OPTIONS:
   -b, --branch <name>   Initial branch to clone to
   -u, --upstream <url>  Upstream remote to track
+  -h, --help            Prints help information
 
 ARGS:
   <repository>          The (remote) repository to clone from
@@ -203,20 +201,20 @@ function cmd_help() {
   IFS='' read -r -d '' msg <<EOF
 Utility script to work with git worktree's
 
-USAGE: wt <COMMAND> [OPTIONS...]
+USAGE:
+  wt [OPTIONS] <command>
 
 COMMANDS:
-  add            - Add a new worktree
-  clone          - Clone a repository into a new directory
-  help           - Utility script to work with git worktree's
-  remove         - Remove worktree
-  root           - Return the root of the repository
-  source         - Output wt wrapper function to be source in rc file
-  switch         - Switch directory to a different worktree
+  add            Add a new worktree
+  clone          Clone a repository into a new directory
+  help           Utility script to work with git worktree's
+  remove         Remove worktree
+  root           Return the root of the repository
+  source         Output wt wrapper function to be source in rc file
+  switch         Switch directory to a different worktree
 
 OPTIONS:
-  -v, --verbose  - Output verbose information
-  -h, --help     - Output help information
+  -h, --help     Prints help information
 EOF
   set -e
 
@@ -230,15 +228,15 @@ function cmd_remove() {
   IFS='' read -r -d '' msg <<EOF
 Remove worktree
 
-USAGE: wt remove [path]
+USAGE:
+  wt remove [OPTIONS] [path]
 
 OPTIONS:
-  -v, --verbose  - Output verbose information
-  -h, --help     - Output help information
-  -f, --force    - Force removal of worktree
+  -f, --force    Force removal of worktree
+  -h, --help     Prints help information
 
 ARGS:
-  <path>          Fuzzy name of switch target
+  <path>         Fuzzy name of switch target
 EOF
   set -e
 
@@ -277,11 +275,13 @@ function cmd_root() {
   IFS='' read -r -d '' msg <<EOF
 Return the root of the repository
 
-USAGE: wt root
+USAGE:
+  wt root [OPTIONS]
+
+ALIAS: 'r'
 
 OPTIONS:
-  -v, --verbose  - Output verbose information
-  -h, --help     - Output help information
+  -h, --help    Prints help information
 EOF
   set -e
 
@@ -300,10 +300,10 @@ function cmd_source() {
 Output wt wrapper function to be source in rc file
 
 USAGE:
-  wt source [FLAGS]
+  wt source [OPTIONS]
 
-FLAGS:
-  -h, --help      Show help message
+OPTIONS:
+  -h, --help    Prints help information
 EOF
   set -e
 
@@ -337,13 +337,15 @@ function cmd_switch() {
 Switch directory to a different worktree
 
 USAGE:
-  wt switch [FLAGS] [name]
+  wt switch [OPTIONS] [name]
 
-FLAGS:
-  -h, --help      Show help message
+ALIAS: 's'
+
+OPTIONS:
+  -h, --help    Prints help information
 
 ARGS:
-  <name>          Fuzzy name of switch target
+  <name>        Fuzzy name of switch target
 EOF
   set -e
 
@@ -395,6 +397,7 @@ function fzf-down() {
 }
 
 # --- Execute main process ----------------------------------------------------
+
 main "$@"
 
 # vim: et sw=2 ts=2 sts=2
