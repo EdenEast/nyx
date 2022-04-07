@@ -68,7 +68,8 @@ function cmd_add() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm add [FLAGS] [PATH...]
+USAGE:
+  tm add [OPTIONS] [path...]
 
 Register a path to use when listing paths to attach.
 
@@ -76,12 +77,12 @@ This path can either be a 'workspace' path or just a 'single' path. A workspace
 path will search for all git directories that are contained within. By default
 a path is a 'single' path.
 
-FLAGS:
-  -h, --help        Show help message
-  -w, --workspace   Use path as a workspace path
+OPTIONS:
+  -w, --workspace    Use path as a workspace path
+  -h, --help         Prints help information
 
 ARGS:
-  <PATH...>            Optional path to be added. Uses 'cwd' if not present
+  <path...>          Optional path to be added. Uses 'cwd' if not present
 eof
   set -e
 
@@ -134,21 +135,20 @@ function cmd_attach() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm attach [FLAGS] [OPTIONS] [QUERY]
+USAGE:
+  tm attach [OPTIONS] [query]
 
 Create or attach to a tmux session based on the path specified
 
 ALIAS: 'a'
 
-FLAGS:
-  -e, --exist       Attach to existing tmux session
-  -h, --help        Show help message
-
 OPTIONS:
-  -p, --path <path> Exact path to create or attach tmux session
+  -p, --path <path>  Exact path to create or attach tmux session
+  -e, --exist        Attach to existing tmux session
+  -h, --help         Prints help information
 
 ARGS:
-  <QUERY>           Query to search from
+  <query>           Query to search from
 eof
   set -e
 
@@ -250,21 +250,22 @@ function cmd_help() {
   set +e
   local msg
   IFS='' read -r -d '' msg <<EOF
-USAGE: tm <COMMAND> [FLAGS...]
+USAGE:
+  tm [OPTIONS...] <command>
 
 Tmux utility script for session and window management
 
 COMMANDS:
-  add              Register a path to use when listing paths to attach
-  attach           Attach to new or existing tmux session
-  jump             Jump to registed path in jumplist
-  kill             Kill a running session
-  list             List registered paths
-  remove           Remove registered path
-  wcmd             Execute a command in a specific tmux window
+  add           Register a path to use when listing paths to attach
+  attach        Attach to new or existing tmux session
+  jump          Jump to registed path in jumplist
+  kill          Kill a running session
+  list          List registered paths
+  remove        Remove registered path
+  wcmd          Execute a command in a specific tmux window
 
-FLAGS:
-  -h, --help       Output help information
+OPTIONS:
+  -h, --help    Prints help information
 EOF
   set -e
 
@@ -276,7 +277,8 @@ function cmd_jump() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm jump [FLAGS] [OPTIONS]
+USAGE:
+  tm jump [OPTIONS]
 
 Store a list of paths and jump to that index. This is useful for keybindings
 where you set keybindingd to jump to index 1, 2, 3, ... and tm will check
@@ -286,13 +288,11 @@ By default if no options are padded then the cwd is added to the jump list
 
 ALIAS: 'j'
 
-FLAGS:
-  -e, --edit        Open jump list file in "\$EDITOR"
-  -h, --help        Show help message
-
 OPTIONS:
-  -i, --index <idx> Jump to index in jump list. Index is 1 based
-  -p, --path <path> Add path to jump list
+  -e, --edit         Open jump list file in "\$EDITOR"
+  -i, --index <idx>  Jump to index in jump list. Index is 1 based
+  -p, --path <path>  Add path to jump list
+  -h, --help         Prints help information
 eof
   set -e
 
@@ -353,14 +353,15 @@ function cmd_kill() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm kill [FLAGS]
+USAGE:
+  tm kill [OPTIONS]
 
 Kill a running tmux session
 
 ALIAS: 'k'
 
-FLAGS:
-  -h, --help      Show help message
+OPTIONS:
+  -h, --help    Prints help information
 eof
   set -e
 
@@ -389,16 +390,16 @@ function cmd_list() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm list [FLAGS]
+USAGE: tm list [OPTIONS]
 
 List workspace and single paths registered to tm
 
 ALIAS: 'l'
 
-FLAGS:
-  -h, --help      Show help message
-  -s, --single    Show only single paths
-  -w, --workspace Show only workspace paths
+OPTIONS:
+  -s, --single     Show only single paths
+  -w, --workspace  Show only workspace paths
+  -h, --help       Prints help information
 eof
   set -e
 
@@ -440,18 +441,19 @@ function cmd_remove() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm remove [FLAGS] [PATH...]
+USAGE:
+  tm remove [OPTIONS] [path...]
 
 Remove registered path from tm
 
-FLAGS:
-  -h, --help      Show help message
-  -s, --single    Remove only single paths
-  -w, --workspace Remove only workspace paths
+OPTIONS:
+  -s, --single     Remove only single paths
+  -w, --workspace  Remove only workspace paths
+  -h, --help       Prints help information
 
 ARGS:
-  <PATH...>       The path to be removed. If no path is passed,
-                  tm will use fzf to select paths to remove
+  <path...>        The path to be removed. If no path is passed,
+                   tm will use fzf to select paths to remove
 eof
   set -e
 
@@ -505,26 +507,27 @@ function cmd_wcmd() {
   set +e
   local help_msg
   ifs='' read -r -d '' help_msg <<eof
-USAGE: tm wcmd [FLAGS] <WINDOW> -- <CMD...>
+USAGE:
+  tm wcmd [OPTIONS] <window> -- <cmd...>
 
 Send a command to a execute in a tmux window
 
 ALIAS: 'w'
 
-FLAGS:
-  -h, --help      Show help message
+OPTIONS:
+  -h, --help    Prints help information
 
 ARGS:
-  <WINDOW>        Name of the window to execute the command from.
-                  This name window name can be taken from a path.
-                  In this case the basename will be used. This is
-                  useful with git worktrees and different branches.
+  <window>      Name of the window to execute the command from.
+                This name window name can be taken from a path.
+                In this case the basename will be used. This is
+                useful with git worktrees and different branches.
 
-  <CMD>           The command to be executed in the tmux window.
-                  Passing this after '--' will make sure that no
-                  option parsing is completed and the entire command
-                  is sent to the tmux window. This however does not
-                  have to be after '--'.
+  <cmd>         The command to be executed in the tmux window.
+                Passing this after '--' will make sure that no
+                option parsing is completed and the entire command
+                is sent to the tmux window. This however does not
+                have to be after '--'.
 
 EXAMPLES:
   tm wcmd server cd backend
