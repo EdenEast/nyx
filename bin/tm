@@ -177,7 +177,8 @@ eof
 
   if [[ -n $do_existing ]]; then
     local sessions name
-    sessions=("$(tmux list-sessions -F "#{session_name}")")
+    # shellcheck disable=SC2207
+    sessions=($(tmux list-sessions -F "#{session_name}"))
     if [[ ${#sessions[@]} -eq 1 ]]; then
       name="${sessions[0]}"
     else
@@ -264,6 +265,9 @@ USAGE:
   tm [OPTIONS...] <command>
 
 Tmux utility script for session and window management
+
+By default if there is no command passed as the first argument the
+command 'attach' will be assumed.
 
 COMMANDS:
   add           Register a path to use when listing paths to attach
