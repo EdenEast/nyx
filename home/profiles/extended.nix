@@ -44,7 +44,7 @@ in
       shell.glow.enable = true;
       # shell.keybase.enable = true;
       shell.lf.enable = true;
-      shell.mcfly.enable = true;
+      # shell.mcfly.enable = true;
       # shell.repo.enable = true;
       shell.tmux.enable = true;
       shell.zellij.enable = true;
