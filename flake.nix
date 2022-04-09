@@ -73,6 +73,7 @@
       nixosConfigurations = mapAttrs' mkSystem {
         pride = { };
         sloth = { };
+        vm-dev = { };
       };
 
       darwinConfigurations = mapAttrs' mkDarwin {
