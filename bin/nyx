@@ -89,17 +89,18 @@ function main() {
 
   [ -n "$HELP" ] && help
 
-  $NYX_COMMAND "${NYX_ARGS[@]}"
+  "cmd_$NYX_COMMAND" "${NYX_ARGS[@]}"
   exit 0
 }
 
 # --- Commands ----------------------------------------------------------------
 
-function build() {
+function cmd_build() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx build [target]
+USAGE:
+  nyx build [target]
 
 Build an output target. If no output target is specified nyx will build
 either the nixos system configuration or the toplevel host config.
@@ -154,11 +155,12 @@ EOF
   )
 }
 
-function check() {
+function cmd_check() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx check
+USAGE:
+  nyx check
 
 Execute flake check output.
 
@@ -189,11 +191,12 @@ EOF
   )
 }
 
-function fmt() {
+function cmd_fmt() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx fmt [OPTIONS] [target...]
+USAGE:
+  nyx fmt [OPTIONS] [target...]
 
 Execute formatters for file types.
 
@@ -230,11 +233,12 @@ EOF
   )
 }
 
-function gc() {
+function cmd_gc() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx gc [OPTIONS] [target...]
+USAGE:
+  nyx gc [OPTIONS] [target...]
 
 Garbage collection and nix store optimization
 
@@ -281,11 +285,12 @@ EOF
   fi
 }
 
-function link() {
+function cmd_link() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx link [OPTIONS] [target...]
+USAGE:
+  nyx link [OPTIONS] [target...]
 
 Create a symlink to config file. If no application is given all will be provided.
 
@@ -348,7 +353,7 @@ EOF
     exit 0
   }
 
-  function create_link() {
+  function cmd_create_link() {
     if [[ -L $1 ]]; then
       if [[ "$(readlink $1)" == "$2" ]]; then
         debug "link: $1 already points to $2. Skipping"
@@ -401,11 +406,12 @@ EOF
   set -e
 }
 
-function rollback() {
+function cmd_rollback() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx rollback [OPTIONS]
+USAGE:
+  nyx rollback [OPTIONS]
 
 Rollback the current generation.
 
@@ -445,11 +451,12 @@ EOF
   )
 }
 
-function switch() {
+function cmd_switch() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx switch [OPTIONS] [target...]
+USAGE:
+  nyx switch [OPTIONS] [target...]
 
 Switch the current installed configuration state.
 
@@ -523,11 +530,12 @@ EOF
   )
 }
 
-function test() {
+function cmd_test() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx test [OPTIONS] [target...]
+USAGE:
+  nyx test [OPTIONS] [target...]
 
 Test the current installed configuration state.
 
@@ -601,11 +609,12 @@ EOF
   )
 }
 
-function update() {
+function cmd_update() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx update [OPTIONS] [inputs...]
+USAGE:
+  nyx update [OPTIONS] [inputs...]
 
 Update flake.lock file
 
@@ -637,11 +646,12 @@ EOF
   )
 }
 
-function unlink() {
+function cmd_unlink() {
   set +e
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
-USAGE: nyx unlink [OPTIONS] [targets...]
+USAGE:
+  nyx unlink [OPTIONS] [targets...]
 
 Remove manual symlinks to config/ folder
 
@@ -703,7 +713,7 @@ EOF
   set -e
 }
 
-function help() {
+function cmd_help() {
   if [[ $1 =~ $INTERNAL_COMMANDS ]]; then
     $1 '--help'
   fi
@@ -713,7 +723,8 @@ function help() {
   IFS='' read -r -d '' msg <<EOF
 Utility script to work with my nix configuration more effectively
 
-USAGE: nyx <COMMAND> [OPTIONS...]
+USAGE:
+  nyx <COMMAND> [OPTIONS...]
 
 COMMANDS:
   build  - Build target
