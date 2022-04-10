@@ -353,7 +353,7 @@ EOF
     exit 0
   }
 
-  function cmd_create_link() {
+  function create_link() {
     if [[ -L $1 ]]; then
       if [[ "$(readlink $1)" == "$2" ]]; then
         debug "link: $1 already points to $2. Skipping"
@@ -488,11 +488,11 @@ EOF
     cd "$NYX_ROOT"
 
     # Making sure that the target builds before trying to unlink and switch
-    build "${NYX_ARGS[@]}"
+    cmd_build "${NYX_ARGS[@]}"
 
     # Since the build completed with no issues then it is safe to unlink
     # and switch to the new config
-    unlink
+    cmd_unlink
 
     # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
@@ -526,7 +526,7 @@ EOF
       fi
     fi
 
-    [ -n "$do_link" ] && link
+    [ -n "$do_link" ] && cmd_link
   )
 }
 
@@ -567,11 +567,11 @@ EOF
     cd "$NYX_ROOT"
 
     # Making sure that the target builds before trying to unlink and switch
-    build "${NYX_ARGS[@]}"
+    cmd_build "${NYX_ARGS[@]}"
 
     # Since the build completed with no issues then it is safe to unlink
     # and switch to the new config
-    unlink
+    cmd_unlink
 
     # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
@@ -605,7 +605,7 @@ EOF
       fi
     fi
 
-    [ -n "$do_link" ] && link
+    [ -n "$do_link" ] && cmd_link
   )
 }
 
