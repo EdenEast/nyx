@@ -738,15 +738,15 @@ EOF
 # --- Utility functions -------------------------------------------------------
 
 function get_distro() {
-  cat /etc/*-release | grep '^ID=' | cut -c4-
+  cat /etc/*-release | grep '^ID=' | sed -E 's|^ID="(.*)"|\1|g'
 }
 
 function is_nixos() {
-  [ "$(get_distro)" == "nixos" ] && echo 1
+  [ "$(get_distro)" == "nixos" ]
 }
 
 function is_darwin() {
-  [ "$(uname -s)" == "Darwin" ] && echo 1
+  [ "$(uname -s)" == "Darwin" ]
 }
 
 function debug() {
@@ -766,8 +766,8 @@ function error() {
 }
 
 function failure() {
-  error $1
-  exit ${2:-1}
+  error "$1"
+  exit "${2:-1}"
 }
 
 # --- Echo replacements -------------------------------------------------------
@@ -788,6 +788,6 @@ function echo_e() {
 }
 
 # --- Execute main process ----------------------------------------------------
-main $*
+main "$@"
 
 # vim: et sw=2 ts=2 sts=2
