@@ -418,16 +418,7 @@ EOF
 # --- Utility -----------------------------------------------------------------
 
 function get_root_dir() {
-  local top
-  top=$(git worktree list | head -n 1)
-  if [[ $top =~ \(bare\)$ ]]; then
-    top="$(echo "$top" | awk '{print $1}')"
-    top="$(dirname "$top")"
-  else
-    top="$(echo "$top" | awk '{print $1}')"
-  fi
-
-  echo "$top"
+  dirname $(realpath $(git rev-parse --git-common-dir))
 }
 
 function fzf-down() {
