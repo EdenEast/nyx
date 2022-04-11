@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(add|clone|help|remove|root|source|switch)$"
+INTERNAL_COMMANDS="^(add|clone|help|list|remove|root|source|switch)$"
 
 declare -A INTERNAL_ALIASES
 INTERNAL_ALIASES['a']="add"
@@ -208,6 +208,7 @@ COMMANDS:
   add            Add a new worktree
   clone          Clone a repository into a new directory
   help           Utility script to work with git worktree's
+  list           List worktrees
   remove         Remove worktree
   root           Return the root of the repository
   source         Output wt wrapper function to be source in rc file
@@ -220,6 +221,38 @@ EOF
 
   printf "%s\n" "$msg"
   exit 1
+}
+
+function cmd_list() {
+  set +e
+  local msg
+  IFS='' read -r -d '' msg <<EOF
+List worktrees
+
+USAGE:
+  wt list [OPTIONS]
+
+OPTIONS:
+  -h, --help     Prints help information
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  git worktree list
 }
 
 function cmd_remove() {
