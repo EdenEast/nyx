@@ -352,7 +352,7 @@ EOF
 
   cat <<EOF
 function wt() {
-  if [ "\$1" = "switch" ]; then
+  if [[ "\$1" =~ ^\(switch\|s\)\$ ]]; then
     SCRIPT="\$(command wt \$@)"
     [ \$? -eq 0 ] && eval "\$SCRIPT" || printf "\$SCRIPT"
   else
