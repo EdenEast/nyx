@@ -30,10 +30,10 @@
         enable = true;
         package = null;
       };
-      kitty = {
-        enable = true;
-        fontSize = 14;
-      };
+      # kitty = {
+      #   enable = true;
+      #   fontSize = 14;
+      # };
       wezterm = {
         enable = true;
         package = null;
