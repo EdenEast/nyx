@@ -35,7 +35,7 @@ M.plugins = {
 }
 
 M.before = function()
-  vim.g.nightfox_debug = true
+  -- vim.g.nightfox_debug = true
   vim.g.rose_pine_variant = "moon"
 end
 

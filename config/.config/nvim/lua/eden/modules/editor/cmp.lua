@@ -7,9 +7,6 @@ local config = {
   completion = {
     completeopt = "menu,menuone,noinsert",
   },
-  documentation = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-  },
   experimental = {
     native_menu = false,
     ghost_text = true,
@@ -98,6 +95,11 @@ local config = {
       cmp.config.compare.sort_text,
       cmp.config.compare.length,
       cmp.config.compare.order,
+    },
+  },
+  window = {
+    documentation = {
+      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
     },
   },
 }
