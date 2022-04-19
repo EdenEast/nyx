@@ -86,11 +86,8 @@ EOF
     exit 1
   }
 
-  local root
+  local root name path
   root=$(get_root_dir)
-
-  local name
-  local path
   name="${args[0]}"
   path="${args[1]}"
 
@@ -102,12 +99,17 @@ EOF
     path="$name"
   fi
 
-  local full="$root/$path"
+  local full remote
+  full="$root/$path"
+  remote="$(git ls-remote --refs ./. $name | awk '{print $2}' | grep 'refs/remotes')"
 
   if [ ! -e "$full" ]; then
     git worktree add --checkout "$full" "$name"
-    git --work-tree "$full" --git-dir "$full/.git" \
-      branch "$name" -u "$(git base-remote)/$name"
+
+    if [ -n "$remote" ]; then
+      git --work-tree "$full" --git-dir "$full/.git" \
+        branch "$name" -u "$(git base-remote)/$name"
+    fi
   fi
 }
 
