@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(add|clone|help|list|remove|root|source|switch)$"
+INTERNAL_COMMANDS="^(add|clone|help|list|new|remove|root|source|switch)$"
 
 declare -A INTERNAL_ALIASES
 INTERNAL_ALIASES['a']="add"
@@ -230,6 +230,7 @@ COMMANDS:
   clone          Clone a repository into a new directory
   help           Utility script to work with git worktree's
   list           List worktrees
+  new            Create new branch with worktree
   remove         Remove worktree
   root           Return the root of the repository
   source         Output wt wrapper function to be source in rc file
@@ -274,6 +275,52 @@ EOF
   }
 
   git worktree list
+}
+
+function cmd_new() {
+  set +e
+  local msg
+  IFS='' read -r -d '' msg <<EOF
+Create a new branch using worktrees
+
+USAGE:
+  wt new <name>
+
+OPTIONS:
+  -h, --help     Prints help information
+
+ARGS:
+  <name>         The name of the branch
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  local name root full
+  name="${args[0]}"
+
+  if [ -z "$name" ]; then
+    echo "Missing argument <name>"
+    exit 1
+  fi
+
+  root="$(get_root_dir)"
+  full="$root/$name"
+
+  git worktree add --track -b "$name" "$full"
 }
 
 function cmd_remove() {
