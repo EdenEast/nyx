@@ -333,6 +333,7 @@ USAGE:
   wt remove [OPTIONS] [path]
 
 OPTIONS:
+  -d, --delete   Delete branch as well
   -f, --force    Force removal of worktree
   -h, --help     Prints help information
 
@@ -344,6 +345,9 @@ EOF
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      -d |--delete)
+        do_delete=true
+        ;;
       -f | --force)
         force="--force"
         shift
@@ -360,14 +364,20 @@ EOF
     exit 1
   }
 
-  local path
+  # TODO: check if it is a full path or just a partial path. If partial then search list with fzf like `tm`
+  local path branch
   path="${args[0]}"
 
-  if [ -z "$name" ]; then
+  if [ -z "$path" ]; then
     path=$(git worktree list | tail -2 | fzf-down | awk '{print $1}')
   fi
 
+  branch="$(git worktree list | tail -2 | grep -e "^$path" | sed -E 's|.*\[(.*)\].*|\1|')"
+
   git worktree remove "$path" $force
+  if [ -n "$do_delete" ]; then
+    git branch -d "$branch"
+  fi
 }
 
 function cmd_root() {
