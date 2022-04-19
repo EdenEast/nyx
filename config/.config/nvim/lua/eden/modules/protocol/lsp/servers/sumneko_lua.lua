@@ -2,7 +2,7 @@ local nlsp = require("lspconfig")
 
 local M = {}
 
-M.setup = function(config, _, opts)
+M.setup = function(config, on_attach, opts)
   local runtime_path = vim.split(package.path, ";")
   table.insert(runtime_path, "lua/?.lua")
   table.insert(runtime_path, "lua/?/init.lua")
@@ -49,6 +49,11 @@ M.setup = function(config, _, opts)
 
   if opts.cmd_env then
     config.cmd_env = opts.cmd_env
+  end
+
+  config.on_attach = function(client, bufnr)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client, bufnr)
   end
 
   return config
