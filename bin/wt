@@ -105,7 +105,9 @@ EOF
   local full="$root/$path"
 
   if [ ! -e "$full" ]; then
-    git worktree add "$full" "$name"
+    git worktree add --checkout "$full" "$name"
+    git --work-tree "$full" --git-dir "$full/.git" \
+      branch "$name" -u "$(git base-remote)/$name"
   fi
 }
 
@@ -174,7 +176,17 @@ EOF
   # This is required because cloning with `--bare` repository does not set
   # The remote for origin
   git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-  echo "# vim:ft=gitconfig" >>./.bare/config
+
+  # worktree add tries to find a remote-tracking branch whose name uniquely
+  # matches the new branch name.
+  git config worktree.guessRemote true
+
+  # Adding vim modline to help with filetype
+  echo "# vim:ft=gitconfig" >./.bare/tmp
+  cat ./.bare/config >>./.bare/tmp
+  rm ./.bare/config
+  mv ./.bare/tmp ./.bare/config
+
   git fetch origin
 
   if [ -n "$upstream" ]; then
@@ -193,7 +205,11 @@ EOF
   fi
 
   # Creating the first worktree with the default branch
-  git worktree add "$starting_branch"
+  git worktree add --checkout "$starting_branch" "$starting_branch"
+
+  # Setting the local branch to track with the remote branch
+  git --work-tree "$starting_branch" --git-dir "$starting_branch/.git" \
+    branch "$starting_branch" -u "origin/$starting_branch"
 }
 
 function cmd_help() {
