@@ -330,7 +330,7 @@ function cmd_remove() {
 Remove worktree
 
 USAGE:
-  wt remove [OPTIONS] [path]
+  wt remove [OPTIONS] [name]
 
 OPTIONS:
   -d, --delete   Delete branch as well
@@ -338,14 +338,14 @@ OPTIONS:
   -h, --help     Prints help information
 
 ARGS:
-  <path>         Fuzzy name of switch target
+  <name>         Fuzzy name of switch target
 EOF
   set -e
 
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -d |--delete)
+      -d | --delete)
         do_delete=true
         ;;
       -f | --force)
@@ -364,15 +364,14 @@ EOF
     exit 1
   }
 
-  # TODO: check if it is a full path or just a partial path. If partial then search list with fzf like `tm`
-  local path branch
-  path="${args[0]}"
-
-  if [ -z "$path" ]; then
-    path=$(git worktree list | tail -2 | fzf-down | awk '{print $1}')
+  local path branch line extra_args
+  if [[ ${#args[@]} -gt 0 ]]; then
+    extra_args=("--height" "40%" "--reverse" "--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
   fi
 
-  branch="$(git worktree list | tail -2 | grep -e "^$path" | sed -E 's|.*\[(.*)\].*|\1|')"
+  line="$(git worktree list | tail -2 | fzf "${extra_args[@]}")"
+  path="$(echo "$line" | awk '{print $1}')"
+  branch="$(echo "$line" | sed -E 's|.*\[(.*)\].*|\1|')"
 
   git worktree remove "$path" $force
   if [ -n "$do_delete" ]; then
