@@ -1,6 +1,5 @@
 local tree_cb = require("nvim-tree.config").nvim_tree_callback
 
-vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_git_hl = 1
 vim.g.nvim_tree_width_allow_resize = 0
 vim.g.nvim_tree_add_trailing = 1
@@ -23,7 +22,6 @@ vim.g.nvim_tree_icons = {
 
 require("nvim-tree").setup({
   ignore_ft_on_setup = { ".git", "node_modules" },
-  auto_close = true,
   tab_open = true,
   update_focused_file = {
     enable = true,
