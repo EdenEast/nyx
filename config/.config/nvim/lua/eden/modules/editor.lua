@@ -6,6 +6,7 @@ M.plugins = {
 
   {
     "windwp/nvim-autopairs",
+    event = "InsertEnter",
     config = function()
       require("nvim-autopairs").setup({
         disable_filetype = { "TelescopePrompt", "vim" },
@@ -16,7 +17,7 @@ M.plugins = {
 
   {
     "hrsh7th/nvim-cmp",
-    wants = "nvim-autopairs",
+    after = "nvim-autopairs",
     config = function()
       require("eden.modules.editor.cmp")
     end,
