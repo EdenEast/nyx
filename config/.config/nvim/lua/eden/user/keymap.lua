@@ -60,6 +60,8 @@ nmap("<leader>bm", function()
   require("eden.fn.bufmax").toggle()
 end)
 
+nmap("<leader>tt", ":Telescope colorscheme<cr>")
+
 -- Jump list -------------------------------------------------------------------
 -- Because currently in alacritty we cannot tell the difference between <tab>
 -- and <c-i> mapping <m-i> and <m-o> to go forward and backwards in the jump list
