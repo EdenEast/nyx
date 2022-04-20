@@ -5,9 +5,7 @@ M.plugins = {
   {
     dev("EdenEast/nightfox.nvim"),
     config = function()
-      -- require("nightfox").setup({
-      --   hlgroups = { TSPunctDelimiter = { fg = "${red}" } },
-      -- })
+      R("eden.modules.theme.nightfox")
     end,
   },
   {
@@ -35,7 +33,6 @@ M.plugins = {
 }
 
 M.before = function()
-  -- vim.g.nightfox_debug = true
   vim.g.rose_pine_variant = "moon"
 end
 

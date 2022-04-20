@@ -10,10 +10,12 @@ require("eden.user.options")
 -- lua require path. This is so that it can be cached by `impatient`.
 require("packer_compiled")
 
+-- Trigger the after functions in the modules directory.
+require("eden.core.pack").trigger_after()
+
 -- Once the compiled packer file is required we can try and set the colorscheme.
 -- This could not be done before because some colorschemes (light nightfox) have
 -- some configuration in the config sections. Requiring the compiled file
 -- executes the config section. Then the colorscheme can be applied and the
 -- configuration settings would be seen.
 require("eden.core.theme")
-require("eden.core.pack").trigger_after()
