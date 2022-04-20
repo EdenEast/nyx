@@ -75,7 +75,7 @@ new table using the matched key names:
 local config = {
   outputFile = "profiler.lua", -- Name of this profiler (to remove itself from reports)
   emptyToThis = "~", -- Rows with no time are set to this value
-  fW = 20, -- Width of the file column
+  fW = 60, -- Width of the file column
   fnW = 28, -- Width of the function name column
   lW = 7, -- Width of the line column
   tW = 7, -- Width of the time taken column
