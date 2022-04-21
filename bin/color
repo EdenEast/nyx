@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-main()
-{
+main() {
   if [ -n "$*" ]; then
     key="$1"
     case $key in
@@ -10,16 +9,18 @@ main()
       -v | --view) view ;;
       -s | --spectrum) spectrum ;;
       -e | --extended) extended ;;
-      *) echo "Unknown option $key" ;  usage 1 ;;
+      *)
+        echo "Unknown option $key"
+        usage 1
+        ;;
     esac
     shift
   fi
   default
 }
 
-usage()
-{
-    cat << 'EOF'
+usage() {
+  cat <<'EOF'
 Test output color codes for your terminal.
 Usage: color [OPTIONS]
 
@@ -29,9 +30,8 @@ OPTIONS:
   -s, --spectrum   View spectrum output
 EOF
   # -c, --colors [bits]  Force the color bits that it will output (8, 16, 256)
-    exit "$1"
+  exit "$1"
 }
-
 
 # Default:
 #
@@ -43,8 +43,7 @@ EOF
 #        def     40m     41m     42m     43m     44m     45m     46m     47m
 #    m   •••     •••     •••     •••     •••     •••     •••     •••     •••
 #   1m   •••     •••     •••     •••     •••     •••     •••     •••     •••
-default()
-{
+default() {
   T='•••' # The text for the color test
 
   echo -e "\n         def     40m     41m     42m     43m     44m     45m     46m     47m"
@@ -68,19 +67,18 @@ default()
 #
 # Shows colors in panes with the base color as the front pane and the alt
 # color as the back pane.
-panes()
-{
-    f=3 b=4
-    for j in f b; do
-      for i in {0..7}; do
-        printf -v $j$i %b "\e[${!j}${i}m"
-      done
+panes() {
+  f=3 b=4
+  for j in f b; do
+    for i in {0..7}; do
+      printf -v $j$i %b "\e[${!j}${i}m"
     done
-    d=$'\e[1m'
-    t=$'\e[0m'
-    v=$'\e[7m'
+  done
+  d=$'\e[1m'
+  t=$'\e[0m'
+  v=$'\e[7m'
 
-    cat << EOF
+  cat <<EOF
      $f0████$d▄$t  $f1████$d▄$t  $f2████$d▄$t  $f3████$d▄$t  $f4████$d▄$t  $f5████$d▄$t  $f6████$d▄$t  $f7████$d▄$t
      $f0████$d█$t  $f1████$d█$t  $f2████$d█$t  $f3████$d█$t  $f4████$d█$t  $f5████$d█$t  $f6████$d█$t  $f7████$d█$t
      $f0████$d█$t  $f1████$d█$t  $f2████$d█$t  $f3████$d█$t  $f4████$d█$t  $f5████$d█$t  $f6████$d█$t  $f7████$d█$t
@@ -99,33 +97,32 @@ EOF
 # DFT │   black     red     green    yellow    blue   magenta    cyan    white   │
 #     │   black     red     green    yellow    blue   magenta    cyan    white   │
 #     ├──────────────────────────────────────────────────────────────────────────┤
-view()
-{
+view() {
   FGNAMES=(' black ' '  red  ' ' green ' ' yellow' '  blue ' 'magenta' '  cyan ' ' white ')
   BGNAMES=('DFT' 'BLK' 'RED' 'GRN' 'YEL' 'BLU' 'MAG' 'CYN' 'WHT')
 
   echo "     ┌──────────────────────────────────────────────────────────────────────────┐"
   for b in {0..8}; do
-    ((b>0)) && bg=$((b+39))
+    ((b > 0)) && bg=$((b + 39))
 
     echo -en "\033[0m ${BGNAMES[b]} │ "
 
     for f in {0..7}; do
-      echo -en "\033[${bg}m\033[$((f+30))m ${FGNAMES[f]} "
+      echo -en "\033[${bg}m\033[$((f + 30))m ${FGNAMES[f]} "
     done
 
     echo -en "\033[0m │"
     echo -en "\033[0m\n\033[0m     │ "
 
     for f in {0..7}; do
-      echo -en "\033[${bg}m\033[1;$((f+30))m ${FGNAMES[f]} "
+      echo -en "\033[${bg}m\033[1;$((f + 30))m ${FGNAMES[f]} "
     done
 
     echo -en "\033[0m │"
     echo -e "\033[0m"
 
-    ((b<8)) &&
-    echo "     ├──────────────────────────────────────────────────────────────────────────┤"
+    ((b < 8)) &&
+      echo "     ├──────────────────────────────────────────────────────────────────────────┤"
   done
   echo "     └──────────────────────────────────────────────────────────────────────────┘"
   exit 0
@@ -141,19 +138,18 @@ view()
 # ██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██
 #
 # ██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██▓▒░██
-spectrum()
-{
+spectrum() {
   echo
 
   for f in {0..6}; do
-    echo -en "\033[$((f+41))m\033[$((f+30))m██▓▒░"
+    echo -en "\033[$((f + 41))m\033[$((f + 30))m██▓▒░"
   done
   echo -en "\033[37m██\n"
 
   echo
 
   for f in {0..6}; do
-    echo -en "\033[$((f+41))m\033[1;$((f+30))m██▓▒░"
+    echo -en "\033[$((f + 41))m\033[1;$((f + 30))m██▓▒░"
   done
   echo -en "\033[1;37m██"
 
@@ -161,12 +157,10 @@ spectrum()
   exit 0
 }
 
-
 # Extended:
 #
 # Output every visual escape code option.
-extended()
-{
+extended() {
   for x in {0..8}; do
     for i in {30..37}; do
       for a in {40..47}; do
@@ -180,3 +174,5 @@ extended()
 }
 
 main "$@"
+
+# vim: et sw=2 ts=2 sts=2

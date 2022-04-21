@@ -7,7 +7,7 @@ RED='\033[0;31m'
 GRN='\033[0;32m'
 YLO='\033[0;33m'
 BLU='\033[0;34m'
-MTA='\033[0;35m'
+# MTA='\033[0;35m'
 CYN='\033[0;36m'
 RST='\033[0m'
 
@@ -16,8 +16,10 @@ RST='\033[0m'
 if $is_mac; then
   NYX_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." >/dev/null 2>&1 && pwd)"
 else
-  NYX_ROOT="$(dirname $(dirname "$(readlink -f "$0")"))"
+  NYX_ROOT="$(dirname "$(dirname "$(readlink -f "$0")")")"
 fi
+
+# shellcheck disable=SC2034
 HOME_MANAGER_BACKUP_EXT="nbak"
 
 # shellcheck shell=bash
@@ -355,7 +357,7 @@ EOF
 
   function create_link() {
     if [[ -L $1 ]]; then
-      if [[ "$(readlink $1)" == "$2" ]]; then
+      if [[ "$(readlink "$1")" == "$2" ]]; then
         debug "link: $1 already points to $2. Skipping"
         return
       else
@@ -378,7 +380,7 @@ EOF
     if [[ "$(readlink "$1")" == "$2" ]]; then
       debug "created link $1 to $2"
     else
-      failure "created link $1 does not point to $2. Points to $(readlink $1)"
+      failure "created link $1 does not point to $2. Points to $(readlink "$1")"
     fi
   }
 
@@ -443,10 +445,11 @@ EOF
     elif is_nixos >/dev/null; then
       sudo nixos-rebuild --rollback
     else
-      local current=$(nix-env --list-generations --profile "/nix/var/nix/profiles/per-user/$USER/home-manager" | grep '(current)' | awk '{print $1}')
-      local prev="$((current - 1))"
-      local prev_store_path=$(home-manager generations | grep "id $prev ->" | awk '{print $NF}')
-      $prev_store_path/activate
+      local current prev prev_store_path
+      current="$(nix-env --list-generations --profile "/nix/var/nix/profiles/per-user/$USER/home-manager" | grep '(current)' | awk '{print $1}')"
+      prev="$((current - 1))"
+      prev_store_path=$(home-manager generations | grep "id $prev ->" | awk '{print $NF}')
+      "$prev_store_path/activate"
     fi
   )
 }
@@ -684,7 +687,7 @@ EOF
         debug "link: $1 points to nyx config folder $2. Removing"
         rm "$1"
       else
-        debug "link $1 does not point to nyx config folder: $(readlink $1)"
+        debug "link $1 does not point to nyx config folder: $(readlink "$1")"
       fi
     fi
   }
