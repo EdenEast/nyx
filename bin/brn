@@ -158,5 +158,7 @@ function move_files()
 
 # register clean to be executed cleanup on exit
 trap cleanup EXIT
+
 main "$@"
 
+# vim: et sw=2 ts=2 sts=2

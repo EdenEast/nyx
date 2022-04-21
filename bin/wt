@@ -101,7 +101,7 @@ EOF
 
   local full remote
   full="$root/$path"
-  remote="$(git ls-remote --refs ./. $name | awk '{print $2}' | grep 'refs/remotes')"
+  remote="$(git ls-remote --refs ./. "$name" | awk '{print $2}' | grep 'refs/remotes')"
 
   if [ ! -e "$full" ]; then
     git worktree add --checkout "$full" "$name"
@@ -492,7 +492,7 @@ EOF
 # --- Utility -----------------------------------------------------------------
 
 function get_root_dir() {
-  dirname $(realpath $(git rev-parse --git-common-dir))
+  dirname "$(realpath "$(git rev-parse --git-common-dir)")"
 }
 
 function fzf-down() {
