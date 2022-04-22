@@ -351,8 +351,7 @@ EOF
         do_delete=true
         ;;
       -f | --force)
-        force="--force"
-        shift
+        force_opt="--force"
         ;;
       *)
         args+=("$1")
@@ -368,14 +367,15 @@ EOF
 
   local path branch line extra_args
   if [[ ${#args[@]} -gt 0 ]]; then
-    extra_args=("--height" "40%" "--reverse" "--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
+    echo "we are extra args"
+    extra_args=("--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
   fi
 
-  line="$(git worktree list | tail -2 | fzf "${extra_args[@]}")"
+  line="$(git worktree list | tail -2 | fzf --height 40% --reverse "${extra_args[@]}")"
   path="$(echo "$line" | awk '{print $1}')"
   branch="$(echo "$line" | sed -E 's|.*\[(.*)\].*|\1|')"
 
-  git worktree remove "$path" $force
+  git worktree remove "$path" $force_opt
   if [ -n "$do_delete" ]; then
     git branch -d "$branch"
   fi
