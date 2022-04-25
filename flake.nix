@@ -20,11 +20,11 @@
     flake-compat.flake = false;
 
     # Overlays
-    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
-
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    neovim-flake.url = "github:neovim/neovim?dir=contrib";
+    neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
     # eww.url = "github:elkowar/eww";
   };
@@ -60,7 +60,6 @@
         [
           (self.overlay."${system}")
           (nur.overlay)
-          (neovim-nightly.overlay)
           (fenix.overlay)
           # (_:_: { inherit (eww.packages."${system}") eww; })
         ] ++ ovs
