@@ -10,7 +10,9 @@
       shell = {
         gnupg = {
           enable = true;
-          publicKey = ../../../../config/.gnupg/public.key;
+          publicKeys = [{
+            key = ../../../../config/.gnupg/public.key;
+          }];
         };
       };
     };
