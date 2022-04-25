@@ -58,10 +58,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    # home.packages = with pkgs; [ neovim-nightly ];
     xdg.configFile."nvim".source = ../../../config/.config/nvim;
     home.packages = with pkgs; [
-      neovim-unwrapped
+      neovim-nightly
     ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters ++ cfg.extraPkgs;
 
     # Add Treesitter parsers
@@ -99,7 +98,7 @@ in
         grammars);
     in
     parsers // {
-     "nvim/lib/libsqlite3.so".source = "${pkgs.sqlite.out}/lib/libsqlite3.so";
-   };
+      "nvim/lib/libsqlite3.so".source = "${pkgs.sqlite.out}/lib/libsqlite3.so";
+    };
   };
 }
