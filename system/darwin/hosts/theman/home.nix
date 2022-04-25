@@ -30,10 +30,6 @@
         enable = true;
         package = null;
       };
-      # kitty = {
-      #   enable = true;
-      #   fontSize = 14;
-      # };
       wezterm = {
         enable = true;
         package = null;
@@ -49,10 +45,9 @@
     shell = {
       bash.enable = true;
       direnv.enable = true;
-      # fzf.enable = true;
+      fzf.enable = true;
       git.enable = true;
       lf.enable = true;
-      mcfly.enable = true;
       neovim.enable = true;
       nushell.enable = true;
       starship.enable = true;
@@ -63,8 +58,10 @@
 
       gnupg = {
         enable = true;
-        publicKey = ../../../../config/.gnupg/public.key;
-        publicKeyName = "personal.key";
+        publicKeys = [{
+          name = "personal.key";
+          key = ../../../../config/.gnupg/public.key;
+        }];
       };
 
       repo = {
