@@ -1,18 +1,14 @@
-{ lib, fetchFromGitHub, rustPlatform }:
+{ lib, fetchCrate, rustPlatform }:
 
+let
+  metadata = import ./metadata.nix;
+in
 rustPlatform.buildRustPackage rec {
-  pname = "xplr";
-  version = "0.2.19";
+  inherit (metadata) pname version;
 
-  src = fetchFromGitHub {
-    owner = "sayanarijit";
-    repo = "xplr";
-    rev = "8dae2fef4da48d612d54a9d2e643b2627baa2719";
+  src = fetchCrate metadata;
 
-    sha256 = "sha256-4PZZ8NNHhorF3luNfbyb1NztvhldFprPPmoK+JtzhjI=";
-  };
-
-  cargoSha256 = "sha256-D5fBg/1lda36SIdj6biwoH6aHMTuWWM6POPWteQk9Ao=";
+  cargoLock.lockFile = ./Cargo.lock;
 
   meta = with lib; {
     description = "A TUI file explorer";
