@@ -130,11 +130,6 @@ M.bootstrap = function(cb)
     require("impatient")
   end)
 
-  M.ensure("nathom", "filetype.nvim", function()
-    vim.g.did_load_filetypes = 1
-    require("filetype").setup({})
-  end)
-
   -- Fill in modlist before the `before` trigger is well... triggered
   M.modlist = path.modlist(M.modname)
 
