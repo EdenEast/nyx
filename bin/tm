@@ -581,14 +581,15 @@ eof
 
   if ! tmux has-session -t "$target" 2>/dev/null; then
     tmux neww -dn "$clean_name"
+    if [[ -f .envrc ]]; then
+      # sleeping for 1 second just to give direnv some time to load
+      sleep 1
+    fi
   fi
 
   unset 'args[0]'
 
-  # This quote on the next line is required as I need to send an enter / new line
-  # character to tmux. Trying to send a ^M gets deleted by shfmt
-  tmux send-keys -t "$target" "${args[*]}
-"
+  tmux send-keys -t "$target" "${args[*]}" C-m
 }
 
 # --- Utility -----------------------------------------------------------------
