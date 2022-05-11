@@ -3,7 +3,7 @@ local M = {}
 
 M.plugins = {
   {
-    "famiu/feline.nvim",
+    "feline-nvim/feline.nvim",
     event = "VimEnter",
     config = function()
       require("eden.modules.ui.feline")
