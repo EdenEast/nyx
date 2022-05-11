@@ -64,5 +64,5 @@ require("nvim-treesitter.configs").setup({
 
 if not edn.platform.is_windows then
   vim.cmd([[packadd nvim-treesitter-context]])
-  require("treesitter-context.config").setup()
+  require("treesitter-context").setup()
 end
