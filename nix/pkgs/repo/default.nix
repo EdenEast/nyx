@@ -1,21 +1,18 @@
-{ lib, fetchFromGitHub, rustPlatform, openssl, pkg-config, stdenv, libiconv, darwin }:
+{ lib, fetchCrate, rustPlatform, openssl, pkg-config, stdenv, libiconv, darwin }:
 
+let
+  metadata = import ./metadata.nix;
+in
 rustPlatform.buildRustPackage rec {
-  pname = "repo";
-  version = "0.1.3";
+  inherit (metadata) pname version;
 
-  src = fetchFromGitHub {
-    owner = "EdenEast";
-    repo = "repo";
-    rev = "v${version}";
-
-    sha256 = "sha256-muPzAMoX0PPwxtvjeKEWBlGIj1fEU9IXqjLBWb9LkhQ=";
-  };
+  src = let inherit (metadata) fetch; in fetchCrate fetch;
 
   nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ openssl libiconv ] ++ (lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks;[ Security ]));
+  buildInputs = [ openssl libiconv ]
+    ++ (lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks;[ Security ]));
 
-  cargoSha256 = "sha256-WyhG+lUCi3ARMxa64h6SMMi1aileH4K8sm9un0B1+NU=";
+  cargoLock.lockFile = ./Cargo.lock;
 
   meta = with lib; {
     description = "Repository management system";
