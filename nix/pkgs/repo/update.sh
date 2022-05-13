@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -p nix jq curl cargo rsync
+#! nix-shell -p nix jq curl rsync
 #! nix-shell -i bash
 
 set -eu
@@ -16,8 +16,8 @@ echo "Getting latest version from crates.io API" >&2
 
 version="$(get_latest_version_from_crates_io $crate)"
 prefetch="$(prefetch_from_crates_io $crate $version)"
-sha="$(printf '%s' "$prefetch" | head -n1)";
-store="$(printf '%s' "$prefetch" | tail -n1)";
+sha="$(printf '%s' "$prefetch" | head -n1)"
+store="$(printf '%s' "$prefetch" | tail -n1)"
 
 cat >metadata.nix <<EOF
 {
