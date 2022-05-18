@@ -176,13 +176,16 @@ eof
   }
 
   if [[ -n $do_existing ]]; then
-    local sessions name
+    local sessions name extra_args
     # shellcheck disable=SC2207
     sessions=($(tmux list-sessions -F "#{session_name}"))
     if [[ ${#sessions[@]} -eq 1 ]]; then
       name="${sessions[0]}"
     else
-      name="$(write-list "${sessions[@]}" | fzf-down)"
+      if [[ ${#args[@]} -gt 0 ]]; then
+        extra_args=("--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
+      fi
+      name="$(write-list "${sessions[@]}" | fzf --height 40% --reverse "${extra_args[@]}")"
     fi
     if [[ -z $TMUX ]]; then
       tmux attach-session -t "$name"
