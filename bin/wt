@@ -367,7 +367,6 @@ EOF
 
   local path branch line extra_args
   if [[ ${#args[@]} -gt 0 ]]; then
-    echo "we are extra args"
     extra_args=("--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
   fi
 
@@ -476,8 +475,12 @@ EOF
     exit 1
   }
 
-  local selected
-  selected="$(git worktree list | fzf-down)"
+  local selected extra_args
+  if [[ ${#args[@]} -gt 0 ]]; then
+    extra_args=("--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
+  fi
+
+  selected="$(git worktree list | tail -2 | fzf --height 40% --reverse "${extra_args[@]}")"
 
   if [[ $selected =~ \(bare\)$ ]]; then
     selected="$(echo "$selected" | awk '{print $1}')"
