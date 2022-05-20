@@ -10,7 +10,17 @@ require(premod .. "handlers")
 
 local status = require("eden.modules.protocol.lsp.status")
 status.activate(false)
-require("fidget").setup({text = { spinner = "dots_negative" }})
+require("fidget").setup({
+  fmt = {
+    stack_upwards = false,
+  },
+  text = {
+    spinner = "dots_negative",
+  },
+  window = {
+    blend = 0,
+  },
+})
 
 vim.opt.updatetime = 300
 
