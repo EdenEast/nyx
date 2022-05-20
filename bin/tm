@@ -308,6 +308,7 @@ ALIAS: 'j'
 OPTIONS:
   -e, --edit         Open jump list file in "\$EDITOR"
   -i, --index <idx>  Jump to index in jump list. Index is 1 based
+  -l, --list         List jump list
   -p, --path <path>  Add path to jump list
   -h, --help         Prints help information
 eof
@@ -322,6 +323,9 @@ eof
       -i | --index)
         shift
         index="$1"
+        ;;
+      -l | --list)
+        show_list=true
         ;;
       -p | --path)
         shift
@@ -344,7 +348,19 @@ eof
     exit 0
   fi
 
+  if [[ -n $show_list ]]; then
+    local index=1
+    while IFS= read -r line; do
+      echo "$index: $line"
+      index=$((index + 1))
+    done <"$JUMPLIST_CACHE_FILE"
+    exit 0
+  fi
+
   if [[ -n $path ]]; then
+    if [[ $path == '.' ]]; then
+      path="$(pwd)"
+    fi
     if ! grep -qFx "$path" "$JUMPLIST_CACHE_FILE"; then
       echo "$path" >>"$JUMPLIST_CACHE_FILE"
     fi
