@@ -14,9 +14,6 @@ source ../lib.sh
 tag=$(get_latest_version_from_github $user $repo)
 version="$(printf '%s' "$tag" | cut -c 2-)"
 
-echo "tag = $tag"
-echo "version = $version"
-
 rev=$(get_head_from_github $user $repo)
 prefetch="$(prefetch_from_github $user $repo $rev)"
 sha="$(printf '%s' "$prefetch" | head -n1)"
