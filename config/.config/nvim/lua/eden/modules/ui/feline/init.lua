@@ -25,6 +25,21 @@ local function vi_sep_hl()
   return u.vi.sep[vim.fn.mode()] or "EdenSLBlack"
 end
 
+local function file_info()
+  local list = {}
+  if vim.bo.readonly then
+    table.insert(list, "🔒")
+  end
+
+  if vim.bo.modified then
+    table.insert(list, "●")
+  end
+
+  table.insert(list, vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:."))
+
+  return table.concat(list, " ")
+end
+
 local c = {
   vimode = {
     provider = function()
@@ -126,6 +141,10 @@ local c = {
     provider = "position",
     hl = "StatusLine",
   },
+  file_winbar = {
+    provider = file_info,
+    hl = "Comment",
+  },
 }
 
 local active = {
@@ -191,6 +210,17 @@ require("feline").setup({
     filetypes = {
       "dashboard",
       "startify",
+    },
+  },
+})
+
+require("feline").winbar.setup({
+  components = {
+    active = {
+      {},
+      {
+        c.file_winbar,
+      },
     },
   },
 })
