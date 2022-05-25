@@ -61,4 +61,9 @@ local line = {
   },
 }
 
-require("tabby").setup({ tabline = line })
+require("tabby").setup({
+  opt = {
+    show_at_least = 2,
+  },
+  tabline = line,
+})

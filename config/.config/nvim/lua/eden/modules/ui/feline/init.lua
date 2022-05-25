@@ -214,13 +214,13 @@ require("feline").setup({
   },
 })
 
-require("feline").winbar.setup({
-  components = {
-    active = {
-      {},
-      {
-        c.file_winbar,
-      },
-    },
-  },
-})
+-- require("feline").winbar.setup({
+--   components = {
+--     active = {
+--       {},
+--       {
+--         c.file_winbar,
+--       },
+--     },
+--   },
+-- })
