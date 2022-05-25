@@ -58,7 +58,7 @@ SOURCES['wezterm']="$NYX_ROOT/config/.config/wezterm"
 function main() {
   # Parse command line options
   if [ -z "$*" ]; then
-    help # There is no arguments passed print help
+    cmd_help # There is no arguments passed print help
   elif [[ $1 == '--help' ]]; then
     HELP=true
   elif [[ $1 =~ $INTERNAL_COMMANDS ]]; then
@@ -69,7 +69,7 @@ function main() {
     shift
   else
     failure "Unknown command: \`$1\`"
-    help
+    cmd_help
   fi
 
   NYX_ARGS=()
@@ -89,7 +89,7 @@ function main() {
     shift
   done
 
-  [ -n "$HELP" ] && help
+  [ -n "$HELP" ] && cmd_help
 
   "cmd_$NYX_COMMAND" "${NYX_ARGS[@]}"
   exit 0
