@@ -30,9 +30,11 @@ local config = {
     end,
   },
   mapping = {
+    ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-e>"] = cmp.mapping.close(),
+    ["<C-e>"] = cmp.mapping.abort(),
     ["<C-o>"] = cmp.mapping.complete(),
     ["<cr>"] = cmp.mapping(
       cmp.mapping.confirm({
@@ -41,7 +43,7 @@ local config = {
       }),
       { "i", "c" }
     ),
-    ["<tab>"] = cmp.config.disable,
+    -- ["<tab>"] = cmp.config.disable,
 
     -- Testing
     ["<c-q>"] = cmp.mapping.confirm({
