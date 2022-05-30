@@ -2,7 +2,7 @@ crates_api="https://crates.io/api/v1/crates"
 gh_api="https://api.github.com/repos"
 curl_opts=(
   -H "Accept: application/json"
-  -H "User-Agent: $repo update script (https://github.com/edeneast/nyx)"
+  -H "User-Agent: update script (https://github.com/edeneast/nyx)"
   -sS
 )
 
