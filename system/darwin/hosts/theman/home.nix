@@ -24,7 +24,6 @@
   programs.man.enable = true;
 
   nyx.modules = {
-    theme.name = "frostfox";
     app = {
       alacritty = {
         enable = true;
@@ -41,6 +40,7 @@
         enable = true;
         extraPackages = with pkgs.python39Packages; [ pip pylint setuptools ];
       };
+      rust.enable = true;
     };
     shell = {
       bash.enable = true;
