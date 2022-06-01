@@ -21,17 +21,17 @@ in
       tokei
     ];
 
-    nyx.modules = {
-      dev.cc.enable = true;
-      # dev.dhall.enable = true;
-      # dev.go.enable = true;
-      # dev.lua.enable = true;
-      dev.nix.enable = true;
-      dev.node.enable = true;
-      # dev.python.enable = true;
-      dev.rust.enable = true;
-      shell.direnv.enable = true;
-      # shell.lorri.enable = true;
-    };
+    # nyx.modules = {
+    #   dev.cc.enable = true;
+    #   dev.dhall.enable = true;
+    #   dev.go.enable = true;
+    #   dev.lua.enable = true;
+    #   dev.nix.enable = true;
+    #   dev.node.enable = true;
+    #   dev.python.enable = true;
+    #   dev.rust.enable = true;
+    #   shell.direnv.enable = true;
+    #   shell.lorri.enable = true;
+    # };
   };
 }
