@@ -1,6 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    rustup
+  ];
+
   nyx = {
     modules = {
       app = {
@@ -8,7 +12,13 @@
         wezterm.fontSize = 14;
         obs.enable = true;
       };
+      dev = {
+        cc.enable = true;
+        nix.enable = true;
+        node.enable = true;
+      };
       shell = {
+        direnv.enable = true;
         gnupg = {
           enable = true;
           publicKeys = [{
