@@ -8,7 +8,6 @@ vim.g.nvim_tree_width_allow_resize = 0
 
 require("nvim-tree").setup({
   ignore_ft_on_setup = { ".git", "node_modules" },
-  tab_open = true,
   update_focused_file = {
     enable = true,
   },
