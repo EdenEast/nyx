@@ -20,14 +20,9 @@ M.after = function()
 
   -- ---------------------------------------------------
 
-  edn.keymap({
-    mode = "xn",
-    {
-      -- Start interactive EasyAlign in visual mode (e.g. vipga)
-      -- Start interactive EasyAlign for a motion/text object (e.g. gaip)
-      { "ga", "<Plug>(EasyAlign)" },
-    },
-  })
+  -- Start interactive EasyAlign in visual mode (e.g. vipga)
+  -- Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  kmap({ "x", "n" }, "ga", "<Plug>(EasyAlign)")
 
   -- ---------------------------------------------------
 
@@ -42,22 +37,17 @@ M.after = function()
   -- https://github.com/machakann/vim-sandwich/wiki/Introduce-vim-surround-keymappings
   vim.cmd("runtime macros/sandwich/keymap/surround.vim")
 
-  edn.keymap({
-    mode = "xo",
-    {
-      -- Text objects to select a text surrounded by brackets or user-specified characters.
-      { "is", "<Plug>(textobj-sandwich-query-i)" },
-      { "as", "<Plug>(textobj-sandwich-query-a)" },
+  -- Text objects to select a text surrounded by brackets or user-specified characters.
+  kmap({ "x", "o" }, "is", "<Plug>(textobj-sandwich-query-i)")
+  kmap({ "x", "o" }, "as", "<Plug>(textobj-sandwich-query-a)")
 
-      -- Text objects to select the nearest surrounded text automatically.
-      { "iss", "<Plug>(textobj-sandwich-auto-i)" },
-      { "ass", "<Plug>(textobj-sandwich-auto-a)" },
+  -- Text objects to select the nearest surrounded text automatically.
+  kmap({ "x", "o" }, "iss", "<plug>(textobj-sandwich-auto-i)")
+  kmap({ "x", "o" }, "ass", "<plug>(textobj-sandwich-auto-a)")
 
-      -- Text objects to select a text surrounded by user-specified characters.
-      { "im", "<Plug>(textobj-sandwich-literal-query-i)" },
-      { "am", "<Plug>(textobj-sandwich-literal-query-a)" },
-    },
-  })
+  -- Text objects to select a text surrounded by user-specified characters.
+  kmap({ "x", "o" }, "im", "<Plug>(textobj-sandwich-literal-query-i)")
+  kmap({ "x", "o" }, "am", "<Plug>(textobj-sandwich-literal-query-a)")
 end
 
 return M

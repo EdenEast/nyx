@@ -44,4 +44,4 @@ _G.toggle_terminal = function(name)
   terminals[name]:toggle()
 end
 
-edn.keymap({ "<c-space>", [[<cmd>lua toggle_terminal('default')<cr>]] })
+nmap("<c-space>", [[<cmd>lua toggle_terminal('default')<cr>]])

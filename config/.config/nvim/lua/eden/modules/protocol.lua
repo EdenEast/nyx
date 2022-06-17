@@ -63,7 +63,8 @@ M.plugins = {
         require("nvim-biscuits").setup({
           cursor_line_only = true,
         })
-        edn.keymap("<leader>tb", function()
+
+        nmap("<leader>tb", function()
           require("nvim-biscuits").toggle_biscuits()
         end)
       end,

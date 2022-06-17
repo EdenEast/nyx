@@ -18,34 +18,27 @@ vim.fn.sign_define("DapBreakpoint", { text = "⬤", texthl = "DiagnosticError", 
 vim.fn.sign_define("DapStopped", { text = "➔", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
 vim.fn.sign_define("DapLogPoint", { text = "", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
 
-edn.keymap({
-  { "<F5>", [[<cmd>lua require('dap').continue()<cr>]] },
-  { "<F9>", [[<cmd>lua require('dap').toggle_breakpoint()<cr>]] },
-  { "<F10>", [[<cmd>lua require('dap').step_over()<cr>]] },
-  { "<F11>", [[<cmd>lua require('dap').step_into()<cr>]] },
-  { "<F12>", [[<cmd>lua require('dap').step_out()<cr>]] },
-  {
-    "<leader>d",
-    {
-      { "c", [[<cmd>lua require('dap').continue()<cr>]] },
-      { "l", [[<cmd>lua require('dap').step_over()<cr>]] },
-      { "j", [[<cmd>lua require('dap').step_into()<cr>]] },
-      { "k", [[<cmd>lua require('dap').step_out()<cr>]] },
+nmap("<F5>", [[<cmd>lua require('dap').continue()<cr>]])
+nmap("<F9>", [[<cmd>lua require('dap').toggle_breakpoint()<cr>]])
+nmap("<F10>", [[<cmd>lua require('dap').step_over()<cr>]])
+nmap("<F11>", [[<cmd>lua require('dap').step_into()<cr>]])
+nmap("<F12>", [[<cmd>lua require('dap').step_out()<cr>]])
 
-      { "K", [[<cmd>lua require('dap').up()<cr>]] },
-      { "J", [[<cmd>lua require('dap').down()<cr>]] },
+nmap("<leader>dc", [[<cmd>lua require('dap').continue()<cr>]])
+nmap("<leader>dl", [[<cmd>lua require('dap').step_over()<cr>]])
+nmap("<leader>dj", [[<cmd>lua require('dap').step_into()<cr>]])
+nmap("<leader>dk", [[<cmd>lua require('dap').step_out()<cr>]])
 
-      { "b", [[<cmd>lua require('dap').toggle_breakpoint()<cr>]] },
-      { "B", [[<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>]] },
-      { "m", [[<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>]] },
+nmap("<leader>dK", [[<cmd>lua require('dap').up()<cr>]])
+nmap("<leader>dJ", [[<cmd>lua require('dap').down()<cr>]])
 
-      { "d", [[<cmd>lua require('dap').run_last()<cr>]] },
-      { "q", [[<cmd>lua require('dap').disconnect()<cr>]] },
-      { "Q", [[<cmd>lua require('dap').disconnect({restart = true})<cr>]] },
+nmap("<leader>db", [[<cmd>lua require('dap').toggle_breakpoint()<cr>]])
+nmap("<leader>dB", [[<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>]])
+nmap("<leader>dm", [[<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>]])
 
-      { "h", [[<cmd>lua require('dap.ui.widgets').hover()<cr>]] },
+nmap("<leader>dd", [[<cmd>lua require('dap').run_last()<cr>]])
+nmap("<leader>dq", [[<cmd>lua require('dap').disconnect()<cr>]])
+nmap("<leader>dQ", [[<cmd>lua require('dap').disconnect({restart = true})<cr>]])
 
-      { "u", [[<cmd>lua require('dapui').toggle()<cr>]] },
-    },
-  },
-})
+nmap("<leader>dh", [[<cmd>lua require('dap.ui.widgets').hover()<cr>]])
+nmap("<leader>du", [[<cmd>lua require('dapui').toggle()<cr>]])

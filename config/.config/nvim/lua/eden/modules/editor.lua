@@ -83,7 +83,7 @@ M.plugins = {
         quit = false,
       })
 
-      edn.keymap("<leader>bq", [[<cmd>BufDel<cr>]])
+      nmap("<leader>bq", [[<cmd>BufDel<cr>]])
     end,
   },
 
@@ -95,7 +95,7 @@ M.plugins = {
     ft = { "markdown", "vimwiki" },
     cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
     config = function()
-      edn.keymap("<leader>tp", ":MarkdownPreviewToggle<cr>")
+      nmap("<leader>tp", ":MarkdownPreviewToggle<cr>")
     end,
   },
 

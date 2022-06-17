@@ -1,6 +1,3 @@
-local keymap = require("eden.lib.keymap")
-local nmap = keymap.nmap
-
 -- nmap("<leader>j", function() require('harpoon.mark') end)
 nmap("<leader>h", function()
   require("harpoon.ui").toggle_quick_menu()

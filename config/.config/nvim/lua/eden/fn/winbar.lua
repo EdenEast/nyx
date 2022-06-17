@@ -12,7 +12,7 @@ local function generate()
 
   table.insert(list, vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:."))
 
-  return [[%=]] ..table.concat(list, " ")
+  return [[%=]] .. table.concat(list, " ")
 end
 
 return { generate = generate }

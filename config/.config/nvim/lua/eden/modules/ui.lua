@@ -55,7 +55,7 @@ M.plugins = {
   {
     "simrat39/symbols-outline.nvim",
     config = function()
-      edn.keymap("<leader>ts", [[<cmd>SymbolsOutline<cr>]])
+      nmap("<leader>ts", [[<cmd>SymbolsOutline<cr>]])
     end,
     cmd = { "SymbolsOutline" },
     keys = { "<leader>ts" },
