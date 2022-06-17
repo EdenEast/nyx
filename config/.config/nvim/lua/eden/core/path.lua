@@ -42,44 +42,6 @@ M.exists = function(p)
   return not (state == nil)
 end
 
--- Get the filepath of a module name
--- Assumes runtimepath of confighome if no runtimepath passed
--- @param modpath string
--- @param runtimepath [string]
--- @return string
-M.modfilepath = function(modpath, runtimepath)
-  runtimepath = runtimepath or M.confighome
-  local partialpath = vim.split(modpath, ".", true)
-  return M.join(runtimepath, table.concat(partialpath, M.sep))
-end
-
--- Get all module names in the file directory
-M.modlist = function(modpath, runtimepath)
-  runtimepath = runtimepath or M.confighome
-  runtimepath = M.join(runtimepath, "lua")
-
-  local filepath = M.modfilepath(modpath, runtimepath)
-  local fs, fail = uv.fs_scandir(filepath)
-  if fail then
-    vim.api.nvim_err_writeln(fail)
-  end
-
-  -- Load modules in the modpath, found in the file system
-  local list = {}
-  local name, fstype = uv.fs_scandir_next(fs)
-  while name ~= nil do
-    if fstype == "file" then
-      local filename = name:match("(.+).lua")
-      local pluginmod = fmt("%s.%s", modpath, filename)
-      table.insert(list, pluginmod)
-    end
-
-    name, fstype = uv.fs_scandir_next(fs)
-  end
-
-  return list
-end
-
 edn.path = M
 
 return M

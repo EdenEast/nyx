@@ -1,7 +1,7 @@
 local dap = require("dap")
 
 -- Languages
-local modules = edn.path.modlist("eden.modules.protocol.dap.adaptors")
+local modules = require("eden.lib.modlist").getmodlist("eden.modules.protocol.dap.adaptors", {})
 for _, mod in ipairs(modules) do
   require(mod)
 end
