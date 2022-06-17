@@ -1,7 +1,4 @@
 -- local keymap = require("eden.core.keymap")
-local keymap = require("eden.lib.keymap")
-
-local map, nmap, xmap = keymap.map, keymap.nmap, keymap.xmap
 
 -- 'j' and 'k' moves up and down visible lines in editor not actual lines
 -- This is noticable when text wraps to next line
@@ -20,7 +17,7 @@ nmap("<up>", "k")
 nmap("<right>", "l")
 
 -- Map Y to be the same as D and C
-map({ "n", "x" }, "Y", "yg_")
+kmap({ "n", "x" }, "Y", "yg_")
 
 -- Center search
 nmap("n", "nzzzv")
@@ -40,8 +37,8 @@ xmap("*", '"xy/<c-r><cr>')
 nmap("cp", [[vap:t'><cr>(j]])
 
 -- Redirect change operation to blackhole register
-map({ "n", "x" }, "c", [["_c]])
-map({ "n", "x" }, "C", [["_C]])
+kmap({ "n", "x" }, "c", [["_c]])
+kmap({ "n", "x" }, "C", [["_C]])
 
 -- Toggle highlight search
 nmap("<leader>th", function()
@@ -87,9 +84,9 @@ nmap("<F1>", ":lua require('eden.core.util').exec_file()<cr>")
 nmap("<F2>", ":lua require('eden.core.util').open_url_under_cursor()<cr>")
 nmap("<F3>", "<cmd>lua require('eden.lib.reload').reload_config()<cr>")
 
-map("t", "<esc>", [[<c-\><c-n>]])
-map("t", "<c-q>", [[<c-\><c-n>:bdelete!<cr>]])
-map("t", "<c-h>", [[<c-\><c-n><c-w>h]])
-map("t", "<c-j>", [[<c-\><c-n><c-w>j]])
-map("t", "<c-k>", [[<c-\><c-n><c-w>k]])
-map("t", "<c-l>", [[<c-\><c-n><c-w>l]])
+tmap("<esc>", [[<c-\><c-n>]])
+tmap("<c-q>", [[<c-\><c-n>:bdelete!<cr>]])
+tmap("<c-h>", [[<c-\><c-n><c-w>h]])
+tmap("<c-j>", [[<c-\><c-n><c-w>j]])
+tmap("<c-k>", [[<c-\><c-n><c-w>k]])
+tmap("<c-l>", [[<c-\><c-n><c-w>l]])

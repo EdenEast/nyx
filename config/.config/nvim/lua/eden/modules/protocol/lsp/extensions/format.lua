@@ -1,6 +1,6 @@
 local M = {}
 
-M.should_format = true;
+M.should_format = true
 
 M.toggle_format = function()
   M.should_format = not M.should_format

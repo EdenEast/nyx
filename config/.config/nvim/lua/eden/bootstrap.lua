@@ -125,8 +125,8 @@ local function init()
   init_runtimepath()
   init_leader_keys()
 
-  -- Initialize edn.keymap, edn.au, and edn.aug
-  require("eden.core.keymap")
+  -- Assign the global keymap function
+  require("eden.lib.keymap")
 
   pack.bootstrap(function(installed)
     if installed then

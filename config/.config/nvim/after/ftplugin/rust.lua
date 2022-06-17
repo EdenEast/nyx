@@ -22,8 +22,6 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   nested = true,
 })
 
-edn.keymap({
-  { "<leader>mt", "<cmd>make test -q<cr>" },
-  { "<leader>mb", "<cmd>make build<cr>" },
-  { "<leader>mc", "<cmd>make clippy -q<cr>" },
-})
+nmap("<leader>mt", "<cmd>make test -q<cr>")
+nmap("<leader>mb", "<cmd>make build<cr>")
+nmap("<leader>mc", "<cmd>make clippy -q<cr>")

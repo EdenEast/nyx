@@ -39,4 +39,4 @@ require("nvim-tree").setup({
   },
 })
 
-edn.keymap("<leader>te", "<cmd>NvimTreeToggle<cr>")
+nmap("<leader>te", "<cmd>NvimTreeToggle<cr>")
