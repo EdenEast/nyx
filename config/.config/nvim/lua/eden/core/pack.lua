@@ -44,7 +44,7 @@ end
 
 -- Execute `PackerCompile` if file exists in `path.module_path`
 M.auto_compile = function()
-  M.clean()
+  -- M.clean()
   M.compile()
 end
 
