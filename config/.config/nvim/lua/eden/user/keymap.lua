@@ -85,7 +85,7 @@ nmap("]q", ":cnext<cr>", { silent = true })
 -- Exec current file
 nmap("<F1>", ":lua require('eden.core.util').exec_file()<cr>")
 nmap("<F2>", ":lua require('eden.core.util').open_url_under_cursor()<cr>")
-nmap("<F3>", ":lua R('packer_compiled')<cr>")
+nmap("<F3>", "<cmd>lua require('eden.lib.reload').reload_config()<cr>")
 
 map("t", "<esc>", [[<c-\><c-n>]])
 map("t", "<c-q>", [[<c-\><c-n>:bdelete!<cr>]])

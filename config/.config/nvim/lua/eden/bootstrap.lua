@@ -36,7 +36,7 @@ end
 -- Debugging module by reloading it. Convenience wrapper
 -- around `eden.core.reload`.
 _G.R = function(name)
-  require("eden.core.reload").reload_module(name)
+  require("eden.lib.reload").reload_module(name)
   return require(name)
 end
 
