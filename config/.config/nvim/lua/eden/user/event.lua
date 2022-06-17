@@ -1,75 +1,45 @@
-local event = require("eden.core.event")
+local augroup = require("eden.lib.event").augroup
 
-event.aug({
-  user_packer = {
-    {
-      "BufWritePost",
-      "*/lua/eden/modules/*",
-      function()
-        require("eden.core.pack").auto_compile()
-      end,
-    },
+augroup("user_events", {
+  -- Equalize window dimensions when resizing vim window
+  {
+    event = "VimResized",
+    exec = "tabdo wincmd =",
   },
 
-  user_bufs = {
-    { "BufWritePre", "/tmp/*", "setlocal noundofile" },
-    { "BufWritePre", "COMMIT_EDITMSG", "setlocal noundofile" },
-    { "BufWritePre", "MERGE_MSG", "setlocal noundofile" },
-    { "BufWritePre", "*.tmp,*.bak", "setlocal noundofile" },
-    { "BufRead", "*.orig", "setlocal readonly" },
+  -- Check if file changed when its window is focus, more eager than 'autoread'
+  {
+    event = "FocusGained",
+    exec = "checktime",
   },
 
-  wins = {
-    -- Highlight current line only on focused window
-    {
-      { "WinEnter", "BufEnter", "InsertLeave" },
-      [[if ! &cursorline && &filetype !~# '^\(dashboard\|startify\|clap_\)' && ! &pvw | setlocal cursorline | endif]],
-    },
-    {
-      { "WinLeave", "BufLeave", "InsertEnter" },
-      [[if &cursorline && &filetype !~# '^\(dashboard\|startify\|clap_\)' && ! &pvw | setlocal nocursorline | endif]],
-    },
-    -- Equalize window dimensions when resizing vim window
-    { "VimResized", [[tabdo wincmd =]] },
-    -- Force write shada on leaving nvim
-    { "VimLeave", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
-    -- Check if file changed when its window is focus, more eager than 'autoread'
-    { "FocusGained", "checktime" },
-    -- Change project root when switching tabs
-    { "TabEnter", [[ProjectRoot]] },
+  -- Check if file changed when its window is focus, more eager than 'autoread'
+  {
+    event = "TabEnter",
+    exec = "ProjectRoot",
   },
 
-  user_yank = {
-    {
-      "TextYankPost",
-      function()
-        vim.highlight.on_yank({ hlgroup = "IncSearch", timeout = 300 })
-      end,
-    },
+  -- Highlight yank with `IncSearch`
+  {
+    event = "TextYankPost",
+    exec = function()
+      vim.highlight.on_yank({ hlgroup = "IncSearch", timeout = 300 })
+    end,
   },
 
-  user_whitespace = {
-    { "BufWinEnter", "match Error /\\s\\+%#@<!$/" },
-    { "InsertEnter", "match Error /\\s\\+%#@<!$/" },
-    { "InsertLeave", "match Error /\\s\\+$/" },
+  -- Match trailing whitespace when in normal mode
+  {
+    event = { "BufWinEnter", "InsertEnter" },
+    exec = "match Error /\\s\\+%#@<!$/",
+  },
+  {
+    event = "InsertLeave",
+    exec = "match Error /\\s\\+$/",
   },
 
-  user_linereturn = {
-    { "BufReadPost", "*", [[if line("'\"") > 0 && line("'\"") <= line("$") | execute 'normal! g`"zvzz' | endif]] },
-  },
-
-  user_toggle = {
-    {
-      { "BufEnter", "FocusGained", "InsertLeave" },
-      function()
-        require("eden.core.util").set_relnumber()
-      end,
-    },
-    {
-      { "BufLeave", "FocusLost", "InsertEnter" },
-      function()
-        require("eden.core.util").set_no_relnumber()
-      end,
-    },
+  -- Return to last position of buffer after it is read
+  {
+    event = "BufReadPost",
+    exec = [[if line("'\"") > 0 && line("'\"") <= line("$") | execute 'normal! g`"zvzz' | endif]],
   },
 })

@@ -1,5 +1,4 @@
 local pack = require("eden.core.pack")
-local path = require("eden.core.path")
 local nlsp = require("lspconfig")
 local remaps = require("eden.modules.protocol.lsp.remaps")
 local filetype_attach = require("eden.modules.protocol.lsp.filetypes")
@@ -42,7 +41,8 @@ local function on_attach(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
   if client.resolved_capabilities.document_formatting then
-    -- TODO: edn.au and edn.aug support buffer
+
+    -- TODO: What is <buffer> in the new nvim api?
     vim.cmd([[
       augroup LspAutoFormatting
         autocmd!
@@ -89,7 +89,7 @@ for _, v in ipairs(installer.get_installed_servers()) do
 end
 
 local servers = { "bashls", "cmake", "elmls", "gopls", "pyright", "rnix", "rust_analyzer", "vimls" }
-local modlist = require('eden.lib.modlist').getmodlist(pack.modname .. ".protocol.lsp.servers")
+local modlist = require("eden.lib.modlist").getmodlist(pack.modname .. ".protocol.lsp.servers")
 for _, mod in ipairs(modlist) do
   local name = mod:match("servers.(.+)$")
   servers[name] = require(mod)

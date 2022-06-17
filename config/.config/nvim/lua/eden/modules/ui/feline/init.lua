@@ -172,21 +172,6 @@ local inactive = {
   { c.in_position }, -- right
 }
 
--- -- Define autocmd that generates the highlight groups from the new colorscheme
--- -- Then reset the highlights for feline
--- edn.aug.FelineColorschemeReload = {
---   {
---     { "SessionLoadPost", "ColorScheme" },
---     function()
---       require("eden.modules.ui.feline.colors").gen_highlights()
---       -- This does not look like it is required. If this is called I see the ^^^^^^ that
---       -- seperates the two sides of the bar. Since the entire config uses highlight groups
---       -- all that is required is to redefine them.
---       -- require("feline").reset_highlights()
---     end,
---   },
--- }
-
 require("feline").setup({
   components = { active = active, inactive = inactive },
   highlight_reset_triggers = {},

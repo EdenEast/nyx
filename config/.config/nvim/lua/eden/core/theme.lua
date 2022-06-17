@@ -1,5 +1,5 @@
 local path = require("eden.core.path")
-local event = require("eden.core.event")
+local augroup = require("eden.lib.event").augroup
 
 local default = "nightfox"
 local cache = path.join(path.cachehome, "theme.txt")
@@ -12,14 +12,14 @@ local function init()
     theme.reload()
   end
 
-  event.aug.user_theme = {
+  augroup("UserTheme", {
     {
-      "ColorScheme",
-      function()
+      event = "ColorScheme",
+      exec = function()
         require("eden.core.theme").hook()
       end,
     },
-  }
+  })
 end
 
 theme.hook = function()
