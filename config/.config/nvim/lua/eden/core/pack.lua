@@ -72,7 +72,7 @@ M.load_plugins = function()
   end
 
   if M.modlist == nil then
-    M.modlist = path.modlist(M.modname)
+    M.modlist = require("eden.lib.modlist").getmodlist(M.modname, {})
   end
 
   local list = {}
@@ -131,7 +131,7 @@ M.bootstrap = function(cb)
   end)
 
   -- Fill in modlist before the `before` trigger is well... triggered
-  M.modlist = path.modlist(M.modname)
+  M.modlist = require("eden.lib.modlist").getmodlist(M.modname, {})
 
   local installed = M.ensure("wbthomason", "packer.nvim", function()
     M.trigger_before()
