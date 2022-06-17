@@ -5,9 +5,10 @@ M.plugins = {
   {
     dev("EdenEast/nightfox.nvim"),
     config = function()
-      R("eden.modules.theme.nightfox")
+      require("eden.modules.theme.nightfox")
     end,
   },
+
   {
     "catppuccin/nvim",
     as = "catppuccin",
@@ -17,17 +18,11 @@ M.plugins = {
       })
     end,
   },
+
   {
     "rebelot/kanagawa.nvim",
     config = function()
-      local remap = {
-        samuraiRed = "#c94f6d",
-      }
-      local overrides = {
-        NvimTreeNormal = { link = "NormalFloat" },
-        NvimTreeNormalNC = { link = "NormalFloat" },
-      }
-      require("kanagawa").setup({ overrides = overrides, colors = remap })
+      require("eden.modules.theme.kanagawa")
     end,
   },
 }

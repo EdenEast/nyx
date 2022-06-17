@@ -3,7 +3,7 @@ local M = {}
 M.plugins = {
   { "tpope/vim-commentary" }, -- Language agnostic comment motions
   { "ggandor/lightspeed.nvim" }, -- Jump to any location specified by two characters
-  { "junegunn/vim-easy-align" },
+  { "junegunn/vim-easy-align" }, -- Align text
   { "machakann/vim-sandwich" }, -- Search/select/edit sandwiched textobjects (surrond)
   { "christoomey/vim-sort-motion" }, -- Vim mapping for sorting a range of text
   { "glts/vim-textobj-comment" }, -- Text objects for comments
