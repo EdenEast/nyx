@@ -126,7 +126,6 @@ local function init()
   init_leader_keys()
 
   -- Initialize edn.keymap, edn.au, and edn.aug
-  require("eden.core.event")
   require("eden.core.keymap")
 
   pack.bootstrap(function(installed)
