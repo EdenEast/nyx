@@ -99,19 +99,6 @@ M.plugins = {
     end,
   },
 
-  {
-    "windwp/nvim-spectre",
-    config = function()
-      require("spectre").setup()
-      vim.cmd('command! Spectre lua require("spectre").open()')
-    end,
-    cmd = { "Spectre" },
-    requires = {
-      { "nvim-lua/popup.nvim" },
-      { "nvim-lua/plenary.nvim" },
-    },
-  },
-
   -- Profiling
   { "tweekmonster/startuptime.vim", cmd = { "StartupTime" } },
 }

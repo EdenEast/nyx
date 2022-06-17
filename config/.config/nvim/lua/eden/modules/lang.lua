@@ -1,9 +1,10 @@
 local M = {}
 
 M.plugins = {
-  { "pest-parser/pest.vim", ft = { "pest" } },
   { "NoahTheDuke/vim-just", ft = { "just" } },
   { "plasticboy/vim-markdown", ft = { "markdown" } },
+  { "Saecki/crates.nvim", ft = { "rust", "toml" } },
+
   {
     "kristijanhusak/orgmode.nvim",
     ft = { "org" },
@@ -11,7 +12,6 @@ M.plugins = {
       require("orgmode").setup()
     end,
   },
-  { "Saecki/crates.nvim", ft = { "rust", "toml" } },
 }
 
 M.before = function()

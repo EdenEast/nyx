@@ -50,10 +50,12 @@ M.plugins = {
         { "windwp/nvim-ts-autotag", opt = true },
       },
     },
+
     {
       "nvim-treesitter/playground",
       cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
     },
+
     {
       "code-biscuits/nvim-biscuits",
       after = "nvim-treesitter",
