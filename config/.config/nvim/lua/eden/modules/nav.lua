@@ -35,6 +35,7 @@ M.plugins = {
   {
     "theprimeagen/harpoon",
     requires = "nvim-lua/plenary.nvim",
+    disable = true,
     config = function()
       require("eden.modules.nav.harpoon")
     end,
