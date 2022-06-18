@@ -1,4 +1,3 @@
-local augroup = require("eden.lib.event").augroup
 local fmt = string.format
 
 TelescopeMapArgs = TelescopeMapArgs or {}

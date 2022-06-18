@@ -1,5 +1,4 @@
 local path = require("eden.core.path")
-local augroup = require("eden.lib.event").augroup
 
 local default = "nightfox"
 local cache = path.join(path.cachehome, "theme.txt")

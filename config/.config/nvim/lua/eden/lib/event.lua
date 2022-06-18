@@ -98,4 +98,7 @@ function M.augroup(name, autocmds, opts)
   end
 end
 
+_G.autocmd = M.autocmd
+_G.augroup = M.augroup
+
 return M
