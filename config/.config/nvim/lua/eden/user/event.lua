@@ -1,4 +1,3 @@
-local augroup = require("eden.lib.event").augroup
 
 augroup("user_events", {
   -- Equalize window dimensions when resizing vim window

@@ -126,12 +126,24 @@ local function init()
   init_leader_keys()
 
   -- Assign the global keymap, and comand function
+  require("eden.lib.event")
   require("eden.lib.keymap")
   require("eden.lib.command")
 
+  -- Create default autogroup
+  augroup("user_events", {})
+
   pack.bootstrap(function(installed)
     if installed then
-      vim.cmd([[autocmd User PackerComplete ++once lua require("eden.main")]])
+      autocmd({
+        event = "User",
+        pattern = "PackerComplete",
+        exec = function()
+          require("eden.main")
+        end,
+        once = true,
+      })
+
       pack.sync()
     else
       -- Packer is not required to be first time installed so require main configuration file
