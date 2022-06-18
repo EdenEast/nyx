@@ -24,7 +24,7 @@ nmap("n", "nzzzv")
 nmap("N", "Nzzzv")
 
 -- Switch between the last two buffers
-nmap("<leader><leader>", [[<c-^>\"zz]])
+nmap("<leader><leader>", [[<c-^>\"zz]], { desc = "Last buffer" })
 
 -- Keep selection when indent/outdent
 xmap(">", ">gv")
@@ -43,21 +43,21 @@ kmap({ "n", "x" }, "C", [["_C]])
 -- Toggle highlight search
 nmap("<leader>th", function()
   vim.opt.hlsearch = not vim.o.hlsearch
-end)
+end, { desc = "Highlight" })
 
-nmap("<leader>w", [[:<c-u>w<cr>]])
-nmap("<leader>q", [[:<c-u>q<cr>]])
-nmap("<leader>!", [[:<c-u>q!<cr>]])
+nmap("<leader>w", [[:<c-u>w<cr>]], { desc = "Write file" })
+nmap("<leader>q", [[:<c-u>q<cr>]], { desc = "Quit buffer" })
+nmap("<leader>!", [[:<c-u>q!<cr>]], { desc = "Force quit buffer" })
 
 nmap("<leader>tn", function()
   require("core.util").toggle_numbers()
-end)
+end, { desc = "Number line" })
 
 nmap("<leader>bm", function()
   require("eden.fn.bufmax").toggle()
-end)
+end, { desc = "Max buffer" })
 
-nmap("<leader>tt", ":Telescope colorscheme<cr>")
+nmap("<leader>tt", ":Telescope colorscheme<cr>", { desc = "Colorscheme" })
 
 -- Jump list -------------------------------------------------------------------
 -- Because currently in alacritty we cannot tell the difference between <tab>
@@ -67,11 +67,11 @@ nmap("<leader>tt", ":Telescope colorscheme<cr>")
 nmap("<m-i>", "<c-i>")
 nmap("<m-o>", "<c-o>")
 
-nmap("[t", ":tabprevious<cr>", { silent = true })
-nmap("]t", ":tabnext<cr>", { silent = true })
+nmap("[t", ":tabprevious<cr>", { silent = true, desc = "Preveous tab" })
+nmap("]t", ":tabnext<cr>", { silent = true, desc = "Next tab" })
 
-nmap("[q", ":cprev<cr>", { silent = true })
-nmap("]q", ":cnext<cr>", { silent = true })
+nmap("[q", ":cprev<cr>", { silent = true, desc = "Preveous quickfix" })
+nmap("]q", ":cnext<cr>", { silent = true, desc = "Next quickfix" })
 
 -- -- Move around splits without having to press <C-w> before each movement"
 -- nmap("<A-h>", "<cmd>lua require('eden.fn.winmove')('left')<cr>")

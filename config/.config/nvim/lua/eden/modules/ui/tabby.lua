@@ -1,3 +1,5 @@
+-- nanozuki/tabby.nvim
+
 local filename = require("tabby.filename")
 require("eden.modules.ui.colors")
 local util = require("tabby.util")

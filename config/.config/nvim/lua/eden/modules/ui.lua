@@ -55,19 +55,10 @@ M.plugins = {
   {
     "simrat39/symbols-outline.nvim",
     config = function()
-      nmap("<leader>ts", [[<cmd>SymbolsOutline<cr>]])
+      nmap("<leader>ts", [[<cmd>SymbolsOutline<cr>]], { desc = "Symbols outline" })
     end,
     cmd = { "SymbolsOutline" },
     keys = { "<leader>ts" },
-  },
-
-  {
-    "nanozuki/tabby.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
-    after = "feline.nvim",
-    config = function()
-      require("eden.modules.ui.tabby")
-    end,
   },
 }
 

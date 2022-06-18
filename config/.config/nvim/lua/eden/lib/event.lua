@@ -76,7 +76,7 @@ end
 ---Create an augroup
 ---@param name string
 ---@param autocmds table
----@param opts table
+---@param opts table|nil
 function M.augroup(name, autocmds, opts)
   local ok, errmsg = pcall(validate_augroup, name, autocmds, opts)
   if not ok then

@@ -1,13 +1,13 @@
+local augroup = require("eden.lib.event").augroup
 local fmt = string.format
 
 TelescopeMapArgs = TelescopeMapArgs or {}
 
-local function map(key, func, opts, buffer)
+local function map(key, func, opts, map_opts)
   local map_key = vim.api.nvim_replace_termcodes(key .. func, true, true, true)
 
   TelescopeMapArgs[map_key] = opts or {}
 
-  local mode = "n"
   local rhs = fmt(
     "<cmd>lua require('%s')['%s'](TelescopeMapArgs['%s'])<cr>",
     "eden.modules.nav.telescope",
@@ -15,45 +15,40 @@ local function map(key, func, opts, buffer)
     map_key
   )
 
-  local map_opts = {
+  local default_map_opts = {
     noremap = true,
     silent = true,
   }
+  map_opts = vim.tbl_deep_extend("force", map_opts or {}, default_map_opts)
 
-  if not buffer then
-    vim.api.nvim_set_keymap(mode, key, rhs, map_opts)
-  else
-    vim.api.nvim_buf_set_keymap(0, mode, key, rhs, map_opts)
-  end
+  nmap(key, rhs, map_opts)
 end
 
 -- Configuration files quick access
-map("<leader>fn", "edit_dotfiles")
-map("<leader>fN", "edit_neovim")
+map("<leader>fn", "edit_dotfiles", {}, { desc = "Dotfiles" })
+map("<leader>fN", "edit_neovim", {}, { desc = "Neovim" })
 
 -- Searches
-map("<leader>fp", "projects")
-map("<leader>fr", "live_grep")
-map("<leader>fh", "help_tags")
+map("<leader>fp", "projects", {}, { desc = "Projects" })
+map("<leader>fr", "live_grep", {}, { desc = "Grep" })
+map("<leader>fh", "help_tags", {}, { desc = "Help" })
 
 -- Files
-map("<leader>fd", "git_files")
-map("<leader>ff", "fd")
-map("<leader>fo", "oldfiles")
-
--- Lsp
-map("<leader>fs", "lsp_workspace_symbols")
+map("<leader>fd", "git_files", {}, { desc = "Git files" })
+map("<leader>ff", "fd", {}, { desc = "Files" })
+map("<leader>fo", "oldfiles", {}, { desc = "Old files" })
 
 -- Utility
-map("<leader>fR", "reloader")
-map("<leader>fB", "builtin")
+map("<leader>fR", "reloader", {}, { desc = "Reload lua module" })
+map("<leader>fB", "builtin", {}, { desc = "Builtins" })
 
-vim.api.nvim_exec(
-  [[
-    augroup telescope
-        autocmd!
-        autocmd FileType TelescopePrompt inoremap <buffer> <silent> <C-r> <C-r>
-    augroup END]],
-  false
-)
+-- Add binding to paste with <c-r> like normal insert mode
+augroup("telescope", {
+  {
+    event = "FileType",
+    pattern = "TelescopePrompt",
+    exec = "inoremap <buffer> <silent> <C-r> <C-r>",
+  },
+})
+
 return map
