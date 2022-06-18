@@ -5,10 +5,8 @@ M.plugins = {
   { "ggandor/lightspeed.nvim" }, -- Jump to any location specified by two characters
   { "junegunn/vim-easy-align" }, -- Align text
   { "machakann/vim-sandwich" }, -- Search/select/edit sandwiched textobjects (surrond)
-  { "christoomey/vim-sort-motion" }, -- Vim mapping for sorting a range of text
   { "glts/vim-textobj-comment" }, -- Text objects for comments
   { "wellle/targets.vim" }, -- Add text objects for pair, quote, seperator, argument, and tag
-  { "kana/vim-textobj-user" }, -- Create own user text objects
 }
 
 M.after = function()
