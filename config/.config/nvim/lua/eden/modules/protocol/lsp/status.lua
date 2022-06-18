@@ -33,7 +33,11 @@ status.activate = function(register)
     diagnostics = vim.g.current_statusline == "lualine",
   })
 
-  local should_register = register and register or true
+  local should_register = true
+  if type(register) == "boolean" then
+    should_register = register
+  end
+
   if should_register then
     nvim_status.register_progress()
   end

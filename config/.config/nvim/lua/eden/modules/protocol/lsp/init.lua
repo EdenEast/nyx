@@ -9,6 +9,7 @@ require(premod .. "handlers")
 
 local status = require("eden.modules.protocol.lsp.status")
 status.activate(false)
+
 require("fidget").setup({
   fmt = {
     stack_upwards = false,
