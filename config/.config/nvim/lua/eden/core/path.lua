@@ -1,17 +1,13 @@
 local platform = require("eden.core.platform")
 local home = os.getenv("HOME")
-local uv = vim.loop
-local fmt = string.format
 
 local M = {}
-
-M.sep = platform.is_windows and [[\]] or "/"
 
 -- Join a list of paths together
 -- @param ... string list
 -- @return string
 M.join = function(...)
-  return table.concat({ ... }, M.sep)
+  return table.concat({ ... }, platform.sep)
 end
 
 -- Define default values for important path locations

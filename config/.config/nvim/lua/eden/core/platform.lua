@@ -7,6 +7,8 @@ M.is_linux = uname.sysname == "Linux"
 M.is_windows = uname.sysname == "Windows_NT"
 M.is_wsl = not (string.find(uname.release, "microsoft") == nil)
 
+M.sep = M.is_windows and [[\]] or "/"
+
 edn.platform = M
 
 return M
