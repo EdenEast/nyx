@@ -30,8 +30,10 @@ M.plugins = {
         integrations = { diffview = true },
       })
 
-      nmap("<leader>gn", "<cmd>Neogit<cr>", { desc = "Neogit" })
+      nmap("<leader>gn", "<cmd>Neogit<cr>")
     end,
+    cmd = { "Neogit" },
+    keys = { "<leader>gn" },
     requires = { "nvim-lua/plenary.nvim" },
   },
 
@@ -108,6 +110,7 @@ M.after = function()
   if has_wk then
     wk.register({
       ["<leader>gm"] = "Show git message",
+      ["<leader>gn"] = "Neogit",
       ["<leader>gp"] = "Pick diff",
     })
   end
