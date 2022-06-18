@@ -55,7 +55,7 @@ M.plugins = {
   {
     "simrat39/symbols-outline.nvim",
     config = function()
-      nmap("<leader>ts", [[<cmd>SymbolsOutline<cr>]], { desc = "Symbols outline" })
+      nmap("<leader>ts", [[<cmd>SymbolsOutline<cr>]])
     end,
     cmd = { "SymbolsOutline" },
     keys = { "<leader>ts" },
@@ -105,6 +105,16 @@ M.before = function()
     "term",
     "toggerm",
   }
+end
+
+M.after = function()
+  -- Set the which-key descriptions as these are hidden behind packer lazy loading
+  local has_wk, wk = pcall(require, "which-key")
+  if has_wk then
+    wk.register({
+      ["<leader>ts"] = "Symbols outline",
+    })
+  end
 end
 
 return M

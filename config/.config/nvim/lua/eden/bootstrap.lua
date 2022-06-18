@@ -125,8 +125,9 @@ local function init()
   init_runtimepath()
   init_leader_keys()
 
-  -- Assign the global keymap function
+  -- Assign the global keymap, and comand function
   require("eden.lib.keymap")
+  require("eden.lib.command")
 
   pack.bootstrap(function(installed)
     if installed then

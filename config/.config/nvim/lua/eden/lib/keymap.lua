@@ -1,7 +1,7 @@
 local default_opts = { noremap = true }
 local M = {}
 
-local has_wk, wk = pcall(require("which-key"))
+local has_wk, wk = pcall(require, "which-key")
 
 local function err(msg)
   vim.notify(msg, vim.log.levels.ERROR)

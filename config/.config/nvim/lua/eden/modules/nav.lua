@@ -52,4 +52,14 @@ M.before = function()
   end
 end
 
+M.after = function()
+  -- Set the which-key descriptions as these are hidden behind packer lazy loading
+  local has_wk, wk = pcall(require, "which-key")
+  if has_wk then
+    wk.register({
+      ["<leader>te"] = "File tree",
+    })
+  end
+end
+
 return M
