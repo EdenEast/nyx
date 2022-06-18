@@ -39,4 +39,4 @@ require("nvim-tree").setup({
   },
 })
 
-nmap("<leader>te", "<cmd>NvimTreeToggle<cr>", { desc = "File tree" })
+nmap("<leader>te", "<cmd>NvimTreeToggle<cr>")

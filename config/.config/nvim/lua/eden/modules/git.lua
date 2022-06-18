@@ -6,10 +6,10 @@ M.plugins = {
   {
     "tpope/vim-fugitive",
     config = function()
-      nmap("<leader>ga", ":Git add %:p<cr>", {desc = "Add file"}) -- Stage current file
-      nmap("<leader>gd", ":Gdiffsplit<cr>", {desc = "Diff file"}) -- Diff current file
-      nmap("<leader>gc", ":Git commit<cr>", {desc = "Commit"}) -- Create a git commit from staged changes
-      nmap("<leader>gb", ":Git blame<cr>", {desc = "Blame file"}) -- Blame each line in file
+      nmap("<leader>ga", ":Git add %:p<cr>", { desc = "Add file" }) -- Stage current file
+      nmap("<leader>gd", ":Gdiffsplit<cr>", { desc = "Diff file" }) -- Diff current file
+      nmap("<leader>gc", ":Git commit<cr>", { desc = "Commit" }) -- Create a git commit from staged changes
+      nmap("<leader>gb", ":Git blame<cr>", { desc = "Blame file" }) -- Blame each line in file
     end,
   },
 
@@ -30,7 +30,7 @@ M.plugins = {
         integrations = { diffview = true },
       })
 
-      nmap("<leader>gn", "<cmd>Neogit<cr>", {desc = "Neogit"})
+      nmap("<leader>gn", "<cmd>Neogit<cr>", { desc = "Neogit" })
     end,
     requires = { "nvim-lua/plenary.nvim" },
   },
@@ -39,7 +39,7 @@ M.plugins = {
     "rhysd/git-messenger.vim",
     config = function()
       -- Show commit message for current line
-      nmap("<leader>gm", "<cmd>GitMessenger<cr>", {desc = "Show git message"})
+      nmap("<leader>gm", "<cmd>GitMessenger<cr>")
     end,
     cmd = { "GitMessenger" },
     keys = { "<leader>gm" },
@@ -48,7 +48,7 @@ M.plugins = {
   {
     "AndrewRadev/linediff.vim",
     config = function()
-      nmap("<leader>gp", [[<cmd>LinediffPick<cr>]], {desc = "Pick diff"})
+      nmap("<leader>gp", [[<cmd>LinediffPick<cr>]])
     end,
     cmd = { "LinediffPick" },
     keys = { "<leader>gp" },
@@ -100,6 +100,17 @@ M.plugins = {
 
 M.begin = function()
   vim.g.git_messenger_no_default_mapping = false
+end
+
+M.after = function()
+  -- Set the which-key descriptions as these are hidden behind packer lazy loading
+  local has_wk, wk = pcall(require, "which-key")
+  if has_wk then
+    wk.register({
+      ["<leader>gm"] = "Show git message",
+      ["<leader>gp"] = "Pick diff",
+    })
+  end
 end
 
 return M
