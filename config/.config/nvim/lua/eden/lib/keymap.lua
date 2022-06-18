@@ -1,6 +1,8 @@
 local default_opts = { noremap = true }
 local M = {}
 
+local has_wk, wk = pcall(require("which-key"))
+
 local function err(msg)
   vim.notify(msg, vim.log.levels.ERROR)
 end
@@ -34,6 +36,10 @@ local function mapper(mode, input, exec, opts)
   ok, errmsg = pcall(vim.keymap.set, mode, input, exec, opts)
   if not ok then
     err(errmsg)
+  end
+
+  if has_wk and opts.desc then
+    wk.register({ [input] = opts.desc })
   end
 end
 

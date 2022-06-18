@@ -83,7 +83,7 @@ M.plugins = {
         quit = false,
       })
 
-      nmap("<leader>bq", [[<cmd>BufDel<cr>]])
+      nmap("<leader>bq", [[<cmd>BufDel<cr>]], { desc = "Delete buffer" })
     end,
   },
 
@@ -95,7 +95,7 @@ M.plugins = {
     ft = { "markdown", "vimwiki" },
     cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
     config = function()
-      nmap("<leader>tp", ":MarkdownPreviewToggle<cr>")
+      nmap("<leader>tp", ":MarkdownPreviewToggle<cr>", { desc = "Markdown preview" })
     end,
   },
 

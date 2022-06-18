@@ -6,10 +6,10 @@ M.plugins = {
   {
     "tpope/vim-fugitive",
     config = function()
-      nmap("<leader>ga", ":Git add %:p<cr>") -- Stage current file
-      nmap("<leader>gd", ":Gdiffsplit<cr>") -- Diff current file
-      nmap("<leader>gc", ":Git commit<cr>") -- Create a git commit from staged changes
-      nmap("<leader>gb", ":Git blame<cr>") -- Blame each line in file
+      nmap("<leader>ga", ":Git add %:p<cr>", {desc = "Add file"}) -- Stage current file
+      nmap("<leader>gd", ":Gdiffsplit<cr>", {desc = "Diff file"}) -- Diff current file
+      nmap("<leader>gc", ":Git commit<cr>", {desc = "Commit"}) -- Create a git commit from staged changes
+      nmap("<leader>gb", ":Git blame<cr>", {desc = "Blame file"}) -- Blame each line in file
     end,
   },
 
@@ -30,7 +30,7 @@ M.plugins = {
         integrations = { diffview = true },
       })
 
-      nmap("<leader>gn", "<cmd>Neogit<cr>")
+      nmap("<leader>gn", "<cmd>Neogit<cr>", {desc = "Neogit"})
     end,
     requires = { "nvim-lua/plenary.nvim" },
   },
@@ -39,7 +39,7 @@ M.plugins = {
     "rhysd/git-messenger.vim",
     config = function()
       -- Show commit message for current line
-      nmap("<leader>gm", "<cmd>GitMessenger<cr>")
+      nmap("<leader>gm", "<cmd>GitMessenger<cr>", {desc = "Show git message"})
     end,
     cmd = { "GitMessenger" },
     keys = { "<leader>gm" },
@@ -48,7 +48,7 @@ M.plugins = {
   {
     "AndrewRadev/linediff.vim",
     config = function()
-      nmap("<leader>gp", [[<cmd>LinediffPick<cr>]])
+      nmap("<leader>gp", [[<cmd>LinediffPick<cr>]], {desc = "Pick diff"})
     end,
     cmd = { "LinediffPick" },
     keys = { "<leader>gp" },

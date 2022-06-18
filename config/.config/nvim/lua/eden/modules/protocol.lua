@@ -66,7 +66,7 @@ M.plugins = {
 
         nmap("<leader>tb", function()
           require("nvim-biscuits").toggle_biscuits()
-        end)
+        end, { desc = "Biscuits" })
       end,
     },
   },

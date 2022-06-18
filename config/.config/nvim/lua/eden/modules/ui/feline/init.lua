@@ -5,6 +5,7 @@
 -- highlight groups are pulled from the current colorscheme applied. Check the
 -- file: `lua/eden/modules/ui/colors.lua` to see how they are defined.
 
+require("eden.modules.ui.colors")
 local u = require("eden.modules.ui.feline.util")
 local fmt = string.format
 

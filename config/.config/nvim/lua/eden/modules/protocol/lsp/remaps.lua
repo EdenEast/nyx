@@ -30,25 +30,29 @@ M.set = function(client, bufnr)
 
   nmap("[e", function()
     vim.diagnostic.goto_prev()
-  end, opts)
+  end, { buffer = true, desc = "Preveous diagnostic" })
 
   nmap("]e", function()
     vim.diagnostic.goto_next()
-  end, opts)
+  end, { buffer = true, desc = "Next diagnostic" })
 
-  nmap("<leader>ce", [[<cmd>Telescope lsp_workspace_diagnostics<cr>]], opts)
+  nmap(
+    "<leader>ce",
+    [[<cmd>Telescope lsp_workspace_diagnostics<cr>]],
+    { buffer = true, desc = "Workspace diagnostics" }
+  )
 
   nmap("<leader>cf", function()
     require("eden.modules.protocol.lsp.extensions.format").format()
-  end, opts)
+  end, { buffer = true, desc = "Format code" })
 
   nmap("<leader>tcf", function()
     require("eden.modules.protocol.lsp.extensions.format").toggle_format()
-  end, opts)
+  end, { buffer = true, desc = "Format code" })
 
   nmap("<leader>cn", function()
     vim.lsp.buf.rename()
-  end, opts)
+  end, { buffer = true, desc = "Rename"})
 end
 
 return M
