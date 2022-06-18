@@ -28,10 +28,11 @@ M.plugins = {
     config = function()
       require("eden.modules.protocol.dap")
     end,
+    event = "VimEnter",
     requires = {
-      "theHamsta/nvim-dap-virtual-text",
-      "rcarriga/nvim-dap-ui",
-      "jbyuki/one-small-step-for-vimkind",
+      { "theHamsta/nvim-dap-virtual-text", opts = true },
+      { "rcarriga/nvim-dap-ui", opts = true },
+      { "jbyuki/one-small-step-for-vimkind", opts = true },
     },
   },
 
@@ -71,5 +72,10 @@ M.plugins = {
     },
   },
 }
+
+M.before = function()
+  -- Stub command to load dap with packer
+  command("DapLoad", "")
+end
 
 return M
