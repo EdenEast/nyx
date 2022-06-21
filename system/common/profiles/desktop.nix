@@ -14,7 +14,7 @@ in
       fonts = with pkgs; [
         (
           nerdfonts.override {
-            fonts = [ "Hack" "Meslo" "UbuntuMono" ];
+            fonts = [ "JetBrainsMono" "Hack" "Meslo" "UbuntuMono" ];
           }
         )
       ];
