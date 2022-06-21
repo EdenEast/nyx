@@ -41,7 +41,7 @@ local function on_attach(client, bufnr)
 
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     -- TODO: What is <buffer> in the new nvim api?
     vim.cmd([[
       augroup LspAutoFormatting
