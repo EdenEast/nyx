@@ -50,7 +50,8 @@ M.setup = function(config, on_attach, opts)
 
   config.init_options = { documentFormatting = true }
   config.on_attach = function(client, bufnr)
-    client.resolved_capabilities.rename = false
+
+    client.server_capabilities.rename = false
     on_attach(client, bufnr)
   end
 

@@ -46,7 +46,7 @@ end
 status.on_attach = function(client)
   nvim_status.on_attach(client)
 
-  if client.resolved_capabilities.document_symbol then
+  if client.server_capabilities.document_symbol then
     -- TODO: edn.au handle buffer
     vim.cmd([[augroup lsp_status]])
     vim.cmd([[  autocmd CursorHold,BufEnter <buffer> lua require('lsp-status').update_current_function()]])
