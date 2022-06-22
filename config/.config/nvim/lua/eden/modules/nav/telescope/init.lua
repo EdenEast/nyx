@@ -82,7 +82,7 @@ function M.diagnostics()
 end
 
 function M.lsp_definitions()
-  builtin.lsp_diagnostics({
+  builtin.lsp_definitions({
     sorting_strategy = "ascending",
     layout_strategy = "vertical",
     layout_config = {
