@@ -1,3 +1,5 @@
+-- Not used anymore
+
 local nvim_status = require("lsp-status")
 local status = {}
 

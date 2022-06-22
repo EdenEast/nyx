@@ -7,9 +7,6 @@ local premod = "eden.modules.protocol.lsp."
 require(premod .. "cosmetics")
 require(premod .. "handlers")
 
-local status = require("eden.modules.protocol.lsp.status")
-status.activate(false)
-
 require("fidget").setup({
   fmt = {
     stack_upwards = false,
@@ -34,7 +31,6 @@ local function on_attach(client, bufnr)
 
   remaps.set(client, bufnr)
 
-  status.on_attach(client)
   require("lsp_signature").on_attach({})
 
   filetype_attach[filetype](client)
@@ -53,7 +49,6 @@ local function on_attach(client, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend("keep", capabilities, status.capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Packadding cmp-nvim-lsp if not added yet and updating capabilities
