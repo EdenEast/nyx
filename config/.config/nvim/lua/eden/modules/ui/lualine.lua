@@ -13,7 +13,7 @@ line.setup({
       { "diagnostics", sources = { "nvim_lsp" } },
     },
     lualine_x = {
-      require("lsp-status").status,
+      -- require("lsp-status").status,
       "diff",
       "encoding",
       "fileformat",

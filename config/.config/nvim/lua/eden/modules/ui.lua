@@ -7,7 +7,6 @@ M.plugins = {
     config = function()
       require("eden.modules.ui.feline")
     end,
-    requires = { "nvim-lua/lsp-status.nvim" },
   },
 
   {
