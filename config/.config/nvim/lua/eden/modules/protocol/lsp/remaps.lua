@@ -11,8 +11,13 @@ M.set = function(client, bufnr)
     vim.lsp.buf.hover()
   end, opts)
 
-  nmap("gd", "<cmd>Telescope lsp_definitions<cr>", opts)
-  nmap("gr", "<cmd>Telescope lsp_references<cr>", opts)
+  nmap("gd", function ()
+    require("eden.modules.nav.telescope").lsp_definitions()
+  end, opts)
+
+  nmap("gr", function ()
+    require("eden.modules.nav.telescope").lsp_references()
+  end, opts)
 
   nmap("gD", function()
     vim.lsp.buf.declaration()
@@ -38,7 +43,9 @@ M.set = function(client, bufnr)
 
   nmap(
     "<leader>ce",
-    [[<cmd>Telescope lsp_workspace_diagnostics<cr>]],
+    function()
+      require("eden.modules.nav.telescope").diagnostics()
+    end,
     { buffer = true, desc = "Workspace diagnostics" }
   )
 
