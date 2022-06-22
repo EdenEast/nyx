@@ -68,6 +68,45 @@ function M.oldfiles()
   end
 end
 
+function M.diagnostics()
+  builtin.diagnostics({
+    sorting_strategy = "ascending",
+    layout_strategy = "vertical",
+    layout_config = {
+      width = 0.85,
+      vertical = {
+        prompt_position = "top"
+      }
+    },
+  })
+end
+
+function M.lsp_definitions()
+  builtin.lsp_diagnostics({
+    sorting_strategy = "ascending",
+    layout_strategy = "vertical",
+    layout_config = {
+      width = 0.85,
+      vertical = {
+        prompt_position = "top"
+      }
+    },
+  })
+end
+
+function M.lsp_references()
+  builtin.lsp_references({
+    sorting_strategy = "ascending",
+    layout_strategy = "vertical",
+    layout_config = {
+      width = 0.85,
+      vertical = {
+        prompt_position = "top"
+      }
+    },
+  })
+end
+
 return setmetatable({}, {
   __index = function(_, key)
     if M[key] then
