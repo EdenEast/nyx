@@ -60,6 +60,11 @@ M.plugins = {
     cmd = { "SymbolsOutline" },
     keys = { "<leader>ts" },
   },
+
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+  },
 }
 
 M.before = function()
