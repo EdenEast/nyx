@@ -67,7 +67,7 @@ end
 -- `nvim-lsp-installer`. This makes installing language servers on windows sane.
 
 local installer = require("nvim-lsp-installer")
-installer.settings({
+installer.setup({
   log_level = vim.log.levels.DEBUG,
   ui = {
     icons = {
