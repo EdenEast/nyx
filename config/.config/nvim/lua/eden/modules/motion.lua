@@ -5,9 +5,11 @@ M.plugins = {
   { "ggandor/lightspeed.nvim" }, -- Jump to any location specified by two characters
   { "junegunn/vim-easy-align" }, -- Align text
   { "machakann/vim-sandwich" }, -- Search/select/edit sandwiched textobjects (surrond)
-  { "glts/vim-textobj-comment" }, -- Text objects for comments
   { "wellle/targets.vim" }, -- Add text objects for pair, quote, seperator, argument, and tag
-  { "kana/vim-textobj-user" }, -- Requires by other motions
+  {
+    "glts/vim-textobj-comment", -- Text objects for comments
+    requires = { "kana/vim-textobj-user" },
+  },
 }
 
 M.after = function()
