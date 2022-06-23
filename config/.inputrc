@@ -1,8 +1,8 @@
 $include /etc/inputrc
 
 # vim bindings
-set editing-mode vi
-set keymap vi
+# set editing-mode vi
+# set keymap vi
 
 set bell-style none
 set expand-tilde off
