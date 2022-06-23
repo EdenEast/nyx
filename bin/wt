@@ -480,7 +480,12 @@ EOF
     extra_args=("--select-1" "--exit-0" "--exact" "--query" "${args[@]}")
   fi
 
-  selected="$(git worktree list | tail -n +2 | fzf --height 40% --reverse "${extra_args[@]}")"
+  worktrees=($(git worktree list | tail -n +2))
+  if [[ ${#worktrees[@]} -eq 1 ]]; then
+    selected="${worktrees[0]}"
+  else
+    selected="$(git worktree list | tail -n +2 | fzf --height 40% --reverse "${extra_args[@]}")"
+  fi
 
   if [[ $selected =~ \(bare\)$ ]]; then
     selected="$(echo "$selected" | awk '{print $1}')"
