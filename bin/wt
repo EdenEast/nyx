@@ -276,7 +276,7 @@ EOF
     exit 1
   }
 
-  git worktree list
+  git worktree list | tail -n +2
 }
 
 function cmd_new() {
