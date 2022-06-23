@@ -16,3 +16,4 @@ bind-git-helper() {
 
 bind-git-helper f b t r h
 unset -f bind-git-helper
+unset -f join-lines
