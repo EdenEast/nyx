@@ -99,6 +99,13 @@ M.plugins = {
     end,
   },
 
+  {
+    "anuvyklack/hydra.nvim",
+    config = function()
+      require('eden.modules.editor.hydra')
+    end
+  },
+
   -- Profiling
   { "tweekmonster/startuptime.vim", cmd = { "StartupTime" } },
 }
