@@ -108,6 +108,6 @@ for k, v in pairs(servers) do
 end
 
 -- Setup any installed servers that are not in the server list
-for _, server in pairs(installed) do
-  server:setup({})
+for name, server in pairs(installed) do
+  nlsp[name].setup(server._default_options or {})
 end
