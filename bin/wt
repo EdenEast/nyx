@@ -62,6 +62,8 @@ Add a new worktree
 USAGE:
   wt add [OPTIONS] [name] [path]
 
+ALIAS: 'a'
+
 OPTIONS:
   -h, --help    Prints help information
 
