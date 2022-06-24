@@ -10,7 +10,7 @@ end
 
 ---Get all the module names in the file directory
 ---@param modpath string
----@param opts table
+---@param opts table|nil
 ---@return table
 function M.getmodlist(modpath, opts)
   opts = opts or {}
