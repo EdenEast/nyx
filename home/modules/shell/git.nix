@@ -74,12 +74,9 @@ in
             git-lfs
             gitAndTools.delta
             gitAndTools.gh
+            gitAndTools.glab
             gitAndTools.git-filter-repo
             gitAndTools.git-open
-            gitAndTools.grv
-            gitAndTools.hub
-            gitAndTools.lab
-            gitAndTools.tig
             (mkIf config.nyx.modules.shell.gnupg.enable gitAndTools.git-crypt)
           ] else
             [ ];
