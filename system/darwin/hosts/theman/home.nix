@@ -11,7 +11,6 @@
     fd
     sd
     dua
-    procs
   ];
 
   # Manage home-manager with home-manager (inception)
