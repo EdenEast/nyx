@@ -8,6 +8,10 @@ in
     enable = mkEnableOption "neovim configuration";
   };
   config = mkIf cfg.enable {
-    programs.nushell.enable = true;
+    programs.nushell = {
+      enable = true;
+      configFile.text = "";
+      envFile.text = "";
+    };
   };
 }
