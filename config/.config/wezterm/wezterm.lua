@@ -62,6 +62,9 @@ wt.add_to_config_reload_watch_list(local_file)
 wt.add_to_config_reload_watch_list(theme_file)
 
 local config = {
+  -- No beeping plz
+  audio_bell = "Disabled",
+
   -- I use nix for the most part this is something hanlded by that
   check_for_updates = is_windows,
 
