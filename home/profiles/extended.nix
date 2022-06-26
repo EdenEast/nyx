@@ -40,6 +40,7 @@ in
     };
 
     nyx.modules = {
+      shell.direnv.enable = true;
       shell.fzf.enable = true;
       shell.glow.enable = true;
       # shell.keybase.enable = true;
