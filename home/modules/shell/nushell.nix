@@ -14,6 +14,12 @@ in
   };
   config = mkIf cfg.enable {
     home.packages = mkIf (cfg.package != null) [ cfg.package ];
-    xdg.configFile."nushell".source = ../../../config/.config/nushell;
+
+    xdg.configFile."nushell" = {
+      source = ../../../config/.config/nushell;
+      executable = true;
+      recursive = true;
+    };
+
   };
 }
