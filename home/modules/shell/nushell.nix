@@ -6,12 +6,14 @@ in
 {
   options.nyx.modules.shell.nushell = {
     enable = mkEnableOption "neovim configuration";
+    package = mkOption {
+      description = "Package for nushell";
+      type = with types; nullOr package;
+      default = pkgs.nushell;
+    };
   };
   config = mkIf cfg.enable {
-    programs.nushell = {
-      enable = true;
-      configFile.text = "";
-      envFile.text = "";
-    };
+    home.packages = mkIf (cfg.package != null) [ cfg.package ];
+    xdg.configFile."nushell".source = ../../../config/.config/nushell;
   };
 }
