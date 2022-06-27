@@ -76,30 +76,34 @@ rec {
     in
     nameValuePair name (
       inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs system username homeDirectory;
-        configuration = { ... }: {
-          imports =
-            let
-              userConf = strToFile config ../home/hosts;
-              home = mkUserHome { inherit system; config = userConf; };
-            in
-            [ home ];
+        inherit pkgs;
+        modules = [
+          {
+            home = { inherit username homeDirectory; };
 
-          xdg.configFile."nix/nix.conf".text =
-            let
-              nixConf = import ../nix/conf.nix;
-            in
-            ''
-              extra-substituters = ${builtins.concatStringsSep " " nixConf.binaryCaches }
-              extra-trusted-public-keys = ${builtins.concatStringsSep " " nixConf.binaryCachePublicKeys}
-              experimental-features = nix-command flakes
-            '';
+            imports =
+              let
+                userConf = strToFile config ../home/hosts;
+                home = mkUserHome { inherit system; config = userConf; };
+              in
+              [ home ];
 
-          nixpkgs = {
-            config = import ../nix/config.nix;
-            overlays = inputs.self.overlays."${system}";
-          };
-        };
+            xdg.configFile."nix/nix.conf".text =
+              let
+                nixConf = import ../nix/conf.nix;
+              in
+              ''
+                extra-substituters = ${builtins.concatStringsSep " " nixConf.binaryCaches }
+                extra-trusted-public-keys = ${builtins.concatStringsSep " " nixConf.binaryCachePublicKeys}
+                experimental-features = nix-command flakes
+              '';
+
+            nixpkgs = {
+              config = import ../nix/config.nix;
+              overlays = inputs.self.overlays."${system}";
+            };
+          }
+        ];
         extraSpecialArgs =
           let
             self = inputs.self;
