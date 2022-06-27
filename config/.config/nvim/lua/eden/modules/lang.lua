@@ -4,6 +4,7 @@ M.plugins = {
   { "NoahTheDuke/vim-just", ft = { "just" } },
   { "plasticboy/vim-markdown", ft = { "markdown" } },
   { "Saecki/crates.nvim", ft = { "rust", "toml" } },
+  { "LhKipp/nvim-nu", run = ":TSInstall nu" },
 
   {
     "kristijanhusak/orgmode.nvim",
