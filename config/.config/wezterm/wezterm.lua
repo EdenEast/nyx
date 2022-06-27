@@ -1,3 +1,4 @@
+
 local wt = require("wezterm")
 
 local is_windows = wt.target_triple:match("windows") ~= nil
@@ -62,11 +63,8 @@ wt.add_to_config_reload_watch_list(local_file)
 wt.add_to_config_reload_watch_list(theme_file)
 
 local config = {
-  -- No beeping plz
-  audio_bell = "Disabled",
-
-  -- I use nix for the most part this is something hanlded by that
-  check_for_updates = is_windows,
+  audible_bell = "Disabled", -- No beeping plz
+  check_for_updates = false,
 
   color_scheme_dirs = {
     join(confighome, "colors"),
