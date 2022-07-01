@@ -11,6 +11,8 @@
     fd
     sd
     dua
+    # rustup
+    # rust-analyzer
   ];
 
   # Manage home-manager with home-manager (inception)
@@ -35,11 +37,11 @@
       };
     };
     dev = {
+      rust.enable = true;
       python = {
         enable = true;
         extraPackages = with pkgs.python39Packages; [ pip pylint setuptools ];
       };
-      rust.enable = true;
     };
     shell = {
       bash.enable = true;
