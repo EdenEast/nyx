@@ -57,6 +57,7 @@ opt.splitright = true -- open vertical splits right of the current one
 opt.switchbuf = "usetab" -- try to reuse windows/tabs when switching buffers
 opt.synmaxcol = 200 -- dont bother syntax highlighting long lines
 opt.tabstop = 4 -- spaces per tab as editor defualt
+opt.termguicolors = true -- use 24bit colors in tui
 opt.textwidth = 120 -- automatically hard wrap at 120 columns by default
 opt.title = true -- the title of the window to 'titlestring'
 opt.ttyfast = true -- let vim know that I am using a fast term
@@ -72,12 +73,12 @@ opt.breakindentopt = {
 -- https://www.compart.com/en/unicode/U+XXXX (unicode character code)
 -- stylua: ignore
 opt.fillchars = {
-  fold = "·",      -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
-  horiz = "━",     -- BOX DRAWINGS HEAVY HORIZONTAL (U+2501, UTF-8: E2 94 81)
+  fold = "·", -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
+  horiz = "━", -- BOX DRAWINGS HEAVY HORIZONTAL (U+2501, UTF-8: E2 94 81)
   horizdown = "┳", -- BOX DRAWINGS HEAVY DOWN AND HORIZONTAL (U+2533, UTF-8: E2 94 B3)
-  horizup = "┻",   -- BOX DRAWINGS HEAVY UP AND HORIZONTAL (U+253B, UTF-8: E2 94 BB)
-  vert = "┃",      -- BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
-  vertleft = "┫",  -- BOX DRAWINGS HEAVY VERTICAL AND LEFT (U+252B, UTF-8: E2 94 AB)
+  horizup = "┻", -- BOX DRAWINGS HEAVY UP AND HORIZONTAL (U+253B, UTF-8: E2 94 BB)
+  vert = "┃", -- BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+  vertleft = "┫", -- BOX DRAWINGS HEAVY VERTICAL AND LEFT (U+252B, UTF-8: E2 94 AB)
   vertright = "┣", -- BOX DRAWINGS HEAVY VERTICAL AND RIGHT (U+2523, UTF-8: E2 94 A3)
   verthoriz = "╋", -- BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL (U+254B, UTF-8: E2 95 8B)
 }

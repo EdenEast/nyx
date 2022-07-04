@@ -1,4 +1,4 @@
--- local keymap = require("eden.core.keymap")
+require("eden.lib.keymap")
 
 -- 'j' and 'k' moves up and down visible lines in editor not actual lines
 -- This is noticable when text wraps to next line
