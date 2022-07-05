@@ -3,13 +3,17 @@ local M = {}
 M.plugins = {
   {
     "nvim-telescope/telescope.nvim",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("telescope.nvim", 70)
+    end,
     config = function()
       require("eden.modules.nav.telescope.setup")
     end,
     requires = {
-      { "nvim-lua/popup.nvim" },
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-telescope/telescope-fzy-native.nvim" },
+      { "nvim-lua/popup.nvim", opt = true },
+      { "nvim-lua/plenary.nvim", opt = true },
+      { "nvim-telescope/telescope-fzy-native.nvim", opt = true },
       { "nvim-telescope/telescope-frecency.nvim", requires = { "tami5/sqlite.lua", opt = true }, opt = true },
     },
   },
@@ -24,13 +28,13 @@ M.plugins = {
     keys = { "<leader>te" },
   },
 
-  {
-    "folke/trouble.nvim",
-    config = function()
-      require("eden.modules.nav.trouble")
-    end,
-    requires = "kyazdani42/nvim-web-devicons",
-  },
+  -- {
+  --   "folke/trouble.nvim",
+  --   config = function()
+  --     require("eden.modules.nav.trouble")
+  --   end,
+  --   requires = "kyazdani42/nvim-web-devicons",
+  -- },
 
   {
     "theprimeagen/harpoon",

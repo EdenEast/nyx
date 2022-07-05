@@ -1,6 +1,17 @@
 vim.api.nvim_command("set foldmethod=expr")
 vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
 
+local deps = {
+  "nvim-ts-context-commentstring",
+  "nvim-treesitter-textobjects",
+  "nvim-ts-autotag",
+}
+
+if not edn.platform.is_windows then
+  table.insert(deps, "nvim-treesitter-context")
+end
+require("eden.lib.defer").immediate_load(deps)
+
 vim.cmd([[packadd nvim-ts-context-commentstring]])
 vim.cmd([[packadd nvim-treesitter-textobjects]])
 vim.cmd([[packadd nvim-ts-autotag]])

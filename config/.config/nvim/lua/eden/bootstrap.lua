@@ -150,6 +150,7 @@ local function init()
 
   -- Once plugins have heen installed set the theme
   require("eden.core.theme")
+  require("eden.lib.defer").load(50)
 
   -- pack.bootstrap(function(installed)
   --   if installed then

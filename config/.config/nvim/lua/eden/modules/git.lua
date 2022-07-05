@@ -5,6 +5,10 @@ M.plugins = {
   -- The wrapper around git
   {
     "tpope/vim-fugitive",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("vim-fugitive", 30)
+    end,
     config = function()
       nmap("<leader>ga", ":Git add %:p<cr>", { desc = "Add file" }) -- Stage current file
       nmap("<leader>gd", ":Gdiffsplit<cr>", { desc = "Diff file" }) -- Diff current file

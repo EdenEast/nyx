@@ -1,18 +1,20 @@
-local dev = require("eden.core.pack").dev
-
 local M = {}
 
 M.plugins = {
   -- Language Servers ---------------------------------------------------------
   {
     "neovim/nvim-lspconfig",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("nvim-lspconfig", 50)
+    end,
     config = function()
       require("eden.modules.protocol.lsp")
     end,
     requires = {
-      "williamboman/nvim-lsp-installer",
-      "ray-x/lsp_signature.nvim",
-      "j-hui/fidget.nvim",
+      { "williamboman/nvim-lsp-installer", opt = true },
+      { "ray-x/lsp_signature.nvim", opt = true },
+      { "j-hui/fidget.nvim", opt = true },
     },
   },
 
@@ -24,10 +26,13 @@ M.plugins = {
   -- Debug Adaptor ------------------------------------------------------------
   {
     "mfussenegger/nvim-dap",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("nvim-dap", 20)
+    end,
     config = function()
       require("eden.modules.protocol.dap")
     end,
-    event = "VimEnter",
     requires = {
       { "theHamsta/nvim-dap-virtual-text", opts = true },
       { "rcarriga/nvim-dap-ui", opts = true },
@@ -39,6 +44,10 @@ M.plugins = {
   {
     {
       "nvim-treesitter/nvim-treesitter",
+      opt = true,
+      setup = function()
+        require("eden.lib.defer").add("nvim-treesitter", 100)
+      end,
       run = ":TSUpdate",
       config = function()
         require("eden.modules.protocol.treesitter")

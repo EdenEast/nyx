@@ -165,11 +165,10 @@ function M.load_compile()
     },
   })
 
+  vim.cmd([[command! -nargs=* PackerCompile  lua require('eden.core.pack').compile(<q-args>)]])
+
   command("PackerClean", function()
     require("eden.core.pack").clean()
-  end)
-  command("PackerCompile", function()
-    require("eden.core.pack").compile()
   end)
   command("PackerInstall", function()
     require("eden.core.pack").install()
@@ -182,6 +181,9 @@ function M.load_compile()
   end)
   command("PackerUpdate", function()
     require("eden.core.pack").update()
+  end)
+  command("PackerProfile", function()
+    require("eden.core.pack").profile_output()
   end)
 end
 

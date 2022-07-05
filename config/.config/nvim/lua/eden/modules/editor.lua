@@ -77,6 +77,10 @@ M.plugins = {
 
   {
     "ojroques/nvim-bufdel",
+    opt = true,
+    startup = function()
+      require("eden.lib.defer").add("nvim-bufdel", 40)
+    end,
     config = function()
       require("bufdel").setup({
         next = "alternate",
@@ -102,8 +106,8 @@ M.plugins = {
   {
     "anuvyklack/hydra.nvim",
     config = function()
-      require('eden.modules.editor.hydra')
-    end
+      require("eden.modules.editor.hydra")
+    end,
   },
 
   -- Profiling
