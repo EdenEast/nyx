@@ -1,4 +1,5 @@
 local cmp = require("cmp")
+local types = require("cmp.types")
 local pairs = require("nvim-autopairs.completion.cmp")
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -99,6 +100,9 @@ local config = {
       cmp.config.compare.order,
     },
   },
+  view = {
+    entries = { name = "custom", selection_order = "top_down" },
+  },
   window = {
     documentation = {
       border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
@@ -110,3 +114,28 @@ local config = {
 
 cmp.setup(config)
 cmp.event:on("confirm_done", pairs.on_confirm_done())
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline("/", {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = "buffer" },
+  },
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline({
+    ["<Up>"] = {
+      c = cmp.mapping.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert }),
+    },
+    ["<Down>"] = {
+      c = cmp.mapping.select_next_item({ behavior = types.cmp.SelectBehavior.Insert }),
+    },
+  }),
+  sources = cmp.config.sources({
+    { name = "cmdline" },
+  }, {
+    { name = "path" },
+  }),
+})
