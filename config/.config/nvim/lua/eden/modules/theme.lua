@@ -4,6 +4,7 @@ local M = {}
 M.plugins = {
   {
     dev("EdenEast/nightfox.nvim"),
+    run = ":NightfoxCompile",
     config = function()
       require("eden.modules.theme.nightfox")
     end,
