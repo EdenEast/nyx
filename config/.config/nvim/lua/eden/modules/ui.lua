@@ -52,6 +52,13 @@ M.plugins = {
   },
 
   {
+    "rcarriga/nvim-notify",
+    config = function()
+      require("eden.modules.ui.notify")
+    end,
+  },
+
+  {
     "simrat39/symbols-outline.nvim",
     config = function()
       nmap("<leader>ts", [[<cmd>SymbolsOutline<cr>]])
