@@ -90,11 +90,11 @@ function Packer:ensure_plugins()
     -- Packer has been clonned and should install missing plugins
     self:load_packer()
     packer.install()
-    -- else
-    --   -- NOTE: Because we have plugins, before and after in the module file we require to require the modules
-    --   -- even if we are just loading the compiled file. This might change in the futureso that the module files
-    --   -- just define modules and before and after are handled differently.
-    --   self:load_plugins()
+  else
+    -- NOTE: Because we have plugins, before and after in the module file we require to require the modules
+    -- even if we are just loading the compiled file. This might change in the futureso that the module files
+    -- just define modules and before and after are handled differently.
+    self:load_plugins()
   end
 end
 
