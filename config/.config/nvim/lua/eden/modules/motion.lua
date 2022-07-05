@@ -7,7 +7,11 @@ M.plugins = {
   { "wellle/targets.vim" }, -- Add text objects for pair, quote, seperator, argument, and tag
   {
     "glts/vim-textobj-comment", -- Text objects for comments
-    requires = { "kana/vim-textobj-user" },
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("vim-textobj-comment", 30)
+    end,
+    requires = { "kana/vim-textobj-user", opt = true },
   },
   {
     "ggandor/lightspeed.nvim", -- Jump to any location specified by two characters
