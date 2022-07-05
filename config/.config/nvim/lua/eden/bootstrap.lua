@@ -140,6 +140,7 @@ local function init()
 
   require("eden.lib.command")
   require("eden.core.event")
+  require("eden.core.filetype")
   require("eden.core.keymap")
   require("eden.core.options")
 
@@ -150,7 +151,7 @@ local function init()
 
   -- Once plugins have heen installed set the theme
   require("eden.core.theme")
-  require("eden.lib.defer").load(50)
+  require("eden.lib.defer").load(20)
 
   -- pack.bootstrap(function(installed)
   --   if installed then
