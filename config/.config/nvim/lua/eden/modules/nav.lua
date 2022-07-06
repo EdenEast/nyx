@@ -20,12 +20,14 @@ M.plugins = {
 
   {
     "kyazdani42/nvim-tree.lua",
-    requires = "kyazdani42/nvim-web-devicons",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("nvim-tree.lua", 70)
+    end,
     config = function()
       require("eden.modules.nav.nvimtree")
     end,
-    cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFindFile" },
-    keys = { "<leader>te" },
+    requires = "kyazdani42/nvim-web-devicons",
   },
 
   -- {

@@ -22,6 +22,10 @@ M.plugins = {
 
   {
     "sindrets/diffview.nvim",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("diffview.nvim", 10)
+    end,
     config = function()
       require("diffview").setup()
     end,
@@ -62,7 +66,10 @@ M.plugins = {
 
   {
     "lewis6991/gitsigns.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("gitsigns.nvim", 70)
+    end,
     requires = { "nvim-lua/plenary.nvim" },
     config = function()
       require("gitsigns").setup({

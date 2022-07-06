@@ -8,7 +8,7 @@ M.plugins = {
     "windwp/nvim-autopairs",
     opt = true,
     setup = function()
-      require("eden.lib.defer").add("nvim-autopairs", 50)
+      require("eden.lib.defer").add("nvim-autopairs", 70)
     end,
     config = function()
       require("nvim-autopairs").setup({
@@ -109,6 +109,10 @@ M.plugins = {
 
   {
     "anuvyklack/hydra.nvim",
+    opt = true,
+    startup = function()
+      require("eden.lib.defer").add("hydra.nvim", 40)
+    end,
     config = function()
       require("eden.modules.editor.hydra")
     end,
