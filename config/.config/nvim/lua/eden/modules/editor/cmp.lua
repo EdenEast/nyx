@@ -1,5 +1,4 @@
 local cmp = require("cmp")
-local types = require("cmp.types")
 local pairs = require("nvim-autopairs.completion.cmp")
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -8,8 +7,13 @@ local config = {
   completion = {
     completeopt = "menu,menuone,noinsert",
   },
+  enabled = function()
+    local disabled = false
+    disabled = disabled or (vim.api.nvim_buf_get_option(0, "buftype") == "prompt")
+    return not disabled
+  end,
   experimental = {
-    native_menu = false,
+    -- native_menu = false,
     ghost_text = true,
   },
   formatting = {
@@ -103,11 +107,14 @@ local config = {
   view = {
     entries = { name = "custom", selection_order = "top_down" },
   },
-  window = {
-    documentation = {
-      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    },
-  },
+  -- window = {
+  --   completion = cmp.config.window.bordered({
+  --     winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+  --   }),
+  --   documentation = cmp.config.window.bordered({
+  --     winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+  --   }),
+  -- },
 }
 
 -- For filetype specific overrides see ftplugin folder
@@ -115,27 +122,16 @@ local config = {
 cmp.setup(config)
 cmp.event:on("confirm_done", pairs.on_confirm_done())
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline("/", {
-  mapping = cmp.mapping.preset.cmdline(),
+cmp.setup.cmdline(":", {
+  completion = { completeopt = "menu,menuone,noselect" },
   sources = {
-    { name = "buffer" },
+    { name = "cmdline" },
   },
 })
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline({
-    ["<Up>"] = {
-      c = cmp.mapping.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert }),
-    },
-    ["<Down>"] = {
-      c = cmp.mapping.select_next_item({ behavior = types.cmp.SelectBehavior.Insert }),
-    },
-  }),
-  sources = cmp.config.sources({
-    { name = "cmdline" },
-  }, {
-    { name = "path" },
-  }),
+cmp.setup.cmdline("/", {
+  completion = { completeopt = "menu,menuone,noselect" },
+  sources = {
+    { name = "buffer" },
+  },
 })
