@@ -6,7 +6,7 @@ M.plugins = {
     "neovim/nvim-lspconfig",
     opt = true,
     setup = function()
-      require("eden.lib.defer").add("nvim-lspconfig", 50)
+      require("eden.lib.defer").add("nvim-lspconfig", 80)
     end,
     config = function()
       require("eden.modules.protocol.lsp")
@@ -34,8 +34,8 @@ M.plugins = {
       require("eden.modules.protocol.dap")
     end,
     requires = {
-      { "theHamsta/nvim-dap-virtual-text", opts = true },
       { "rcarriga/nvim-dap-ui", opts = true },
+      { "theHamsta/nvim-dap-virtual-text", opts = true },
       { "jbyuki/one-small-step-for-vimkind", opts = true },
     },
   },
@@ -47,10 +47,10 @@ M.plugins = {
     setup = function()
       require("eden.lib.defer").add("nvim-treesitter", 100)
     end,
-    run = ":TSUpdate",
     config = function()
       require("eden.modules.protocol.treesitter")
     end,
+    run = ":TSUpdate",
     requires = {
       { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },
       { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
@@ -63,19 +63,18 @@ M.plugins = {
     cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
   },
 
-  {
-    "code-biscuits/nvim-biscuits",
-    after = "nvim-treesitter",
-    config = function()
-      require("nvim-biscuits").setup({
-        cursor_line_only = true,
-      })
-
-      nmap("<leader>tb", function()
-        require("nvim-biscuits").toggle_biscuits()
-      end, { desc = "Biscuits" })
-    end,
-  },
+  -- {
+  --   "code-biscuits/nvim-biscuits",
+  --   after = "nvim-treesitter",
+  --   config = function()
+  --     require("nvim-biscuits").setup({
+  --       cursor_line_only = true,
+  --     })
+  --     nmap("<leader>tb", function()
+  --       require("nvim-biscuits").toggle_biscuits()
+  --     end, { desc = "Biscuits" })
+  --   end,
+  -- },
 }
 
 return M

@@ -7,6 +7,7 @@ M.plugins = {
     config = function()
       require("eden.modules.ui.feline")
     end,
+    requires = { "kyazdani42/nvim-web-devicons" },
   },
 
   {
