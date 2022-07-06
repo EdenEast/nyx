@@ -42,47 +42,40 @@ M.plugins = {
 
   -- Treesitter ---------------------------------------------------------------
   {
-    {
-      "nvim-treesitter/nvim-treesitter",
-      opt = true,
-      setup = function()
-        require("eden.lib.defer").add("nvim-treesitter", 100)
-      end,
-      run = ":TSUpdate",
-      config = function()
-        require("eden.modules.protocol.treesitter")
-      end,
-      requires = {
-        { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },
-        { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
-        { "nvim-treesitter/nvim-treesitter-textobjects", opt = true },
-      },
-    },
-
-    {
-      "nvim-treesitter/playground",
-      cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
-    },
-
-    {
-      "code-biscuits/nvim-biscuits",
-      after = "nvim-treesitter",
-      config = function()
-        require("nvim-biscuits").setup({
-          cursor_line_only = true,
-        })
-
-        nmap("<leader>tb", function()
-          require("nvim-biscuits").toggle_biscuits()
-        end, { desc = "Biscuits" })
-      end,
+    "nvim-treesitter/nvim-treesitter",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("nvim-treesitter", 100)
+    end,
+    run = ":TSUpdate",
+    config = function()
+      require("eden.modules.protocol.treesitter")
+    end,
+    requires = {
+      { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },
+      { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
+      { "nvim-treesitter/nvim-treesitter-textobjects", opt = true },
     },
   },
-}
 
-M.before = function()
-  -- Stub command to load dap with packer
-  command("DapLoad", "")
-end
+  {
+    "nvim-treesitter/playground",
+    cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
+  },
+
+  {
+    "code-biscuits/nvim-biscuits",
+    after = "nvim-treesitter",
+    config = function()
+      require("nvim-biscuits").setup({
+        cursor_line_only = true,
+      })
+
+      nmap("<leader>tb", function()
+        require("nvim-biscuits").toggle_biscuits()
+      end, { desc = "Biscuits" })
+    end,
+  },
+}
 
 return M
