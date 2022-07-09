@@ -72,6 +72,13 @@ M.plugins = {
     "kevinhwang91/nvim-bqf",
     ft = "qf",
   },
+
+  {
+    "goolord/alpha-nvim",
+    config = function()
+      require("eden.modules.ui.alpha")
+    end,
+  },
 }
 
 M.before = function()
