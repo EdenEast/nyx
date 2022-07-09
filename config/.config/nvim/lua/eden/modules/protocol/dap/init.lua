@@ -1,3 +1,9 @@
+require("eden.lib.defer").immediate_load({
+  "nvim-dap-virtual-text",
+  "nvim-dap-ui",
+  "one-small-step-for-vimkind",
+})
+
 local dap = require("dap")
 
 -- Languages

@@ -1,6 +1,6 @@
 local M = {
   should_format = true,
-  ft_filters = {}
+  ft_filters = {},
 }
 
 ---Toggles formatting
@@ -15,16 +15,16 @@ end
 M.add_ft_filter = function(filetype, filter, force)
   force = force or false
   if force or M.ft_filters[filetype] == nil then
-      M.ft_filters[filetype] = filter
+    M.ft_filters[filetype] = filter
   end
 end
 
 ---Format buffer synchronously
 M.format = function()
   if M.should_format then
-  local filetype = vim.api.nvim_buf_get_option(0, "filetype")
-  local filter = M.ft_filters[filetype]
-    vim.lsp.buf.format({ async = false, filter = filter})
+    local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+    local filter = M.ft_filters[filetype]
+    vim.lsp.buf.format({ async = false, filter = filter })
   end
 end
 

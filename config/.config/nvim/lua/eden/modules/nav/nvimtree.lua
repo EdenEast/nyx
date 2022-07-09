@@ -11,7 +11,7 @@ require("nvim-tree").setup({
   update_focused_file = {
     enable = true,
   },
-  render = {
+  renderer = {
     add_trailing = true,
     group_empty = true,
     highlight_git = true,

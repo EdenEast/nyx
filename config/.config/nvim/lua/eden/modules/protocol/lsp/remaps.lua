@@ -11,11 +11,11 @@ M.set = function(client, bufnr)
     vim.lsp.buf.hover()
   end, opts)
 
-  nmap("gd", function ()
+  nmap("gd", function()
     require("eden.modules.nav.telescope").lsp_definitions()
   end, opts)
 
-  nmap("gr", function ()
+  nmap("gr", function()
     require("eden.modules.nav.telescope").lsp_references()
   end, opts)
 
@@ -41,13 +41,9 @@ M.set = function(client, bufnr)
     vim.diagnostic.goto_next()
   end, { buffer = true, desc = "Next diagnostic" })
 
-  nmap(
-    "<leader>ce",
-    function()
-      require("eden.modules.nav.telescope").diagnostics()
-    end,
-    { buffer = true, desc = "Workspace diagnostics" }
-  )
+  nmap("<leader>ce", function()
+    require("eden.modules.nav.telescope").diagnostics()
+  end, { buffer = true, desc = "Workspace diagnostics" })
 
   nmap("<leader>cf", function()
     require("eden.modules.protocol.lsp.extensions.format").format()
@@ -59,7 +55,7 @@ M.set = function(client, bufnr)
 
   nmap("<leader>cn", function()
     vim.lsp.buf.rename()
-  end, { buffer = true, desc = "Rename"})
+  end, { buffer = true, desc = "Rename" })
 end
 
 return M

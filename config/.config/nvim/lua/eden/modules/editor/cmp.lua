@@ -7,8 +7,13 @@ local config = {
   completion = {
     completeopt = "menu,menuone,noinsert",
   },
+  enabled = function()
+    local disabled = false
+    disabled = disabled or (vim.api.nvim_buf_get_option(0, "buftype") == "prompt")
+    return not disabled
+  end,
   experimental = {
-    native_menu = false,
+    -- native_menu = false,
     ghost_text = true,
   },
   formatting = {
@@ -99,14 +104,34 @@ local config = {
       cmp.config.compare.order,
     },
   },
-  window = {
-    documentation = {
-      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    },
+  view = {
+    entries = { name = "custom", selection_order = "top_down" },
   },
+  -- window = {
+  --   completion = cmp.config.window.bordered({
+  --     winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+  --   }),
+  --   documentation = cmp.config.window.bordered({
+  --     winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+  --   }),
+  -- },
 }
 
 -- For filetype specific overrides see ftplugin folder
 
 cmp.setup(config)
 cmp.event:on("confirm_done", pairs.on_confirm_done())
+
+cmp.setup.cmdline(":", {
+  completion = { completeopt = "menu,menuone,noselect" },
+  sources = {
+    { name = "cmdline" },
+  },
+})
+
+cmp.setup.cmdline("/", {
+  completion = { completeopt = "menu,menuone,noselect" },
+  sources = {
+    { name = "buffer" },
+  },
+})

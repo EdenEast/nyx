@@ -5,6 +5,10 @@ M.plugins = {
   -- The wrapper around git
   {
     "tpope/vim-fugitive",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("vim-fugitive", 30)
+    end,
     config = function()
       nmap("<leader>ga", ":Git add %:p<cr>", { desc = "Add file" }) -- Stage current file
       nmap("<leader>gd", ":Gdiffsplit<cr>", { desc = "Diff file" }) -- Diff current file
@@ -18,6 +22,10 @@ M.plugins = {
 
   {
     "sindrets/diffview.nvim",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("diffview.nvim", 10)
+    end,
     config = function()
       require("diffview").setup()
     end,
@@ -58,7 +66,10 @@ M.plugins = {
 
   {
     "lewis6991/gitsigns.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("gitsigns.nvim", 70)
+    end,
     requires = { "nvim-lua/plenary.nvim" },
     config = function()
       require("gitsigns").setup({
