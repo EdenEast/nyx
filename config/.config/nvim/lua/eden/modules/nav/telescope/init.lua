@@ -75,8 +75,8 @@ function M.diagnostics()
     layout_config = {
       width = 0.85,
       vertical = {
-        prompt_position = "top"
-      }
+        prompt_position = "top",
+      },
     },
   })
 end
@@ -88,8 +88,8 @@ function M.lsp_definitions()
     layout_config = {
       width = 0.85,
       vertical = {
-        prompt_position = "top"
-      }
+        prompt_position = "top",
+      },
     },
   })
 end
@@ -101,8 +101,8 @@ function M.lsp_references()
     layout_config = {
       width = 0.85,
       vertical = {
-        prompt_position = "top"
-      }
+        prompt_position = "top",
+      },
     },
   })
 end

@@ -7,6 +7,7 @@ M.plugins = {
     config = function()
       require("eden.modules.ui.feline")
     end,
+    requires = { "kyazdani42/nvim-web-devicons" },
   },
 
   {
@@ -52,6 +53,13 @@ M.plugins = {
   },
 
   {
+    "rcarriga/nvim-notify",
+    config = function()
+      require("eden.modules.ui.notify")
+    end,
+  },
+
+  {
     "simrat39/symbols-outline.nvim",
     config = function()
       nmap("<leader>ts", [[<cmd>SymbolsOutline<cr>]])
@@ -63,6 +71,13 @@ M.plugins = {
   {
     "kevinhwang91/nvim-bqf",
     ft = "qf",
+  },
+
+  {
+    "goolord/alpha-nvim",
+    config = function()
+      require("eden.modules.ui.alpha")
+    end,
   },
 }
 

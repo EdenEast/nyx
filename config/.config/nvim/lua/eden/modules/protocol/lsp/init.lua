@@ -1,3 +1,9 @@
+require("eden.lib.defer").immediate_load({
+  "nvim-lsp-installer",
+  "lsp_signature.nvim",
+  "fidget.nvim",
+})
+
 local pack = require("eden.core.pack")
 local nlsp = require("lspconfig")
 local remaps = require("eden.modules.protocol.lsp.remaps")

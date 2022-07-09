@@ -98,6 +98,9 @@ function M.augroup(name, autocmds, opts)
   end
 end
 
+-- Create default autogroup
+M.augroup("user_events", {})
+
 _G.autocmd = M.autocmd
 _G.augroup = M.augroup
 

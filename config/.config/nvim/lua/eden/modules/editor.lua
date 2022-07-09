@@ -6,7 +6,10 @@ M.plugins = {
 
   {
     "windwp/nvim-autopairs",
-    event = "InsertEnter",
+    opt = true,
+    setup = function()
+      require("eden.lib.defer").add("nvim-autopairs", 70)
+    end,
     config = function()
       require("nvim-autopairs").setup({
         disable_filetype = { "TelescopePrompt", "vim" },
@@ -41,6 +44,7 @@ M.plugins = {
     { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
     { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
     { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+    { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
     { "hrsh7th/cmp-path", after = "nvim-cmp" },
     { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
     { "f3fora/cmp-spell", after = "nvim-cmp" },
@@ -77,6 +81,10 @@ M.plugins = {
 
   {
     "ojroques/nvim-bufdel",
+    opt = true,
+    startup = function()
+      require("eden.lib.defer").add("nvim-bufdel", 40)
+    end,
     config = function()
       require("bufdel").setup({
         next = "alternate",
@@ -101,9 +109,13 @@ M.plugins = {
 
   {
     "anuvyklack/hydra.nvim",
+    opt = true,
+    startup = function()
+      require("eden.lib.defer").add("hydra.nvim", 40)
+    end,
     config = function()
-      require('eden.modules.editor.hydra')
-    end
+      require("eden.modules.editor.hydra")
+    end,
   },
 
   -- Profiling

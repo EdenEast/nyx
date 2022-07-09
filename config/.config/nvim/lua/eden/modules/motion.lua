@@ -2,7 +2,6 @@ local M = {}
 
 M.plugins = {
   { "tpope/vim-commentary" }, -- Language agnostic comment motions
-  { "ggandor/lightspeed.nvim" }, -- Jump to any location specified by two characters
   { "junegunn/vim-easy-align" }, -- Align text
   { "machakann/vim-sandwich" }, -- Search/select/edit sandwiched textobjects (surrond)
   { "wellle/targets.vim" }, -- Add text objects for pair, quote, seperator, argument, and tag
@@ -10,15 +9,19 @@ M.plugins = {
     "glts/vim-textobj-comment", -- Text objects for comments
     requires = { "kana/vim-textobj-user" },
   },
+  {
+    "ggandor/lightspeed.nvim", -- Jump to any location specified by two characters
+    config = function()
+      require("lightspeed").setup({
+        jump_to_unique_chars = { safety_timeout = 400 },
+        match_only_the_start_of_same_char_seqs = true,
+        limit_ft_matches = 5,
+      })
+    end,
+  },
 }
 
 M.after = function()
-  require("lightspeed").setup({
-    jump_to_unique_chars = { safety_timeout = 400 },
-    match_only_the_start_of_same_char_seqs = true,
-    limit_ft_matches = 5,
-  })
-
   -- ---------------------------------------------------
 
   -- Start interactive EasyAlign in visual mode (e.g. vipga)

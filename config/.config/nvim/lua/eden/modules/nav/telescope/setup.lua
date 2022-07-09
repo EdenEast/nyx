@@ -1,3 +1,7 @@
+require("eden.lib.defer").immediate_load({
+  "telescope-fzy-native.nvim",
+})
+
 local actions = require("telescope.actions")
 local sorters = require("telescope.sorters")
 
@@ -51,8 +55,10 @@ require("telescope").load_extension("fzy_native")
 require("telescope").load_extension("projects")
 
 if vim.g.sqlite_found then
-  vim.cmd("packadd sqlite.lua")
-  vim.cmd("packadd telescope-frecency.nvim")
+  require("eden.lib.defer").immediate_load({
+    "sqlite.lua",
+    "telescope-frecency.nvim",
+  })
   require("telescope").load_extension("frecency")
 end
 
