@@ -152,24 +152,6 @@ local function init()
   -- Once plugins have heen installed set the theme
   require("eden.core.theme")
   require("eden.lib.defer").load(20)
-
-  -- pack.bootstrap(function(installed)
-  --   if installed then
-  --     autocmd({
-  --       event = "User",
-  --       pattern = "PackerComplete",
-  --       exec = function()
-  --         require("eden.main")
-  --       end,
-  --       once = true,
-  --     })
-
-  --     pack.sync()
-  --   else
-  --     -- Packer is not required to be first time installed so require main configuration file
-  --     require("eden.main")
-  --   end
-  -- end)
 end
 
 init()
