@@ -180,9 +180,17 @@
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
 
+# Resolve conflict between keys by setting keys to send keycodes with the format:
+#
+# \x1b[(unicode_char_number);(modifiers_number)u
+#
+# List of unicode characters: https://en.wikipedia.org/wiki/List_of_Unicode_characters
+# List of modifier characters: http://www.leonerd.org.uk/hacks/fixterms/
+
 key_bindings:
   # Setting the key combo Control-Space to something that I can use in neovim
   - { key: Space,     mods: Control,             chars: "\x00" }
+  - { key: I,         mods: Control,             chars: "\x1b[105;5u" }
 
   - { key: Paste,                                action: Paste          }
   - { key: Copy,                                 action: Copy           }
