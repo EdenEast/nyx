@@ -54,7 +54,7 @@ nmap("<leader>tn", function()
 end, { desc = "Number line" })
 
 nmap("<leader>bm", function()
-  require("eden.fn.bufmax").toggle()
+  require("eden.extend.bufmax").toggle()
 end, { desc = "Max buffer" })
 
 nmap("<leader>tt", ":Telescope colorscheme<cr>", { desc = "Colorscheme" })
@@ -74,10 +74,10 @@ nmap("[q", ":cprev<cr>", { silent = true, desc = "Preveous quickfix" })
 nmap("]q", ":cnext<cr>", { silent = true, desc = "Next quickfix" })
 
 -- -- Move around splits without having to press <C-w> before each movement"
--- nmap("<A-h>", "<cmd>lua require('eden.fn.winmove')('left')<cr>")
--- nmap("<A-j>", "<cmd>lua require('eden.fn.winmove')('down')<cr>")
--- nmap("<A-k>", "<cmd>lua require('eden.fn.winmove')('up')<cr>")
--- nmap("<A-l>", "<cmd>lua require('eden.fn.winmove')('right')<cr>")
+-- nmap("<A-h>", "<cmd>lua require('eden.extend.winmove')('left')<cr>")
+-- nmap("<A-j>", "<cmd>lua require('eden.extend.winmove')('down')<cr>")
+-- nmap("<A-k>", "<cmd>lua require('eden.extend.winmove')('up')<cr>")
+-- nmap("<A-l>", "<cmd>lua require('eden.extend.winmove')('right')<cr>")
 
 -- Exec current file
 nmap("<F1>", ":lua require('eden.core.util').exec_file()<cr>")
