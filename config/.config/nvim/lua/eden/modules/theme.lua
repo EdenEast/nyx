@@ -1,9 +1,9 @@
-local dev = require("eden.core.pack").dev
 local M = {}
 
 M.plugins = {
   {
-    dev("EdenEast/nightfox.nvim"),
+    "EdenEast/nightfox.nvim",
+    dev = true,
     run = ":NightfoxCompile",
     config = function()
       require("eden.modules.theme.nightfox")

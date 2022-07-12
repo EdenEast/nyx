@@ -1,4 +1,5 @@
 require("eden.lib.defer").immediate_load({
+  "plenary.nvim",
   "telescope-fzy-native.nvim",
 })
 

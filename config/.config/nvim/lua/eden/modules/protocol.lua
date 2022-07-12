@@ -34,9 +34,9 @@ M.plugins = {
       require("eden.modules.protocol.dap")
     end,
     requires = {
-      { "rcarriga/nvim-dap-ui", opts = true },
-      { "theHamsta/nvim-dap-virtual-text", opts = true },
-      { "jbyuki/one-small-step-for-vimkind", opts = true },
+      { "rcarriga/nvim-dap-ui", opt = true },
+      { "theHamsta/nvim-dap-virtual-text", opt = true },
+      { "jbyuki/one-small-step-for-vimkind", opt = true },
     },
   },
 
