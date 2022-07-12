@@ -333,24 +333,50 @@ function M.load_compile()
     },
   })
 
-  vim.cmd([[command! -nargs=* PackerCompile  lua require('eden.core.pack').compile(<q-args>)]])
+  ---Use lockfile to build packer cache to the desired hashes
+  command("PackBuild", function()
+    Lockfile.should_apply = true
+    require("eden.core.pack").sync()
+    require("eden.core.pack").set_on_packer_complete(function()
+      Lockfile:update()
+    end)
+  end)
 
-  command("PackerClean", function()
-    require("eden.core.pack").clean()
+  ---Update plugins to their latest versions and update lockfile
+  command("PackUpdate", function()
+    Lockfile.should_apply = false
+    require("eden.core.pack").sync()
+    require("eden.core.pack").set_on_packer_complete(function()
+      Lockfile.should_apply = true
+      Lockfile:update()
+    end)
   end)
-  command("PackerInstall", function()
+
+  command("PackInstall", function()
+    Lockfile.should_apply = true
     require("eden.core.pack").install()
+    require("eden.core.pack").set_on_packer_complete(function()
+      Lockfile:update()
+    end)
   end)
-  command("PackerStatus", function()
-    require("eden.core.pack").status()
+
+  command("PackClean", function()
+    Lockfile.should_apply = true
+    require("eden.core.pack").clean()
+    require("eden.core.pack").set_on_packer_complete(function()
+      Lockfile:update()
+    end)
   end)
-  command("PackerUpdate", function()
-    require("eden.core.pack").update()
+
+  command("PackStatus", function()
+    require("eden.core.path").status()
   end)
-  command("PackerProfile", function()
+
+  command("PackProfile", function()
     require("eden.core.pack").compile("profile=true")
     require("eden.core.pack").profile_output()
   end)
+
   command("LockUpdate", function()
     require("eden.core.pack").lockfile_update()
   end)
@@ -364,26 +390,21 @@ function M.trigger_after()
   Packer:trigger_after()
 end
 
-function M.update()
-  Lockfile.should_apply = false
-  Packer:load_packer()
-  packer.update()
-
+function M.set_on_packer_complete(fn)
   augroup("EdenPackUpdate", {
     {
       event = "User",
       pattern = "PackerComplete",
       exec = function()
-        require("eden.core.pack").update_complete()
+        require("eden.core.pack").on_packer_complete(fn)
       end,
     },
   })
 end
 
-function M.update_complete()
+function M.on_packer_complete(fn)
   vim.api.nvim_del_augroup_by_name("EdenPackUpdate")
-  Lockfile.should_apply = true
-  Lockfile:update()
+  fn()
 end
 
 function M.lockfile_update()
