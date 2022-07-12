@@ -64,7 +64,7 @@ opt.ttyfast = true -- let vim know that I am using a fast term
 opt.virtualedit = "block" -- allow cursor to move where there is no text in visual block mode
 opt.visualbell = false -- stop beeping for non-error errors, please god
 opt.wildmenu = true -- show options as list when switching buffers etc
-opt.winbar = "%{%v:lua.require'eden.fn.winbar'.generate()%}"
+opt.winbar = "%{%v:lua.require'eden.extend.winbar'.generate()%}"
 
 opt.breakindentopt = {
   shift = 2, -- wrapped line's beginning will be shifted by the given number of

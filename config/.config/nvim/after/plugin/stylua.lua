@@ -9,6 +9,6 @@
 
 -- vim.cmd([[
 --   augroup StyluaAuto
---     autocmd BufWritePre *.lua :lua require("eden.fn.stylua").format()
+--     autocmd BufWritePre *.lua :lua require("eden.extend.stylua").format()
 --   augroup END
 -- ]])
