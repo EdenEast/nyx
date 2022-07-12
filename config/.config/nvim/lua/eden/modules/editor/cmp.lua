@@ -122,16 +122,16 @@ local config = {
 cmp.setup(config)
 cmp.event:on("confirm_done", pairs.on_confirm_done())
 
-cmp.setup.cmdline(":", {
-  completion = { completeopt = "menu,menuone,noselect" },
-  sources = {
-    { name = "cmdline" },
-  },
-})
+-- cmp.setup.cmdline(":", {
+--   completion = { completeopt = "menu,menuone,noselect" },
+--   sources = {
+--     { name = "cmdline" },
+--   },
+-- })
 
-cmp.setup.cmdline("/", {
-  completion = { completeopt = "menu,menuone,noselect" },
-  sources = {
-    { name = "buffer" },
-  },
-})
+-- cmp.setup.cmdline("/", {
+--   completion = { completeopt = "menu,menuone,noselect" },
+--   sources = {
+--     { name = "buffer" },
+--   },
+-- })

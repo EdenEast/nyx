@@ -20,7 +20,6 @@ return {
   ["glts/vim-textobj-comment"] = "58ae4571b76a5bf74850698f23d235eef991dd4b",
   ["goolord/alpha-nvim"] = "411ce27d871f963256c0787bc4133cf945dd89d3",
   ["hrsh7th/cmp-buffer"] = "62fc67a2b0205136bc3e312664624ba2ab4a9323",
-  ["hrsh7th/cmp-cmdline"] = "c36ca4bc1dedb12b4ba6546b96c43896fd6e7252",
   ["hrsh7th/cmp-emoji"] = "19075c36d5820253d32e2478b6aaf3734aeaafa0",
   ["hrsh7th/cmp-nvim-lsp"] = "affe808a5c56b71630f17aa7c38e15c59fd648a8",
   ["hrsh7th/cmp-nvim-lua"] = "d276254e7198ab7d00f117e88e223b4bd8c02d21",
