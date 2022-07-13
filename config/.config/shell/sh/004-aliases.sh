@@ -11,14 +11,14 @@ alias m=make
 alias t=tmux
 alias v=vim
 
-alias cb='cargo b'
-alias cc='cargo c'
-alias ccp='cargo +nightly clippy -- -D warnings'
-alias cf='cargo +nightly fmt --all'
-alias cl="cargo clean"
-alias cr='cargo r'
-alias ct='cargo t'
-alias cm=cmake
+# alias cb='cargo b'
+# alias cc='cargo c'
+# alias ccp='cargo +nightly clippy -- -D warnings'
+# alias cf='cargo +nightly fmt --all'
+# alias cl="cargo clean"
+# alias cr='cargo r'
+# alias ct='cargo t'
+# alias cm=cmake
 
 alias psake='powershell -c Invoke-Psake'
 
