@@ -1,7 +1,4 @@
 local overrides = {
-  extensions = {
-    nix = "nix",
-  },
   literal = {
     justfile = "just",
     Justfile = "just",
