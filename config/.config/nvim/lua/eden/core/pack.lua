@@ -334,16 +334,13 @@ function M.load_compile()
   })
 
   ---Use lockfile to build packer cache to the desired hashes
-  command("PackBuild", function()
+  command("PackUpdate", function()
     Lockfile.should_apply = true
     require("eden.core.pack").sync()
-    require("eden.core.pack").set_on_packer_complete(function()
-      Lockfile:update()
-    end)
   end)
 
   ---Update plugins to their latest versions and update lockfile
-  command("PackUpdate", function()
+  command("PackUpgrade", function()
     Lockfile.should_apply = false
     require("eden.core.pack").sync()
     require("eden.core.pack").set_on_packer_complete(function()
@@ -364,6 +361,7 @@ function M.load_compile()
     Lockfile.should_apply = true
     require("eden.core.pack").clean()
     require("eden.core.pack").set_on_packer_complete(function()
+      info("in clean after function")
       Lockfile:update()
     end)
   end)
@@ -374,7 +372,9 @@ function M.load_compile()
 
   command("PackProfile", function()
     require("eden.core.pack").compile("profile=true")
-    require("eden.core.pack").profile_output()
+    require("eden.core.pack").set_on_packer_complete(function()
+      require("eden.core.pack").profile_output()
+    end, "PackerCompileDone")
   end)
 
   command("LockUpdate", function()
@@ -390,11 +390,11 @@ function M.trigger_after()
   Packer:trigger_after()
 end
 
-function M.set_on_packer_complete(fn)
+function M.set_on_packer_complete(fn, pattern)
   augroup("EdenPackUpdate", {
     {
       event = "User",
-      pattern = "PackerComplete",
+      pattern = pattern or "PackerComplete",
       exec = function()
         require("eden.core.pack").on_packer_complete(fn)
       end,
