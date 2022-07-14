@@ -31,7 +31,7 @@ dashboard.section.buttons.val = {
   dashboard.button("e", "  New file", "<cmd>ene<CR>"),
   dashboard.button("f", "  Find File", "<cmd>Telescope find_files<CR>"),
   dashboard.button("s", "  Configuration", "<cmd>e $MYVIMRC|NvimTreeToggle<CR>"),
-  dashboard.button("u", "  Update Plugins", "<cmd>PackerUpdate<CR>"),
+  dashboard.button("u", "  Update Plugins", "<cmd>PackUpdate<CR>"),
   dashboard.button("q", "  Quit", "<cmd>qa<cr>"),
 }
 
