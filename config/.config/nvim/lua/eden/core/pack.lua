@@ -91,7 +91,7 @@ function Packer:load_plugins()
     else
       if mod.plugins then
         for _, plugin in ipairs(mod.plugins) do
-          if plugin.dev then
+          if plugin.dev and not plugin.slug then
             local name = plugin[1]
             local local_path = dev(name, plugin.as)
             if local_path then
@@ -120,7 +120,7 @@ function Packer:ensure_plugins()
     self:load_packer()
     packer.install()
   else
-    -- NOTE: Because we have plugins, before and after in the module file we require to require the modules
+    -- NOTE: Because we have plugins, before and after in the module files we require to require the modules
     -- even if we are just loading the compiled file. This might change in the futureso that the module files
     -- just define modules and before and after are handled differently.
     self:load_plugins()
@@ -160,10 +160,12 @@ function M.ensure(user, repo, callback)
   Packer:ensure(user, repo, callback)
 end
 
+-- Ensure plguins are installed
 function M.ensure_plugins()
   Packer:ensure_plugins()
 end
 
+-- Load packer compiled file if exists. Also
 function M.load_compile()
   if path.exists(path.packer_compiled) then
     local ok, errmsg = pcall(require, "eden.compiled")
