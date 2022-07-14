@@ -1,3 +1,4 @@
+-- Taken from https://github.com/doodleEsc/doodleVim/blob/be1b266/lua/doodleVim/utils/defer.lua
 local M = {
   defer_packages = {},
   mod_plug_map = {},
