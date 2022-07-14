@@ -28,6 +28,8 @@ local function get_packpath_filelist()
       name = name_segments[segment_idx]
       segment_idx = segment_idx - 1
     end
+    -- slug might be required as Packer:load_pluings() chnges the name if dev is true
+    -- To the local filepath if it exists. If spec contains a slug then use that
     return name, spec.slug and spec.slug or spec_path
   end
 
@@ -45,22 +47,15 @@ local function get_packpath_filelist()
     for _, key in ipairs(opt_keys) do
       if spec[key] ~= nil then
         spec.opt = true
+        break
       end
     end
 
     local name, spec_path = get_name_and_path(spec)
     local folder = spec.opt and "opt" or "start"
     if not spec.disable then
-      if paths[spec_path] then
-        -- If we have already saved this path and it was optional but the current one is not
-        -- then the `start` path takes priority
-        if paths[spec_path].opt and not spec.opt then
-          paths[spec_path] = {
-            path = path.join(path.packroot, "packer", folder, name),
-            opt = spec.opt or false,
-          }
-        end
-      else
+      -- Non `opt` (`start`) takes priority
+      if not paths[spec_path] or paths[spec_path].opt and not spec.opt then
         paths[spec_path] = {
           path = path.join(path.packroot, "packer", folder, name),
           opt = spec.opt or false,
@@ -78,7 +73,8 @@ local function get_packpath_filelist()
           req = { req }
         end
 
-        if spec.opt then -- transitive_opt
+        -- transitive_opt
+        if spec.opt then
           req.opt = true
         end
 
@@ -156,7 +152,12 @@ function Lockfile:update()
   table.insert(lines, "}")
   table.insert(lines, "")
 
-  local file = io.open(self.path, "w")
+  local file, errmsg = io.open(self.path, "w")
+  if not file then
+    err(errmsg)
+    return
+  end
+
   file:write(table.concat(lines, "\n"))
   file:close()
   info("Lockfile written")
