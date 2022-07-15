@@ -7,9 +7,7 @@ M.plugins = {
     setup = function()
       require("eden.lib.defer").add("telescope.nvim", 70)
     end,
-    config = function()
-      require("eden.modules.nav.telescope.setup")
-    end,
+    conf = "nav.telescope.setup",
     requires = {
       { "nvim-lua/popup.nvim", opt = true },
       { "nvim-lua/plenary.nvim", opt = true },
@@ -24,17 +22,13 @@ M.plugins = {
     setup = function()
       require("eden.lib.defer").add("nvim-tree.lua", 70)
     end,
-    config = function()
-      require("eden.modules.nav.nvimtree")
-    end,
+    conf = "nav.nvimtree",
     requires = "kyazdani42/nvim-web-devicons",
   },
 
   -- {
   --   "folke/trouble.nvim",
-  --   config = function()
-  --     require("eden.modules.nav.trouble")
-  --   end,
+  --   conf = "nav.trouble",
   --   requires = "kyazdani42/nvim-web-devicons",
   -- },
 
@@ -42,9 +36,7 @@ M.plugins = {
     "theprimeagen/harpoon",
     requires = "nvim-lua/plenary.nvim",
     disable = true,
-    config = function()
-      require("eden.modules.nav.harpoon")
-    end,
+    conf = "nav.harpoon",
   },
 }
 

@@ -4,17 +4,13 @@ M.plugins = {
   {
     "feline-nvim/feline.nvim",
     event = "VimEnter",
-    config = function()
-      require("eden.modules.ui.feline")
-    end,
+    conf = "ui.feline",
     requires = { "kyazdani42/nvim-web-devicons" },
   },
 
   {
     "folke/which-key.nvim",
-    config = function()
-      require("eden.modules.ui.whichkey")
-    end,
+    conf = "ui.whichkey",
   },
 
   {
@@ -54,9 +50,7 @@ M.plugins = {
 
   {
     "rcarriga/nvim-notify",
-    config = function()
-      require("eden.modules.ui.notify")
-    end,
+    conf = "ui.notify",
   },
 
   {
@@ -75,9 +69,7 @@ M.plugins = {
 
   {
     "goolord/alpha-nvim",
-    config = function()
-      require("eden.modules.ui.alpha")
-    end,
+    conf = "ui.alpha",
   },
 }
 

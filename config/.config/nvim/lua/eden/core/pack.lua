@@ -21,6 +21,16 @@ local function dev(slug, as)
   return exists and abs or slug
 end
 
+local handlers = {
+  conf = function(_, plugin, value)
+    if value:match("^eden.") then
+      plugin.config = ([[require('%s')]]):format(value)
+    else
+      plugin.config = ([[require('eden.modules.%s')]]):format(value)
+    end
+  end,
+}
+
 local packer = nil
 local Packer = {}
 Packer.__index = Packer
@@ -59,6 +69,8 @@ function Packer:load_packer()
     disable_commands = true,
   })
   packer.reset()
+  packer.set_handler("conf", handlers.conf)
+
   self:load_plugins()
   local use = packer.use
 
