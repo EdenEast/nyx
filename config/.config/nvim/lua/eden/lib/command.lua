@@ -23,9 +23,20 @@ function M.cmd(name, command, opts)
     return
   end
 
-  ok, errmsg = pcall(vim.api.nvim_create_user_command, name, command, opts or {})
-  if not ok then
-    err(errmsg)
+  opts = opts or {}
+
+  if opts.buffer then
+    local buffer = type(opts.buffer) == "number" and opts.buffer or 0
+    opts.buffer = nil
+    ok, errmsg = pcall(vim.api.nvim_buf_create_user_command, buffer, name, command, opts)
+    if not ok then
+      err(errmsg)
+    end
+  else
+    ok, errmsg = pcall(vim.api.nvim_create_user_command, name, command, opts)
+    if not ok then
+      err(errmsg)
+    end
   end
 end
 
