@@ -116,6 +116,10 @@ end
 
 function Packer:ensure_plugins()
   if Packer:ensure("wbthomason", "packer.nvim") then
+    if path.exists(path.packer_compiled) then
+      path.remove_file(path.packer_compiled)
+    end
+
     -- Packer has been clonned and should install missing plugins
     self:load_packer()
     packer.install()

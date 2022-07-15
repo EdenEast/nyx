@@ -38,6 +38,12 @@ M.exists = function(p)
   return not (state == nil)
 end
 
+---Remove file from file system
+---@param path string
+M.remove_file = function(path)
+  os.execute("rm " .. path)
+end
+
 edn.path = M
 
 return M
