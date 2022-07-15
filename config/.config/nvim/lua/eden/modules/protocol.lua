@@ -8,9 +8,7 @@ M.plugins = {
     setup = function()
       require("eden.lib.defer").add("nvim-lspconfig", 80)
     end,
-    config = function()
-      require("eden.modules.protocol.lsp")
-    end,
+    conf = "protocol.lsp",
     requires = {
       { "williamboman/nvim-lsp-installer", opt = true },
       { "ray-x/lsp_signature.nvim", opt = true },
@@ -30,9 +28,7 @@ M.plugins = {
     setup = function()
       require("eden.lib.defer").add("nvim-dap", 20)
     end,
-    config = function()
-      require("eden.modules.protocol.dap")
-    end,
+    conf = "protocol.dap",
     requires = {
       { "rcarriga/nvim-dap-ui", opt = true },
       { "theHamsta/nvim-dap-virtual-text", opt = true },
@@ -47,9 +43,7 @@ M.plugins = {
     setup = function()
       require("eden.lib.defer").add("nvim-treesitter", 100)
     end,
-    config = function()
-      require("eden.modules.protocol.treesitter")
-    end,
+    conf = "protocol.treesitter",
     run = ":TSUpdate",
     requires = {
       { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },

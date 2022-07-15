@@ -5,9 +5,7 @@ M.plugins = {
     "EdenEast/nightfox.nvim",
     dev = true,
     run = ":NightfoxCompile",
-    config = function()
-      require("eden.modules.theme.nightfox")
-    end,
+    conf = "theme.nightfox",
   },
 
   {
@@ -22,9 +20,7 @@ M.plugins = {
 
   {
     "rebelot/kanagawa.nvim",
-    config = function()
-      require("eden.modules.theme.kanagawa")
-    end,
+    conf = "theme.kanagawa",
   },
 }
 

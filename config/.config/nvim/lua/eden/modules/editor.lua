@@ -21,9 +21,7 @@ M.plugins = {
   {
     "hrsh7th/nvim-cmp",
     after = "nvim-autopairs",
-    config = function()
-      require("eden.modules.editor.cmp")
-    end,
+    conf = "editor.cmp",
   },
 
   {
@@ -68,9 +66,7 @@ M.plugins = {
 
   {
     "akinsho/nvim-toggleterm.lua",
-    config = function()
-      require("eden.modules.editor.toggleterm")
-    end,
+    conf = "editor.toggleterm",
     cmd = { "ToggleTerm" },
     keys = { "<c-space>" },
   },
@@ -109,9 +105,7 @@ M.plugins = {
     startup = function()
       require("eden.lib.defer").add("hydra.nvim", 40)
     end,
-    config = function()
-      require("eden.modules.editor.hydra")
-    end,
+    conf = "editor.hydra",
   },
 
   -- Profiling
