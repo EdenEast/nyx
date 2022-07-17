@@ -40,6 +40,14 @@ nmap("cp", [[vap:t'><cr>(j]])
 kmap({ "n", "x" }, "c", [["_c]])
 kmap({ "n", "x" }, "C", [["_C]])
 
+nmap("dd", function()
+  if vim.api.nvim_get_current_line():match("^%s*$") then
+    return '"_dd'
+  else
+    return "dd"
+  end
+end, { expr = true, silent = true })
+
 -- Toggle highlight search
 nmap("<leader>th", function()
   vim.opt.hlsearch = not vim.o.hlsearch
