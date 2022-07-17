@@ -10,7 +10,7 @@ end
 
 ---Add filter function to filetype
 ---@param filetype string
----@param filter table
+---@param filter function
 ---@param force boolean|nil
 M.add_ft_filter = function(filetype, filter, force)
   force = force or false
