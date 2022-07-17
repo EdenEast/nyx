@@ -220,18 +220,11 @@ function M.load_compile()
   command("PackInstall", function()
     Lockfile.should_apply = true
     require("eden.core.pack").install()
-    require("eden.core.pack").set_on_packer_complete(function()
-      Lockfile:update()
-    end)
   end)
 
   command("PackClean", function()
     Lockfile.should_apply = true
     require("eden.core.pack").clean()
-    require("eden.core.pack").set_on_packer_complete(function()
-      info("in clean after function")
-      Lockfile:update()
-    end)
   end)
 
   command("PackStatus", function()
