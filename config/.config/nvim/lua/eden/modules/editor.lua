@@ -109,7 +109,11 @@ M.plugins = {
   },
 
   -- Profiling
-  { "tweekmonster/startuptime.vim", cmd = { "StartupTime" } },
+  {
+    "dstein64/vim-startuptime",
+    -- "tweekmonster/startuptime.vim",
+    cmd = { "StartupTime" },
+  },
 }
 
 M.before = function()

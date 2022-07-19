@@ -1,6 +1,6 @@
 return {
   ["AndrewRadev/linediff.vim"] = "c7710dbc59881b038ca064b6c54fe482303e8304",
-  ["EdenEast/nightfox.nvim"] = "f65ef80ed453065959ee916d44b329ee94c509e5",
+  ["EdenEast/nightfox.nvim"] = "f0bcabd09ff6cfacbd9ca29162893b8b7e85ee5c",
   ["JoosepAlviste/nvim-ts-context-commentstring"] = "88343753dbe81c227a1c1fd2c8d764afb8d36269",
   ["L3MON4D3/LuaSnip"] = "45fc3d860cfa7a074b4d2fbf68c0249aa3a01320",
   ["LhKipp/nvim-nu"] = "3ef01939989f4d45520873fdac23a2cd7c9c226b",
@@ -12,6 +12,7 @@ return {
   ["anuvyklack/hydra.nvim"] = "5665d8c0fb6f6e7b1058c719ff5dca09b25a1c1e",
   ["catppuccin/nvim"] = "ecfb68bdcd2bb61dc8c73428de13be4a249bf81c",
   ["christoomey/vim-tmux-navigator"] = "9ca5bfe5bd274051b5dd796cc150348afc993b80",
+  ["dstein64/vim-startuptime"] = "da5464c0fb149617d76620954a2538c2fce81a39",
   ["editorconfig/editorconfig-vim"] = "d354117b72b3b43b75a29b8e816c0f91af10efe9",
   ["f3fora/cmp-spell"] = "5602f1a0de7831f8dad5b0c6db45328fbd539971",
   ["feline-nvim/feline.nvim"] = "2962c8c4a67f41ef35c58aa367ff2afb7a9691d3",
@@ -66,7 +67,6 @@ return {
   ["theHamsta/nvim-dap-virtual-text"] = "a36982259216afd710f55bcdc220477c74b5bc35",
   ["tpope/vim-commentary"] = "3654775824337f466109f00eaf6759760f65be34",
   ["tpope/vim-fugitive"] = "ff04324bffd86f9c146cc5fc2c0a2f95a1509643",
-  ["tweekmonster/startuptime.vim"] = "dfa57f522d6f61793fe5fea65bca7484751b8ca2",
   ["weilbith/nvim-code-action-menu"] = "ee599409ed6ab31f6d7115e9c5c4550336470c14",
   ["wellle/targets.vim"] = "8d6ff2984cdfaebe5b7a6eee8f226a6dd1226f2d",
   ["williamboman/nvim-lsp-installer"] = "793f99660fa9212f52ee8b6164454e03ba1f42c9",
