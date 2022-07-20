@@ -1,25 +1,6 @@
 local alpha = require("alpha")
 local dashboard = require("alpha.themes.dashboard")
-
--- local logo = {
---   "                                                     ",
---   "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
---   "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
---   "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
---   "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ",
---   "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
---   "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
---   "                                                     ",
--- }
-
-local logo = {
-  "███████╗██████╗ ███████╗███╗   ██╗",
-  "██╔════╝██╔══██╗██╔════╝████╗  ██║",
-  "█████╗  ██║  ██║█████╗  ██╔██╗ ██║",
-  "██╔══╝  ██║  ██║██╔══╝  ██║╚██╗██║",
-  "███████╗██████╔╝███████╗██║ ╚████║",
-  "╚══════╝╚═════╝ ╚══════╝╚═╝  ╚═══╝",
-}
+local logos = require("eden.modules.ui.alpha.logo")
 
 local function footer()
   local datetime = os.date(" %Y-%m-%d") .. "  -  "
@@ -31,7 +12,7 @@ local function footer()
   return author .. datetime .. total_plugins .. nvim_version_info
 end
 
-dashboard.section.header.val = logo
+dashboard.section.header.val = logos.panda
 
 dashboard.section.buttons.val = {
   dashboard.button("o", "  Open CWD", "<cmd>ene|NvimTreeToggle<CR>"),
