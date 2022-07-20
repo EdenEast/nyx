@@ -1,0 +1,25 @@
+From d7a42d1fc80a4f3452907c1c45f3d24be4981901 Mon Sep 17 00:00:00 2001
+From: James Simpson <edenofest@gmail.com>
+Date: Wed, 20 Jul 2022 16:25:45 -0400
+Subject: [PATCH] Add nix short rev to pre-release version info
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 6c54e5749..eab6e8396 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -149,7 +149,7 @@ set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+ set(NVIM_VERSION_MAJOR 0)
+ set(NVIM_VERSION_MINOR 8)
+ set(NVIM_VERSION_PATCH 0)
+-set(NVIM_VERSION_PRERELEASE "-dev") # for package maintainers
++set(NVIM_VERSION_PRERELEASE "-dev-$ENV{NIX_SHORT_REV}") # for nix overlay
+ 
+ # API level
+ set(NVIM_API_LEVEL 10)         # Bump this after any API change.
+-- 
+2.36.1
+
