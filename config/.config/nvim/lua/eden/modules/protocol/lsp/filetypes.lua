@@ -14,7 +14,7 @@ local M = {
 
   cs = function(_)
     nmap("gd", function()
-      require("omnisharp_extended").telescope_lsp_definitions()
+      ensure_require("omnisharp_extended").telescope_lsp_definitions()
     end, { buffer = true })
   end,
 }
