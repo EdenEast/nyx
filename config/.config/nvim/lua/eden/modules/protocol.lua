@@ -13,6 +13,7 @@ M.plugins = {
       { "williamboman/nvim-lsp-installer", opt = true },
       { "ray-x/lsp_signature.nvim", opt = true },
       { "j-hui/fidget.nvim", opt = true },
+      { "Hoffs/omnisharp-extended-lsp.nvim", opt = true },
     },
   },
 
