@@ -1,6 +1,7 @@
 return {
   ["AndrewRadev/linediff.vim"] = "c7710dbc59881b038ca064b6c54fe482303e8304",
   ["EdenEast/nightfox.nvim"] = "f0bcabd09ff6cfacbd9ca29162893b8b7e85ee5c",
+  ["Hoffs/omnisharp-extended-lsp.nvim"] = "e0dbe96194465f26e2cfff5d170ba8c88287e329",
   ["JoosepAlviste/nvim-ts-context-commentstring"] = "88343753dbe81c227a1c1fd2c8d764afb8d36269",
   ["L3MON4D3/LuaSnip"] = "45fc3d860cfa7a074b4d2fbf68c0249aa3a01320",
   ["LhKipp/nvim-nu"] = "3ef01939989f4d45520873fdac23a2cd7c9c226b",
