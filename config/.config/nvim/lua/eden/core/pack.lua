@@ -238,7 +238,7 @@ function M.load_compile()
     end, "PackerCompileDone")
   end)
 
-  command("LockUpdate", function()
+  command("PackLock", function()
     require("eden.core.pack").lockfile_update()
   end)
 end

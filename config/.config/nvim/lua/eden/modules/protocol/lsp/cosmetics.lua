@@ -6,8 +6,10 @@ sign("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticWarn", linehl = 
 sign("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticInfo", linehl = "NONE" })
 sign("DiagnosticSignHint", { text = " ", texthl = "DiagnosticHint", linehl = "NONE" })
 
+require("lsp_lines").setup()
+
 vim.diagnostic.config({
-  signs = true,
-  virtual_text = { spacing = 2, prefix = "❰" },
-  underline = true,
+  virtual_lines = true, -- lsp_lines
+  virtual_text = false, -- disable default virtual text
+  -- virtual_text = { spacing = 2, prefix = "❰" },
 })

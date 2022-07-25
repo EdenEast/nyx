@@ -5,6 +5,7 @@ return {
   ["JoosepAlviste/nvim-ts-context-commentstring"] = "88343753dbe81c227a1c1fd2c8d764afb8d36269",
   ["L3MON4D3/LuaSnip"] = "45fc3d860cfa7a074b4d2fbf68c0249aa3a01320",
   ["LhKipp/nvim-nu"] = "3ef01939989f4d45520873fdac23a2cd7c9c226b",
+  ["Maan2003/lsp_lines.nvim"] = "3b57922d2d79762e6baedaf9d66d8ba71f822816",
   ["NoahTheDuke/vim-just"] = "312615d5b4c4aa2595d697faca5af345ba8fe102",
   ["Saecki/crates.nvim"] = "6ac6bfc467f23dad2f0a49d6ad9907f69e6b94d5",
   ["TimUntersberger/neogit"] = "73fc14502703f48930eabfc494d30476c6def0d6",
@@ -72,5 +73,4 @@ return {
   ["wellle/targets.vim"] = "8d6ff2984cdfaebe5b7a6eee8f226a6dd1226f2d",
   ["williamboman/nvim-lsp-installer"] = "793f99660fa9212f52ee8b6164454e03ba1f42c9",
   ["windwp/nvim-autopairs"] = "972a7977e759733dd6721af7bcda7a67e40c010e",
-  ["~/dev/lang/nvy/editor/vim/"] = "ea8d8a3fd390b3f198bf31fb47cf3feb37e501e0",
 }
