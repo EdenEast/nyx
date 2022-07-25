@@ -2,6 +2,7 @@ require("eden.lib.defer").immediate_load({
   "nvim-lsp-installer",
   "lsp_signature.nvim",
   "fidget.nvim",
+  "lsp_lines.nvim"
 })
 
 local pack = require("eden.core.pack")
