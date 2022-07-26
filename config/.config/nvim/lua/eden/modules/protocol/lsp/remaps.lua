@@ -13,25 +13,27 @@ M.set = function(client, bufnr)
 
   nmap("gd", function()
     require("eden.modules.nav.telescope").lsp_definitions()
-  end, opts)
+  end, { buffer = true, desc = "Definitions" })
 
   nmap("gr", function()
     require("eden.modules.nav.telescope").lsp_references()
-  end, opts)
+  end, { buffer = true, desc = "References" })
 
   nmap("gD", function()
     vim.lsp.buf.declaration()
-  end, opts)
+  end, { buffer = true, desc = "Declaration" })
 
   nmap("gi", function()
     vim.lsp.buf.implementation()
-  end, opts)
+  end, { buffer = true, desc = "Implementation" })
 
   nmap("gy", function()
     vim.lsp.buf.type_definition()
-  end, opts)
+  end, { buffer = true, desc = "Type definition" })
 
-  nmap("ga", [[<cmd>CodeActionMenu<cr>]], opts)
+  nmap("ga", function()
+    vim.lsp.buf.code_action()
+  end, { buffer = true, desc = "Code action" })
 
   nmap("[e", function()
     vim.diagnostic.goto_prev()
