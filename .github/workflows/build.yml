@@ -2,12 +2,9 @@ name: Build
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "**.md"
-      - "**.org"
-      - "**.norg"
-      - "bin/**"
-      - "docs/**"
+    paths:
+      - "**.nix"
+      - "flake.lock"
 
 jobs:
   build:
