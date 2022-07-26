@@ -14,6 +14,7 @@ local function validate_autocmd(opts)
     nested = { opts.nested, { "boolean" }, true },
     pattern = { opts.pattern, { "string", "table" }, true },
     desc = { opts.desc, { "string" }, true },
+    buffer = { opts.buffer, { "boolean", "number" }, true },
   })
 end
 
@@ -26,6 +27,9 @@ local function merge_autocmd_defaults(opts)
 
   if opts.buffer then
     opts.pattern = nil
+    if type(opts.buffer) == "boolean" then
+      opts.buffer = vim.api.nvim_get_current_buf()
+    end
   end
 
   if type(opts.exec) == "string" then
@@ -92,7 +96,17 @@ function M.augroup(name, autocmds, opts)
     return
   end
 
-  for _, v in pairs(autocmds) do
+  if vim.tbl_isempty(autocmds) then
+    return
+  end
+
+  if not vim.tbl_islist(autocmds) then
+    autocmds.group = name
+    M.autocmd(autocmds)
+    return
+  end
+
+  for _, v in ipairs(autocmds) do
     v.group = name
     M.autocmd(v)
   end

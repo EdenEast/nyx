@@ -12,12 +12,10 @@ local function init()
   end
 
   augroup("UserTheme", {
-    {
-      event = "ColorScheme",
-      exec = function()
-        require("eden.core.theme").hook()
-      end,
-    },
+    event = "ColorScheme",
+    exec = function()
+      require("eden.core.theme").hook()
+    end,
   })
 end
 

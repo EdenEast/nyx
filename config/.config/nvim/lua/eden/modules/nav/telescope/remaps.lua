@@ -7,12 +7,8 @@ local function map(key, func, opts, map_opts)
 
   TelescopeMapArgs[map_key] = opts or {}
 
-  local rhs = fmt(
-    "<cmd>lua require('%s')['%s'](TelescopeMapArgs['%s'])<cr>",
-    "eden.modules.nav.telescope",
-    func,
-    map_key
-  )
+  local rhs =
+    fmt("<cmd>lua require('%s')['%s'](TelescopeMapArgs['%s'])<cr>", "eden.modules.nav.telescope", func, map_key)
 
   local default_map_opts = {
     noremap = true,
@@ -43,11 +39,9 @@ map("<leader>fB", "builtin", {}, { desc = "Builtins" })
 
 -- Add binding to paste with <c-r> like normal insert mode
 augroup("telescope", {
-  {
-    event = "FileType",
-    pattern = "TelescopePrompt",
-    exec = "inoremap <buffer> <silent> <C-r> <C-r>",
-  },
+  event = "FileType",
+  pattern = "TelescopePrompt",
+  exec = "inoremap <buffer> <silent> <C-r> <C-r>",
 })
 
 return map

@@ -192,13 +192,11 @@ function M.load_compile()
 
   -- Compile after packer operations
   augroup("EdenPack", {
-    {
-      event = "User",
-      pattern = "PackerComplete",
-      exec = function()
-        require("eden.core.pack").compile()
-      end,
-    },
+    event = "User",
+    pattern = "PackerComplete",
+    exec = function()
+      require("eden.core.pack").compile()
+    end,
   })
 
   ---Use lockfile to build packer cache to the desired hashes
@@ -253,13 +251,11 @@ end
 
 function M.set_on_packer_complete(fn, pattern)
   augroup("EdenPackUpdate", {
-    {
-      event = "User",
-      pattern = pattern or "PackerComplete",
-      exec = function()
-        require("eden.core.pack").on_packer_complete(fn)
-      end,
-    },
+    event = "User",
+    pattern = pattern or "PackerComplete",
+    exec = function()
+      require("eden.core.pack").on_packer_complete(fn)
+    end,
   })
 end
 
