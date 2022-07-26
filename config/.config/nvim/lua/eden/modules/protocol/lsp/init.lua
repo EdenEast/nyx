@@ -2,7 +2,7 @@ require("eden.lib.defer").immediate_load({
   "nvim-lsp-installer",
   "lsp_signature.nvim",
   "fidget.nvim",
-  "lsp_lines.nvim"
+  "lsp_lines.nvim",
 })
 
 local pack = require("eden.core.pack")
@@ -45,13 +45,13 @@ local function on_attach(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
   if client.server_capabilities.documentFormattingProvider then
-    -- TODO: What is <buffer> in the new nvim api?
-    vim.cmd([[
-      augroup LspAutoFormatting
-        autocmd!
-        autocmd BufWritePre <buffer> lua require('eden.modules.protocol.lsp.extensions.format').format()
-      augroup END
-    ]])
+    augroup("LspAutoFormatting", {
+        event = "BufWritePre",
+        buffer = true,
+        exec = function()
+          require("eden.modules.protocol.lsp.extensions.format").format()
+        end,
+    })
   end
 end
 
