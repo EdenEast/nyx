@@ -7,9 +7,4 @@ sign("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticInfo", linehl = 
 sign("DiagnosticSignHint", { text = " ", texthl = "DiagnosticHint", linehl = "NONE" })
 
 require("lsp_lines").setup()
-
-vim.diagnostic.config({
-  virtual_lines = true, -- lsp_lines
-  virtual_text = false, -- disable default virtual text
-  -- virtual_text = { spacing = 2, prefix = "❰" },
-})
+require("eden.modules.protocol.lsp.extensions.virtual_lines").init()
