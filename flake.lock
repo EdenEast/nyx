@@ -148,6 +148,22 @@
         "type": "github"
       }
     },
+    "nushell-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1659022555,
+        "narHash": "sha256-I1ErhnHbUxnqreLDKv+6YsFRwQTpH7KE1lrQyPb6o7c=",
+        "owner": "nushell",
+        "repo": "nushell",
+        "rev": "e2a21afca8d4c053507d39dacf0902d1d846c633",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nushell",
+        "repo": "nushell",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "darwin": "darwin",
@@ -156,7 +172,8 @@
         "home-manager": "home-manager",
         "neovim-flake": "neovim-flake",
         "nixpkgs": "nixpkgs",
-        "nur": "nur"
+        "nur": "nur",
+        "nushell-src": "nushell-src"
       }
     },
     "rust-analyzer-src": {
