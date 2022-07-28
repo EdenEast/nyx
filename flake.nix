@@ -26,6 +26,9 @@
     neovim-flake.url = "github:neovim/neovim?dir=contrib";
     neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
+    nushell-src.url = "github:nushell/nushell";
+    nushell-src.flake = false;
+
     # eww.url = "github:elkowar/eww";
   };
 
