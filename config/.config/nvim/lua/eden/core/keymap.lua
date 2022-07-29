@@ -98,3 +98,7 @@ tmap("<c-h>", [[<c-\><c-n><c-w>h]])
 tmap("<c-j>", [[<c-\><c-n><c-w>j]])
 tmap("<c-k>", [[<c-\><c-n><c-w>k]])
 tmap("<c-l>", [[<c-\><c-n><c-w>l]])
+
+nmap("<leader>gB", function()
+  require("eden.extend.git").open_in_browser()
+end, { desc = "Browse file" })
