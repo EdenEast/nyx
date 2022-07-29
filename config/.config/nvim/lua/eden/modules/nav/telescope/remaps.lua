@@ -37,6 +37,10 @@ map("<leader>fo", "oldfiles", {}, { desc = "Old files" })
 map("<leader>fR", "reloader", {}, { desc = "Reload lua module" })
 map("<leader>fB", "builtin", {}, { desc = "Builtins" })
 
+-- Git
+map("<leader>fgb", "git_bcommits", {}, { desc = "Buffer commits" })
+map("<leader>fgc", "git_commits", {}, { desc = "Commits" })
+
 -- Add binding to paste with <c-r> like normal insert mode
 augroup("telescope", {
   event = "FileType",
