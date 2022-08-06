@@ -40,13 +40,18 @@ function Packer:ensure(user, repo, callback)
   local install_path = path.join(path.packroot, "packer", "opt", repo)
   local installed = false
 
+  local slug = dev(fmt("%s/%s", user, repo))
   if not path.exists(install_path) then
-    exec(fmt("!git clone --depth=1 https://github.com/%s/%s %s", user, repo, install_path))
+    if path.exists(slug) then
+      exec(fmt("!ln -s %s %s", slug, install_path))
+    else
+      exec(fmt("!git clone --depth=1 https://github.com/%s/%s %s", user, repo, install_path))
+    end
     installed = true
   end
 
   exec(fmt("packadd %s", repo))
-  table.insert(self.ensured, fmt("%s/%s", user, repo))
+  table.insert(self.ensured, slug)
 
   if callback ~= nil then
     callback()
