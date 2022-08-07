@@ -6,10 +6,6 @@ local fmt = string.format
 local modname = "eden.modules"
 local local_plugins = path.join(path.home, "dev", "plugins")
 
-local function info(msg)
-  vim.notify(msg, vim.log.levels.INFO, { title = "Pack" })
-end
-
 local function err(msg)
   vim.notify(msg, vim.log.levels.ERROR, { title = "Pack" })
 end
@@ -35,7 +31,7 @@ local packer = nil
 local Packer = {}
 Packer.__index = Packer
 
-function Packer:ensure(user, repo, callback)
+function Packer:ensure(user, repo, opts)
   self.ensured = self.ensured or {}
   local install_path = path.join(path.packroot, "packer", "opt", repo)
   local installed = false
@@ -45,16 +41,17 @@ function Packer:ensure(user, repo, callback)
     if path.exists(slug) then
       exec(fmt("!ln -s %s %s", slug, install_path))
     else
-      exec(fmt("!git clone --depth=1 https://github.com/%s/%s %s", user, repo, install_path))
+      local branch = opts.branch and fmt("--branch %s", opts.branch) or ""
+      exec(fmt("!git clone --depth=1 %s https://github.com/%s/%s %s", branch, user, repo, install_path))
     end
     installed = true
   end
 
   exec(fmt("packadd %s", repo))
-  table.insert(self.ensured, slug)
+  table.insert(self.ensured, { slug, opt = true, branch = opts.branch })
 
-  if callback ~= nil then
-    callback()
+  if opts.callback ~= nil then
+    opts.callback()
   end
 
   return installed
@@ -72,6 +69,7 @@ function Packer:load_packer()
     git = { clone_timeout = 120 },
     max_jobs = 10,
     disable_commands = true,
+    lockfile = { enable = true },
   })
   packer.set_handler("conf", handlers.conf)
 
@@ -79,19 +77,23 @@ function Packer:load_packer()
   local use = packer.use
 
   for _, e in ipairs(self.ensured) do
-    use({ e, opt = true })
+    use(e)
   end
 
-  if Lockfile.should_apply then
-    Lockfile:load()
-    for _, repo in ipairs(self.repos) do
-      use(Lockfile:apply(repo))
-    end
-  else
-    for _, repo in ipairs(self.repos) do
-      use(repo)
-    end
+  for _, repo in ipairs(self.repos) do
+    use(repo)
   end
+
+  -- if Lockfile.should_apply then
+  --   Lockfile:load()
+  --   for _, repo in ipairs(self.repos) do
+  --     use(Lockfile:apply(repo))
+  --   end
+  -- else
+  --   for _, repo in ipairs(self.repos) do
+  --     use(repo)
+  --   end
+  -- end
 end
 
 function Packer:load_plugins()
@@ -131,7 +133,8 @@ function Packer:load_plugins()
 end
 
 function Packer:ensure_plugins()
-  if Packer:ensure("wbthomason", "packer.nvim") then
+  -- if Packer:ensure("wbthomason", "packer.nvim") then
+  if Packer:ensure("EdenEast", "packer.nvim", { branch = "feat/lockfile" }) then
     if path.exists(path.packer_compiled) then
       path.remove_file(path.packer_compiled)
     end
@@ -176,8 +179,8 @@ M.modname = modname
 -- @param repo string
 -- @param cb function
 -- @return bool
-function M.ensure(user, repo, callback)
-  Packer:ensure(user, repo, callback)
+function M.ensure(user, repo, opts)
+  Packer:ensure(user, repo, opts)
 end
 
 -- Ensure plguins are installed
@@ -205,36 +208,37 @@ function M.load_compile()
 
   ---Use lockfile to build packer cache to the desired hashes
   command("PackUpdate", function()
-    Lockfile.should_apply = true
+    -- Lockfile.should_apply = true
     -- NOTE: It is required to re-initialize packer because packer does not expect that the use plugin_spec will change.
     -- Some area where this causes issues are:
     --   - The `manage` function where the packer_spec is first setup
     --   - The `git` plugin type has a setup call where the installer_cmd and the updater_cmd set --depth to either 1 or
     --     999999 depending on if `commit` exists
     -- The load_packer function basiclly calls packer `init` which calls `reset`
-    Packer:load_packer()
+    -- Packer:load_packer()
     require("eden.core.pack").sync()
   end)
 
   ---Update plugins to their latest versions and update lockfile
   command("PackUpgrade", function()
-    Lockfile.should_apply = false
-    -- This is required for the same reason as the note above
-    Packer:load_packer()
-    require("eden.core.pack").sync()
-    require("eden.core.pack").set_on_packer_complete(function()
-      Lockfile.should_apply = true
-      Lockfile:update()
-    end)
+    -- Lockfile.should_apply = false
+    -- -- This is required for the same reason as the note above
+    -- Packer:load_packer()
+    -- require("eden.core.pack").sync()
+    -- require("eden.core.pack").set_on_packer_complete(function()
+    --   Lockfile.should_apply = true
+    --   Lockfile:update()
+    -- end)
+    require("eden.core.pack").upgrade()
   end)
 
   command("PackInstall", function()
-    Lockfile.should_apply = true
+    -- Lockfile.should_apply = true
     require("eden.core.pack").install()
   end)
 
   command("PackClean", function()
-    Lockfile.should_apply = true
+    -- Lockfile.should_apply = true
     require("eden.core.pack").clean()
   end)
 
@@ -249,8 +253,8 @@ function M.load_compile()
     end, "PackerCompileDone")
   end)
 
-  command("PackLock", function()
-    require("eden.core.pack").lockfile_update()
+  command("PackLockfile", function()
+    require("eden.core.pack").lockfile()
   end)
 end
 
@@ -260,25 +264,6 @@ end
 
 function M.trigger_after()
   Packer:trigger_after()
-end
-
-function M.set_on_packer_complete(fn, pattern)
-  augroup("EdenPackUpdate", {
-    event = "User",
-    pattern = pattern or "PackerComplete",
-    exec = function()
-      require("eden.core.pack").on_packer_complete(fn)
-    end,
-  })
-end
-
-function M.on_packer_complete(fn)
-  vim.api.nvim_del_augroup_by_name("EdenPackUpdate")
-  fn()
-end
-
-function M.lockfile_update()
-  Lockfile:update()
 end
 
 return M
