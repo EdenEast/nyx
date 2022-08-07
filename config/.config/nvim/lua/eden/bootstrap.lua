@@ -134,9 +134,11 @@ local function init()
 
   -- Ensuring that impatient is installed and required before any plugins have been required
   -- Only required until pr is merged https://github.com/neovim/neovim/pull/15436
-  pack.ensure("lewis6991", "impatient.nvim", function()
-    require("impatient")
-  end)
+  pack.ensure("lewis6991", "impatient.nvim", {
+    callback = function()
+      require("impatient")
+    end,
+  })
 
   require("eden.lib.command")
   require("eden.core.event")
