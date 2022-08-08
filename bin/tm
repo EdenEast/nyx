@@ -394,6 +394,7 @@ Kill a running tmux session
 ALIAS: 'k'
 
 OPTIONS:
+  -a, --all     Kill all sesssions
   -h, --help    Prints help information
 eof
   set -e
@@ -401,6 +402,9 @@ eof
   local -a args
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      -a | --all)
+        do_all=true
+        ;;
       *)
         args+=("$1")
         ;;
@@ -408,8 +412,21 @@ eof
     shift
   done
 
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
   # shellcheck disable=SC2207
   sessions=($(tmux list-sessions -F "#{session_name}"))
+
+  if [[ -n $do_all ]]; then
+    for name in "${sessions[@]}"; do
+      tmux kill-session -t "$name"
+      echo "Killed session: $name"
+    done
+    exit 0
+  fi
 
   # shellcheck disable=SC2207
   names=($(write-list "${sessions[@]}" | fzf-down -m))
