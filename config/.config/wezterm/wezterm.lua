@@ -1,4 +1,3 @@
-
 local wt = require("wezterm")
 
 local is_windows = wt.target_triple:match("windows") ~= nil
