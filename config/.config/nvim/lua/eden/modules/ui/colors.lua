@@ -89,22 +89,24 @@ local function generate_pallet_from_colorscheme()
     error = { hl = "DiagnosticError", default = color_map.red.default },
   }
 
-  local pallet = {}
+  local palette = {}
   for name, value in pairs(color_map) do
     local global_name = "terminal_color_" .. value.index
-    pallet[name] = vim.g[global_name] and vim.g[global_name] or value.default
+    palette[name] = vim.g[global_name] and vim.g[global_name] or value.default
   end
 
   for name, value in pairs(diagnostic_map) do
-    pallet[name] = get_highlight(value.hl).fg or value.default
+    palette[name] = get_highlight(value.hl).fg or value.default
   end
 
-  pallet.sl = get_highlight("StatusLine")
-  pallet.tab = get_highlight("TabLine")
-  pallet.sel = get_highlight("TabLineSel")
-  pallet.fill = get_highlight("TabLineFill")
+  local cursorline = get_highlight("CursorLine")
+  palette.bgalt = cursorline.bg
+  palette.sl = get_highlight("StatusLine")
+  palette.tab = get_highlight("TabLine")
+  palette.sel = get_highlight("TabLineSel")
+  palette.fill = get_highlight("TabLineFill")
 
-  return pallet
+  return palette
 end
 
 function M.generate_user_config_highlights()
@@ -137,15 +139,15 @@ function M.generate_user_config_highlights()
     EdenSLError = { fg = pal.sl.bg, bg = pal.error, style = "bold" },
     EdenSLStatus = { fg = status.fg, bg = status.bg, style = "bold" },
 
-    EdenSLFtHint = { fg = pal.sel.bg, bg = pal.hint },
+    EdenSLFtHint = { fg = pal.bgalt, bg = pal.hint },
     EdenSLHintInfo = { fg = pal.hint, bg = pal.info },
     EdenSLInfoWarn = { fg = pal.info, bg = pal.warn },
     EdenSLWarnError = { fg = pal.warn, bg = pal.error },
     EdenSLErrorStatus = { fg = pal.error, bg = status.bg },
     EdenSLStatusBg = { fg = status.bg, bg = pal.sl.bg },
 
-    EdenSLAlt = pal.sel,
-    EdenSLAltSep = { fg = pal.sl.bg, bg = pal.sel.bg },
+    EdenSLAlt = { fg = status.bg, bg = pal.bgalt },
+    EdenSLAltSep = { fg = pal.sl.bg, bg = pal.bgalt },
     EdenSLGitBranch = { fg = pal.yellow, bg = pal.sl.bg },
 
     -- tabline
