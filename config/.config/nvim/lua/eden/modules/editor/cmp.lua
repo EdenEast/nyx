@@ -3,6 +3,12 @@ local pairs = require("nvim-autopairs.completion.cmp")
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
+-- Setup custom options for the pop-up windows
+local cmp_window_opts = {
+  border = "rounded",
+  winhighlight = "Normal:NormalFloat,FloatBorder:CmpWindowBorder,CursorLine:Visual,Search:None",
+}
+
 local config = {
   completion = {
     completeopt = "menu,menuone,noinsert",
@@ -19,11 +25,8 @@ local config = {
   formatting = {
     format = function(entry, vim_item)
       -- load lspkind icons
-      vim_item.kind = string.format(
-        "%s %s",
-        require("eden.modules.protocol.lsp.kind").icons[vim_item.kind],
-        vim_item.kind
-      )
+      vim_item.kind =
+        string.format("%s %s", require("eden.modules.protocol.lsp.kind").icons[vim_item.kind], vim_item.kind)
 
       vim_item.menu = ({
         nvim_lsp = "[LSP]",
@@ -106,6 +109,10 @@ local config = {
   },
   view = {
     entries = { name = "custom", selection_order = "top_down" },
+  },
+  window = {
+    completion = cmp.config.window.bordered(cmp_window_opts),
+    documentation = cmp.config.window.bordered(cmp_window_opts),
   },
   -- window = {
   --   completion = cmp.config.window.bordered({
