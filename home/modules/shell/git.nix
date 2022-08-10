@@ -45,7 +45,7 @@ in
 
     username = mkOption {
       type = types.str;
-      default = "James Simpson";
+      default = "EdenEast";
       description = "Default user name to use.";
     };
 
