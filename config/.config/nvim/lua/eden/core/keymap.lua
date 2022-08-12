@@ -36,9 +36,17 @@ xmap("*", '"xy/<c-r><cr>')
 -- Clone paragraph
 nmap("cp", [[vap:t'><cr>(j]])
 
--- Redirect change operation to blackhole register
+-- Redirect change and `x` operation to blackhole register
 kmap({ "n", "x" }, "c", [["_c]])
 kmap({ "n", "x" }, "C", [["_C]])
+kmap({ "n", "x" }, "x", [["_x]])
+kmap({ "n", "x" }, "X", [["_X]])
+
+-- Increment/decrement
+nmap("+", "<C-a>")
+nmap("-", "<C-x>")
+vmap("+", "g<C-a>")
+vmap("-", "g<C-x>")
 
 nmap("dd", function()
   if vim.api.nvim_get_current_line():match("^%s*$") then
