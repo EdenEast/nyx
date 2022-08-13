@@ -23,6 +23,7 @@ function wsl_ssh_and_gpg() {
   fi
 
   if [[ ! -L $linux_dest ]]; then
+    mkdir -p ~/.ssh
     ln -s "$windows_dest" "$linux_dest"
   fi
 
