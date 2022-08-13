@@ -26,7 +26,7 @@ M.plugins = {
   },
 
   {
-    "norcalli/nvim-colorizer.lua",
+    "NvChad/nvim-colorizer.lua",
     ft = { "html", "css", "sass", "vim", "typescript", "typescriptreact", "lua" },
     config = function()
       require("colorizer").setup({
