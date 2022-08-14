@@ -140,6 +140,7 @@ local function init()
     end,
   })
 
+  require("eden.core.clipboard")
   require("eden.lib.command")
   require("eden.core.event")
   require("eden.core.filetype")
