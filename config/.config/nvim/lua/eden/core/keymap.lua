@@ -48,6 +48,9 @@ nmap("-", "<C-x>")
 vmap("+", "g<C-a>")
 vmap("-", "g<C-x>")
 
+-- Execute last command
+nmap([[\]], ":<c-u><up><cr>")
+
 nmap("dd", function()
   if vim.api.nvim_get_current_line():match("^%s*$") then
     return '"_dd'
@@ -66,7 +69,7 @@ nmap("<leader>q", [[:<c-u>q<cr>]], { desc = "Quit buffer" })
 nmap("<leader>!", [[:<c-u>q!<cr>]], { desc = "Force quit buffer" })
 
 nmap("<leader>tn", function()
-  require("core.util").toggle_numbers()
+  require("eden.core.util").toggle_numbers()
 end, { desc = "Number line" })
 
 nmap("<leader>bm", function()
