@@ -66,6 +66,7 @@ function Packer:load_packer()
   packer.init({
     package_root = path.packroot,
     compile_path = path.packer_compiled,
+    display = { show_all_info = false },
     git = { clone_timeout = 120 },
     max_jobs = 10,
     disable_commands = true,
