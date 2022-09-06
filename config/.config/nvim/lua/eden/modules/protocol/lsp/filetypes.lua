@@ -6,8 +6,10 @@ local M = {
   end,
 
   lua = function(_)
-    local filter = function(client)
-      return client.name ~= "sumneko_lua"
+    local filter = function(clients)
+      return vim.tbl_filter(function(client)
+        return client.name ~= "sumneko_lua"
+      end, clients)
     end
     require("eden.modules.protocol.lsp.extensions.format").add_ft_filter("lua", filter, false)
   end,
