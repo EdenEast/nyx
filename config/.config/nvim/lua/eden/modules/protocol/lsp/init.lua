@@ -3,6 +3,7 @@ require("eden.lib.defer").immediate_load({
   "lsp_signature.nvim",
   "fidget.nvim",
   "lsp_lines.nvim",
+  "lsp-inlayhints.nvim",
 })
 
 local pack = require("eden.core.pack")
@@ -28,6 +29,18 @@ require("fidget").setup({
 
 vim.opt.updatetime = 300
 
+require("lsp-inlayhints").setup({ -- « »
+  inlay_hints = {
+    parameter_hints = {
+      prefix = "« ",
+    },
+    type_hints = {
+      prefix = "» ",
+    },
+    -- max_len_align = true,
+  },
+})
+
 local function on_init(client)
   client.config.flags = client.config.flags or {}
   client.config.flags.allow_incremental_sync = true
@@ -39,6 +52,7 @@ local function on_attach(client, bufnr)
   remaps.set(client, bufnr)
 
   require("lsp_signature").on_attach({})
+  require("lsp-inlayhints").on_attach(client, bufnr)
 
   filetype_attach[filetype](client)
 
@@ -46,11 +60,11 @@ local function on_attach(client, bufnr)
 
   if client.server_capabilities.documentFormattingProvider then
     augroup("LspAutoFormatting", {
-        event = "BufWritePre",
-        buffer = true,
-        exec = function()
-          require("eden.modules.protocol.lsp.extensions.format").format()
-        end,
+      event = "BufWritePre",
+      buffer = true,
+      exec = function()
+        require("eden.modules.protocol.lsp.extensions.format").format()
+      end,
     })
   end
 end

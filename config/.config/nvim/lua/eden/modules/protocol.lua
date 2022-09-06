@@ -14,6 +14,7 @@ M.plugins = {
       { "ray-x/lsp_signature.nvim", opt = true },
       { "j-hui/fidget.nvim", opt = true },
       { "Maan2003/lsp_lines.nvim", opt = true },
+      { "lvimuser/lsp-inlayhints.nvim", opt = true },
     },
   },
 
