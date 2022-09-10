@@ -13,6 +13,9 @@ require("nightfox").setup({
       pounce = false,
       sneak = false,
       tsrainbow = false,
+      native_lsp = {
+        background = false,
+      },
     },
   },
   specs = {
