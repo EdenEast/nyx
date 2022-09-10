@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# [T]erminal [C]olorscheme [C]hanger
+
+if [ -z $1 ]; then
+  echo "Requires new colorescheme name to be passed"
+  exit 1
+fi
+
+name=$1
+
+if [[ -f ~/.local/share/wezterm/config.lua ]]; then
+  wt_current=$(rg 'color_scheme = "(.*)",' --replace '$1' --no-filename --no-line-number --no-heading --trim ~/.local/share/wezterm/config.lua)
+  sd $wt_current $name ~/.local/share/wezterm/config.lua
+fi
+
+if [[ -f ~/.cache/nvim/theme.txt ]]; then
+  echo $name >~/.cache/nvim/theme.txt
+fi
