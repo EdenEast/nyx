@@ -8,7 +8,7 @@ alias e=$EDITOR
 alias g=git
 alias j=just
 alias m=make
-alias t=tmux
+alias t=tm
 alias v=vim
 
 # alias cb='cargo b'
