@@ -31,6 +31,7 @@ vim.opt.updatetime = 300
 
 require("lsp-inlayhints").setup({ -- « »
   inlay_hints = {
+    max_len_align = true,
     parameter_hints = {
       prefix = "« ",
     },
