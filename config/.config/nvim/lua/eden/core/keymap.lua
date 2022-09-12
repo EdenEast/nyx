@@ -30,6 +30,9 @@ nmap("<leader><leader>", [[<c-^>\"zz]], { desc = "Last buffer" })
 xmap(">", ">gv")
 xmap("<", "<gv")
 
+-- Visual select last pasted value
+nmap("gp", "`[v`]")
+
 -- Search for selected text
 xmap("*", '"xy/<c-r><cr>')
 
