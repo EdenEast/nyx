@@ -33,6 +33,7 @@ in
         vim-tmux-navigator
       ];
       extraConfig = ''
+        set -g detach-on-destroy off             # When destory switch to the prev session
         set -ga terminal-overrides ",xterm-256color:Tc"
         set -g default-shell $SHELL              # use default shell
         set -sg escape-time 5                    # delay shorter
