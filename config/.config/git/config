@@ -9,8 +9,8 @@
     path = ./cfg/url.conf
 
     # local git config (stuff like user and signing)
-    path = ~/.local/share/git/config
     path = ~/.local/share/git/nyx-gen
+    path = ~/.local/share/git/config
 
 [commit]
     template = ~/.config/git/template
