@@ -35,7 +35,7 @@ in
       extraConfig = ''
         set -ga terminal-overrides ",xterm-256color:Tc"
         set -g default-shell $SHELL              # use default shell
-        set -sg escape-time 0                    # delay shorter
+        set -sg escape-time 5                    # delay shorter
         set -sg history-limit 50000              # increase scrollback
         set -g mouse on                          # enable mouse mode
 
