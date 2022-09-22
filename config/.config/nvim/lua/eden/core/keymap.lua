@@ -42,8 +42,6 @@ nmap("cp", [[vap:t'><cr>(j]])
 -- Redirect change and `x` operation to blackhole register
 kmap({ "n", "x" }, "c", [["_c]])
 kmap({ "n", "x" }, "C", [["_C]])
-kmap({ "n", "x" }, "x", [["_x]])
-kmap({ "n", "x" }, "X", [["_X]])
 
 -- Increment/decrement
 nmap("+", "<C-a>")
