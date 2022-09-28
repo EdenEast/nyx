@@ -10,10 +10,15 @@ fi
 name="$1"
 
 function change_wezterm() {
+  local n="$name"
+  case "$name" in
+    "catppuccin") n="Catppuccin Macchiato" ;;
+  esac
+
   if [[ -f $1 ]]; then
     wt_current="$(rg -v '^(\s*)?--' --no-filename --no-line-number --no-heading --trim "$1" | rg '^color_scheme = "(.*)",?' --replace '$1')"
     if [[ -n $wt_current ]]; then
-      sd "$wt_current" "$name" "$1"
+      sd "$wt_current" "$n" "$1"
     fi
   fi
 }
