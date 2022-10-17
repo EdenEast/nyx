@@ -23,7 +23,6 @@ opt.autoindent = true -- maintain indent of current line
 opt.breakindent = true -- continue indent visually
 opt.belloff = "all" -- I NEVER want to hear this bell for ANY reason
 -- opt.clipboard = "unnamedplus" -- use '+' register for all yanks, and deletes
-opt.cmdheight = 0 -- set number of lines for the command line to be 0
 opt.cursorline = true -- highlight current line
 opt.expandtab = true -- always use spaces instead of tabs
 opt.foldlevelstart = 99 -- start unfolded
