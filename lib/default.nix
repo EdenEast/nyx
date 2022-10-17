@@ -141,7 +141,7 @@ rec {
             { pkgs, ... }: {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.
               nix = {
-                package = pkgs.nixFlakes;
+                package = pkgs.nixVersions.stable;
                 extraOptions = "experimental-features = nix-command flakes";
               };
             }
@@ -210,7 +210,7 @@ rec {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.
               nix = {
                 inherit (nixConf) binaryCaches binaryCachePublicKeys;
-                package = pkgs.nixFlakes;
+                package = pkgs.nixVersions.stable;
                 extraOptions = "experimental-features = nix-command flakes";
               };
               services.nix-daemon.enable = true;
