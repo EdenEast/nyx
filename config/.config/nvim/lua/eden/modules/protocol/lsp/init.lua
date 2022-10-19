@@ -77,7 +77,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 vim.cmd("packadd cmp-nvim-lsp")
 local has_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
 if has_cmp then
-  capabilities = cmp_lsp.update_capabilities(capabilities)
+  capabilities = cmp_lsp.default_capabilities()
 end
 
 -- Server setup ----------------------------------------------------------------
