@@ -17,7 +17,7 @@ pkgs.mkShell {
 
   shellHook = ''
       PATH=${pkgs.writeShellScriptBin "nix" ''
-      ${pkgs.nixFlakes}/bin/nix ${builtins.concatStringsSep " " options} "$@"
+      ${pkgs.nixVersions.stable}/bin/nix ${builtins.concatStringsSep " " options} "$@"
     ''}/bin:$PATH
   '';
 }

@@ -25,12 +25,12 @@
             key = ../../../../config/.gnupg/public.key;
           }];
         };
-        repo = let r = import ../../../../home/common/repo.nix; in
-          {
-            enable = true;
-            projects = r.projects;
-            tags = r.tags;
-          };
+        # repo = let r = import ../../../../home/common/repo.nix; in
+        #   {
+        #     enable = true;
+        #     projects = r.projects;
+        #     tags = r.tags;
+        #   };
       };
     };
 

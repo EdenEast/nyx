@@ -32,7 +32,7 @@ in
         # Man pages
         man
         man-pages
-        posix_man_pages
+        man-pages-posix
         stdman
         # grep alternative.
         ripgrep

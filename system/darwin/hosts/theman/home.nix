@@ -64,12 +64,6 @@
           key = ../../../../config/.gnupg/public.key;
         }];
       };
-
-      repo = {
-        enable = true;
-        cli = true;
-        root = "${config.home.homeDirectory}/dev";
-      };
     };
   };
 }
