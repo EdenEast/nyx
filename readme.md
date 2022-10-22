@@ -14,7 +14,7 @@ that support [`nix`][nix] my dotfiles are managed by [home-manager].
 ## Structure
 
 - `bin/` - Contains scripts that will be added to the `$PATH` variable
-  - `windows/` - Scripts that are user to setup my windows machines
+  - `windows/` - Scripts that are used to setup my windows machines
 - `config/` - Contains `.dotfiles` for various applications. You can think of this as my `$HOME` directory
 - `home/` - Configuration for my user. This is where home-manager configurations lives
   - `hosts/` - The definition of a home user. If same name as a `nixos/hosts` will be used by it
