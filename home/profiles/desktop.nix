@@ -29,6 +29,7 @@ in
       xdotool
       # eww
       deadhead-font
+      vlc
     ] ++ optionals cfg.laptop laptopPkgs;
 
     xdg.configFile."awesome".source = ../../config/.config/awesome;
