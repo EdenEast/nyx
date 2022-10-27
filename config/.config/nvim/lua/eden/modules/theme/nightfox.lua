@@ -30,8 +30,8 @@ require("nightfox").setup({
       TelescopeBorder = { fg = "bg4" },
       TelescopeTitle = { fg = "fg2", bg = "bg4" },
 
-      CmpItemKindFunction = { fg = "magenta" },
-      CmpItemKindMethod = { fg = "magenta" },
+      CmpItemKindFunction = { fg = "palette.pink" },
+      CmpItemKindMethod = { fg = "palette.pink" },
       CmpWindowBorder = { fg = "bg0", bg = "bg0" },
     },
   },
