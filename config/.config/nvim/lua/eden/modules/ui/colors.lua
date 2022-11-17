@@ -103,7 +103,7 @@ local function generate_pallet_from_colorscheme()
   palette.bgalt = cursorline.bg
   palette.sl = get_highlight("StatusLine")
   palette.tab = get_highlight("TabLine")
-  palette.sel = get_highlight("TabLineSel")
+  palette.sel = get_highlight("PmenuSel")
   palette.fill = get_highlight("TabLineFill")
 
   return palette

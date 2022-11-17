@@ -1,19 +1,25 @@
+-- vim.g.nightfox_debug = true
+
 require("nightfox").setup({
   options = {
+    module_default = false,
     modules = {
-      aerial = false,
-      barbar = false,
-      dashboard = false,
-      fern = false,
-      glyph_palette = false,
-      hop = false,
-      lsp_saga = false,
-      modes = false,
-      neotree = false,
-      pounce = false,
-      sneak = false,
-      tsrainbow = false,
+      cmp = true,
+      dap_ui = true,
+      diagnostic = true,
+      fidget = true,
+      gitgutter = true,
+      gitsigns = true,
+      lightspeed = true,
+      neogit = true,
+      notify = true,
+      nvimtree = true,
+      telescope = true,
+      treesitter = true,
+      whichkey = true,
+
       native_lsp = {
+        enable = true,
         background = false,
       },
     },
@@ -36,3 +42,5 @@ require("nightfox").setup({
     },
   },
 })
+
+vim.cmd.colorscheme("nightfox")
