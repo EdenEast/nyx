@@ -207,20 +207,30 @@ function M.load_compile()
     end,
   })
 
+  -- Compile after packer operations
+  augroup("EdenPack", {
+    event = "User",
+    pattern = "PackerCompileDone",
+    exec = function()
+      vim.notify("Compile complete", vim.log.levels.INFO, { title = "Packer" })
+    end,
+  })
+
   ---Use lockfile to build packer cache to the desired hashes
-  command("PackUpdate", function()
-    require("eden.core.pack").sync()
-  end)
+  command("PackUpdate", function(opts)
+    require("eden.core.pack").sync(opts.args)
+    -- require("eden.core.pack").sync()
+  end, { nargs = "*" })
 
   ---Update plugins to their latest versions and update lockfile
-  command("PackUpgrade", function()
-    require("eden.core.pack").sync({ nolockfile = true })
-  end)
+  command("PackUpgrade", function(opts)
+    require("eden.core.pack").sync({ nolockfile = true }, opts.args)
+  end, { nargs = "*" })
 
-  command("PackInstall", function()
+  command("PackInstall", function(opts)
     -- Lockfile.should_apply = true
-    require("eden.core.pack").install()
-  end)
+    require("eden.core.pack").install(opts.args)
+  end, { nargs = "*" })
 
   command("PackClean", function()
     -- Lockfile.should_apply = true
@@ -228,7 +238,11 @@ function M.load_compile()
   end)
 
   command("PackStatus", function()
-    require("eden.core.path").status()
+    require("eden.core.pack").status()
+  end)
+
+  command("PackCompile", function()
+    require("eden.core.pack").compile()
   end)
 
   command("PackProfile", function()
