@@ -19,6 +19,10 @@ M.plugins = {
   },
 
   {
+    "sam4llis/nvim-tundra",
+  },
+
+  {
     "rebelot/kanagawa.nvim",
     conf = "theme.kanagawa",
   },
