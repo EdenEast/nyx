@@ -218,19 +218,17 @@ function M.load_compile()
 
   ---Use lockfile to build packer cache to the desired hashes
   command("PackUpdate", function(opts)
-    require("eden.core.pack").sync(opts.args)
-    -- require("eden.core.pack").sync()
-  end, { nargs = "*" })
+    require("eden.core.pack").sync(unpack(opts.fargs))
+  end, { nargs = "*", complete = require("eden.core.pack").plugin_complete })
 
   ---Update plugins to their latest versions and update lockfile
   command("PackUpgrade", function(opts)
-    require("eden.core.pack").sync({ nolockfile = true }, opts.args)
-  end, { nargs = "*" })
+    require("eden.core.pack").sync({ nolockfile = true }, unpack(opts.fargs))
+  end, { nargs = "*", complete = require("eden.core.pack").plugin_complete })
 
   command("PackInstall", function(opts)
-    -- Lockfile.should_apply = true
-    require("eden.core.pack").install(opts.args)
-  end, { nargs = "*" })
+    require("eden.core.pack").install(unpack(opts.fargs))
+  end, { nargs = "*", complete = require("eden.core.pack").plugin_complete })
 
   command("PackClean", function()
     -- Lockfile.should_apply = true
@@ -252,9 +250,9 @@ function M.load_compile()
     end, "PackerCompileDone")
   end)
 
-  command("PackLockfile", function()
-    require("eden.core.pack").lockfile()
-  end)
+  command("PackLockfile", function(opts)
+    require("eden.core.pack").lockfile(unpack(opts.fargs))
+  end, { nargs = "*", complete = require("packer.lockfile").completion })
 end
 
 function M.trigger_before()
