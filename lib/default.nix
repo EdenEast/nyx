@@ -209,7 +209,10 @@ rec {
             { pkgs, ... }: {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.
               nix = {
-                inherit (nixConf) binaryCaches binaryCachePublicKeys;
+                settings = {
+                  substituters = nixConf.binaryCaches;
+                  trusted-public-keys = nixConf.binaryCachePublicKeys;
+                };
                 package = pkgs.nixVersions.stable;
                 extraOptions = "experimental-features = nix-command flakes";
               };
