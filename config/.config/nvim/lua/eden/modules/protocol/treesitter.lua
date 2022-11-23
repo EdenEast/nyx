@@ -64,3 +64,8 @@ if not edn.platform.is_windows then
   require("eden.lib.defer").immediate_load({ "nvim-treesitter-context" })
   require("treesitter-context").setup()
 end
+
+nmap("gh", function()
+  require("nvim-treesitter-playground.hl-info").show_hl_captures()
+end)
+

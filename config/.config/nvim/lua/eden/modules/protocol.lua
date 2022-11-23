@@ -49,12 +49,7 @@ M.plugins = {
   -- Treesitter ---------------------------------------------------------------
   {
     "nvim-treesitter/nvim-treesitter",
-    opt = true,
-    setup = function()
-      require("eden.lib.defer").add("nvim-treesitter", 100)
-    end,
     conf = "protocol.treesitter",
-    run = ":TSUpdate",
     requires = {
       { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },
       { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
@@ -65,6 +60,7 @@ M.plugins = {
   {
     "nvim-treesitter/playground",
     cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
+    keys = { "gh" },
   },
 }
 
