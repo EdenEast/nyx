@@ -208,25 +208,22 @@ function M.load_compile()
   })
 
   -- Compile after packer operations
-  augroup(
-    "EdenPack",
+  augroup("EdenPack", {
     {
-      {
-        event = "User",
-        pattern = "PackerCompileDone",
-        exec = function()
-          vim.notify("Compile complete", vim.log.levels.INFO, { title = "Packer" })
-        end,
-      },
-      {
-        event = "User",
-        pattern = "PackerLockfileDone",
-        exec = function()
-          vim.notify("Lockfile generated", vim.log.levels.INFO, { title = "Packer" })
-        end,
-      },
-    }
-  )
+      event = "User",
+      pattern = "PackerCompileDone",
+      exec = function()
+        vim.notify("Compile complete", vim.log.levels.INFO, { title = "Packer" })
+      end,
+    },
+    {
+      event = "User",
+      pattern = "PackerLockfileDone",
+      exec = function()
+        vim.notify("Lockfile generated", vim.log.levels.INFO, { title = "Packer" })
+      end,
+    },
+  })
 
   ---Use lockfile to build packer cache to the desired hashes
   command("PackUpdate", function(opts)
