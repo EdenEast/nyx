@@ -1,7 +1,32 @@
 -- vim.g.nightfox_debug = true
 
+local path = R("eden.core.path")
+local platform = require("eden.core.platform")
+
+local function get_wsl_home_path()
+  local cached_path = path.join(path.cachehome, "nightfox", "wsl_path_cache")
+  local home = path.read_file(cached_path, "*l")
+  if not home then
+    home = vim.fn.system(string.format([[wslpath $(wslvar USERPROFILE) | tr -d '\n']]))
+    path.ensure(path.join(path.cachehome, "nightfox"))
+    path.write_file(cached_path, home)
+  end
+  return home
+end
+
+-- Check local wezterm file to see if we need to use transparent
+local home = platform.is_wsl and get_wsl_home_path() or path.home
+local wez_path = path.join(home, ".local", "share", "wezterm", "config.lua")
+local file, wez = loadfile(wez_path), nil
+if file then
+  wez = file()
+end
+
+local trans = wez and wez.window_background_opacity and wez.window_background_opacity < 1 or false
+
 require("nightfox").setup({
   options = {
+    transparent = trans,
     module_default = false,
     modules = {
       cmp = true,

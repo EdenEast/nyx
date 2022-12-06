@@ -44,6 +44,31 @@ M.remove_file = function(path)
   os.execute("rm " .. path)
 end
 
+M.ensure = function(path)
+  if not M.exists(path) then
+    M.create_dir(path)
+  end
+end
+
+M.read_file = function(path, mode)
+  mode = mode or "*a"
+  local file = io.open(path, "r")
+  if file then
+    local content = file:read(mode)
+    file:close()
+    return content
+  end
+end
+
+M.write_file = function(path, content, mode)
+  mode = mode or "w"
+  local file = io.open(path, mode)
+  if file then
+    file:write(content)
+    file:close()
+  end
+end
+
 edn.path = M
 
 return M
