@@ -59,6 +59,11 @@ M.plugins = {
 
   {
     "nvim-treesitter/playground",
+    config = function()
+      nmap("gh", function()
+        require("nvim-treesitter-playground.hl-info").show_hl_captures()
+      end)
+    end,
     cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
     keys = { "gh" },
   },
