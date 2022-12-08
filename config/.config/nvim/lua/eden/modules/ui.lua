@@ -26,16 +26,15 @@ M.plugins = {
   },
 
   {
-    "NvChad/nvim-colorizer.lua",
-    ft = { "html", "css", "sass", "vim", "typescript", "typescriptreact", "lua" },
-    config = function()
-      require("colorizer").setup()
-    end,
+    "rcarriga/nvim-notify",
+    conf = "ui.notify",
   },
 
   {
-    "rcarriga/nvim-notify",
-    conf = "ui.notify",
+    "nullchilly/fsread.nvim",
+    config = function()
+      kmap({ "n", "x" }, "<leader>tf", ":FSToggle<cr>", { desc = "Flow state" })
+    end,
   },
 
   {
