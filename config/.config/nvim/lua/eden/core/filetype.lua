@@ -3,6 +3,9 @@ local overrides = {
     justfile = "just",
     Justfile = "just",
   },
+  extensions = {
+    tl = "teal",
+  },
 }
 
 local function init()

@@ -1,6 +1,7 @@
 local M = {}
 
 M.plugins = {
+  { "teal-language/vim-teal" },
   { "NoahTheDuke/vim-just", ft = { "just" } },
   { "plasticboy/vim-markdown", ft = { "markdown" } },
   { "Saecki/crates.nvim", ft = { "rust", "toml" } },
