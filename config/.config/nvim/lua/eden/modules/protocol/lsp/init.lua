@@ -1,5 +1,5 @@
 require("eden.lib.defer").immediate_load({
-  "nvim-lsp-installer",
+  "mason.nvim",
   "lsp_signature.nvim",
   "fidget.nvim",
   "lsp_lines.nvim",
@@ -7,6 +7,7 @@ require("eden.lib.defer").immediate_load({
 })
 
 local pack = require("eden.core.pack")
+local path = require("eden.core.path")
 local nlsp = require("lspconfig")
 local remaps = require("eden.modules.protocol.lsp.remaps")
 local filetype_attach = require("eden.modules.protocol.lsp.filetypes")
@@ -86,23 +87,22 @@ end
 -- also make it easy to install the required language servers. See
 --   `home/modules/shell/neovim.nix` on this nix module that controls my neovim
 -- deployment. Because windows is awful and does not support nix I have setup
--- `nvim-lsp-installer`. This makes installing language servers on windows sane.
+-- `mason`. This makes installing language servers on windows sane.
 
-local installer = require("nvim-lsp-installer")
-installer.setup({
-  log_level = vim.log.levels.DEBUG,
-  ui = {
-    icons = {
-      server_installed = "",
-      server_pending = "",
-      server_uninstalled = "",
-    },
-  },
+require("mason").setup({
+  install_root_dir = path.join(path.cachehome, "mason"),
 })
 
+-- Map installed package list to table by name
+local mason_lspconfig_map = {
+  ["lua-language-server"] = "sumneko_lua",
+}
+
+local registry = require("mason-registry")
 local installed = {}
-for _, v in ipairs(installer.get_installed_servers()) do
-  installed[v.name] = v
+for _, v in ipairs(registry.get_installed_packages()) do
+  local name = mason_lspconfig_map[v.name] and mason_lspconfig_map[v.name] or v.name
+  installed[name] = v
 end
 
 local servers = { "bashls", "cmake", "elmls", "gopls", "omnisharp", "pyright", "rnix", "vimls" }
@@ -131,5 +131,8 @@ end
 
 -- Setup any installed servers that are not in the server list
 for name, server in pairs(installed) do
-  nlsp[name].setup(server._default_options or {})
+  local s = nlsp[name]
+  if s then
+    s.setup(server._default_options or {})
+  end
 end

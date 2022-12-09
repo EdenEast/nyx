@@ -10,7 +10,8 @@ M.plugins = {
     end,
     conf = "protocol.lsp",
     requires = {
-      { "williamboman/nvim-lsp-installer", opt = true },
+      { "williamboman/mason.nvim", opt = true },
+      -- { "williamboman/nvim-lsp-installer", opt = true },
       { "ray-x/lsp_signature.nvim", opt = true },
       { "j-hui/fidget.nvim", opt = true },
       { "Maan2003/lsp_lines.nvim", opt = true },
