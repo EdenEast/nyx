@@ -28,6 +28,7 @@ in
         nodePackages.pyright
         nodePackages.typescript-language-server
         nodePackages.vim-language-server
+        nodePackages.write-good
         rnix-lsp
       ] ++ optionals pkgs.stdenv.isLinux [
         omnisharp-roslyn
@@ -49,6 +50,7 @@ in
       type = with types; listOf package;
       default = with pkgs; [
         stylua
+        selene
         shfmt
         nixpkgs-fmt
         prettierd

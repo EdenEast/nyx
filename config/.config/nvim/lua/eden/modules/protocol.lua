@@ -16,6 +16,7 @@ M.plugins = {
       { "j-hui/fidget.nvim", opt = true },
       { "Maan2003/lsp_lines.nvim", opt = true },
       { "lvimuser/lsp-inlayhints.nvim", opt = true },
+      { "jose-elias-alvarez/null-ls.nvim", opt = true },
     },
   },
 

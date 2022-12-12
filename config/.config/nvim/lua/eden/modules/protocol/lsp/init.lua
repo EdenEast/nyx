@@ -15,6 +15,7 @@ local filetype_attach = require("eden.modules.protocol.lsp.filetypes")
 local premod = "eden.modules.protocol.lsp."
 require(premod .. "cosmetics")
 require(premod .. "handlers")
+require(premod .. "null_ls")
 
 require("fidget").setup({
   fmt = {
