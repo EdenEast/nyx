@@ -66,8 +66,13 @@ function M.immediate_load(plugins)
     end
   elseif type(plugins) == "table" then
     for _, value in pairs(plugins) do
-      if not packer_plugins[value].loaded then
-        require("packer").loader(value)
+      local p = packer_plugins[value]
+      if p then
+        if not p.loaded then
+          require("packer").loader(value)
+        end
+      else
+        vim.notify("Could not find plugin: '%s' in packer's compiled plugins list", vim.log.levels.WARN, {title = "Nyx defer"})
       end
     end
   end
