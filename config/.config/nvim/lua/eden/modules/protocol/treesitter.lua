@@ -9,7 +9,7 @@ require("eden.lib.defer").immediate_load({
 require("nvim-treesitter.install").compilers = { "gcc", "clang", "cl" }
 require("nvim-treesitter.configs").setup({
   parser_install_dir = require("eden.core.path").cachehome,
-  highlight = { enable = true, disable = { "yaml" } },
+  highlight = { enable = true },
   playground = { enable = true },
   query_linter = {
     enable = true,
@@ -64,4 +64,3 @@ if not edn.platform.is_windows then
   require("eden.lib.defer").immediate_load({ "nvim-treesitter-context" })
   require("treesitter-context").setup()
 end
-
