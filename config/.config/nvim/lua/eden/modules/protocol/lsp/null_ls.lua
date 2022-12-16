@@ -22,6 +22,9 @@ local with = {
       return util.root_pattern(".git", "selene.toml")(params.bufname)
     end),
   },
+  shfmt = {
+    extra_args = { "-ci", "-i", "2", "-s" },
+  },
   stylua = {
     cwd = help.cache.by_bufnr(function(params)
       return util.root_pattern(".git", "stylua.toml")(params.bufname)
@@ -51,7 +54,7 @@ if not platform.is_windows then
 
     -- sh
     diagnostic.shellcheck,
-    formatting.shfmt,
+    formatting.shfmt.with(with.shfmt),
 
     -- lua
     diagnostic.selene.with(with.selene),
@@ -74,7 +77,7 @@ if platform.is_windows then
 
   -- sh
   check("shellcheck", diagnostic.shellcheck)
-  check("shfmt", formatting.shfmt)
+  check("shfmt", formatting.shfmt.with(with.shfmt))
 
   --lua
   check("selene", diagnostic.selene.with(with.selene))
