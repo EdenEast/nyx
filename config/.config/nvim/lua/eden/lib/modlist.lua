@@ -14,10 +14,7 @@ end
 ---@return table
 function M.getmodlist(modpath, opts)
   opts = opts or {}
-  local runtimepath = path.join(path.confighome, "lua")
-  if opts.runtimepath then
-    runtimepath = opts.runtimepath
-  end
+  local runtimepath = path.join(opts.runtimepath or path.confighome, "lua")
 
   local function inner(mod, list)
     local filepath = get_filepath(mod, runtimepath)
