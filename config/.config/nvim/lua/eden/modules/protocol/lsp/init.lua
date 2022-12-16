@@ -106,7 +106,7 @@ for _, v in ipairs(registry.get_installed_packages()) do
   installed[name] = v
 end
 
-local servers = { "bashls", "cmake", "elmls", "gopls", "omnisharp", "pyright", "rnix", "vimls" }
+local servers = { "bashls", "cmake", "elmls", "gopls", "marksman", "omnisharp", "pyright", "rnix", "vimls" }
 local modlist = require("eden.lib.modlist").getmodlist(pack.modname .. ".protocol.lsp.servers")
 for _, mod in ipairs(modlist) do
   local name = mod:match("servers.(.+)$")
