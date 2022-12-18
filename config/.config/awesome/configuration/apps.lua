@@ -4,7 +4,7 @@ local menubar = require("menubar")
 apps = {
 
   -- Your default terminal
-  terminal = "alacritty",
+  terminal = "wezterm",
 
   -- Your default text editor
   editor = os.getenv("EDITOR") or "vim",
