@@ -43,7 +43,6 @@ in
       users = {
         users."${cfg.name}" = with cfg; {
           inherit hashedPassword extraGroups;
-          description = "James Simpson";
           isNormalUser = true;
           # `shell` attribute cannot be removed! If no value is present then there will be no shell
           # configured for the user and SSH will not allow logins!

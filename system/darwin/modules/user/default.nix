@@ -10,7 +10,6 @@ in
   config = mkMerge [
     {
       users.users."${cfg.name}" = with cfg; {
-        description = "James Simpson";
         shell = pkgs.zsh;
         home = "/Users/${cfg.name}";
       };
