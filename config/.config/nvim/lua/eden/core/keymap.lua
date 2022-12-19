@@ -23,6 +23,13 @@ kmap({ "n", "x" }, "Y", "yg_")
 nmap("n", "nzzzv")
 nmap("N", "Nzzzv")
 
+-- Center cursor when using page jumps
+nmap("<c-d>", "<c-d>zz")
+nmap("<c-u>", "<c-u>zz")
+nmap("<c-f>", "<c-f>zz")
+nmap("<c-b>", "<c-b>zz")
+
+
 -- Switch between the last two buffers
 nmap("<leader><leader>", [[<c-^>\"zz]], { desc = "Last buffer" })
 
