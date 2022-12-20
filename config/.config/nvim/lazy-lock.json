@@ -1,0 +1,6 @@
+{
+  "kanagawa.nvim": { "branch": "master", "commit": "fb733c1043a462155b52cd97efd920f1dd72d33a" },
+  "lazy.nvim": { "branch": "main", "commit": "14300b3d044a66d2ae4412995f6b23514722b7cf" },
+  "nvim": { "branch": "main", "commit": "55f43a952856bc0029e6cef066297c6cfab3451d" },
+  "nvim-tundra": { "branch": "main", "commit": "dfe152f2a8bac247a6b05b08c7e3e8124d165115" }
+}
