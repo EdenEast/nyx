@@ -39,6 +39,7 @@ require("lazy").setup("eden.mod", {
       },
     },
   },
+  debug = true
 })
 
 nmap("<F3>", "<cmd>:Lazy<cr>")

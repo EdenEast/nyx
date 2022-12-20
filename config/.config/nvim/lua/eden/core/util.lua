@@ -16,13 +16,13 @@ end
 -- Open url cross platform
 M.open_url = function(url)
   local plat = edn.platform
-  if plat.is_windows then
+  if plat.is.win then
     vim.cmd([[:execute 'silent !start ]] .. url .. "'")
-  elseif plat.is_wsl then
+  elseif plat.is.wsl then
     vim.cmd([[:execute 'silent !powershell.exe start ]] .. url .. "'")
-  elseif plat.is_mac then
+  elseif plat.is.mac then
     vim.cmd([[:execute 'silent !open ]] .. url .. "'")
-  elseif plat.is_linux then
+  elseif plat.is.linux then
     vim.cmd([[:execute 'silent !xdg-open ]] .. url .. "'")
   else
     print("Unknown platform. Cannot open url")
