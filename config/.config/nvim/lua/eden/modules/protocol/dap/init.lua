@@ -1,8 +1,11 @@
+local is_lazy, _ = pcall(require, "lazy")
+if not is_lazy then
 require("eden.lib.defer").immediate_load({
   "nvim-dap-virtual-text",
   "nvim-dap-ui",
   "one-small-step-for-vimkind",
 })
+end
 
 local dap = require("dap")
 

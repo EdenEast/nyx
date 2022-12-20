@@ -1,3 +1,5 @@
+local is_lazy, _ = pcall(require, "lazy")
+if not is_lazy then
 require("eden.lib.defer").immediate_load({
   "mason.nvim",
   "lsp_signature.nvim",
@@ -5,8 +7,9 @@ require("eden.lib.defer").immediate_load({
   "lsp_lines.nvim",
   "lsp-inlayhints.nvim",
 })
+end
 
-local pack = require("eden.core.pack")
+local pack = require("eden.core.packer")
 local path = require("eden.core.path")
 local nlsp = require("lspconfig")
 local remaps = require("eden.modules.protocol.lsp.remaps")
@@ -76,7 +79,9 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Packadding cmp-nvim-lsp if not added yet and updating capabilities
-vim.cmd("packadd cmp-nvim-lsp")
+if not is_lazy then
+  vim.cmd("packadd cmp-nvim-lsp")
+end
 local has_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
 if has_cmp then
   capabilities = cmp_lsp.default_capabilities()
