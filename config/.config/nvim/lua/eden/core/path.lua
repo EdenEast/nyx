@@ -3,11 +3,12 @@ local home = os.getenv("HOME")
 
 local M = {}
 
+M.seperator = package.config:sub(1,1)
 -- Join a list of paths together
 -- @param ... string list
 -- @return string
 M.join = function(...)
-  return table.concat({ ... }, platform.sep)
+  return table.concat({ ... }, M.seperator)
 end
 
 -- Define default values for important path locations

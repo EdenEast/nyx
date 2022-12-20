@@ -63,7 +63,7 @@ require("nvim-treesitter.configs").setup({
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-if not edn.platform.is_windows then
+if not edn.platform.is.win then
   require("eden.lib.defer").immediate_load({ "nvim-treesitter-context" })
   require("treesitter-context").setup()
 end

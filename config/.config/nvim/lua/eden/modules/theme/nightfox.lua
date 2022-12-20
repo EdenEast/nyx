@@ -1,6 +1,6 @@
 -- vim.g.nightfox_debug = true
 
-local path = R("eden.core.path")
+local path = require("eden.core.path")
 local platform = require("eden.core.platform")
 
 local function get_wsl_home_path()
@@ -15,7 +15,7 @@ local function get_wsl_home_path()
 end
 
 -- Check local wezterm file to see if we need to use transparent
-local home = platform.is_wsl and get_wsl_home_path() or path.home
+local home = platform.is.wsl and get_wsl_home_path() or path.home
 local wez_path = path.join(home, ".local", "share", "wezterm", "config.lua")
 local file, wez = loadfile(wez_path), nil
 if file then

@@ -53,7 +53,7 @@ M.plugins = {
     "nvim-treesitter/nvim-treesitter",
     conf = "protocol.treesitter",
     requires = {
-      { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is_windows },
+      { "romgrk/nvim-treesitter-context", opt = true, disabled = not edn.platform.is.win },
       { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
       { "nvim-treesitter/nvim-treesitter-textobjects", opt = true },
     },

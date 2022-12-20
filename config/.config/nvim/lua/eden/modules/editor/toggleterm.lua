@@ -19,7 +19,7 @@ require("toggleterm").setup({
   },
 })
 
-local shell = edn.platform.is_windows and "powershell -NoLogo" or vim.o.shell
+local shell = edn.platform.is.win and "powershell -NoLogo" or vim.o.shell
 
 local terminals = {}
 

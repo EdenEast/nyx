@@ -43,7 +43,7 @@ local sources = {
   formatting.trim_whitespace,
 }
 
-if not platform.is_windows then
+if not platform.is.win then
   sources = {
     -- general
     formatting.trim_newlines,
@@ -71,7 +71,7 @@ local function check(bin, value)
   end
 end
 
-if platform.is_windows then
+if platform.is.win then
   -- js,ts
   check("prettierd", formatting.prettierd)
 
