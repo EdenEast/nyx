@@ -109,7 +109,7 @@ nmap("]q", ":cnext<cr>", { silent = true, desc = "Next quickfix" })
 -- Exec current file
 nmap("<F1>", ":lua require('eden.core.util').exec_file()<cr>")
 nmap("<F2>", ":lua require('eden.core.util').open_url_under_cursor()<cr>")
-nmap("<F3>", "<cmd>lua require('eden.lib.reload').reload_config()<cr>")
+-- nmap("<F3>", "<cmd>lua require('eden.lib.reload').reload_config()<cr>")
 
 tmap("<esc>", [[<c-\><c-n>]])
 tmap("<c-q>", [[<c-\><c-n>:bdelete!<cr>]])

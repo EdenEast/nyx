@@ -127,34 +127,36 @@ end
 -- Entry point
 local function init()
   disable_distibution_plugins()
-  set_runtime_path()
+  -- set_runtime_path()
   set_leader_keys()
 
-  local pack = require("eden.core.pack")
+  -- local pack = require("eden.core.pack")
 
   -- Ensuring that impatient is installed and required before any plugins have been required
   -- Only required until pr is merged https://github.com/neovim/neovim/pull/15436
-  pack.ensure("lewis6991", "impatient.nvim", {
-    callback = function()
-      require("impatient")
-    end,
-  })
+  -- pack.ensure("lewis6991", "impatient.nvim", {
+  --   callback = function()
+  --     require("impatient")
+  --   end,
+  -- })
 
   require("eden.core.clipboard")
   require("eden.lib.command")
   require("eden.core.event")
-  require("eden.core.filetype")
+  -- require("eden.core.filetype")
   require("eden.core.keymap")
   require("eden.core.options")
 
-  pack.ensure_plugins()
-  pack.trigger_before()
-  pack.load_compile()
-  pack.trigger_after()
+  require("eden.core.pack")
+
+  -- pack.ensure_plugins()
+  -- pack.trigger_before()
+  -- pack.load_compile()
+  -- pack.trigger_after()
 
   -- Once plugins have heen installed set the theme
   require("eden.core.theme")
-  require("eden.lib.defer").load(20)
+  -- require("eden.lib.defer").load(20)
 end
 
 init()
