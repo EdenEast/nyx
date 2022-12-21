@@ -1,6 +1,6 @@
 return {
   "kyazdani42/nvim-tree.lua",
-  dependencies = { "kyazdani42/nvim-web-devicons" },
+  dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local tree_cb = require("nvim-tree.config").nvim_tree_callback
     vim.g.nvim_tree_width_allow_resize = 0
