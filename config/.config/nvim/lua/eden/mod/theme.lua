@@ -7,7 +7,7 @@ return {
   },
   {
     "catppuccin/nvim",
-    as = "catppuccin",
+    name = "catppuccin",
     config = function()
       require("catppuccin").setup({
         term_colors = true,
@@ -18,6 +18,5 @@ return {
   "sam4llis/nvim-tundra",
   "rebelot/kanagawa.nvim",
 
-  asdf = function()
-  end
+  asdf = function() end,
 }
