@@ -1,8 +1,10 @@
 local path = require("eden.core.path")
 
 local dev_root = path.join(path.home, "dev", "plugins")
-local lazy_root = path.join(path.cachehome, "pack")
-local lazy_cache = path.join(path.cachehome, "lazy", "cache")
+local lazy_root = path.join(path.cachehome, "lazy")
+local lazy_pack = path.join(lazy_root, "pack")
+local lazy_cache = path.join(lazy_root, "cache")
+local lazy_readme = path.join(lazy_root, "readme")
 
 -- Use dev version of lazy if in my dev plugins folder
 local should_bootstrap = true
@@ -28,16 +30,21 @@ end
 vim.opt.runtimepath:prepend(lazy_plugin)
 
 require("lazy").setup("eden.mod", {
-  root = lazy_root,
+  root = lazy_pack,
   dev = {
     path = dev_root,
     patterns = { "edeneast", "EdenEast" },
-    colorscheme = { "nightfox", "habamax" },
-    performance = {
-      cache = {
-        path = lazy_cache,
-      },
+  },
+  install = {
+    colorscheme = { "nightfox" },
+  },
+  performance = {
+    cache = {
+      path = lazy_cache,
     },
+  },
+  readme = {
+    root = lazy_readme,
   },
   -- debug = true
 })
