@@ -1,7 +1,10 @@
-require("eden.lib.defer").immediate_load({
-  "plenary.nvim",
-  "telescope-fzy-native.nvim",
-})
+local is_lazy, _ = pcall(require, "lazy")
+if not is_lazy then
+  require("eden.lib.defer").immediate_load({
+    "plenary.nvim",
+    "telescope-fzy-native.nvim",
+  })
+end
 
 local actions = require("telescope.actions")
 local sorters = require("telescope.sorters")
@@ -52,14 +55,17 @@ require("telescope").setup({
   },
 })
 
-require("telescope").load_extension("fzy_native")
-require("telescope").load_extension("projects")
+if not is_lazy then
+  require("telescope").load_extension("fzy_native")
+end
 
 if vim.g.sqlite_found then
-  require("eden.lib.defer").immediate_load({
-    "sqlite.lua",
-    "telescope-frecency.nvim",
-  })
+  if not is_lazy then
+    require("eden.lib.defer").immediate_load({
+      "sqlite.lua",
+      "telescope-frecency.nvim",
+    })
+  end
   require("telescope").load_extension("frecency")
 end
 
