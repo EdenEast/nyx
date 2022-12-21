@@ -17,6 +17,4 @@ return {
 
   "sam4llis/nvim-tundra",
   "rebelot/kanagawa.nvim",
-
-  asdf = function() end,
 }
