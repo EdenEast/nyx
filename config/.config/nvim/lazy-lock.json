@@ -45,6 +45,7 @@
   "orgmode.nvim": { "branch": "master", "commit": "dadf56334d2be7d9e8ad1e22c697a6e75f0164b7" },
   "plenary.nvim": { "branch": "master", "commit": "4b7e52044bbb84242158d977a50c4cbcd85070c7" },
   "popup.nvim": { "branch": "master", "commit": "b7404d35d5d3548a82149238289fa71f7f6de4ac" },
+  "project.nvim": { "branch": "main", "commit": "685bc8e3890d2feb07ccf919522c97f7d33b94e4" },
   "telescope-frecency.nvim": { "branch": "master", "commit": "10771fdb7b4c4b59f2b5c1e8757b0379e1314659" },
   "telescope.nvim": { "branch": "master", "commit": "e960efa60e97df58e089b00270f09d60f27202c8" },
   "vim-fugitive": { "branch": "master", "commit": "5b0b138483de17a8fd8dfcec0b491782c8fbf102" },
