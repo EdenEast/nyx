@@ -23,7 +23,7 @@ end
 status.activate = function(register)
   nvim_status.config({
     select_symbol = status.select_symbol,
-    kind_labels = require("eden.modules.protocol.lsp.kind").icons,
+    kind_labels = require("eden.mod.lsp.kind").icons,
 
     indicator_errors = "",
     indicator_warnings = "",

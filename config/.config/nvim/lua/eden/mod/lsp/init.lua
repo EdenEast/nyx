@@ -1,7 +1,10 @@
-local M = {
+return {
   "neovim/nvim-lspconfig",
   name = "lsp",
-  event = "VeryLazy",
+  event = "BufReadPre",
+  config = function()
+    require("eden.mod.lsp.setup")
+  end,
   dependencies = {
     "williamboman/mason.nvim",
     "ray-x/lsp_signature.nvim",
@@ -11,10 +14,3 @@ local M = {
     { "jose-elias-alvarez/null-ls.nvim", dependencies = "nvim-lua/plenary.nvim" },
   },
 }
-
--- TODO: Move module config to here
-M.config = function()
-  require("eden.modules.protocol.lsp")
-end
-
-return M

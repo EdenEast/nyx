@@ -3,7 +3,7 @@ local home = os.getenv("HOME")
 
 local M = {}
 
-M.seperator = package.config:sub(1,1)
+M.seperator = package.config:sub(1, 1)
 -- Join a list of paths together
 -- @param ... string list
 -- @return string
@@ -18,7 +18,7 @@ M.datahome = M.join(home, ".local", "share", "nvim")
 M.cachehome = M.join(home, ".cache", "nvim")
 M.packroot = M.join(M.cachehome, "site", "pack")
 M.packer_compiled = M.join(M.datahome, "lua", "eden", "compiled.lua")
-M.module_path = M.join(M.confighome, "lua", "eden", "modules")
+M.module_path = M.join(M.confighome, "lua", "eden", "mod")
 
 -- Create a directory
 -- @param dir string

@@ -3,7 +3,7 @@ local M = {
     local filter = function(client)
       return client.name ~= "sumneko_lua"
     end
-    require("eden.modules.protocol.lsp.extensions.format").add_ft_filter("lua", filter, false)
+    require("eden.mod.lsp.extensions.format").add_ft_filter("lua", filter, false)
   end,
 
   cs = function(_)

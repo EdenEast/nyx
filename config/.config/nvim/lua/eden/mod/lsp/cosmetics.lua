@@ -7,4 +7,4 @@ sign("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticInfo", linehl = 
 sign("DiagnosticSignHint", { text = " ", texthl = "DiagnosticHint", linehl = "NONE" })
 
 require("lsp_lines").setup()
-require("eden.modules.protocol.lsp.extensions.virtual_lines").init()
+require("eden.mod.lsp.extensions.virtual_lines").init()
