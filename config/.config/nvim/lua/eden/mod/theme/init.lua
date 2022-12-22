@@ -2,7 +2,7 @@ return {
   {
     "EdenEast/nightfox.nvim",
     config = function()
-      require("eden.modules.theme.nightfox")
+      require("eden.mod.theme.nightfox")
     end,
   },
   {
