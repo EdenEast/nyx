@@ -1,9 +1,18 @@
 local M = {
   "hrsh7th/nvim-cmp",
   config = function()
-    require("eden.modules.editor.cmp")
+    require("eden.mod.completion.cmp")
   end,
   dependencies = {
+    {
+      "L3MON4D3/LuaSnip",
+      config = function()
+        require("luasnip").config.set_config({
+          history = true,
+          updateevents = "TextChanged,TextChangedI",
+        })
+      end,
+    },
     {
       "windwp/nvim-autopairs",
       config = function()
