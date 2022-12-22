@@ -169,7 +169,7 @@ M.generate_user_config_highlights()
 augroup("EdenUiColorschemeReload", {
   event = { "SessionLoadPost", "ColorScheme" },
   exec = function()
-    require("eden.modules.ui.colors").generate_user_config_highlights()
+    require("eden.mod.ui.colors").generate_user_config_highlights()
   end,
 })
 
