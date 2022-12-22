@@ -8,7 +8,7 @@ local function map(key, func, opts, map_opts)
   TelescopeMapArgs[map_key] = opts or {}
 
   local rhs =
-    fmt("<cmd>lua require('%s')['%s'](TelescopeMapArgs['%s'])<cr>", "eden.modules.nav.telescope", func, map_key)
+    fmt("<cmd>lua require('%s')['%s'](TelescopeMapArgs['%s'])<cr>", "eden.mod.telescope.extension", func, map_key)
 
   local default_map_opts = {
     noremap = true,

@@ -1,7 +1,7 @@
-local M = {
+return {
   "nvim-telescope/telescope.nvim",
   config = function()
-    require("eden.modules.nav.telescope.setup")
+    require("eden.mod.telescope.setup")
   end,
   event = "VeryLazy",
   dependencies = {
@@ -11,5 +11,3 @@ local M = {
     -- "nvim-telescope/telescope-fzy-native.nvim",
   },
 }
-
-return M
