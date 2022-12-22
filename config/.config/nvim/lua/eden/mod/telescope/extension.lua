@@ -113,7 +113,7 @@ return setmetatable({}, {
       return M[key]
     end
 
-    local has_extra, extra = pcall(require, "eden.modules.nav.telescope.extras." .. key)
+    local has_extra, extra = pcall(require, "eden.mod.telescope.extras." .. key)
     if has_extra then
       return extra
     end

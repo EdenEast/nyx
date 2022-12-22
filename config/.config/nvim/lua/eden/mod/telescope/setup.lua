@@ -70,4 +70,4 @@ if vim.g.sqlite_found then
 end
 
 -- Load telescope mappings
-require("eden.modules.nav.telescope.remaps")
+require("eden.mod.telescope.remaps")
