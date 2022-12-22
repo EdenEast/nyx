@@ -4,7 +4,7 @@ return {
     event = "VimEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("eden.modules.ui.feline")
+      require("eden.mod.ui.feline")
     end,
   },
 
