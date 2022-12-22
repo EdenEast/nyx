@@ -1,16 +1,16 @@
 local is_lazy, _ = pcall(require, "lazy")
 if not is_lazy then
-require("eden.lib.defer").immediate_load({
-  "nvim-dap-virtual-text",
-  "nvim-dap-ui",
-  "one-small-step-for-vimkind",
-})
+  require("eden.lib.defer").immediate_load({
+    "nvim-dap-virtual-text",
+    "nvim-dap-ui",
+    "one-small-step-for-vimkind",
+  })
 end
 
 local dap = require("dap")
 
 -- Languages
-local modules = require("eden.lib.modlist").getmodlist("eden.modules.protocol.dap.adaptors", {})
+local modules = require("eden.lib.modlist").getmodlist("eden.mod.dap.adaptors", {})
 for _, mod in ipairs(modules) do
   require(mod)
 end

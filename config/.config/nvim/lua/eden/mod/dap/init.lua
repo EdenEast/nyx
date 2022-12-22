@@ -1,7 +1,7 @@
-local M = {
+return {
   "mfussenegger/nvim-dap",
   config = function()
-    require("eden.modules.protocol.dap")
+    require("eden.mod.dap.setup")
   end,
   event = "VeryLazy",
   dependencies = {
@@ -10,5 +10,3 @@ local M = {
     "jbyuki/one-small-step-for-vimkind",
   },
 }
-
-return M
