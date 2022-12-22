@@ -11,4 +11,13 @@ return {
     "kevinhwang91/nvim-bqf",
     ft = "qf",
   },
+  {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup({
+        patterns = { ".git", ".hg", ".root" },
+        datapath = require("eden.core.path").cachehome,
+      })
+    end,
+  },
 }
