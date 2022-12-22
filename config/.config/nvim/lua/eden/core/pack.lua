@@ -27,7 +27,6 @@ if should_bootstrap and not path.exists(lazy_plugin) then
   })
 end
 
-print("lazy_plugin: " .. lazy_plugin)
 vim.opt.runtimepath:prepend(lazy_plugin)
 
 require("lazy").setup("eden.mod", {

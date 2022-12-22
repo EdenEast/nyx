@@ -52,7 +52,7 @@ M.set = function(client, bufnr)
   end, { buffer = true, desc = "Format code" })
 
   nmap("<leader>tcf", function()
-    require("eden.modules.protocol.lsp.extensions.format").toggle_format()
+    require("eden.mod.lsp.extensions.format").toggle_format()
   end, { buffer = true, desc = "Format code" })
 
   nmap("<leader>cn", function()

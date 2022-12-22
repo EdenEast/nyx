@@ -1,7 +1,3 @@
-require("eden.lib.defer").immediate_load({
-  "null-ls.nvim",
-})
-
 local platform = require("eden.core.platform")
 local nls = require("null-ls")
 local util = require("null-ls.utils")
@@ -100,7 +96,7 @@ nls.setup({
         event = "BufWritePre",
         buffer = true,
         exec = function()
-          require("eden.modules.protocol.lsp.extensions.format").format()
+          require("eden.mod.lsp.extensions.format").format()
         end,
       })
     end
