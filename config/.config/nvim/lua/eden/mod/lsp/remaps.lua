@@ -12,11 +12,11 @@ M.set = function(client, bufnr)
   end, opts)
 
   nmap("gd", function()
-    require("eden.modules.nav.telescope").lsp_definitions()
+    require("eden.mod.telescope.extension").lsp_definitions()
   end, { buffer = true, desc = "Definitions" })
 
   nmap("gr", function()
-    require("eden.modules.nav.telescope").lsp_references()
+    require("eden.mod.telescope.extension").lsp_references()
   end, { buffer = true, desc = "References" })
 
   nmap("gD", function()
@@ -44,11 +44,11 @@ M.set = function(client, bufnr)
   end, { buffer = true, desc = "Next diagnostic" })
 
   nmap("<leader>ce", function()
-    require("eden.modules.nav.telescope").diagnostics()
+    require("eden.mod.telescope.extension").diagnostics()
   end, { buffer = true, desc = "Workspace diagnostics" })
 
   nmap("<leader>cf", function()
-    require("eden.modules.protocol.lsp.extensions.format").format()
+    require("eden.mod.lsp.extensions.format").format()
   end, { buffer = true, desc = "Format code" })
 
   nmap("<leader>tcf", function()
