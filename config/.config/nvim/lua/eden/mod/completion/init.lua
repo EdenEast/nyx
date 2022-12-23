@@ -1,5 +1,6 @@
 local M = {
   "hrsh7th/nvim-cmp",
+  event = "BufReadPre",
   config = function()
     require("eden.mod.completion.cmp")
   end,

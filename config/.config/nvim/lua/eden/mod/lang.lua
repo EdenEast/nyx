@@ -6,6 +6,7 @@ return {
 
   {
     "LhKipp/nvim-nu",
+    event = "BufReadPost",
     build = ":TSInstall nu",
     dependencies = "nvim-treesitter/nvim-treesitter",
   },
