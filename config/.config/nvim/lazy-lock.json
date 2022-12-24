@@ -34,6 +34,7 @@
   "nvim-dap": { "branch": "master", "commit": "6f2ea9e33b48a51849ec93c6c38148a5372018e4" },
   "nvim-dap-ui": { "branch": "master", "commit": "54365d2eb4cb9cfab0371306c6a76c913c5a67e3" },
   "nvim-dap-virtual-text": { "branch": "master", "commit": "2971ce3e89b1711cc26e27f73d3f854b559a77d4" },
+  "nvim-notify": { "branch": "master", "commit": "b005821516f1f37801a73067afd1cef2dbc4dfe8" },
   "nvim-nu": { "branch": "main", "commit": "94f237c219ae6bbb18e2f214783e0f1370eda27b" },
   "nvim-surround": { "branch": "main", "commit": "f0077c3726d243eeaabd2ec280216e8c3ca7da9f" },
   "nvim-toggleterm.lua": { "branch": "main", "commit": "b02a1674bd0010d7982b056fd3df4f717ff8a57a" },
@@ -55,5 +56,6 @@
   "vim-markdown": { "branch": "master", "commit": "df4be8626e2c5b2a42eb60e1f100fce469b81f7d" },
   "vim-startuptime": { "branch": "master", "commit": "cb4c112b9e0f224236ee4eab6bf5153406b3f88b" },
   "vim-teal": { "branch": "master", "commit": "d2aa107b257879e774680792a2aebaf9cd5742e0" },
-  "vim-tmux-navigator": { "branch": "master", "commit": "41ea9d23b814014c8d8daf8b44fa0cd827a0e5f4" }
+  "vim-tmux-navigator": { "branch": "master", "commit": "41ea9d23b814014c8d8daf8b44fa0cd827a0e5f4" },
+  "which-key.nvim": { "branch": "main", "commit": "61553aeb3d5ca8c11eea8be6eadf478062982ac9" }
 }
