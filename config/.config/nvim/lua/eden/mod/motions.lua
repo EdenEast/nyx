@@ -29,6 +29,7 @@ local M = {
   --   - ggandor/leap.nvim
   {
     "ggandor/lightspeed.nvim", -- Jump to any location specified by two characters
+    event = "VeryLazy",
     config = function()
       require("lightspeed").setup({
         jump_to_unique_chars = { safety_timeout = 400 },
