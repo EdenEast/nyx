@@ -42,6 +42,17 @@ require("lazy").setup("eden.mod", {
     cache = {
       path = lazy_cache,
     },
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
   },
   readme = {
     root = lazy_readme,
