@@ -87,6 +87,7 @@ require("mason").setup({
 -- Map installed package list to table by name
 local mason_lspconfig_map = {
   ["lua-language-server"] = "sumneko_lua",
+  ["yaml-language-server"] = "yamlls",
 }
 
 local registry = require("mason-registry")
@@ -96,7 +97,18 @@ for _, v in ipairs(registry.get_installed_packages()) do
   installed[name] = v
 end
 
-local servers = { "bashls", "cmake", "elmls", "gopls", "marksman", "omnisharp", "pyright", "rnix", "vimls" }
+local servers = {
+  "bashls",
+  "cmake",
+  "elmls",
+  "gopls",
+  "marksman",
+  "omnisharp",
+  "pyright",
+  "rnix",
+  "vimls",
+  "yamlls",
+}
 local modlist = require("eden.lib.modlist").getmodlist(premod .. "servers")
 for _, mod in ipairs(modlist) do
   local name = mod:match("servers.(.+)$")
