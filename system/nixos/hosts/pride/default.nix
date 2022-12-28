@@ -11,6 +11,7 @@
 
       bluetooth.enable = true;
       caps.enable = true;
+      disk.enable = true;
       nvidia = {
         enable = true;
         intelBusId = "PCI:0:2:0";
