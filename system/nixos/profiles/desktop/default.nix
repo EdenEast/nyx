@@ -47,7 +47,11 @@ in
       layout = "us";
       libinput = mkIf cfg.laptop {
         enable = true;
-        touchpad.tapping = true;
+        touchpad = {
+          tapping = true;
+          naturalScrolling = true;
+          # disableWhileTyping = true; # if palm rejection is failing
+        };
       };
 
       displayManager = {
