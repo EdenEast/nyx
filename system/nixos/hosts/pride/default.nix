@@ -24,6 +24,7 @@
       desktop = {
         enable = true;
         laptop = true;
+        flavor = "gnome";
       };
     };
   };
