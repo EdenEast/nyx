@@ -17,11 +17,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             target: pride
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             target: sloth
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             target: eden
           - os: macos-latest
             target: theman
