@@ -3,6 +3,8 @@
 {
   home.packages = with pkgs; [
     rustup
+    vhs
+    chromium # required by vhs
   ];
 
   nyx = {
