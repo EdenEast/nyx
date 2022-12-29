@@ -101,7 +101,7 @@ jobs:
           echo "$OUTPUT_SECURITY"
 
           delimiter="$(openssl rand -hex 16)"
-          echo "diff<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "security<<${delimiter}" >> "${GITHUB_OUTPUT}"
           echo "$OUTPUT_SECURITY" >> "${GITHUB_OUTPUT}"
           echo "${delimiter}" >> "${GITHUB_OUTPUT}"
 
