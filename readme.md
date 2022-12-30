@@ -46,8 +46,8 @@ that support [`nix`][nix] my dotfiles are managed by [home-manager].
 
 My `.dotfiles` can be found under `config/`. On systems managed by nix and this flake repository
 they are managed by `home-manager`. I `home-manager` to use the `config/` folder as the source for
-my configurations. This helps when I am on a machine that is not managed by nix (*cough windows
-cough*). On these machines I symlink the files in the `config/` folder into their respective
+my configurations. This helps when I am on a machine that is not managed by nix (_cough windows
+cough_). On these machines I symlink the files in the `config/` folder into their respective
 locations. Some configurations of note:
 
 - [Neovim](./config/.config/nvim)
@@ -137,3 +137,4 @@ I agree with [@hlissner][hlissner]. This is needed when nix [drives you to drink
 ## TODO:
 
 - Create wsl options, check this [commit](https://github.com/davidtwco/veritas/commit/62cf0dd3f30b117462e3c31682b602d6cde3bc6a)
+- Some sort of backup solution like [borgmatic](https://torsion.org/borgmatic/) [borgbackup](https://www.borgbackup.org/)
