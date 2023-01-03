@@ -1,4 +1,7 @@
 return {
+  -- Manage lazy itself. And use the dev version if it exists.
+  { "folke/lazy.nvim", dev = true },
+
   -- These are some plugins that are misc
   {
     -- "tweekmonster/startuptime.vim",
