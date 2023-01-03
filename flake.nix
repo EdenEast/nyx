@@ -63,7 +63,7 @@
         [
           (self.overlay."${system}")
           (nur.overlay)
-          (fenix.overlay)
+          (fenix.overlays.default)
           # (_:_: { inherit (eww.packages."${system}") eww; })
         ] ++ ovs
       );
