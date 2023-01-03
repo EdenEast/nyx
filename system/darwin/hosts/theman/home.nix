@@ -11,6 +11,7 @@
     fd
     sd
     dua
+    vhs
     # rustup
     # rust-analyzer
   ];
