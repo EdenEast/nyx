@@ -6,6 +6,7 @@ local M = {
     "romgrk/nvim-treesitter-context",
     "JoosepAlviste/nvim-ts-context-commentstring",
     "nvim-treesitter/nvim-treesitter-textobjects",
+    "nvim-treesitter/playground",
   },
 }
 
@@ -79,6 +80,10 @@ M.config = function()
     },
     filetype = "vhs",
   }
+
+  nmap("<leader>tH", function()
+    require("nvim-treesitter-playground.hl-info").show_hl_captures()
+  end, { desc = "Highlight groups" })
 end
 
 return M
