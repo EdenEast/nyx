@@ -2,8 +2,10 @@ return {
   {
     "nvim-colortils/colortils.nvim",
     cmd = "Colortils",
+    keys = "<leader>tC",
     config = function()
       require("colortils").setup()
+      nmap("<leader>tC", "<cmd>:ColorizerToggle<cr>", { desc = "colors" })
     end,
   },
   {
