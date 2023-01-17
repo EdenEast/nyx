@@ -24,6 +24,7 @@ in
         # cmake-language-server
         # elmPackages.elm-language-server
         efm-lsp
+        marksman
         nodePackages.bash-language-server
         nodePackages.pyright
         nodePackages.typescript-language-server
@@ -55,6 +56,7 @@ in
         nixpkgs-fmt
         prettierd
         nodePackages.eslint_d
+        nodePackages.yaml-language-server
       ];
     };
   };
@@ -92,12 +94,13 @@ in
         tree-sitter-yaml
       ];
       parseName = x: removeSuffix "-grammar" (removePrefix "tree-sitter-" (getName x));
-      parsers = listToAttrs (map
-        (p: {
-          name = "nvim/parser/${parseName p}.so";
-          value = { source = "${p}/parser"; };
-        })
-        grammars);
+      # parsers = listToAttrs (map
+      #   (p: {
+      #     name = "nvim/parser/${parseName p}.so";
+      #     value = { source = "${p}/parser"; };
+      #   })
+      #   grammars);
+      parsers = { };
     in
     parsers // {
       "nvim/lib/libsqlite3.so".source = "${pkgs.sqlite.out}/lib/libsqlite3.so";
