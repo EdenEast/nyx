@@ -24,7 +24,6 @@ in
         # cmake-language-server
         # elmPackages.elm-language-server
         efm-lsp
-        marksman
         nodePackages.bash-language-server
         nodePackages.pyright
         nodePackages.typescript-language-server
