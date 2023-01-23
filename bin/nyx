@@ -56,6 +56,8 @@ TARGETS['alacritty']="$HOME/.config/alacritty"
 SOURCES['alacritty']="$NYX_ROOT/config/.config/alacritty"
 TARGETS['wezterm']="$HOME/.config/wezterm"
 SOURCES['wezterm']="$NYX_ROOT/config/.config/wezterm"
+TARGETS['vale']="$HOME/.config/vale"
+SOURCES['vale']="$NYX_ROOT/config/.config/vale"
 
 function main() {
   # Parse command line options

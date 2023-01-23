@@ -83,6 +83,7 @@ if platform.is.win then
   check("write-good", diagnostic.write_good.with(with.write_good))
 end
 
+check("vale", diagnostic.vale)
 check("proselint", diagnostic.proselint)
 
 nls.setup({

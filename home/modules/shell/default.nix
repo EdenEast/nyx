@@ -19,6 +19,7 @@
     ./ssh.nix
     ./starship.nix
     ./tmux.nix
+    ./vale.nix
     ./xdg.nix
     ./zellij.nix
     ./zoxide.nix

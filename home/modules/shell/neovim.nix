@@ -55,6 +55,7 @@ in
         shfmt
         nixpkgs-fmt
         prettierd
+        proselint
         nodePackages.eslint_d
         nodePackages.yaml-language-server
       ];
@@ -66,6 +67,8 @@ in
     home.packages = with pkgs; [
       neovim-nightly
     ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters ++ cfg.extraPkgs;
+
+    nyx.modules.shell.vale.enable = true;
 
     # Add Treesitter parsers
     xdg.dataFile = with pkgs.tree-sitter-grammars; let
