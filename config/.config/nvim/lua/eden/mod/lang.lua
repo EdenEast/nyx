@@ -2,7 +2,15 @@ return {
   { "teal-language/vim-teal" },
   { "NoahTheDuke/vim-just" },
   { "plasticboy/vim-markdown" },
-  { "Saecki/crates.nvim" },
+
+  {
+    "Saecki/crates.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    ft = { "toml" },
+    config = function()
+      require("crates").setup()
+    end,
+  },
 
   {
     "LhKipp/nvim-nu",
