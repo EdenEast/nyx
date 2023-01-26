@@ -34,6 +34,7 @@ require("lazy").setup("eden.mod", {
   dev = {
     path = dev_root,
     patterns = { "edeneast", "EdenEast" },
+    fallback = true,
   },
   install = {
     colorscheme = { "nightfox" },
