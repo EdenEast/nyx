@@ -8,6 +8,7 @@ M.setup = function(config, _, opts)
     "--suggest-missing-includes",
     "--clang-tidy",
     "--header-insertion=iwyu",
+    "--offset-encoding=utf-16",
   }
 
   config.cmd = cmd
