@@ -5,11 +5,10 @@ set -e
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(add|clone|help|list|new|remove|root|source|switch)$"
 
-declare -A INTERNAL_ALIASES
-INTERNAL_ALIASES['a']="add"
-INTERNAL_ALIASES['c']="clone"
-INTERNAL_ALIASES['r']="root"
-INTERNAL_ALIASES['s']="switch"
+WT_ALIAS_A="add"
+WT_ALIAS_C="clone"
+WT_ALIAS_R="root"
+WT_ALIAS_S="switch"
 
 function main() {
   WT_COMMAND="help"
@@ -23,7 +22,8 @@ function main() {
       WT_COMMAND="${1//-/_}"
       shift
     else
-      internal_command="${INTERNAL_ALIASES[$1]}"
+      local upper="WT_ALIAS_$(echo $1 | tr '[:lower:]' '[:upper:]')"
+      local internal_command="$(printf %s "${!upper}")"
       if [ -n "$internal_command" ]; then
         WT_COMMAND="$internal_command"
         shift

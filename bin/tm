@@ -5,12 +5,11 @@ set -e
 # shellcheck shell=bash
 INTERNAL_COMMANDS="^(add|attach|help|jump|kill|list|remove|wcmd)$"
 
-declare -A INTERNAL_ALIASES
-INTERNAL_ALIASES['a']="attach"
-INTERNAL_ALIASES['j']="jump"
-INTERNAL_ALIASES['k']="kill"
-INTERNAL_ALIASES['l']="list"
-INTERNAL_ALIASES['w']="wcmd"
+TM_ALIAS_A="attach"
+TM_ALIAS_J="jump"
+TM_ALIAS_K="kill"
+TM_ALIAS_L="list"
+TM_ALIAS_W="wcmd"
 
 CACHE_HOME="$HOME/.cache/tmux"
 WORKSPACE_CACHE_FILE="$CACHE_HOME/workspace"
@@ -29,7 +28,8 @@ function main() {
       TM_COMMAND="${1//-/_}"
       shift
     else
-      internal_command="${INTERNAL_ALIASES[$1]}"
+      local upper="TM_ALIAS_$(echo $1 | tr '[:lower:]' '[:upper:]')"
+      local internal_command="$(printf %s "${!upper}")"
       if [ -n "$internal_command" ]; then
         TM_COMMAND="$internal_command"
         shift
