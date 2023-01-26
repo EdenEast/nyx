@@ -1,4 +1,5 @@
 local platform = require("eden.core.platform")
+local path = require("eden.core.path")
 local nls = require("null-ls")
 local util = require("null-ls.utils")
 local help = require("null-ls.helpers")
@@ -26,6 +27,9 @@ local with = {
       return util.root_pattern(".git", "stylua.toml")(params.bufname)
     end),
     extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+  },
+  vale = {
+    extra_args = { "--config", path.join(path.home, ".config", "vale", "config.ini") },
   },
   write_good = {
     filetypes = { "markdown", "text" },
@@ -55,9 +59,6 @@ if not platform.is.win then
     -- lua
     diagnostic.selene.with(with.selene),
     formatting.stylua.with(with.stylua),
-
-    -- markdown, text
-    diagnostic.write_good.with(with.write_good),
   }
 end
 
@@ -78,12 +79,10 @@ if platform.is.win then
   --lua
   check("selene", diagnostic.selene.with(with.selene))
   check("stylua", formatting.stylua.with(with.stylua))
-
-  -- markdown, text
-  check("write-good", diagnostic.write_good.with(with.write_good))
 end
 
-check("vale", diagnostic.vale)
+-- markdown, text
+check("vale", diagnostic.vale.with(with.vale))
 check("proselint", diagnostic.proselint)
 
 nls.setup({

@@ -20,9 +20,6 @@ in
         source = ../../../config/.config/vale;
         recursive = true;
       };
-      ".vale.ini" = {
-        source = ../../../config/.config/vale/config.ini;
-      };
     };
   };
 }
