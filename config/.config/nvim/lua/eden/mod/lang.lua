@@ -2,6 +2,7 @@ return {
   { "teal-language/vim-teal" },
   { "NoahTheDuke/vim-just" },
   { "plasticboy/vim-markdown" },
+  { "imsnif/kdl.vim" },
 
   {
     "Saecki/crates.nvim",
