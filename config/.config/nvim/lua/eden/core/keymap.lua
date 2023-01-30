@@ -29,7 +29,6 @@ nmap("<c-u>", "<c-u>zz")
 nmap("<c-f>", "<c-f>zz")
 nmap("<c-b>", "<c-b>zz")
 
-
 -- Switch between the last two buffers
 nmap("<leader><leader>", [[<c-^>\"zz]], { desc = "Last buffer" })
 
@@ -105,6 +104,13 @@ nmap("]q", ":cnext<cr>", { silent = true, desc = "Next quickfix" })
 -- nmap("<A-j>", "<cmd>lua require('eden.extend.winmove')('down')<cr>")
 -- nmap("<A-k>", "<cmd>lua require('eden.extend.winmove')('up')<cr>")
 -- nmap("<A-l>", "<cmd>lua require('eden.extend.winmove')('right')<cr>")
+
+if vim.env.TMUX == nil and vim.env.ZELLIJ == nil then
+  nmap("<c-h>", "<c-w>h")
+  nmap("<c-j>", "<c-w>j")
+  nmap("<c-k>", "<c-w>k")
+  nmap("<c-l>", "<c-w>l")
+end
 
 -- Exec current file
 nmap("<F1>", ":lua require('eden.core.util').exec_file()<cr>")

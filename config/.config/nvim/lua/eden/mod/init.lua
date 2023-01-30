@@ -9,7 +9,18 @@ return {
     cmd = { "StartupTime" },
   },
   { "editorconfig/editorconfig-vim" },
-  { "christoomey/vim-tmux-navigator" },
+  {
+    "christoomey/vim-tmux-navigator",
+    enabled = function()
+      return vim.env.TMUX ~= nil
+    end,
+  },
+  {
+    "Lilja/zellij.nvim",
+    enabled = function()
+      return vim.env.ZELLIJ ~= nil
+    end,
+  },
   {
     "kevinhwang91/nvim-bqf",
     ft = "qf",
