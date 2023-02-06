@@ -51,7 +51,6 @@ in
       type = with types; listOf package;
       default = with pkgs; [
         stylua
-        selene
         shfmt
         nixpkgs-fmt
         prettierd

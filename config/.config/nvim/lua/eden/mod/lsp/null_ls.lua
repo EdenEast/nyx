@@ -14,11 +14,6 @@ local function exists(bin)
 end
 
 local with = {
-  selene = {
-    cwd = help.cache.by_bufnr(function(params)
-      return util.root_pattern(".git", "selene.toml")(params.bufname)
-    end),
-  },
   shfmt = {
     extra_args = { "-ci", "-i", "2", "-s" },
   },
@@ -57,7 +52,6 @@ if not platform.is.win then
     formatting.shfmt.with(with.shfmt),
 
     -- lua
-    diagnostic.selene.with(with.selene),
     formatting.stylua.with(with.stylua),
   }
 end
@@ -77,7 +71,6 @@ if platform.is.win then
   check("shfmt", formatting.shfmt.with(with.shfmt))
 
   --lua
-  check("selene", diagnostic.selene.with(with.selene))
   check("stylua", formatting.stylua.with(with.stylua))
 end
 
