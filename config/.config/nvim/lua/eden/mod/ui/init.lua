@@ -1,12 +1,5 @@
 return {
-  {
-    "feline-nvim/feline.nvim",
-    event = "VimEnter",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("eden.mod.ui.feline")
-    end,
-  },
+  require("eden.mod.ui.statusline"),
 
   {
     "lukas-reineke/indent-blankline.nvim",

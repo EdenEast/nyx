@@ -6,7 +6,7 @@
 -- file: `lua/eden/mod/ui/colors.lua` to see how they are defined.
 
 require("eden.mod.ui.colors")
-local u = require("eden.mod.ui.feline.util")
+local u = require("eden.mod.ui.statusline.feline.util")
 local fmt = string.format
 
 -- "┃", "█", "", "", "", "", "", "", "●"
