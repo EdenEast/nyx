@@ -52,6 +52,7 @@ if not platform.is.win then
     formatting.shfmt.with(with.shfmt),
 
     -- lua
+    -- diagnostic.selene.with(with.selene),
     formatting.stylua.with(with.stylua),
   }
 end
@@ -71,11 +72,12 @@ if platform.is.win then
   check("shfmt", formatting.shfmt.with(with.shfmt))
 
   --lua
+  -- check("selene", diagnostic.selene.with(with.selene))
   check("stylua", formatting.stylua.with(with.stylua))
 end
 
 -- markdown, text
-check("vale", diagnostic.vale.with(with.vale))
+-- check("vale", diagnostic.vale.with(with.vale))
 check("proselint", diagnostic.proselint)
 
 nls.setup({
