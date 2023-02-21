@@ -40,6 +40,17 @@ _G.R = function(name)
   return require(name)
 end
 
+_G.bench = function(label, f, iter)
+  iter = iter or 1000
+  local sum = 0
+  for _ = 1, iter do
+    local start = vim.loop.hrtime()
+    f()
+    sum = sum + (vim.loop.hrtime() - start)
+  end
+  print(label, sum / iter / 1000000)
+end
+
 -- Disable some of the distributed plugins that are
 -- shipped with neovim
 local function disable_distibution_plugins()
