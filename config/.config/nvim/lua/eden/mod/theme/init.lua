@@ -10,11 +10,16 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
+    dev = true,
     config = function()
       require("catppuccin").setup({
         term_colors = true,
       })
     end,
+  },
+  {
+    "nightfox-org/nicefox.nvim",
+    dev = true,
   },
 
   "sam4llis/nvim-tundra",
