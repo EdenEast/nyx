@@ -26,6 +26,12 @@ return {
     ft = "qf",
   },
   {
+    "nvim-pack/nvim-spectre",
+    config = function()
+      require("spectre").setup()
+    end,
+  },
+  {
     "ahmedkhalf/project.nvim",
     config = function()
       require("project_nvim").setup({
@@ -33,5 +39,16 @@ return {
         datapath = require("eden.core.path").cachehome,
       })
     end,
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+    ft = { "markdown", "vimwiki" },
+    cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
+    keys = {
+      { "<leader>tp", ":<cmd>MarkdownPreviewToggle<cr>", { desc = "Markdown preview" } },
+    },
   },
 }
