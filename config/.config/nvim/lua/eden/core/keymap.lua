@@ -113,7 +113,10 @@ if vim.env.TMUX == nil and vim.env.ZELLIJ == nil then
 end
 
 -- Exec current file
-nmap("<F1>", ":lua require('eden.core.util').exec_file()<cr>")
+nmap("<F1>", function()
+  edn.display:clear()
+  require("eden.core.util").exec_file()
+end)
 nmap("<F2>", ":lua require('eden.core.util').open_url_under_cursor()<cr>")
 -- nmap("<F3>", "<cmd>lua require('eden.lib.reload').reload_config()<cr>")
 

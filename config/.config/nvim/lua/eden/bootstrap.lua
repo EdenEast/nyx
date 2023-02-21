@@ -11,7 +11,9 @@
 --   - Load main configuration after packer setup is complete
 
 -- Global state, config and function store for my config
-_G.edn = {}
+_G.edn = {
+  display = require("eden.extend.display").new(),
+}
 
 -- Debug printing with vim.inspect. This needs to be defined before anything
 -- else as I use this throughout my config when debugging.
@@ -19,7 +21,15 @@ _G.P = function(...)
   for _, v in ipairs({ ... }) do
     print(vim.inspect(v))
   end
+  return ...
+end
 
+-- Debug printing with vim.inspect. This needs to be defined before anything
+-- else as I use this throughout my config when debugging.
+_G.D = function(...)
+  local info = debug.getinfo(2, "Sl")
+  local header = string.format("%s:%s", info.short_src, info.currentline)
+  edn.display:write_with_header(header, ...)
   return ...
 end
 
