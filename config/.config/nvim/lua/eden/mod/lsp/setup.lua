@@ -86,7 +86,7 @@ require("mason").setup({
 
 -- Map installed package list to table by name
 local mason_lspconfig_map = {
-  ["lua-language-server"] = "sumneko_lua",
+  ["lua-language-server"] = "lua_ls",
   ["yaml-language-server"] = "yamlls",
 }
 
