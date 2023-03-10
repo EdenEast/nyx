@@ -11,6 +11,11 @@ local M = {
     end,
   },
 
+  {
+    "glts/vim-textobj-comment", -- Text objects for comments
+    dependencies = { "kana/vim-textobj-user" },
+  },
+
   -- Surround motion ----------------------------------------------------------
   --
   -- Alternatives:
