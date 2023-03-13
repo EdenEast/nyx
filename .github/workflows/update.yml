@@ -25,7 +25,7 @@ jobs:
 
       - name: Setup Git author
         run: |
-          git config user.name 'GitHub Actions'
+          git config user.name 'GitHub'
           git config user.email 'noreply@github.com'
 
       - name: Update lock file
@@ -43,8 +43,14 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.PAT }} # needed so that this triggers further flows. not ideal.
           title: "chore(flake): Automatic flake update"
           body: "${{ steps.commit.outputs.message }}"
-          branch: "chore/flake-update"
+          branch: "automated/flake-update"
+          token: ${{ secrets.PAT }} # needed so that this triggers further flows. not ideal.
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
           delete-branch: true
+          label: |
+            automated pr
+            nix
