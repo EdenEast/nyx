@@ -8,6 +8,7 @@ return {
     "nvim-lua/popup.nvim",
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope-frecency.nvim",
+    "nvim-telescope/telescope-ui-select.nvim",
     -- "nvim-telescope/telescope-fzy-native.nvim",
   },
 }

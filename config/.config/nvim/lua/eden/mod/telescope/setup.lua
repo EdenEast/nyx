@@ -59,6 +59,8 @@ if not is_lazy then
   require("telescope").load_extension("fzy_native")
 end
 
+require("telescope").load_extension("ui-select")
+
 if vim.g.sqlite_found then
   if not is_lazy then
     require("eden.lib.defer").immediate_load({
