@@ -30,6 +30,9 @@ M.setup = function(config, on_attach, opts)
         -- Get the language server to recognize the `vim` global
         globals = { "vim", "P", "edn" },
       },
+      format = {
+        enable = false,
+      },
       workspace = {
         -- Make the server aware of Neovim runtime files
         library = vim.api.nvim_get_runtime_file("", true),
