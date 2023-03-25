@@ -47,7 +47,7 @@ return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
-      -- "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "saadparwaiz1/cmp_luasnip",
@@ -77,7 +77,7 @@ return {
           }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         }),
         sources = cmp.config.sources({
-          -- { name = "nvim_lsp" },
+          { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
