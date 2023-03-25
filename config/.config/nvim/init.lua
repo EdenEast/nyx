@@ -1,22 +1,26 @@
-local root = vim.fn.fnamemodify("./.nvim", ":p")
--- set stdpaths to use .nvim
+local home = os.getenv("HOME")
+vim.opt.runtimepath = vim.tbl_filter(function(path)
+  return path:find(home, 1, true) ~= 1
+end, vim.opt.runtimepath:get())
+local root = vim.fn.fnamemodify(".", ":p")
+local cache_root = root .. ".nvim"
+local lazy_path = cache_root .. "/plugins/lazy.nvim"
 for _, name in ipairs({ "config", "data", "state", "cache" }) do
-  vim.env[("XDG_%s_HOME"):format(name:upper())] = root .. "/" .. name
+  vim.env[("XDG_%s_HOME"):format(name:upper())] = cache_root .. "/" .. name
 end
 
--- bootstrap lazy
-local lazypath = root .. "/plugins/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath })
+vim.opt.runtimepath:prepend(lazy_path)
+vim.opt.runtimepath:prepend(root:sub(1, #root - 1))
+
+if not vim.loop.fs_stat(lazy_path) then
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazy_path })
 end
-vim.opt.runtimepath:prepend(vim.fn.fnamemodify(".", ":p"))
-vim.opt.runtimepath:prepend(lazypath)
 
 require("eden.core")
+vim.cmd.colorscheme("habamax")
 
--- call pack manually for now
 require("lazy").setup("eden.mod", {
-  root = root .. "/plugins",
+  root = cache_root .. "/plugins",
   -- dev = {
   --   path = dev_root,
   --   patterns = { "edeneast", "EdenEast" },
@@ -24,6 +28,9 @@ require("lazy").setup("eden.mod", {
   -- },
   performance = {
     rtp = {
+      paths = {
+        root:sub(1, #root - 1),
+      },
       disabled_plugins = {
         "gzip",
         "matchit",
