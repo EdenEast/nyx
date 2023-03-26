@@ -155,6 +155,4 @@ map("n", "<leader>-", "<C-W>s", { desc = "Split window below" })
 map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
 
 -- Misc
-map("n", "F1", function()
-  require("eden.util").execute_file()
-end, { desc = "Execute file" })
+map("n", "<F1>", function() require("eden.util").execute_file() end, { desc = "Execute file"})

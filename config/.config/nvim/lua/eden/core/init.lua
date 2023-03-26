@@ -21,4 +21,7 @@ end
 require("eden.core.autocmds")
 require("eden.core.options")
 require("eden.core.keymaps")
--- require("eden.core.pack")
+local theme = require("eden.core.theme")
+theme.init()
+require("eden.core.pack")
+theme.set(theme.read_cache())

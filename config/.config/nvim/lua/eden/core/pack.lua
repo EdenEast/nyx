@@ -15,6 +15,8 @@ else
   lazy_plugin = path.join(lazy_pack, "lazy.nvim")
 end
 
+local scheme = require("eden.core.theme").read_cache()
+
 -- Bootstrap lazy if not exists
 if should_bootstrap and not path.exists(lazy_plugin) then
   vim.fn.system({
@@ -37,7 +39,7 @@ require("lazy").setup("eden.mod", {
     fallback = true,
   },
   install = {
-    colorscheme = { "nightfox" },
+    colorscheme = { scheme, "habamax" },
   },
   performance = {
     cache = {
