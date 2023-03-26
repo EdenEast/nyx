@@ -16,21 +16,24 @@ if not vim.loop.fs_stat(lazy_path) then
   vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazy_path })
 end
 
+local path = require("eden.core.path")
 require("eden.core")
-vim.cmd.colorscheme("habamax")
-
 require("lazy").setup("eden.mod", {
   root = cache_root .. "/plugins",
-  -- dev = {
-  --   path = dev_root,
-  --   patterns = { "edeneast", "EdenEast" },
-  --   fallback = true,
-  -- },
+  dev = {
+    path = path.join(path.home, "dev", "plugins"),
+    patterns = { "edeneast", "EdenEast" },
+    fallback = true,
+  },
+  change_detection = {
+    notify = false,
+  },
   performance = {
     rtp = {
-      paths = {
-        root:sub(1, #root - 1),
-      },
+      reset = false,
+      -- paths = {
+      --   root:sub(1, #root - 1),
+      -- },
       disabled_plugins = {
         "gzip",
         "matchit",
@@ -43,3 +46,5 @@ require("lazy").setup("eden.mod", {
     },
   },
 })
+
+require("eden.core.theme")
