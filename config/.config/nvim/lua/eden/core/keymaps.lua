@@ -13,6 +13,9 @@ map("n", "Q", [[!!$SHELL <cr>]])
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
+-- Switch to the preveous buffer in the window
+map("n", "<leader><leader>", [[<c-^>\"zz]], { desc = "Prev buffer" })
+
 -- Move to window using the <ctrl> hjkl keys
 -- if vim.env.TMUX == nil and vim.env.ZELLIJ == nil then
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
@@ -136,6 +139,7 @@ map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
 -- Quit
+map("n", "<leader>qw", "<cmd>w<cr>", { desc = "Write buffer" })
 map("n", "<leader>qq", "<cmd>q<cr>", { desc = "Quit buffer" })
 map("n", "<leader>qa", "<cmd>qa<cr>", { desc = "Quit all" })
 
@@ -149,3 +153,8 @@ map("n", "<leader>w-", "<C-W>s", { desc = "Split window below" })
 map("n", "<leader>w|", "<C-W>v", { desc = "Split window right" })
 map("n", "<leader>-", "<C-W>s", { desc = "Split window below" })
 map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
+
+-- Misc
+map("n", "F1", function()
+  require("eden.util").execute_file()
+end, { desc = "Execute file" })

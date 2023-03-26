@@ -1,4 +1,3 @@
-local au = vim.api.nvim_create_autocmd
 local function augroup(name)
   return vim.api.nvim_create_augroup("eden_" .. name, { clear = true })
 end
