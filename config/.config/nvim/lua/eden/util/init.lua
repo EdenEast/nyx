@@ -20,6 +20,18 @@ function M.on_very_lazy(fn)
   })
 end
 
+---@param attach fun(any, number)
+function M.on_attach(attach)
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("eden_lsp_attach", { clear = true }),
+    callback = function(args)
+      local buffer = args.buf
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      attach(client, buffer)
+    end,
+  })
+end
+
 M.root_patterns = { ".git", "lua" }
 
 -- returns the root directory based on:
