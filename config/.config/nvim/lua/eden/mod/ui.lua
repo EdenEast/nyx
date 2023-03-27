@@ -106,11 +106,11 @@ return {
     end,
   },
 
-  -- -- better quickfix list
-  -- {
-  --   "kevinhwang91/nvim-bqf",
-  --   ft = "qf",
-  -- },
+  -- better quickfix list
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+  },
 
   -- indent guides for Neovim
   {
