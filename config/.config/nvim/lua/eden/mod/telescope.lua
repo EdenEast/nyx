@@ -28,8 +28,7 @@ return {
       { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
       { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
       { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
+      { "<leader>sn", "<cmd>Telescope notify<cr>", desc = "Notifications" },
       { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
       { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
       { "<leader>sw", Util.telescope("grep_string"), desc = "Word (root dir)" },
@@ -73,7 +72,8 @@ return {
       },
     },
     config = function()
-      require("telescope").setup({
+      local ts = require("telescope")
+      ts.setup({
         defaults = {
           prompt_prefix = " ",
           selection_caret = " ",
@@ -94,6 +94,8 @@ return {
           },
         },
       })
+
+      ts.load_extension("notify")
     end,
   },
 }
