@@ -18,6 +18,7 @@ _G.bench = function(label, f, iter)
   print(label, sum / iter / 1000000)
 end
 
+require("eden.core.clipboard")
 require("eden.core.autocmds")
 require("eden.core.options")
 require("eden.core.keymaps")
