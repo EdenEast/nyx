@@ -29,13 +29,9 @@ local cached_features = {
 M.is = setmetatable({}, {
   __index = function(_, key)
     local os, arch = unpack(vim.split(key, "_", { plain = true }))
-    if not cached_features[os] then
-      return false
-    end
+    if not cached_features[os] then return false end
 
-    if arch and arch ~= M.arch then
-      return false
-    end
+    if arch and arch ~= M.arch then return false end
 
     return true
   end,

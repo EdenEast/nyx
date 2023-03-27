@@ -5,20 +5,14 @@ return {
     keys = {
       {
         "<leader>un",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
+        function() require("notify").dismiss({ silent = true, pending = true }) end,
         desc = "Delete all Notifications",
       },
     },
     opts = {
       timeout = 3000,
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
+      max_height = function() return math.floor(vim.o.lines * 0.75) end,
+      max_width = function() return math.floor(vim.o.columns * 0.75) end,
     },
   },
 
@@ -109,9 +103,7 @@ return {
             { "location", padding = { left = 0, right = 1 } },
           },
           lualine_z = {
-            function()
-              return " " .. os.date("%R")
-            end,
+            function() return " " .. os.date("%R") end,
           },
         },
         extensions = { "neo-tree" },
@@ -214,9 +206,7 @@ return {
         vim.cmd.close()
         vim.api.nvim_create_autocmd("User", {
           pattern = "AlphaReady",
-          callback = function()
-            require("lazy").show()
-          end,
+          callback = function() require("lazy").show() end,
         })
       end
 
