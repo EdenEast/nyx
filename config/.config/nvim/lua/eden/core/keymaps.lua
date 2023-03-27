@@ -62,6 +62,8 @@ map(
   { desc = "Redraw / clear hlsearch / diff update" }
 )
 
+map("n", "<leader>ul", "<cmd>Lazy<cr>", { desc = "Lazy" })
+
 map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
