@@ -9,6 +9,10 @@ return {
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
     config = function()
+      -- Setting clang as the compiler to use as pre this solution
+      -- https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support#troubleshooting
+      -- NOTE: Had issues with clang and nix installed build-essentials and gcc and it works
+      require("nvim-treesitter.install").compilers = { "gcc", "clang", "cl" }
       require("nvim-treesitter.configs").setup({
         highlight = { enable = true },
         indent = { enable = true },
