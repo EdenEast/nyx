@@ -21,10 +21,30 @@ return {
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then
+        ---@diagnostic disable-next-line: param-type-mismatch
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
         if stat and stat.type == "directory" then require("neo-tree") end
       end
     end,
+    dependencies = {
+      {
+        "s1n7ax/nvim-window-picker",
+        config = function()
+          require("window-picker").setup({
+            autoselect_one = true,
+            include_current = false,
+            filter_rules = {
+              -- ignore file and buffer types
+              bo = {
+                filetype = { "neo-tree", "neo-tree-popup", "notify" },
+                buftype = { "terminal", "quickfix" },
+              },
+            },
+            other_win_hl_color = "#e35e4f",
+          })
+        end,
+      },
+    },
     config = function()
       require("neo-tree").setup({
         filesystem = {
@@ -34,6 +54,14 @@ return {
         window = {
           mappings = {
             ["<space>"] = "none",
+            ["<2-LeftMouse>"] = "open_with_window_picker",
+            ["<cr>"] = "open_with_window_picker",
+            ["w"] = "open_with_window_picker",
+            ["S"] = "split_with_window_picker",
+            ["s"] = "vsplit_with_window_picker",
+            ["h"] = "close_node",
+            ["l"] = "open",
+            ["L"] = "focus_preview",
           },
         },
         default_component_configs = {
@@ -161,6 +189,31 @@ return {
       })
 
       _G.eden_toggle_terminal = function(name) terminals[name]:toggle() end
+    end,
+  },
+
+  -- view color codes
+  {
+    "NvChad/nvim-colorizer.lua",
+    cmd = "ColorizerToggle",
+    keys = {
+      { "<leader>uC", "<cmd>ColorizerToggle<cr>", desc = "Colorizer" },
+    },
+    config = function()
+      require("colorizer").setup({
+        filetypes = {
+          "html",
+          "css",
+          "sass",
+          "vim",
+          "typescript",
+          "typescriptreact",
+          "lua",
+        },
+        user_default_options = {
+          names = false,
+        },
+      })
     end,
   },
 }
