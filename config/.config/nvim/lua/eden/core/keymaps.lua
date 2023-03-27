@@ -118,6 +118,7 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
 -- Toggle options
+map("n", "<leader>uf", require("eden.mod.lsp.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function() U.toggle("spell") end, { desc = "Toggle Spell" })
 map("n", "<leader>uw", function() U.toggle("wrap") end, { desc = "Toggle Word Wrap" })
 map("n", "<leader>ud", U.toggle_diagnostics, { desc = "Toggle Diagnostics" })
