@@ -5,20 +5,35 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      "nvim-treesitter/playground",
-    },
-    keys = {
-      {
-        "<leader>uH",
-        function() require("nvim-treesitter-playground.hl-info").show_hl_capture() end,
-        desc = "Highlight groups",
-      },
+      "romgrk/nvim-treesitter-context",
+      "JoosepAlviste/nvim-ts-context-commentstring",
     },
     config = function()
       require("nvim-treesitter.configs").setup({
         highlight = { enable = true },
         indent = { enable = true },
-        context_commentstring = { enable = true, enable_autocmd = false },
+        playground = { enable = true },
+        textobjects = {
+          select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+              ["ia"] = "@parameter.inner",
+              ["aa"] = "@parameter.outer",
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+            },
+          },
+        },
+        context_commentstring = {
+          enable = true,
+          enable_autocmd = false,
+          config = {
+            c = "// %s",
+            lua = "-- %s",
+            nix = "# %s",
+          },
+        },
         ensure_installed = {
           "bash",
           "c",
@@ -46,6 +61,18 @@ return {
           "yaml",
         },
       })
+      require("treesitter-context").setup()
     end,
+  },
+
+  {
+    "nvim-treesitter/playground",
+    keys = {
+      {
+        "<leader>uH",
+        function() require("nvim-treesitter-playground.hl-info").show_hl_captures() end,
+        desc = "Highlight groups",
+      },
+    },
   },
 }
