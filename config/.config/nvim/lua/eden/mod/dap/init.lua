@@ -27,38 +27,38 @@ return {
     end,
     keys = {
       -- vs/vscode style function mappings
-      { "<F5>", function() require("dap").continue() end, { desc = "Continue" } },
-      { "<F9>", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" } },
-      { "<F10>", function() require("dap").step_over() end, { desc = "Step over" } },
-      { "<F11>", function() require("dap").step_into() end, { desc = "Step into" } },
-      { "<F12>", function() require("dap").step_out() end, { desc = "Step into" } },
+      { "<F5>", function() require("dap").continue() end, desc = "Continue" },
+      { "<F9>", function() require("dap").toggle_breakpoint() end, desc = "Toggle breakpoint" },
+      { "<F10>", function() require("dap").step_over() end, desc = "Step over" },
+      { "<F11>", function() require("dap").step_into() end, desc = "Step into" },
+      { "<F12>", function() require("dap").step_out() end, desc = "Step into" },
 
-      { "<leader>dc", function() require("dap").continue() end, { desc = "Continue" } },
-      { "<leader>dl", function() require("dap").step_over() end, { desc = "Step over" } },
-      { "<leader>dj", function() require("dap").step_into() end, { desc = "Step info" } },
-      { "<leader>dk", function() require("dap").step_out() end, { desc = "Step out" } },
+      { "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
+      { "<leader>dl", function() require("dap").step_over() end, desc = "Step over" },
+      { "<leader>dj", function() require("dap").step_into() end, desc = "Step info" },
+      { "<leader>dk", function() require("dap").step_out() end, desc = "Step out" },
 
-      { "<leader>dK", function() require("dap").up() end, { desc = "Move up" } },
-      { "<leader>dJ", function() require("dap").down() end, { desc = "Move down" } },
+      { "<leader>dK", function() require("dap").up() end, desc = "Move up" },
+      { "<leader>dJ", function() require("dap").down() end, desc = "Move down" },
 
-      { "<leader>db", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" } },
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle breakpoint" },
       {
         "<leader>dB",
         function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-        { desc = "Conditional breakpoint" },
+        desc = "Conditional breakpoint",
       },
       {
         "<leader>dm",
         function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
-        { desc = "Log breakpoint" },
+        desc = "Log breakpoint",
       },
 
-      { "<leader>dd", function() require("dap").run_last() end, { desc = "Run last" } },
-      { "<leader>dq", function() require("dap").disconnect() end, { desc = "Disconnect" } },
-      { "<leader>dr", function() require("dap").disconnect({ restart = true }) end, { desc = "Restart" } },
+      { "<leader>dd", function() require("dap").run_last() end, desc = "Run last" },
+      { "<leader>dq", function() require("dap").disconnect() end, desc = "Disconnect" },
+      { "<leader>dr", function() require("dap").disconnect({ restart = true }) end, desc = "Restart" },
 
-      { "<leader>dh", function() require("dap.ui.widget").hover() end, { desc = "Hover" } },
-      { "<leader>du", function() require("dapui").toggle() end, { desc = "Toggle ui" } },
+      { "<leader>dh", function() require("dap.ui.widget").hover() end, desc = "Hover" },
+      { "<leader>du", function() require("dapui").toggle() end, desc = "Toggle ui" },
     },
   },
 }

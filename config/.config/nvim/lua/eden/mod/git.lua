@@ -4,9 +4,9 @@ return {
     "tpope/vim-fugitive",
     cmd = { "Git", "Gdiffsplit" },
     keys = {
-      -- { "<leader>ga", "<cmd>Git add %<cr>", { desc = "Add file" } },
-      { "<leader>gb", "<cmd>Git blame<cr>", { desc = "Blame file" } },
-      { "<leader>gd", "<cmd>Gdiffsplit<cr>", { desc = "Diff file" } },
+      -- { "<leader>ga", "<cmd>Git add %<cr>", desc = "Add file" },
+      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Blame file" },
+      { "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Diff file" },
     },
   },
 
@@ -16,7 +16,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = { "Neogit" },
     keys = {
-      { "<leader>gn", "<cmd>Neogit<cr>", { desc = "Neogit" } },
+      { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" },
     },
     config = function() require("neogit").setup() end,
   },
