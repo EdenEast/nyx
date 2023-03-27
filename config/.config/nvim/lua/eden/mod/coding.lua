@@ -7,9 +7,7 @@ return {
       or nil,
     dependencies = {
       "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
+      config = function() require("luasnip.loaders.from_vscode").lazy_load() end,
     },
     opts = {
       history = true,
@@ -18,25 +16,19 @@ return {
     keys = {
       {
         "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
+        function() return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>" end,
         expr = true,
         silent = true,
         mode = "i",
       },
       {
         "<tab>",
-        function()
-          require("luasnip").jump(1)
-        end,
+        function() require("luasnip").jump(1) end,
         mode = "s",
       },
       {
         "<s-tab>",
-        function()
-          require("luasnip").jump(-1)
-        end,
+        function() require("luasnip").jump(-1) end,
         mode = { "i", "s" },
       },
     },
@@ -59,9 +51,7 @@ return {
           completeopt = "menu,menuone,noinsert",
         },
         snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
+          expand = function(args) require("luasnip").lsp_expand(args.body) end,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -85,9 +75,7 @@ return {
         formatting = {
           format = function(_, item)
             local icons = require("eden.util.icons").kinds
-            if icons[item.kind] then
-              item.kind = icons[item.kind] .. item.kind
-            end
+            if icons[item.kind] then item.kind = icons[item.kind] .. item.kind end
             return item
           end,
         },
@@ -104,9 +92,7 @@ return {
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
-    config = function(_, opts)
-      require("mini.pairs").setup(opts)
-    end,
+    config = function(_, opts) require("mini.pairs").setup(opts) end,
   },
 
   -- comments
@@ -120,9 +106,7 @@ return {
     config = function(_, opts)
       require("mini.comment").setup({
         hooks = {
-          pre = function()
-            require("ts_context_commentstring.internal").update_commentstring({})
-          end,
+          pre = function() require("ts_context_commentstring.internal").update_commentstring({}) end,
         },
       })
     end,

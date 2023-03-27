@@ -123,9 +123,7 @@ return {
       end
 
       for server, _ in pairs(servers) do
-        if not vim.tbl_contains(mason_installed_servers, server) then
-          setup(server)
-        end
+        if not vim.tbl_contains(mason_installed_servers, server) then setup(server) end
       end
 
       mlsp.setup_handlers({ setup })

@@ -116,17 +116,11 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
 -- Toggle options
-map("n", "<leader>us", function()
-  U.toggle("spell")
-end, { desc = "Toggle Spell" })
-map("n", "<leader>uw", function()
-  U.toggle("wrap")
-end, { desc = "Toggle Word Wrap" })
+map("n", "<leader>us", function() U.toggle("spell") end, { desc = "Toggle Spell" })
+map("n", "<leader>uw", function() U.toggle("wrap") end, { desc = "Toggle Word Wrap" })
 map("n", "<leader>ud", U.toggle_diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-map("n", "<leader>uc", function()
-  U.toggle("conceallevel", false, { 0, conceallevel })
-end, { desc = "Toggle Conceal" })
+map("n", "<leader>uc", function() U.toggle("conceallevel", false, { 0, conceallevel }) end, { desc = "Toggle Conceal" })
 
 -- Save file
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
@@ -155,4 +149,4 @@ map("n", "<leader>-", "<C-W>s", { desc = "Split window below" })
 map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
 
 -- Misc
-map("n", "<F1>", function() require("eden.util").execute_file() end, { desc = "Execute file"})
+map("n", "<F1>", function() require("eden.util").execute_file() end, { desc = "Execute file" })

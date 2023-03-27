@@ -10,9 +10,7 @@ return {
     keys = {
       {
         "<leader>uH",
-        function()
-          require("nvim-treesitter-playground.hl-info").show_hl_capture()
-        end,
+        function() require("nvim-treesitter-playground.hl-info").show_hl_capture() end,
         desc = "Highlight groups",
       },
     },

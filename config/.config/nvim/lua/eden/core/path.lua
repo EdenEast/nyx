@@ -8,9 +8,7 @@ M.seperator = package.config:sub(1, 1)
 -- Join a list of paths together
 -- @param ... string list
 -- @return string
-M.join = function(...)
-  return table.concat({ ... }, M.seperator)
-end
+M.join = function(...) return table.concat({ ... }, M.seperator) end
 
 -- Define default values for important path locations
 M.home = home
@@ -23,11 +21,7 @@ M.module_path = M.join(M.confighome, "lua", "eden", "mod")
 -- @param dir string
 M.create_dir = function(dir)
   local state = vim.loop.fs_stat(dir)
-  if not state then
-    vim.loop.fs_mkdir(dir, 511, function()
-      assert("Failed to make path:" .. dir)
-    end)
-  end
+  if not state then vim.loop.fs_mkdir(dir, 511, function() assert("Failed to make path:" .. dir) end) end
 end
 
 -- Returns if the path exists on disk
@@ -40,14 +34,10 @@ end
 
 ---Remove file from file system
 ---@param path string
-M.remove_file = function(path)
-  os.execute("rm " .. path)
-end
+M.remove_file = function(path) os.execute("rm " .. path) end
 
 M.ensure = function(path)
-  if not M.exists(path) then
-    M.create_dir(path)
-  end
+  if not M.exists(path) then M.create_dir(path) end
 end
 
 M.read_file = function(path, mode)

@@ -18,9 +18,7 @@ return {
     keys = {
       { "<leader>gn", "<cmd>Neogit<cr>", { desc = "Neogit" } },
     },
-    config = function()
-      require("neogit").setup()
-    end,
+    config = function() require("neogit").setup() end,
   },
 
   -- git signs
@@ -40,9 +38,7 @@ return {
         on_attach = function(buffer)
           local gs = package.loaded.gitsigns
 
-          local function map(mode, l, r, desc)
-            vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-          end
+          local function map(mode, l, r, desc) vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc }) end
 
           -- stylua: ignore start
           map("n", "]h", gs.next_hunk, "Next Hunk")
