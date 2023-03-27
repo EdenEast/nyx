@@ -5,7 +5,6 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      "romgrk/nvim-treesitter-context",
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
     config = function()
@@ -65,7 +64,6 @@ return {
           "yaml",
         },
       })
-      require("treesitter-context").setup()
     end,
   },
 
