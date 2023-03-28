@@ -1,3 +1,9 @@
+-- Setup custom options for the pop-up windows
+local cmp_window_opts = {
+  border = "rounded",
+  winhighlight = "Normal:NormalFloat,FloatBorder:CmpWindowBorder,CursorLine:Visual,Search:None",
+}
+
 return {
   -- snippets
   {
@@ -91,6 +97,39 @@ return {
           ghost_text = {
             hl_group = "LspCodeLens",
           },
+        },
+        sorting = {
+          comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+
+            -- copied from cmp-under, but I don't think I need the plugin for this.
+            -- I might add some more of my own.
+            function(entry1, entry2)
+              local _, entry1_under = entry1.completion_item.label:find("^_+")
+              local _, entry2_under = entry2.completion_item.label:find("^_+")
+              entry1_under = entry1_under or 0
+              entry2_under = entry2_under or 0
+              if entry1_under > entry2_under then
+                return false
+              elseif entry1_under < entry2_under then
+                return true
+              end
+            end,
+
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+          },
+        },
+        view = {
+          entries = { name = "custom", selection_order = "top_down" },
+        },
+        window = {
+          completion = cmp.config.window.bordered(cmp_window_opts),
+          documentation = cmp.config.window.bordered(cmp_window_opts),
         },
       })
     end,
