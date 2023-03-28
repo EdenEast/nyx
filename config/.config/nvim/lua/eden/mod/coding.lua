@@ -44,9 +44,9 @@ return {
       "hrsh7th/cmp-path",
       "saadparwaiz1/cmp_luasnip",
     },
-    opts = function()
+    config = function()
       local cmp = require("cmp")
-      return {
+      cmp.setup({
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
@@ -69,8 +69,16 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = "buffer" },
           { name = "path" },
+          {
+            name = "buffer",
+            keyword_length = 5,
+            option = {
+              get_bufnr = function() -- all buffers
+                return vim.api.nvim_list_bufs()
+              end,
+            },
+          },
         }),
         formatting = {
           format = function(_, item)
@@ -84,7 +92,7 @@ return {
             hl_group = "LspCodeLens",
           },
         },
-      }
+      })
     end,
   },
 
