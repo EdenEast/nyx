@@ -6,6 +6,8 @@ local map = vim.keymap.set
 -- Also I dont use Ex mode.
 map("n", "Q", [[!!$SHELL <cr>]])
 
+map("n", "<localleader><localleader>", "<cmd>write<cr>", { desc = "Write" })
+
 -- better up/down
 --
 -- 'j' and 'k' moves up and down visible lines in editor not actual lines.

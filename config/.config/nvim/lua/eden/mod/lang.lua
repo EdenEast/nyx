@@ -18,26 +18,34 @@ return {
           require("cmp").setup.buffer({ sources = { { name = "crates" } } })
 
           bmap("K", function() require("crates").show_popup() end, { desc = "Help" })
-          bmap("<leader>mp", function() require("crates").show_popup() end, { desc = "Toggle" })
-          bmap("<leader>mt", function() require("crates").toggle() end, { desc = "Toggle" })
-          bmap("<leader>mr", function() require("crates").reload() end, { desc = "Reload" })
+          bmap("<localleader>p", function() require("crates").show_popup() end, { desc = "Toggle" })
+          bmap("<localleader>t", function() require("crates").toggle() end, { desc = "Toggle" })
+          bmap("<localleader>r", function() require("crates").reload() end, { desc = "Reload" })
 
-          bmap("<leader>mf", function() require("crates").show_features_popup() end, { desc = "Features" })
-          bmap("<leader>mv", function() require("crates").show_versions_popup() end, { desc = "Versions" })
-          bmap("<leader>md", function() require("crates").show_dependencies_popup() end, { desc = "Dependencies" })
+          bmap("<localleader>f", function() require("crates").show_features_popup() end, { desc = "Features" })
+          bmap("<localleader>v", function() require("crates").show_versions_popup() end, { desc = "Versions" })
+          bmap("<localleader>d", function() require("crates").show_dependencies_popup() end, { desc = "Dependencies" })
 
-          bmap("<leader>mu", function() require("crates").update_crate() end, { desc = "Update crate" })
-          bmap("<leader>mU", function() require("crates").upgrade_crate() end, { desc = "Upgrade crate" })
-          bmap("<leader>mu", function() require("crates").update_crates() end, { desc = "Update crate", mode = "v" })
-          bmap("<leader>mU", function() require("crates").upgrade_crates() end, { desc = "Upgrade crate", mode = "v" })
+          bmap("<localleader>u", function() require("crates").update_crate() end, { desc = "Update crate" })
+          bmap("<localleader>U", function() require("crates").upgrade_crate() end, { desc = "Upgrade crate" })
+          bmap(
+            "<localleader>u",
+            function() require("crates").update_crates() end,
+            { desc = "Update crate", mode = "v" }
+          )
+          bmap(
+            "<localleader>U",
+            function() require("crates").upgrade_crates() end,
+            { desc = "Upgrade crate", mode = "v" }
+          )
 
-          bmap("<leader>ma", function() require("crates").update_all_crates() end, { desc = "Update all crate" })
-          bmap("<leader>mA", function() require("crates").upgrade_all_crates() end, { desc = "Upgrade all crate" })
+          bmap("<localleader>a", function() require("crates").update_all_crates() end, { desc = "Update all crate" })
+          bmap("<localleader>A", function() require("crates").upgrade_all_crates() end, { desc = "Upgrade all crate" })
 
-          bmap("<leader>mH", function() require("crates").open_homepage() end, { desc = "Homepage" })
-          bmap("<leader>mR", function() require("crates").open_repository() end, { desc = "Repository" })
-          bmap("<leader>mD", function() require("crates").open_documentation() end, { desc = "Documentation" })
-          bmap("<leader>mC", function() require("crates").open_crates_io() end, { desc = "Creates IO" })
+          bmap("<localleader>H", function() require("crates").open_homepage() end, { desc = "Homepage" })
+          bmap("<localleader>R", function() require("crates").open_repository() end, { desc = "Repository" })
+          bmap("<localleader>D", function() require("crates").open_documentation() end, { desc = "Documentation" })
+          bmap("<localleader>C", function() require("crates").open_crates_io() end, { desc = "Creates IO" })
         end,
       })
     end,
