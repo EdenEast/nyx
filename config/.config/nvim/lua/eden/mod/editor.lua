@@ -264,4 +264,10 @@ return {
       { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
     },
   },
+
+  {
+    "mbbill/undotree",
+    cmd = { "UndotreeToggle" },
+    keys = { { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" } },
+  },
 }
