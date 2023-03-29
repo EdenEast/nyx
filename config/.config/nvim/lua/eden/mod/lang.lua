@@ -51,4 +51,21 @@ return {
     end,
     config = function() require("crates").setup() end,
   },
+
+  {
+    "LhKipp/nvim-nu",
+    ft = { "nu" },
+    build = ":TSInstall nu",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+  },
+
+  {
+    "imsnif/kdl.vim",
+    ft = "kdl",
+  },
+
+  {
+    "NoahTheDuke/vim-just",
+    ft = "just",
+  },
 }

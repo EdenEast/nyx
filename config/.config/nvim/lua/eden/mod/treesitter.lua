@@ -64,6 +64,16 @@ return {
           "yaml",
         },
       })
+
+      local parser = require("nvim-treesitter.parsers").get_parser_configs()
+      parser.vhs = {
+        install_info = {
+          url = "https://github.com/charmbracelet/tree-sitter-vhs",
+          files = { "src/parser.c" },
+          branch = "main",
+        },
+        filetype = "vhs",
+      }
     end,
   },
 
