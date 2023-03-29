@@ -19,8 +19,9 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 })
 
 -- match trailing whitespace when in normal mode
+local group_trailing_whitespace = augroup("trailing_whitespace")
 vim.api.nvim_create_autocmd({ "BufWinEnter", "InsertEnter" }, {
-  group = augroup("trailing_whitespace"),
+  group = group_trailing_whitespace,
   command = "match Error /\\s\\+%#@<!$/",
 })
 
@@ -28,6 +29,18 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "InsertEnter" }, {
 vim.api.nvim_create_autocmd({ "InsertLeave" }, {
   group = augroup("trailing_whitespace"),
   command = "match Error /\\s\\+$/",
+})
+
+-- set cursorline only in the current pane
+local group_cursor_line = augroup("cursor_line")
+vim.api.nvim_create_autocmd({ "WinEnter" }, {
+  group = group_cursor_line,
+  command = "set cursorline",
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+  group = group_cursor_line,
+  command = "set nocursorline",
 })
 
 -- go to last loc when opening a buffer
