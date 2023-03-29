@@ -19,6 +19,7 @@ _G.bench = function(label, f, iter)
 end
 
 require("eden.core.clipboard")
+require("eden.core.filetype")
 require("eden.core.autocmds")
 require("eden.core.options")
 require("eden.core.keymaps")
