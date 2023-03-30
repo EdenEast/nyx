@@ -22,6 +22,6 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   nested = true,
 })
 
-vim.keymap.set("n", "<leader>mt", "<cmd>make test -q<cr>", { desc = "Cargo test" })
-vim.keymap.set("n", "<leader>mb", "<cmd>make build<cr>", { desc = "Cargo build" })
-vim.keymap.set("n", "<leader>mc", "<cmd>make clippy -q<cr>", { desc = "Cargo clippy" })
+vim.keymap.set("n", "<localleader>t", "<cmd>make test -q<cr>", { desc = "Cargo test" })
+vim.keymap.set("n", "<localleader>b", "<cmd>make build<cr>", { desc = "Cargo build" })
+vim.keymap.set("n", "<localleader>c", "<cmd>make clippy -q<cr>", { desc = "Cargo clippy" })
