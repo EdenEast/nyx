@@ -46,6 +46,10 @@ require("lazy").setup("eden.mod", {
       path = lazy_cache,
     },
     rtp = {
+      paths = {
+        path.datahome,
+        path.join(path.datahome, "after"),
+      },
       disabled_plugins = {
         "gzip",
         "matchit",
