@@ -33,14 +33,14 @@ vim.api.nvim_create_autocmd({ "InsertLeave" }, {
 
 -- set cursorline only in the current pane
 local group_cursor_line = augroup("cursor_line")
-vim.api.nvim_create_autocmd({ "WinEnter" }, {
+vim.api.nvim_create_autocmd({ "WinEnter", "InsertLeave" }, {
   group = group_cursor_line,
-  command = "set cursorline",
+  callback = function() require("eden.util").set_cursor_line(true) end,
 })
 
-vim.api.nvim_create_autocmd({ "WinLeave" }, {
+vim.api.nvim_create_autocmd({ "WinLeave", "InsertEnter" }, {
   group = group_cursor_line,
-  command = "set nocursorline",
+  callback = function() require("eden.util").set_cursor_line(false) end,
 })
 
 -- go to last loc when opening a buffer

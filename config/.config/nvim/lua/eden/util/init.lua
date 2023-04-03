@@ -189,4 +189,14 @@ function M.toggle_diagnostics()
   end
 end
 
+local cursorline_blacklist = {
+  ["TelescopePromot"] = true,
+}
+
+---@param value boolean
+function M.set_cursor_line(value)
+  local filetype = vim.bo.filetype
+  if cursorline_blacklist[filetype] ~= true then vim.wo.cursorline = value end
+end
+
 return M
