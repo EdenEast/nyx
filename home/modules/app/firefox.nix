@@ -22,32 +22,37 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.firefox = {
-      enable = true;
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-        darkreader
-        privacy-badger
-        tree-style-tab
-        ublock-origin
-        vimium
-      ];
-      profiles = {
-        home = {
-          id = 0;
-          settings = defaultSettings // {
-            "browser.urlbar.placeholderName" = "DuckDuckGo";
-            "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+    programs.firefox =
+      let
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          darkreader
+          privacy-badger
+          tree-style-tab
+          ublock-origin
+          vimium
+        ];
+      in
+      {
+        enable = true;
+        profiles = {
+          home = {
+            inherit extensions;
+            id = 0;
+            settings = defaultSettings // {
+              "browser.urlbar.placeholderName" = "DuckDuckGo";
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+            };
           };
-        };
 
-        work = {
-          id = 1;
-          settings = defaultSettings // {
-            "browser.startup.homepage" = "about:blank";
+          work = {
+            inherit extensions;
+            id = 1;
+            settings = defaultSettings // {
+              "browser.startup.homepage" = "about:blank";
+            };
           };
         };
       };
-    };
   };
   # config = mkIf cfg.enable {
   #   programs.firefox = {
