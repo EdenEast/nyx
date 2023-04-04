@@ -3,6 +3,9 @@ vim.filetype.add({
     ["justfile"] = "just",
     ["Justfile"] = "just",
   },
-  -- extension = { ["kdl"] = "kdl", },
+  extension = {
+    ["kdl"] = "kdl",
+    ["dhall"] = "dhall",
+  },
   -- pattern = {},
 })
