@@ -21,10 +21,13 @@ in
   };
 
   config = mkMerge [
-    (
-      mkIf (cfg.home != null) {
-        home-manager.users."${cfg.name}" = mkUserHome { inherit system; config = cfg.home; };
-      }
-    )
+    (mkIf (cfg.home != null) {
+      home-manager.users."${cfg.name}" = mkUserHome { inherit system; config = cfg.home; };
+    })
+
+    {
+      # Enable zsh in order to add /run/current-system/sw/bin to $PATH
+      programs.zsh.enable = true;
+    }
   ];
 }
