@@ -43,6 +43,7 @@ return {
           "cpp",
           "c_sharp",
           "comment",
+          "dhall",
           "help",
           "html",
           "javascript",

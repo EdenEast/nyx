@@ -68,9 +68,4 @@ return {
     "NoahTheDuke/vim-just",
     ft = "just",
   },
-
-  {
-    "vmchale/dhall-vim",
-    ft = "dhall",
-  },
 }
