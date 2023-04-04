@@ -98,6 +98,11 @@ rec {
                 experimental-features = nix-command flakes
               '';
 
+            nix = {
+              package = pkgs.nixVersions.stable;
+              extraOptions = "experimental-features = nix-command flakes";
+            };
+
             nixpkgs = {
               config = import ../nix/config.nix;
               overlays = inputs.self.overlays."${system}";
