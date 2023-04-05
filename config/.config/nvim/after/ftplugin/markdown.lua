@@ -15,3 +15,5 @@ require("cmp").setup.buffer({
     { name = "spell" },
   },
 })
+
+vim.keymap.set("n", "<localleader>p", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Preview", buffer = true })
