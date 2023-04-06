@@ -10,6 +10,7 @@ opt.belloff = "all" -- I NEVER want to hear this bell for ANY reason
 opt.confirm = true -- confirm to save changes before closing modified buffer
 opt.completeopt = "menu,menuone,noselect"
 opt.cursorline = true -- highlight current line
+opt.colorcolumn = { "+1" }
 opt.expandtab = true -- always use spaces instead of tabs
 opt.foldlevelstart = 99 -- start unfolded
 opt.grepformat = "%f:%l:%c:%m"
