@@ -43,7 +43,7 @@ return {
           { name = "path" },
           {
             name = "buffer",
-            keyword_length = 5,
+            keyword_length = 4,
             option = {
               get_bufnr = function() -- all buffers
                 return vim.api.nvim_list_bufs()

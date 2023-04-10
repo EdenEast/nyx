@@ -6,6 +6,7 @@ vim.filetype.add({
   extension = {
     ["kdl"] = "kdl",
     ["dhall"] = "dhall",
+    ["tl"] = "teal",
   },
   -- pattern = {},
 })
