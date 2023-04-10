@@ -27,6 +27,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("gitsigns").setup({
+        trouble = false,
         signs = {
           add = { text = "▎" },
           change = { text = "▎" },
