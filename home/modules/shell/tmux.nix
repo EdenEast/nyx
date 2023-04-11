@@ -23,10 +23,11 @@ in
       disableConfirmationPrompt = true;
       keyMode = "vi";
       prefix = "C-a";
-      terminal = "screen-256color";
+      terminal = "xterm-256color";
       plugins = with pkgs.tmuxPlugins; [
         copycat
         extrakto
+        fuzzback
         nord
         prefix-highlight
         tmux-fzf
@@ -34,7 +35,7 @@ in
       ];
       extraConfig = ''
         set -g detach-on-destroy off             # When destory switch to the prev session
-        set -ga terminal-overrides ",xterm-256color:Tc"
+        set -ga terminal-overrides ",*256col*:Tc"
         set -g default-shell $SHELL              # use default shell
         set -sg escape-time 5                    # delay shorter
         set -sg history-limit 50000              # increase scrollback
