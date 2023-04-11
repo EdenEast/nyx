@@ -58,4 +58,28 @@ return {
       })
     end,
   },
+
+  -- diffview
+  {
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+    keys = {
+      { "<leader>gD", "<cmd>DiffviewOpen<cr>", desc = "Diffview" },
+    },
+    opts = {
+      view = {
+        merge_tool = {
+          layout = "diff3_mixed",
+        },
+      },
+    },
+  },
 }
+
+-- Other plugins of note
+-- https://github.com/rhysd/conflict-marker.vim
+-- https://github.com/akinsho/git-conflict.nvim
+-- https://github.com/pwntester/octo.nvim
+-- https://github.com/AndrewRadev/linediff.vim
+-- https://github.com/rhysd/git-messenger.vim
