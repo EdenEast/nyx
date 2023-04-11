@@ -6,7 +6,7 @@ return {
       or nil,
     dependencies = {
       "rafamadriz/friendly-snippets",
-      config = function() require("luasnip.loaders.from_vscode").lazy_load() end,
+      -- config = function() require("luasnip.loaders.from_vscode").lazy_load() end,
     },
     keys = {
       -- {
@@ -64,6 +64,7 @@ return {
       },
     },
     config = function()
+      local path = require("eden.core.path")
       local ls = require("luasnip")
       local types = require("luasnip.util.types")
 
@@ -87,10 +88,17 @@ return {
         },
       })
 
+      -- Load snippets provided by extensions
       require("luasnip.loaders.from_vscode").lazy_load()
-      for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/eden/mod/snips/ft/*.lua", true)) do
-        loadfile(ft_path)()
-      end
+      require("luasnip.loaders.from_lua").lazy_load({
+        paths = path.join(path.confighome, "lua", "eden", "mod", "snippets", "ft"),
+      })
+
+      vim.api.nvim_create_user_command(
+        "LuasnipEdit",
+        function() require("luasnip.loaders.from_lua").edit_snippet_files() end,
+        {}
+      )
 
       -- https://sourcegraph.com/github.com/Cassin01/nvim-conf@48e0511d8899ca87145f7191c83f0e63252b488e/-/blob/after_opt/luasnip.lua
     end,
