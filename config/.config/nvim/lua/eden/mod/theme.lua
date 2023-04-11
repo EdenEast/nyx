@@ -4,11 +4,6 @@ return {
     lazy = false,
     priority = 1000,
     dev = true,
-  },
-
-  {
-    "nightfox-org/nicefox.nvim",
-    dev = true,
     config = function()
       require("nightfox").setup({
         options = {
@@ -58,6 +53,13 @@ return {
         },
       })
     end,
+  },
+
+  {
+    "nightfox-org/nicefox.nvim",
+    lazy = false,
+    priority = 1000,
+    dev = true,
   },
 
   {
