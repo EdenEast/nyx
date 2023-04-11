@@ -164,6 +164,7 @@ map(
 map("n", "<leader>ul", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 -- Toggle options
+map("n", "<leader>ut", require("eden.util.transparent").toggle, { desc = "Toggle transparency" })
 map("n", "<leader>uf", require("eden.mod.lsp.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function() U.toggle("spell") end, { desc = "Toggle Spell" })
 map("n", "<leader>uw", function() U.toggle("wrap") end, { desc = "Toggle Word Wrap" })
@@ -201,3 +202,5 @@ map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
 
 -- Misc
 map("n", "<F1>", function() require("eden.util").execute_file() end, { desc = "Execute file" })
+
+map("n", "<leader><cr>", "<cmd>messages<cr>", { desc = "Messages" })
