@@ -164,7 +164,7 @@ map(
 map("n", "<leader>ul", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 -- Toggle options
-map("n", "<leader>ut", require("eden.util.transparent").toggle, { desc = "Toggle transparency" })
+map("n", "<leader>ut", require("eden.core.theme").toggle, { desc = "Toggle transparency" })
 map("n", "<leader>uf", require("eden.mod.lsp.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function() U.toggle("spell") end, { desc = "Toggle Spell" })
 map("n", "<leader>uw", function() U.toggle("wrap") end, { desc = "Toggle Word Wrap" })
