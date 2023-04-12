@@ -23,7 +23,7 @@ in
       disableConfirmationPrompt = true;
       keyMode = "vi";
       prefix = "C-a";
-      terminal = "xterm-256color";
+      terminal = "screen-256color";
       plugins = with pkgs.tmuxPlugins; [
         copycat
         extrakto
