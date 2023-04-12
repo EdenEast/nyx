@@ -182,7 +182,7 @@ return {
             term.bufnr,
             "t",
             "<c-space>",
-            [[<C-\><C-n><cmd>lua toggle_terminal('default')<cr>]],
+            [[<C-\><C-n><cmd>lua eden_toggle_terminal('default')<cr>]],
             { noremap = true, silent = true }
           )
         end,
