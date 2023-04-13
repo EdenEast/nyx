@@ -97,15 +97,26 @@ return {
           documentation = cmp.config.window.bordered(cmp_window_opts),
         },
       })
+
+      cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
     end,
   },
 
   -- auto pairs
+  -- {
+  --   "echasnovski/mini.pairs",
+  --   event = "VeryLazy",
+  --   config = function(_, opts) require("mini.pairs").setup(opts) end,
+  -- },
   {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    config = function(_, opts) require("mini.pairs").setup(opts) end,
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    opts = {
+      disable_filetype = { "TelescopePrompt", "vim" },
+      enable_check_bracket_line = true,
+    },
   },
+
   -- comments
   -- alternatives:
   --   - "tpope/vim-commentary"
