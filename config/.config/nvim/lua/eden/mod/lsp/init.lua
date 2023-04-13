@@ -139,17 +139,54 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "mason.nvim", "nvim-lua/plenary.nvim" },
-    opts = function()
+    config = function()
+      local path = require("eden.core.path")
       local nls = require("null-ls")
-      return {
-        root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
-        sources = {
-          nls.builtins.formatting.fish_indent,
-          nls.builtins.diagnostics.fish,
-          nls.builtins.formatting.stylua,
-          nls.builtins.formatting.shfmt,
+      local util = require("null-ls.utils")
+      local help = require("null-ls.helpers")
+
+      local diagnostic = nls.builtins.diagnostics
+      local formatting = nls.builtins.formatting
+      -- local hover = nls.builtins.hover
+      -- local actions = nls.builtins.code_actions
+
+      local with = {
+        shfmt = {
+          extra_args = { "-ci", "-i", "2", "-s" },
+        },
+        stylua = {
+          cwd = help.cache.by_bufnr(
+            function(params) return util.root_pattern(".git", "stylua.toml")(params.bufname) end
+          ),
+          extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+        },
+        vale = {
+          extra_args = { "--config", path.join(path.home, ".config", "vale", "config.ini") },
+          filetypes = { "asciidoc", "markdown", "text" },
+        },
+        write_good = {
+          filetypes = { "asciidoc", "markdown", "text" },
         },
       }
+
+      local sources = {
+        formatting.trim_newlines,
+
+        -- lua
+        formatting.stylua.with(with.stylua),
+
+        -- shell
+        diagnostic.shellcheck,
+        formatting.shfmt.with(with.shfmt),
+
+        -- text / markup
+        diagnostic.proselint,
+      }
+
+      nls.setup({
+        root_dir = util.root_pattern(".neoconf.json", ".git", ".root"),
+        sources = sources,
+      })
     end,
   },
 
