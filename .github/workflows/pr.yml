@@ -107,6 +107,7 @@ jobs:
 
       - name: Comment report in pr
         uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ !startswith(github.ref, 'dependabot') }}
         with:
           header: ".#top.${{ matrix.target }}"
           message: |
