@@ -61,6 +61,40 @@ wt.add_to_config_reload_watch_list(nyx_file)
 wt.add_to_config_reload_watch_list(local_file)
 wt.add_to_config_reload_watch_list(theme_file)
 
+-- Events ----------------------------------------------------------------------
+
+local window_opacity = 0.8
+
+wt.on("toggle-opacity", function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  if not overrides.window_background_opacity then
+    overrides.window_background_opacity = window_opacity
+  else
+    overrides.window_background_opacity = nil
+  end
+  window:set_config_overrides(overrides)
+end)
+
+wt.on("increase-opacity", function(window, pane)
+  window_opacity = window_opacity + 0.05
+  local overrides = window:get_config_overrides() or {}
+  if overrides.window_background_opacity then
+    overrides.window_background_opacity = window_opacity
+    window:set_config_overrides(overrides)
+  end
+end)
+
+wt.on("decrease-opacity", function(window, pane)
+  window_opacity = window_opacity - 0.05
+  local overrides = window:get_config_overrides() or {}
+  if overrides.window_background_opacity then
+    overrides.window_background_opacity = window_opacity
+    window:set_config_overrides(overrides)
+  end
+end)
+
+-- Config table ---------------------------------------------------------------
+
 local config = {
   audible_bell = "Disabled", -- No beeping plz
   check_for_updates = false,
@@ -84,6 +118,12 @@ local config = {
 
   keys = {
     { key = "\\", mods = "ALT", action = "ShowLauncher" },
+    { key = "t", mods = "CTRL|ALT", action = wt.action.EmitEvent("toggle-opacity") },
+    { key = "t", mods = "SUPER|ALT", action = wt.action.EmitEvent("toggle-opacity") },
+    { key = "=", mods = "CTRL|ALT", action = wt.action.EmitEvent("increase-opacity") },
+    { key = "=", mods = "SUPER|ALT", action = wt.action.EmitEvent("increase-opacity") },
+    { key = "-", mods = "CTRL|ALT", action = wt.action.EmitEvent("decrease-opacity") },
+    { key = "-", mods = "SUPER|ALT", action = wt.action.EmitEvent("decrease-opacity") },
   },
 
   window_padding = {
