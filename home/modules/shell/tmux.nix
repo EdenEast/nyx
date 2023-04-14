@@ -31,6 +31,7 @@ in
         nord
         prefix-highlight
         tmux-fzf
+        pkgs.tmux-modal
         vim-tmux-navigator
       ];
       extraConfig = ''
