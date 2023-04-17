@@ -1,3 +1,6 @@
+local Plat = require("eden.core.platform")
+local fmt = string.format
+
 local M = {}
 
 local exec_file_by_type = {
@@ -10,6 +13,34 @@ function M.execute_file()
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
   vim.cmd("silent! write")
   if exec_file_by_type[ft] then vim.cmd(exec_file_by_type[ft]) end
+end
+
+---Open a url in the default system browser
+---@param url string
+function M.open_url(url)
+  if Plat.is.linux then
+    vim.cmd([[:execute '!xdg-open ]] .. url .. "'")
+  elseif Plat.is.wsl then
+    vim.cmd([[:execute '!wslview ]] .. url .. "'")
+  elseif Plat.is.mac then
+    vim.cmd([[:execute '!open ]] .. url .. "'")
+  elseif Plat.is.win then
+    vim.cmd([[:execute '!start ]] .. url .. "'")
+  else
+    M.error("Unknown platform, could not determine url opener")
+  end
+end
+
+function M.open_file_in_browser(file)
+  file = file or vim.api.nvim_buf_get_name(0)
+  if not string.starts_with(file, "file://") then file = "file://" .. file end
+
+  local browser = "firefox" -- firefox is used because I know the application name
+  if Plat.is.mac then
+    vim.cmd(fmt([[:execute '!open -a %s %s']], browser, file))
+  else
+    M.error("Unsupported platform for opening file with browser")
+  end
 end
 
 ---@param fn fun()
