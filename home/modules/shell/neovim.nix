@@ -13,6 +13,7 @@ in
       type = with types; listOf package;
       default = with pkgs; [
         # sqlite
+        nodejs # required for things like markdown-preview and asciidoc-preview
       ];
     };
 
@@ -34,7 +35,7 @@ in
         rnix-lsp
       ] ++ optionals pkgs.stdenv.isLinux [
         omnisharp-roslyn
-        sumneko-lua-language-server
+        lua-language-server
       ];
     };
 
