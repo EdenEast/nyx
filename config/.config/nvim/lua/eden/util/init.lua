@@ -35,9 +35,10 @@ function M.open_file_in_browser(file)
   file = file or vim.api.nvim_buf_get_name(0)
   if not string.starts_with(file, "file://") then file = "file://" .. file end
 
-  local browser = "firefox" -- firefox is used because I know the application name
-  if Plat.is.mac then
-    vim.cmd(fmt([[:execute '!open -a %s %s']], browser, file))
+  if Plat.is.wsl then
+    vim.cmd(fmt([[:execute '!wslview %s']], file))
+  elseif Plat.is.mac then
+    vim.cmd(fmt([[:execute '!open %s']], file))
   else
     M.error("Unsupported platform for opening file with browser")
   end
