@@ -12,7 +12,7 @@ return {
 
       local modules = vim.api.nvim_get_runtime_file("lua/eden/mod/dap/adaptors/*.lua", true)
       for _, mod in ipairs(modules) do
-        require(mod)
+        loadfile(mod)()
       end
 
       -- ui
