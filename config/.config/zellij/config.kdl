@@ -1,0 +1,162 @@
+keybinds {
+  // globals
+  unbind "Ctrl b" // unbind default tmux key
+  unbind "Ctrl q" // unbind quit key
+
+  // clear default mappings and add back important ones
+  normal clear-defaults=true {
+    // adding back some bindings
+    bind "Ctrl a" { SwitchToMode "Tmux"; }
+
+    bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
+    bind "Alt j" "Alt Down" { MoveFocus "Down"; }
+    bind "Alt k" "Alt Up" { MoveFocus "Up"; }
+    bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
+  }
+
+  // clear default mappings and add my prefered tmux mappings
+  tmux clear-defaults=true {
+    bind "Ctrl a" { Write 2; SwitchToMode "Normal"; }
+
+    bind "[" { SwitchToMode "Scroll"; }
+    bind "]" { EditScrollback; SwitchToMode "Normal"; }
+    bind "-" "_" { NewPane "Down"; SwitchToMode "Normal"; }
+    bind "s"  "|" "\\" { NewPane "Right"; SwitchToMode "Normal"; }
+    bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+    bind "c" { NewTab; SwitchToMode "Normal"; }
+    bind "," { SwitchToMode "RenameTab"; }
+    bind "H" "p" { GoToPreviousTab; }
+    bind "L" "n" "Tab" { GoToNextTab; }
+    bind "h"  "Left" { MoveFocus "Left"; }
+    bind "j" "Down" { MoveFocus "Down"; }
+    bind "k"  "Up" { MoveFocus "Up"; }
+    bind "l" "Right" { MoveFocus "Right"; }
+    bind "o" { FocusNextPane; }
+    bind "d" { Detach; }
+    bind "Space" { NextSwapLayout; }
+
+    bind "x" { CloseFocus; SwitchToMode "Normal"; }
+    bind "Ctrl q" { Quit; }
+
+    bind "1" { GoToTab 1; SwitchToMode "Normal"; }
+    bind "2" { GoToTab 2; SwitchToMode "Normal"; }
+    bind "3" { GoToTab 3; SwitchToMode "Normal"; }
+    bind "4" { GoToTab 4; SwitchToMode "Normal"; }
+    bind "5" { GoToTab 5; SwitchToMode "Normal"; }
+    bind "6" { GoToTab 6; SwitchToMode "Normal"; }
+    bind "7" { GoToTab 7; SwitchToMode "Normal"; }
+    bind "8" { GoToTab 8; SwitchToMode "Normal"; }
+    bind "9" { GoToTab 9; SwitchToMode "Normal"; }
+
+    // switch to other modes
+    bind "Enter" "Esc" { SwitchToMode "Normal"; }
+    bind "Ctrl p" { SwitchToMode "Pane"; }
+    bind "Ctrl t" { SwitchToMode "Tab"; }
+    bind "Ctrl r" { SwitchToMode "Resize"; }
+    bind "Ctrl s" { SwitchToMode "Scroll"; }
+    bind "Ctrl o" { SwitchToMode "Session"; }
+    bind "Ctrl m" { SwitchToMode "Move"; }
+  }
+
+  shared_except "tmux" {
+      bind "Ctrl a" { SwitchToMode "Tmux"; }
+  }
+}
+
+themes {
+  carbonfox {
+    bg "#161616"
+    fg "#f2f4f8"
+    red "#ee5396"
+    green "#25be6a"
+    blue "#78a9ff"
+    yellow "#08bdba"
+    magenta "#be95ff"
+    orange "#3ddbd9"
+    cyan "#33b1ff"
+    black "#353535"
+    white "#7b7c7e"
+  }
+  dawnfox {
+    bg "#faf4ed"
+    fg "#575279"
+    red "#b4637a"
+    green "#618774"
+    blue "#286983"
+    yellow "#ea9d34"
+    magenta "#907aa9"
+    orange "#d7827e"
+    cyan "#56949f"
+    black "#ebdfe4"
+    white "#a8a3b3"
+  }
+  dayfox {
+    bg "#f6f2ee"
+    fg "#3d2b5a"
+    red "#a5222f"
+    green "#396847"
+    blue "#2848a9"
+    yellow "#ac5402"
+    magenta "#6e33ce"
+    orange "#955f61"
+    cyan "#287980"
+    black "#d3c7bb"
+    white "#824d5b"
+  }
+  duskfox {
+    bg "#232136"
+    fg "#e0def4"
+    red "#eb6f92"
+    green "#a3be8c"
+    blue "#569fba"
+    yellow "#f6c177"
+    magenta "#c4a7e7"
+    orange "#ea9a97"
+    cyan "#9ccfd8"
+    black "#373354"
+    white "#6e6a86"
+  }
+  nightfox {
+    bg "#192330"
+    fg "#cdcecf"
+    red "#c94f6d"
+    green "#81b29a"
+    blue "#719cd6"
+    yellow "#dbc074"
+    magenta "#9d79d6"
+    orange "#f4a261"
+    cyan "#63cdcf"
+    black "#29394f"
+    white "#71839b"
+  }
+  nordfox {
+    bg "#2e3440"
+    fg "#cdcecf"
+    red "#bf616a"
+    green "#a3be8c"
+    blue "#81a1c1"
+    yellow "#ebcb8b"
+    magenta "#b48ead"
+    orange "#c9826b"
+    cyan "#88c0d0"
+    black "#444c5e"
+    white "#7e8188"
+  }
+  terafox {
+    bg "#152528"
+    fg "#e6eaea"
+    red "#e85c51"
+    green "#7aa4a1"
+    blue "#5a93aa"
+    yellow "#fda47f"
+    magenta "#ad5c7c"
+    orange "#ff8349"
+    cyan "#a1cdd8"
+    black "#254147"
+    white "#587b7b"
+  }
+}
+
+theme "nightfox"
+
+// vim: sw=2 ts=2 sts=2 et
