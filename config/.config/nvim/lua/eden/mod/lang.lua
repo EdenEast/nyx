@@ -75,4 +75,10 @@ return {
     ft = { "markdown", "vimwiki" },
     cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
   },
+
+  {
+    "tigion/nvim-asciidoc-preview",
+    ft = { "asciidoc" },
+    cmd = { "AsciiDocPreview" },
+  },
 }
