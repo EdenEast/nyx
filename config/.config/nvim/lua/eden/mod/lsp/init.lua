@@ -170,8 +170,6 @@ return {
       }
 
       local sources = {
-        formatting.trim_newlines,
-
         -- lua
         formatting.stylua.with(with.stylua),
 
