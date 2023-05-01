@@ -94,6 +94,7 @@ generated in the pr and I can accept the changes.
 - [NixOS Wiki][wiki] - Community maintained wiki
 - [Nix Pills][nix-pills] - A learn nix by example understanding how it works step by step
 - [nix.dev][nix-dev] - An opinionated guide for developers getting things done using the Nix ecosystem
+- [NixOS Guide][nixos-guide] - A collection of resources about different topics for nixos
 
 ### Flakes
 
@@ -114,6 +115,7 @@ I agree with [@hlissner][hlissner]. This is needed when nix [drives you to drink
 [wiki]: https://nixos.wiki/
 [nix-pills]: https://nixos.org/guides/nix-pills/
 [nix-dev]: https://nix.dev/
+[nxios-guide]: https://github.com/mikeroyal/NixOS-Guide
 [edolstra]: https://github.com/edolstra
 [flake-1]: https://www.tweag.io/blog/2020-05-25-flakes/
 [flake-2]: https://www.tweag.io/blog/2020-06-25-eval-cache/
@@ -134,7 +136,10 @@ I agree with [@hlissner][hlissner]. This is needed when nix [drives you to drink
 
 [hlissner]: https://github.com/hlissner
 
-## TODO:
+## TODO
 
-- Create wsl options, check this [commit](https://github.com/davidtwco/veritas/commit/62cf0dd3f30b117462e3c31682b602d6cde3bc6a)
-- Some sort of backup solution like [borgmatic](https://torsion.org/borgmatic/) [borgbackup](https://www.borgbackup.org/)
+- [ ] handle wsl now that wsl-ssh-pageant is archived. Resources [here](https://neurrone.com/posts/yubikeys-in-2023/)
+  [here](https://github.com/masahide/OmniSSHAgent) or switch to [nixos-wsl](https://github.com/nix-community/NixOS-WSL)
+    - (An idea is to use nixos-wsl and build my-own install iso with [usb kernal passthough](https://1-bit-wonder.github.io/blog/how-to-use-yubikey-with-wsl/How%20to%20use%20Yubikey%20with%20WSL%20via%20USB%20passthrough/))
+- [ ] Create wsl options, check this [commit](https://github.com/davidtwco/veritas/commit/62cf0dd3f30b117462e3c31682b602d6cde3bc6a)
+- [ ] Some sort of backup solution like [borgmatic](https://torsion.org/borgmatic/) [borgbackup](https://www.borgbackup.org/)
