@@ -6,14 +6,13 @@ local c = ls.choice_node
 local fmt = require("luasnip.extras.fmt").fmt
 
 ls.add_snippets("asciidoc", {
+
+  s("audio", fmt("audio::{}[{}]{}", { i(1, "file"), i(2, "options"), i(0) })),
   s("include", fmt("include::{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
-  s("include", fmt("include:{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
   s("image", fmt("image::{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
-  s("image", fmt("image:{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
-  s("video", fmt("video::{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
-  s("video", fmt("video:{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
-  s("link", fmt("link::{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
+  s("video", fmt("video::{}[{}]{}", { i(1, "path"), i(2, "options"), i(0) })),
   s("link", fmt("link:{}[{}]{}", { i(1, "path"), i(2, "alt"), i(0) })),
+  s("youtube", fmt("video::{}[youtube]{}", { i(1, "id"), i(0) })),
 
   s(
     "heading",
