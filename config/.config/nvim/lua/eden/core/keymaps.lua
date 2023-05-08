@@ -8,6 +8,12 @@ local function t(str) return vim.api.nvim_replace_termcodes(str, true, true, tru
 -- Currently it is set to write the buffer as a shortcut.
 map("n", "<localleader><localleader>", "<cmd>write<cr>", { desc = "Write" })
 
+-- This helps when using colemak's nav cluster
+map("n", "<left>", "h", { remap = true })
+map("n", "<down>", "j", { remap = true })
+map("n", "<up>", "k", { remap = true })
+map("n", "<righh>", "l", { remap = true })
+
 -- Movement -------------------------------------------------------------------
 
 -- Better up / down
