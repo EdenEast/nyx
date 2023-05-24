@@ -12,6 +12,7 @@
     sd
     dua
     vhs
+    just
     # rustup
     # rust-analyzer
   ];
@@ -39,10 +40,10 @@
     };
     dev = {
       rust.enable = true;
-      python = {
-        enable = true;
-        extraPackages = with pkgs.python39Packages; [ pip pylint setuptools ];
-      };
+      # python = {
+      #   enable = true;
+      #   extraPackages = with pkgs.python39Packages; [ pip pylint setuptools ];
+      # };
     };
     shell = {
       bash.enable = true;
@@ -57,6 +58,7 @@
       xdg.enable = true;
       zoxide.enable = true;
       zsh.enable = true;
+      zellij.enable = true;
 
       gnupg = {
         enable = true;
