@@ -178,8 +178,16 @@ map("n", "<leader>ud", U.toggle_diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 map("n", "<leader>uc", function() U.toggle("conceallevel", false, { 0, conceallevel }) end, { desc = "Toggle Conceal" })
 
+-- Copy and paste with shift/ctrl insert this is a combo key on my keybooard
+map("n", "<C-Insert>", [["*yy]], { desc = "Copy" })
+map("i", "<C-Insert>", [[<esc>"*yygi]], { desc = "Copy" })
+
+map("n", "<S-Insert>", [["*p]], { desc = "Paste" })
+map("i", "<S-Insert>", [[<c-r>*]], { desc = "Paste" })
+
 -- Save file
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+map({ "i", "v", "n", "s" }, "<C-x>", "<cmd>x<cr><esc>", { desc = "Save/close file" })
 
 -- New file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
