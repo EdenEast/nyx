@@ -4,9 +4,9 @@ on:
   # Manual triggering
   workflow_dispatch:
 
-  # Every Sunday at 12:00
+  # Every two weeks 1st, and 15th
   schedule:
-    - cron: "0 5 * * SUN"
+    - cron: "0 0 1,15 * *"
 
 jobs:
   flake-update:
@@ -23,34 +23,28 @@ jobs:
             experimental-features = nix-command flakes
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Git author
-        run: |
-          git config user.name 'GitHub'
-          git config user.email 'noreply@github.com'
-
       - name: Update lock file
-        run: nix flake update --no-registries --commit-lock-file
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          nix flake update --commit-lock-file
 
       - name: Get commit message
         id: commit
         run: |
-          message="$(git log -1 --pretty=%B | tail +3 | awk -f ./.github/misc/flake-to-markdown.awk)"
-          message="${message//'%'/'%25'}"
-          message="${message//$'\n'/'%0A'}"
-          message="${message//$'\r'/'%0D'}"
-          echo "::set-output name=message::$message"
+          delimiter="$(openssl rand -hex 16)"
+          echo "message<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          git log -1 --pretty=%B | tail +3 | awk -f ./.github/misc/flake-to-markdown.awk >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          title: "chore(flake): Automatic flake update"
+          title: "chore(flake): update flake.lock"
           body: "${{ steps.commit.outputs.message }}"
-          branch: "automated/flake-update"
-          token: ${{ secrets.PAT }} # needed so that this triggers further flows. not ideal.
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          signoff: false
+          branch: automated/flake-updates
           delete-branch: true
           label: |
             automated pr
             nix
+
