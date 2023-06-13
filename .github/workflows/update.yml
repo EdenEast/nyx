@@ -44,7 +44,7 @@ jobs:
           body: "${{ steps.commit.outputs.message }}"
           branch: automated/flake-updates
           delete-branch: true
-          label: |
+          labels: |
             automated pr
             nix
 
