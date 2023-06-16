@@ -19,7 +19,7 @@ jobs:
             target: sloth
           - os: ubuntu-20.04
             target: eden
-          - os: macos-latest
+          - os: macos-13
             target: theman
     runs-on: ${{ matrix.os }}
     steps:
