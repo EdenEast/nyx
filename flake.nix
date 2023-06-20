@@ -32,6 +32,17 @@
     # eww.url = "github:elkowar/eww";
   };
 
+  nixConfig = {
+    extra-substituters = [
+      "https://edeneast.cachix.org"
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "edeneast.cachix.org-1:a4tKrKZgZXXXYhDytg/Z3YcjJ04oz5ormt0Ow6OpExc="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   outputs = { self, ... }@inputs:
     with self.lib;
     let
