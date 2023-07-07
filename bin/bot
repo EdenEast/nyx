@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -e
+
+function main() {
+
+  command="$1"
+  [[ -z $command ]] && {
+    echo "command required: [rec, play]"
+    exit 1
+  }
+
+  shift
+  case "$command" in
+    rec) rec "$@" ;;
+    play) play "$@" ;;
+    *)
+      echo "unknown mode \'$1\' possible options are: 'rec', 'play'"
+      exit 1
+      ;;
+  esac
+}
+
+bar_size=40
+bar_char_done="#"
+bar_char_todo="-"
+bar_percentage_scale=2
+
+function show_progress() {
+  current="$1"
+  total="$2"
+
+  # calculate the progress in percentage
+  percent=$(bc <<<"scale=$bar_percentage_scale; 100 * $current / $total")
+  # The number of done and todo characters
+  done=$(bc <<<"scale=0; $bar_size * $percent / 100")
+  todo=$(bc <<<"scale=0; $bar_size - $done")
+
+  # build the done and todo sub-bars
+  done_sub_bar=$(printf "%${done}s" | tr " " "${bar_char_done}")
+  todo_sub_bar=$(printf "%${todo}s" | tr " " "${bar_char_todo}")
+
+  # output the bar
+  echo -ne "\rProgress : [${done_sub_bar}${todo_sub_bar}] ($current/$total) ${percent}%"
+
+  if [ $total -eq $current ]; then
+    echo -e "\nDONE"
+  fi
+}
+
+function rec() {
+  rec_file="${2:-bot.xne}"
+  skip_key="${3:-q}"
+  cnee --record --mouse --keyboard -o "$rec_file" -sk "$skip_key"
+}
+
+function play() {
+  total_iterations="${1:-1}"
+  rec_file="${2:-bot.xne}"
+  # delay="${3:-0.5}"
+  show_progress 0 $total_iterations
+  for current_task in $(seq $total_iterations); do
+    # sleep $delay
+    cnee --replay --file "$rec_file" -ns &>/dev/null
+    show_progress $current_task $total_iterations
+  done
+}
+
+main "$@"
