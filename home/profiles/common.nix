@@ -48,6 +48,9 @@ in
         procs
         # Encrypted files in Git repositories
         git-crypt
+        # Runs programs without installing them
+        comma
+        nix-index
       ];
     };
 

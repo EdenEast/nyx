@@ -13,6 +13,8 @@
     dua
     vhs
     just
+    comma
+    nix-index
     # rustup
     # rust-analyzer
   ];
