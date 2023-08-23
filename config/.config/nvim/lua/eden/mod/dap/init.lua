@@ -16,8 +16,13 @@ return {
       end
 
       -- ui
-      require("dapui").setup()
+      local dapui = require("dapui")
+      dapui.setup()
       require("nvim-dap-virtual-text").setup()
+
+      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
       -- breakpoint style
       vim.fn.sign_define("DapBreakpointRejected", { text = "ﰸ", texthl = "DiagnosticError", linehl = "", numhl = "" })
