@@ -62,6 +62,8 @@ return {
             ["h"] = "close_node",
             ["l"] = "open",
             ["L"] = "focus_preview",
+            ["<left>"] = "close_node",
+            ["<right>"] = "open",
           },
         },
         default_component_configs = {
