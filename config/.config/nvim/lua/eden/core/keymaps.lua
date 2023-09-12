@@ -216,5 +216,6 @@ map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
 
 -- Misc
 map("n", "<F1>", function() require("eden.util").execute_file() end, { desc = "Execute file" })
+map("n", "gb", function() require("eden.util").open_url_under_cursor() end, { desc = "Open under cursor" })
 
 map("n", "<leader><cr>", "<cmd>messages<cr>", { desc = "Messages" })

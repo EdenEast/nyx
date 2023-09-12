@@ -18,10 +18,10 @@ end
 ---Open a url in the default system browser
 ---@param url string
 function M.open_url(url)
-  if Plat.is.linux then
-    vim.cmd([[:execute '!xdg-open ]] .. url .. "'")
-  elseif Plat.is.wsl then
+  if Plat.is.wsl then
     vim.cmd([[:execute '!wslview ]] .. url .. "'")
+  elseif Plat.is.linux then
+    vim.cmd([[:execute '!xdg-open ]] .. url .. "'")
   elseif Plat.is.mac then
     vim.cmd([[:execute '!open ]] .. url .. "'")
   elseif Plat.is.win then
@@ -42,6 +42,16 @@ function M.open_file_in_browser(file)
   else
     M.error("Unsupported platform for opening file with browser")
   end
+end
+
+---Open the url under cursor
+---@return nil
+function M.open_url_under_cursor()
+  local cword = vim.fn.expand("<cWORD>")
+  local url = string.strip_quotes(cword)
+
+  if string.starts_with(url, "https://") then return M.open_url(url) end
+  if string.match(url, [[.*/.*]]) then return M.open_url("https://github.com/" .. url) end
 end
 
 ---@param fn fun()

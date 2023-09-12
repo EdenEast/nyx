@@ -19,3 +19,17 @@ function string.starts_with(str, starts) return str:sub(1, #starts) == starts en
 ---@param ends string
 ---@return boolean
 function string.ends_with(str, ends) return ends == "" or str:sub(-#ends) == ends end
+
+---Strip quotes from string
+---
+---# Example
+---   assert([[https://github.com]], strip_quotes([['https://github.com']]))
+---@param str string
+---@return string
+function string.strip_quotes(str)
+  if string.sub(str, 1, 1) == '"' or string.sub(str, 1, 1) == "'" then
+    local quoteType = string.sub(str, 1, 1)
+    if string.sub(str, -1) == quoteType then return string.sub(str, 2, -2) end
+  end
+  return str
+end
