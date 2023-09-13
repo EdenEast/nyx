@@ -2,26 +2,96 @@
 #
 # This is a quick script call which and follow the results if they are links
 
-function process() {
-  local result="$1"
-  if [[ -L $result ]]; then
-    result=$(readlink "$result")
-  fi
-  echo "$result"
+function follow_links() {
+  local path="$1"
+  local indent=""
+
+  while [ -L "$path" ]; do
+    path="$(readlink "$path")"
+    echo "$indent └─$path"
+    indent="$indent   "
+  done
+}
+
+function usage() {
+  echo "Usage: fwhich [-a|--all] [-f|--follow] <executable>"
 }
 
 function main() {
-  if [ -z "$1" ]; then
-    echo "Require executable in PATH"
+  local follow_links_flag=false
+  local all_links_flags=false
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h | --help)
+        usage
+        exit 0
+        ;;
+      -a | --all)
+        all_links_flags=true
+        shift
+        ;;
+      -f | --follow)
+        follow_links_flag=true
+        shift
+        ;;
+      -*)
+        echo "Unknown option: $1"
+        usage
+        exit 1
+        ;;
+      *)
+        if [ -z "$executable" ]; then
+          executable="$1"
+        else
+          echo "Unknown argument: $1"
+          usage
+          exit 1
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  if [ -z "$executable" ]; then
+    usage
     exit 1
   fi
 
-  path=$(which "$1")
-  while [ -L "$path" ]; do
-    path=$(process "$path")
-  done
+  local path
 
-  echo "$path"
+  # Check if the executable exists in PATH
+  path="$(command -v "$executable")"
+
+  if [ -z "$path" ]; then
+    echo "Executable '$executable' not found in PATH."
+    usage
+    exit 1
+  fi
+
+  if [ "$all_links_flags" = true ]; then
+    for path in $(which -a "$executable"); do
+      if [ "$follow_links_flag" = true ]; then
+        echo "$path"
+        follow_links "$path"
+      else
+        while [ -L "$path" ]; do
+          path="$(readlink "$path")"
+        done
+        echo "$path"
+      fi
+    done
+  elif [ "$follow_links_flag" = true ]; then
+    echo "$path"
+    follow_links "$path"
+  else
+    while [ -L "$path" ]; do
+      path="$(readlink "$path")"
+    done
+    echo "$path"
+  fi
 }
 
 main "$@"
+
+# vim: sw=2 ts=2 sts=2 et
