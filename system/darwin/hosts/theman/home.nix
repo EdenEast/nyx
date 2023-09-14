@@ -15,8 +15,6 @@
     just
     comma
     nix-index
-    # rustup
-    # rust-analyzer
   ];
 
   # Manage home-manager with home-manager (inception)
@@ -42,10 +40,6 @@
     };
     dev = {
       rust.enable = true;
-      # python = {
-      #   enable = true;
-      #   extraPackages = with pkgs.python39Packages; [ pip pylint setuptools ];
-      # };
     };
     shell = {
       bash.enable = true;

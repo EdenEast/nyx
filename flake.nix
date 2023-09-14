@@ -19,10 +19,6 @@
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
-    # Overlays
-    fenix.url = "github:nix-community/fenix";
-    fenix.inputs.nixpkgs.follows = "nixpkgs";
-
     neovim-flake.url = "github:neovim/neovim?dir=contrib";
     neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -74,7 +70,6 @@
         [
           (self.overlay."${system}")
           (nur.overlay)
-          (fenix.overlays.default)
           # (_:_: { inherit (eww.packages."${system}") eww; })
         ] ++ ovs
       );
