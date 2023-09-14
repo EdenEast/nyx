@@ -17,6 +17,7 @@ let
     "docker"
     "games"
     "locate"
+    "libvirtd"
     "networmanager"
     "wheel"
   ];
