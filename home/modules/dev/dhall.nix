@@ -13,7 +13,6 @@ in
       dhall
       haskellPackages.dhall-bash
       haskellPackages.dhall-json
-      haskellPackages.dhall-lsp-server
       haskellPackages.dhall-yaml
     ];
   };
