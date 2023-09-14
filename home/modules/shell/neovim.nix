@@ -24,7 +24,6 @@ in
       default = with pkgs; [
         # cmake-language-server
         # elmPackages.elm-language-server
-        dhall-lsp-server
         efm-lsp
         marksman
         nodePackages.bash-language-server
