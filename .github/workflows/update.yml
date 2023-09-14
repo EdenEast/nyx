@@ -40,6 +40,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.PAT }} # needed so that this triggers further flows. not ideal.
           title: "chore(flake): update flake.lock"
           body: "${{ steps.commit.outputs.message }}"
           branch: automated/flake-updates
