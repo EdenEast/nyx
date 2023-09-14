@@ -19,13 +19,13 @@ end
 ---@param url string
 function M.open_url(url)
   if Plat.is.wsl then
-    vim.cmd([[:execute '!wslview ]] .. url .. "'")
+    os.execute(fmt([[wslview "%s"]], url))
   elseif Plat.is.linux then
-    vim.cmd([[:execute '!xdg-open ]] .. url .. "'")
+    os.execute(fmt([[xdg-open "%s"]], url))
   elseif Plat.is.mac then
-    vim.cmd([[:execute '!open ]] .. url .. "'")
+    os.execute(fmt([[open "%s"]], url))
   elseif Plat.is.win then
-    vim.cmd([[:execute '!start ]] .. url .. "'")
+    os.execute(fmt([[start "%s"]], url))
   else
     M.error("Unknown platform, could not determine url opener")
   end
