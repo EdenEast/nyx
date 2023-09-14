@@ -37,7 +37,7 @@ in
         # grep alternative.
         ripgrep
         # ls alternative.
-        exa
+        eza
         # Simple, fast and user-friendly alternative to find.
         fd
         # sed alternative

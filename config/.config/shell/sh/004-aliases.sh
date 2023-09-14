@@ -42,10 +42,10 @@ alias gs="git status -s"
 
 # if exa is installed use that for ls
 if [[ -x "$(command -v exa)" ]]; then
-  alias l="exa --group-directories-first --color=auto --git -a"
-  alias ls="exa --group-directories-first --color=auto --git"
-  alias ll="exa --group-directories-first --color=auto --git -la"
-  alias lll="exa --group-directories-first --color=auto --git -l"
+  alias l="eza --group-directories-first --color=auto --git -a"
+  alias ls="eza --group-directories-first --color=auto --git"
+  alias ll="eza --group-directories-first --color=auto --git -la"
+  alias lll="eza --group-directories-first --color=auto --git -l"
 else
   # have to check if we are on a bsd system (cough, cough... mac) as
   # it does not have color mode because of course...

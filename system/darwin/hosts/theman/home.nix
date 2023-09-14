@@ -7,7 +7,7 @@
     coreutils-full
     moreutils
     ripgrep
-    exa
+    eza
     fd
     sd
     dua
