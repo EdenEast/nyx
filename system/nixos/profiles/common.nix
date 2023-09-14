@@ -11,7 +11,7 @@ in
       binfmt.emulatedSystems = [ "aarch64-linux" ];
 
       # Clean temporary directory on boot.
-      cleanTmpDir = true;
+      tmp.cleanOnBoot = true;
 
       # Enable support for nfs and ntfs.
       supportedFilesystems = [ "cifs" "ntfs" "nfs" ];
