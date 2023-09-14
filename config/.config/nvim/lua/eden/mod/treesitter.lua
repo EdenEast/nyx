@@ -44,7 +44,6 @@ return {
           "c_sharp",
           "comment",
           "dhall",
-          "help",
           "html",
           "javascript",
           "json",
@@ -62,6 +61,7 @@ return {
           "tsx",
           "typescript",
           "vim",
+          "vimdoc",
           "yaml",
         },
       })

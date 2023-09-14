@@ -8,6 +8,12 @@ in
   options.nyx.modules.shell.neovim = {
     enable = mkEnableOption "neovim configuration";
 
+    useNightly = mkOption {
+      description = "Use the nightly neovoim instead of latest stable";
+      type = with types; bool;
+      default = false;
+    };
+
     extraPkgs = mkOption {
       description = "List of extra packages required for neovim config";
       type = with types; listOf package;
@@ -64,9 +70,11 @@ in
 
   config = mkIf cfg.enable {
     xdg.configFile."nvim".source = ../../../config/.config/nvim;
-    home.packages = with pkgs; [
-      neovim-nightly
-    ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters ++ cfg.extraPkgs;
+    home.packages = with pkgs;
+      let
+        package = if cfg.useNightly then neovim-nightly else neovim;
+      in
+      [ package ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters ++ cfg.extraPkgs;
 
     nyx.modules.shell.vale.enable = true;
 
