@@ -27,6 +27,11 @@ function main() {
         usage
         exit 0
         ;;
+      -af | -fa)
+        all_links_flags=true
+        follow_links_flag=true
+        shift
+        ;;
       -a | --all)
         all_links_flags=true
         shift
