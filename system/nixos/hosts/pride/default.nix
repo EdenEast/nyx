@@ -18,6 +18,7 @@
         nvidiaBusId = "PCI:1:0:0";
       };
       yubikey.enable = true;
+      docker.enable = true;
     };
 
     profiles = {
