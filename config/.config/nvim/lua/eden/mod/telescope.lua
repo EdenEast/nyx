@@ -1,42 +1,40 @@
 local Util = require("eden.util")
+local T = Util.telescope
 
 return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     keys = {
-      { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
-      { "<leader>/", Util.telescope("live_grep"), desc = "Find in Files (Grep)" },
-      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+      { "<leader>,", T("buffers", { show_all_buffers = true }), desc = "Switch Buffer" },
+      { "<leader>/", T("live_grep"), desc = "Find in Files (Grep)" },
+      { "<leader>?", T("current_buffer_fuzzy_find"), desc = "Buffer" },
+      { "<leader>:", T("command_history"), desc = "Command History" },
       -- find
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
-      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-      { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Git Files" },
-      { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
+      { "<leader>fb", T("buffers"), desc = "Buffers" },
+      { "<leader>ff", T("files"), desc = "Find Files (root dir)" },
+      { "<leader>fF", T("files", { cwd = false }), desc = "Find Files (cwd)" },
+      { "<leader>fg", T("git_files"), desc = "Git Files" },
+      { "<leader>fr", T("oldfiles"), desc = "Recent" },
       -- git
-      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "Commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Status" },
+      { "<leader>gc", T("git_commits"), desc = "Commits" },
+      { "<leader>gC", T("git_bcommits"), desc = "Buffer commits" },
       -- search
-      { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
-      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
-      { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
-      { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-      { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
-      { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
-      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-      -- { "<leader>sn", "<cmd>Telescope notify<cr>", desc = "Notifications" },
-      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-      { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
-      { "<leader>sw", Util.telescope("grep_string"), desc = "Word (root dir)" },
-      { "<leader>sW", Util.telescope("grep_string", { cwd = false }), desc = "Word (cwd)" },
-      { "<leader>uT", Util.telescope("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
+      { "<leader>sb", T("current_buffer_fuzzy_find"), desc = "Buffer" },
+      { "<leader>sc", T("command_history"), desc = "Command History" },
+      { "<leader>sC", T("commands"), desc = "Commands" },
+      { "<leader>sd", T("diagnostics"), desc = "Diagnostics" },
+      { "<leader>sg", T("live_grep"), desc = "Grep (root dir)" },
+      { "<leader>sG", T("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+      { "<leader>sh", T("help_tags"), desc = "Help Pages" },
+      { "<leader>sH", T("highlights"), desc = "Search Highlight Groups" },
+      { "<leader>sR", T("resume"), desc = "Resume" },
+      { "<leader>sw", T("grep_string"), desc = "Word (root dir)" },
+      { "<leader>sW", T("grep_string", { cwd = false }), desc = "Word (cwd)" },
+      { "<leader>uT", T("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
       {
         "<leader>ss",
-        Util.telescope("lsp_document_symbols", {
+        T("lsp_document_symbols", {
           symbols = {
             "Class",
             "Function",
@@ -54,7 +52,7 @@ return {
       },
       {
         "<leader>sS",
-        Util.telescope("lsp_workspace_symbols", {
+        T("lsp_workspace_symbols", {
           symbols = {
             "Class",
             "Function",
@@ -81,8 +79,8 @@ return {
             i = {
               ["<c-t>"] = function(...) return require("trouble.providers.telescope").open_with_trouble(...) end,
               ["<a-t>"] = function(...) return require("trouble.providers.telescope").open_selected_with_trouble(...) end,
-              ["<a-i>"] = function() Util.telescope("find_files", { no_ignore = true })() end,
-              ["<a-h>"] = function() Util.telescope("find_files", { hidden = true })() end,
+              ["<a-i>"] = function() T("find_files", { no_ignore = true })() end,
+              ["<a-h>"] = function() T("find_files", { hidden = true })() end,
               ["<C-Down>"] = function(...) return require("telescope.actions").cycle_history_next(...) end,
               ["<C-Up>"] = function(...) return require("telescope.actions").cycle_history_prev(...) end,
               ["<C-f>"] = function(...) return require("telescope.actions").preview_scrolling_down(...) end,
@@ -91,6 +89,11 @@ return {
             n = {
               ["q"] = function(...) return require("telescope.actions").close(...) end,
             },
+          },
+        },
+        pickers = {
+          live_grep = {
+            additional_args = function(_) return { "--hidden" } end,
           },
         },
       })
