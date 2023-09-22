@@ -3,6 +3,7 @@ mod platform;
 use std::{
     fs::File,
     io::{BufRead, BufReader},
+    os::unix::fs::symlink,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -11,6 +12,7 @@ use clap::{command, Args, Parser, Subcommand};
 use eyre::Result;
 use lazy_static::lazy_static;
 use phf::phf_map;
+use yansi::Paint;
 
 lazy_static! {
     static ref ROOT: PathBuf = platform::root_path();
@@ -59,11 +61,11 @@ pub fn is_wsl() -> bool {
 
 /// Test if the program is running under WSL
 #[cfg(not(target_os = "linux"))]
-pub fn is_wsl() -> bool {
+fn is_wsl() -> bool {
     false
 }
 
-pub fn is_nixos() -> bool {
+fn is_nixos() -> bool {
     // taken from: https://github.com/rust-lang/rust/blob/42f5828b01817e2aa67458c0c50db0b1c240f0bd/src/bootstrap/download.rs#L100-L107
     // Use `/etc/os-release` instead of `/etc/NIXOS`.
     // The latter one does not exist on NixOS when using tmpfs as root.
@@ -169,12 +171,25 @@ impl Run for Gc {
     }
 }
 
+const LINK_AFTER_HELP: &str = "\
+ Status is represented by the following colors:
+    - Green:  Linked to local 'config/'
+    - Cyan:   Linked to the nix store
+    - Yellow: Linked to somewhere other then /nix/store
+    - Red:    Target points to a non linked directory
+    - Blue:   Target does not exist on system
+";
+
 /// Create a symlink to config file.
 ///
 /// If no application is given all will be provided.
 #[derive(Debug, Args, Default)]
-#[command(visible_alias("l"))]
+#[command(visible_alias("l"), after_help=LINK_AFTER_HELP)]
 struct Link {
+    /// Link all targets
+    #[arg(short, long, default_value_t = false)]
+    all: bool,
+
     /// List valid targets
     #[arg(short, long, default_value_t = false)]
     list: bool,
@@ -183,7 +198,9 @@ struct Link {
     #[arg(short, long, default_value_t = false)]
     status: bool,
 
-    #[arg(default_value = None)]
+    // #[arg(default_value = None)]
+    // target: Option<String>,
+    #[arg(default_value = None, required_unless_present_any = ["list", "status", "all"])]
     target: Option<String>,
 }
 impl Run for Link {
@@ -191,12 +208,27 @@ impl Run for Link {
         if self.status {
             let mut keys = LINKS.keys().collect::<Vec<_>>();
             keys.sort();
-
-            for k in keys {
-                let value = LINKS.get(k).expect("key comes from map");
+            for name in keys {
+                let value = LINKS.get(name).expect("key comes from map");
                 let target = HOME.join(value.0);
-                let dest = HOME.join(value.1);
+                let dest = ROOT.join(value.1);
+                let (paint, path) = if let Ok(t) = std::fs::read_link(&target) {
+                    let paint = if dest == t {
+                        Paint::green(*name)
+                    } else if t.starts_with("/nix/store") {
+                        Paint::cyan(*name)
+                    } else {
+                        Paint::yellow(*name)
+                    };
+                    (paint, t.display().to_string())
+                } else if target.exists() {
+                    (Paint::red(*name), target.display().to_string())
+                } else {
+                    (Paint::blue(*name), "---".to_string())
+                };
+                println!("{:>10} {}", paint, path);
             }
+            return Ok(());
         }
 
         if self.list {
@@ -208,7 +240,54 @@ impl Run for Link {
             }
             return Ok(());
         }
-        todo!()
+
+        if self.all {
+            for (_, value) in LINKS.entries() {
+                let dest = HOME.join(value.0);
+                let source = ROOT.join(value.1);
+                self.create_link(&dest, &source)?;
+            }
+            return Ok(());
+        }
+
+        if let Some(target) = &self.target {
+            if let Some(value) = LINKS.get(&target) {
+                let dest = HOME.join(value.0);
+                let source = ROOT.join(value.1);
+                return self.create_link(&dest, &source);
+            }
+        }
+
+        Ok(())
+    }
+}
+
+impl Link {
+    fn create_link(&self, target: &Path, dest: &Path) -> Result<()> {
+        if target.is_symlink() {
+            if let Ok(link) = target.read_link() {
+                if link == dest {
+                    println!(
+                        "target {} already links to {}, skipping",
+                        target.display(),
+                        dest.display()
+                    );
+                    return Ok(());
+                }
+
+                std::fs::remove_file(target)?;
+            }
+        } else if target.is_dir() || target.is_file() {
+            println!(
+                "target '{}' exists and is not a link. Skipping",
+                target.display()
+            );
+            return Ok(());
+        }
+
+        symlink(dest, target)?;
+
+        Ok(())
     }
 }
 
@@ -219,7 +298,7 @@ struct Rollback {}
 
 impl Run for Rollback {
     fn run(&self) -> Result<()> {
-        todo!()
+        self.rollback()
     }
 }
 
@@ -249,6 +328,10 @@ struct Switch {
 
 impl Run for Switch {
     fn run(&self) -> Result<()> {
+        for (_, value) in LINKS.entries() {
+            let dest = HOME.join(value.0);
+            let source = ROOT.join(value.1);
+        }
         todo!()
     }
 }
@@ -271,13 +354,43 @@ impl Run for Test {
 #[derive(Debug, Args, Default)]
 #[command(visible_alias("u"))]
 struct Unlink {
-    list: bool,
     target: Option<String>,
 }
 
 impl Run for Unlink {
     fn run(&self) -> Result<()> {
-        todo!()
+        if let Some(target) = &self.target {
+            if let Some(value) = LINKS.get(&target) {
+                let dest = HOME.join(value.0);
+                let source = ROOT.join(value.1);
+                return self.unlink(&dest, &source);
+            }
+        }
+
+        for (_, value) in LINKS.entries() {
+            let dest = HOME.join(value.0);
+            let source = ROOT.join(value.1);
+            self.unlink(&dest, &source)?;
+        }
+
+        Ok(())
+    }
+}
+
+impl Unlink {
+    fn unlink(&self, target: &Path, dest: &Path) -> Result<()> {
+        if target.is_symlink() {
+            if let Ok(link) = target.read_link() {
+                if link == dest {
+                    println!(
+                        "link {} points to nyx config folder, Removing",
+                        target.display(),
+                    );
+                    std::fs::remove_file(target)?;
+                }
+            }
+        }
+        Ok(())
     }
 }
 

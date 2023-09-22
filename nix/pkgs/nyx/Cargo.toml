@@ -12,4 +12,5 @@ eyre = "0.6.8"
 lazy_static = "1.4.0"
 phf = { version = "0.11.2", features = ["macros"] }
 shellexpand = "3.1.0"
+yansi = "0.5.1"
 # log = "0.4.20"
