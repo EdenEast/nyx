@@ -52,6 +52,7 @@
           overlays = self.overlays."${system}";
         }
       );
+
     in
     rec {
       inherit pkgsBySystem;
@@ -60,6 +61,15 @@
       devShell = foreachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
 
       templates = import ./nix/templates;
+
+      apps = foreachSystem
+        (system: {
+          nyx = lib.mkApp
+            {
+              drv = self.packages.${system}.nyx;
+            };
+          default = self.apps.${system}.nyx;
+        });
 
       packages = foreachSystem (system: import ./nix/pkgs self system);
       overlay = foreachSystem (system: _final: _prev: self.packages."${system}");

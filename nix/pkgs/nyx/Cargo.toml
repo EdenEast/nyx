@@ -1,0 +1,15 @@
+[package]
+name = "nyx"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.4.4", features = ["derive"] }
+# env_logger = "0.10.0"
+eyre = "0.6.8"
+lazy_static = "1.4.0"
+phf = { version = "0.11.2", features = ["macros"] }
+shellexpand = "3.1.0"
+# log = "0.4.20"

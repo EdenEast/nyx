@@ -9,6 +9,7 @@ let
 in
 pkgs.mkShell {
   name = "nyx";
+  buildInputs = with pkgs; [ libiconv ];
   nativeBuildInputs = with pkgs; [
     git
     git-crypt

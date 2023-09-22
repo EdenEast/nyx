@@ -16,6 +16,18 @@ rec {
 
   existsOrDefault = x: set: default: if hasAttr x set then getAttr x set else default;
 
+  # Returns the structure used by `nix app`
+  mkApp =
+    { drv
+    , name ? drv.pname or drv.name
+    , exePath ? drv.passthru.exePath or "/bin/${name}"
+    }:
+    {
+      type = "app";
+      program = "${drv}${exePath}";
+    };
+
+
   # Derivation agnostic settings for all types of top level derivations (nixos, home-manager && darwin).
   mkUserHome = { config, system ? "x86_64-linux" }:
     { ... }: {
