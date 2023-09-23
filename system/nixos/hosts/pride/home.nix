@@ -11,7 +11,7 @@
     modules = {
       app = {
         alacritty.fontSize = 8;
-        wezterm.fontSize = 14;
+        wezterm.fontSize = 12;
         obs.enable = true;
       };
       dev = {
