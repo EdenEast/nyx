@@ -5,7 +5,7 @@ use std::{
     io::{BufRead, BufReader},
     os::unix::fs::symlink,
     path::{Path, PathBuf},
-    process::Command,
+    process::{Command, ExitStatus},
 };
 
 use clap::{command, Args, Parser, Subcommand};
@@ -322,17 +322,73 @@ impl Rollback {
 #[derive(Debug, Args, Default)]
 #[command(visible_alias("s"))]
 struct Switch {
+    /// Relink set links after switch completes
+    #[arg(short, long, default_value_t = false)]
     link: bool,
+
+    /// Show what would be applied
+    #[arg(short, long, default_value_t = false)]
+    dryrun: bool,
+
+    /// Name of nix target to switch to
+    #[arg(default_value= None)]
     target: Option<String>,
 }
 
 impl Run for Switch {
     fn run(&self) -> Result<()> {
-        for (_, value) in LINKS.entries() {
-            let dest = HOME.join(value.0);
-            let source = ROOT.join(value.1);
+        let mut cached_link_restore = vec![];
+        if !self.dryrun {
+            for (_, value) in LINKS.entries() {
+                let dest = HOME.join(value.0);
+                // if dest is a link and the link is not pointing into the nix store, then save where
+                // it is linking to and remove it.
+                if dest.is_symlink() {
+                    if let Ok(link) = std::fs::read_link(&dest) {
+                        if !link.starts_with("/nix/store") {
+                            cached_link_restore.push((dest, link));
+                        }
+                    }
+                }
+            }
         }
-        todo!()
+
+        // call switch command and check the results to see if it fails
+        if !self.switch()?.success() || self.link {
+            for (dest, link) in &cached_link_restore {
+                symlink(dest, link)?;
+            }
+        }
+
+        Ok(())
+    }
+}
+
+impl Switch {
+    #[cfg(target_os = "linux")]
+    fn switch(&self) -> Result<ExitStatus> {
+        self.switch_impl("nixos-rebuild")
+    }
+
+    #[cfg(not(target_os = "linux"))]
+    fn switch(&self) -> Result<ExitStatus> {
+        self.switch_impl("darwin-rebuild")
+    }
+
+    fn switch_impl(&self, cmd: &str) -> Result<ExitStatus> {
+        let flake = self
+            .target
+            .as_ref()
+            .map(|t| format!(".#{}", t))
+            .unwrap_or(".".to_string());
+
+        let subcmd = if self.dryrun {
+            "dry-activate"
+        } else {
+            "switch"
+        };
+
+        Ok(cmd!("sudo", cmd, subcmd, "--flake", &flake))
     }
 }
 
