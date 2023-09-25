@@ -1,6 +1,7 @@
 mod platform;
 
 use std::{
+    collections::HashMap,
     fs::File,
     io::{BufRead, BufReader},
     os::unix::fs::symlink,
@@ -11,23 +12,23 @@ use std::{
 use clap::{command, Args, Parser, Subcommand};
 use eyre::Result;
 use lazy_static::lazy_static;
-use phf::phf_map;
 use yansi::Paint;
 
 lazy_static! {
     static ref ROOT: PathBuf = platform::root_path();
     static ref HOME: PathBuf = platform::home_path();
+    static ref LINK_MAP: HashMap<String, LinkInfo> = create_link_map();
 }
 
-static LINKS: phf::Map<&'static str, (&'static str, &'static str)> = phf_map! {
-    "alacritty" => (".config/alacritty", "config/.config/alacritty"),
-    "awesome" => (".config/awesome", "config/.config/awesome"),
-    "git" => (".config/git", "config/.config/git"),
-    "nushell" => (".config/nushell", "config/.config/nushell"),
-    "nvim" => (".config/nvim", "config/.config/nvim"),
-    "wezterm" => (".config/wezterm", "config/.config/wezterm"),
-    "zellij" => (".config/zellij", "config/.config/zellij"),
-};
+// static LINKS: phf::Map<&'static str, (&'static str, &'static str)> = phf_map! {
+//     "alacritty" => (".config/alacritty", "config/.config/alacritty"),
+//     "awesome" => (".config/awesome", "config/.config/awesome"),
+//     "git" => (".config/git", "config/.config/git"),
+//     "nushell" => (".config/nushell", "config/.config/nushell"),
+//     "nvim" => (".config/nvim", "config/.config/nvim"),
+//     "wezterm" => (".config/wezterm", "config/.config/wezterm"),
+//     "zellij" => (".config/zellij", "config/.config/zellij"),
+// };
 
 macro_rules! cmd {
     ($bin:literal, $($args:expr),*) => {
@@ -38,13 +39,42 @@ macro_rules! cmd {
     };
 }
 
-macro_rules! output {
-    ($bin:literal, $($args:expr),*) => {
-        Command::new($bin).current_dir(ROOT.as_path()).args(&[$($args),*]).output()?
-    };
-    ($bin:literal) => {
-        Command::new($bin).current_dir(ROOT.as_path()).output()?
-    };
+// macro_rules! output {
+//     ($bin:literal, $($args:expr),*) => {
+//         Command::new($bin).current_dir(ROOT.as_path()).args(&[$($args),*]).output()?
+//     };
+//     ($bin:literal) => {
+//         Command::new($bin).current_dir(ROOT.as_path()).output()?
+//     };
+// }
+
+struct LinkInfo {
+    pub name: String,
+    pub original: PathBuf,
+    pub link: PathBuf,
+}
+
+impl LinkInfo {
+    fn new(name: &str, original: &str, link: &str) -> Self {
+        Self {
+            name: name.to_string(),
+            original: ROOT.join(original),
+            link: HOME.join(link),
+        }
+    }
+}
+
+#[rustfmt::skip]
+fn create_link_map() -> HashMap<String, LinkInfo> {
+    let mut map = HashMap::with_capacity(8);
+    map.insert("alacritty".to_string(), LinkInfo::new("alacritty", "config/.config/alacritty", ".config/alacritty"));
+    map.insert("awesome".to_string(), LinkInfo::new("awesome", "config/.config/awesome", ".config/awesome"));
+    map.insert("git".to_string(), LinkInfo::new("git", "config/.config/git", ".config/git"));
+    map.insert("nushell".to_string(), LinkInfo::new("nushell", "config/.config/nushell", ".config/nushell"));
+    map.insert("nvim".to_string(), LinkInfo::new("nvim", "config/.config/nvim", ".config/nvim"));
+    map.insert("wezterm".to_string(), LinkInfo::new("wezterm", "config/.config/wezterm", ".config/wezterm"));
+    map.insert("zellij".to_string(), LinkInfo::new("zellij", "config/.config/zellij", ".config/zellij"));
+    map
 }
 
 /// Test if the program is running under WSL
@@ -77,6 +107,29 @@ fn is_nixos() -> bool {
             matches!(l.trim(), "ID=nixos" | "ID='nixos'" | "ID=\"nixos\"")
         }),
     }
+}
+
+fn create_link(original: &Path, link: &Path) -> Result<()> {
+    if link.is_symlink() {
+        if let Ok(pointer) = link.read_link() {
+            if pointer == original {
+                println!(
+                    "link {} already links to {}, skipping",
+                    link.display(),
+                    original.display()
+                );
+                return Ok(());
+            }
+        }
+    } else if link.is_dir() || link.is_file() {
+        println!(
+            "target '{}' exists and is not a link. Skipping",
+            link.display()
+        );
+        return Ok(());
+    }
+
+    Ok(symlink(original, link)?)
 }
 
 trait Run {
@@ -206,33 +259,33 @@ struct Link {
 impl Run for Link {
     fn run(&self) -> Result<()> {
         if self.status {
-            let mut keys = LINKS.keys().collect::<Vec<_>>();
+            let mut keys = LINK_MAP.keys().collect::<Vec<_>>();
             keys.sort();
             for name in keys {
-                let value = LINKS.get(name).expect("key comes from map");
-                let target = HOME.join(value.0);
-                let dest = ROOT.join(value.1);
-                let (paint, path) = if let Ok(t) = std::fs::read_link(&target) {
-                    let paint = if dest == t {
+                let value = LINK_MAP.get(name).expect("key comes from map");
+                let (original, link) = (value.original, value.link);
+                let (paint, path) = if let Ok(pointer) = link.read_link() {
+                    let paint = if pointer == original {
                         Paint::green(*name)
-                    } else if t.starts_with("/nix/store") {
+                    } else if pointer.starts_with("/nix/store") {
                         Paint::cyan(*name)
                     } else {
                         Paint::yellow(*name)
                     };
-                    (paint, t.display().to_string())
-                } else if target.exists() {
-                    (Paint::red(*name), target.display().to_string())
+                    (paint, pointer.display().to_string())
+                } else if link.exists() {
+                    (Paint::red(*name), link.display().to_string())
                 } else {
                     (Paint::blue(*name), "---".to_string())
                 };
+
                 println!("{:>10} {}", paint, path);
             }
             return Ok(());
         }
 
         if self.list {
-            let mut keys = LINKS.keys().collect::<Vec<_>>();
+            let mut keys = LINK_MAP.keys().collect::<Vec<_>>();
             keys.sort();
 
             for l in keys {
@@ -242,50 +295,17 @@ impl Run for Link {
         }
 
         if self.all {
-            for (_, value) in LINKS.entries() {
-                let dest = HOME.join(value.0);
-                let source = ROOT.join(value.1);
-                self.create_link(&dest, &source)?;
+            for value in LINK_MAP.values() {
+                create_link(&value.original, &value.link)?;
             }
             return Ok(());
         }
 
         if let Some(target) = &self.target {
-            if let Some(value) = LINKS.get(&target) {
-                let dest = HOME.join(value.0);
-                let source = ROOT.join(value.1);
-                return self.create_link(&dest, &source);
+            if let Some(value) = LINK_MAP.get(target.as_str()) {
+                return create_link(&value.original, &value.link);
             }
         }
-
-        Ok(())
-    }
-}
-
-impl Link {
-    fn create_link(&self, target: &Path, dest: &Path) -> Result<()> {
-        if target.is_symlink() {
-            if let Ok(link) = target.read_link() {
-                if link == dest {
-                    println!(
-                        "target {} already links to {}, skipping",
-                        target.display(),
-                        dest.display()
-                    );
-                    return Ok(());
-                }
-
-                std::fs::remove_file(target)?;
-            }
-        } else if target.is_dir() || target.is_file() {
-            println!(
-                "target '{}' exists and is not a link. Skipping",
-                target.display()
-            );
-            return Ok(());
-        }
-
-        symlink(dest, target)?;
 
         Ok(())
     }
@@ -339,14 +359,14 @@ impl Run for Switch {
     fn run(&self) -> Result<()> {
         let mut cached_link_restore = vec![];
         if !self.dryrun {
-            for (_, value) in LINKS.entries() {
-                let dest = HOME.join(value.0);
-                // if dest is a link and the link is not pointing into the nix store, then save where
-                // it is linking to and remove it.
-                if dest.is_symlink() {
-                    if let Ok(link) = std::fs::read_link(&dest) {
-                        if !link.starts_with("/nix/store") {
-                            cached_link_restore.push((dest, link));
+            for value in LINK_MAP.values() {
+                // if the link is a symlink and is not pointing to the nix store, then cache the
+                // pointer location for later use
+                if value.link.is_symlink() {
+                    if let Ok(pointer) = std::fs::read_link(&value.link) {
+                        if !pointer.starts_with("/nix/store") {
+                            cached_link_restore.push((value.link, pointer));
+                            std::fs::remove_file(value.link);
                         }
                     }
                 }
@@ -354,7 +374,8 @@ impl Run for Switch {
         }
 
         // call switch command and check the results to see if it fails
-        if !self.switch()?.success() || self.link {
+        let exit_status = self.switch()?;
+        if !exit_status.success() || self.link {
             for (dest, link) in &cached_link_restore {
                 symlink(dest, link)?;
             }
@@ -376,19 +397,33 @@ impl Switch {
     }
 
     fn switch_impl(&self, cmd: &str) -> Result<ExitStatus> {
-        let flake = self
-            .target
-            .as_ref()
-            .map(|t| format!(".#{}", t))
-            .unwrap_or(".".to_string());
+        if is_nixos() {
+            let flake = self
+                .target
+                .as_ref()
+                .map(|t| format!(".#{}", t))
+                .unwrap_or(".".to_string());
 
-        let subcmd = if self.dryrun {
-            "dry-activate"
+            let subcmd = if self.dryrun {
+                "dry-activate"
+            } else {
+                "switch"
+            };
+            Ok(cmd!("sudo", cmd, subcmd, "--flake", &flake))
         } else {
-            "switch"
-        };
-
-        Ok(cmd!("sudo", cmd, subcmd, "--flake", &flake))
+            let flake = self
+                .target
+                .as_ref()
+                .map(|t| format!(".#top.{}", t))
+                .unwrap_or(".".to_string());
+            let args = self.dryrun.then_some("--dry-run").unwrap_or("");
+            let exit_status = cmd!("nix", "build", &flake, args);
+            if !self.dryrun {
+                Ok(cmd!("./result/activate"))
+            } else {
+                Ok(exit_status)
+            }
+        }
     }
 }
 
