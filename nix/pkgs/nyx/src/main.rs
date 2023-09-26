@@ -20,16 +20,6 @@ lazy_static! {
     static ref LINK_MAP: HashMap<String, LinkInfo> = create_link_map();
 }
 
-// static LINKS: phf::Map<&'static str, (&'static str, &'static str)> = phf_map! {
-//     "alacritty" => (".config/alacritty", "config/.config/alacritty"),
-//     "awesome" => (".config/awesome", "config/.config/awesome"),
-//     "git" => (".config/git", "config/.config/git"),
-//     "nushell" => (".config/nushell", "config/.config/nushell"),
-//     "nvim" => (".config/nvim", "config/.config/nvim"),
-//     "wezterm" => (".config/wezterm", "config/.config/wezterm"),
-//     "zellij" => (".config/zellij", "config/.config/zellij"),
-// };
-
 macro_rules! cmd {
     ($bin:literal, $($args:expr),*) => {
         Command::new($bin).current_dir(ROOT.as_path()).args(&[$($args),*]).spawn()?.wait()?
@@ -130,6 +120,17 @@ fn create_link(original: &Path, link: &Path) -> Result<()> {
     }
 
     Ok(symlink(original, link)?)
+}
+
+fn cached_link_restore() -> Vec<(&'static Path, &'static Path)> {
+    let mut cached_link_restore = vec![];
+    for value in LINK_MAP.values() {
+        if value.link.is_symlink() {
+            if let Ok(pointer) = value.link.read_link() {
+                if !pointer.starts_with("/nix/store") {}
+            }
+        }
+    }
 }
 
 trait Run {
@@ -314,7 +315,15 @@ impl Run for Link {
 /// Rollback the current generation.
 #[derive(Debug, Args, Default)]
 #[command()]
-struct Rollback {}
+struct Rollback {
+    /// Relink set links after switch completes
+    #[arg(short, long, default_value_t = false)]
+    link: bool,
+
+    /// Show what would be applied
+    #[arg(short, long, default_value_t = false)]
+    dryrun: bool,
+}
 
 impl Run for Rollback {
     fn run(&self) -> Result<()> {
@@ -333,7 +342,8 @@ impl Rollback {
     }
     #[cfg(not(target_os = "linux"))]
     fn rollback(&self) -> Result<()> {
-        cmd!("sudo", "darwin-rebuild", "--rollback");
+        let args = self.dryrun.then_some("--dry-run").unwrap_or("");
+        cmd!("darwin-rebuild", "switch" "--rollback", args);
         Ok(())
     }
 }
@@ -365,8 +375,8 @@ impl Run for Switch {
                 if value.link.is_symlink() {
                     if let Ok(pointer) = std::fs::read_link(&value.link) {
                         if !pointer.starts_with("/nix/store") {
-                            cached_link_restore.push((value.link, pointer));
-                            std::fs::remove_file(value.link);
+                            cached_link_restore.push((&value.link, pointer));
+                            std::fs::remove_file(&value.link);
                         }
                     }
                 }
@@ -388,15 +398,6 @@ impl Run for Switch {
 impl Switch {
     #[cfg(target_os = "linux")]
     fn switch(&self) -> Result<ExitStatus> {
-        self.switch_impl("nixos-rebuild")
-    }
-
-    #[cfg(not(target_os = "linux"))]
-    fn switch(&self) -> Result<ExitStatus> {
-        self.switch_impl("darwin-rebuild")
-    }
-
-    fn switch_impl(&self, cmd: &str) -> Result<ExitStatus> {
         if is_nixos() {
             let flake = self
                 .target
@@ -409,7 +410,7 @@ impl Switch {
             } else {
                 "switch"
             };
-            Ok(cmd!("sudo", cmd, subcmd, "--flake", &flake))
+            Ok(cmd!("sudo", "nixos-rebuild", subcmd, "--flake", &flake))
         } else {
             let flake = self
                 .target
@@ -424,6 +425,17 @@ impl Switch {
                 Ok(exit_status)
             }
         }
+    }
+
+    #[cfg(not(target_os = "linux"))]
+    fn switch(&self) -> Result<ExitStatus> {
+        let flake = self
+            .target
+            .as_ref()
+            .map(|t| format!(".#{}", t))
+            .unwrap_or(".".to_string());
+        let args = self.dryrun.then_some("--dry-run").unwrap_or("");
+        Ok(cmd!("darwin-rebuild", "switch", "--flake", &flake, &args))
     }
 }
 
@@ -451,17 +463,13 @@ struct Unlink {
 impl Run for Unlink {
     fn run(&self) -> Result<()> {
         if let Some(target) = &self.target {
-            if let Some(value) = LINKS.get(&target) {
-                let dest = HOME.join(value.0);
-                let source = ROOT.join(value.1);
-                return self.unlink(&dest, &source);
+            if let Some(value) = LINK_MAP.get(target.as_str()) {
+                return Unlink::unlink(&value);
             }
         }
 
-        for (_, value) in LINKS.entries() {
-            let dest = HOME.join(value.0);
-            let source = ROOT.join(value.1);
-            self.unlink(&dest, &source)?;
+        for value in LINK_MAP.values() {
+            Unlink::unlink(&value)?;
         }
 
         Ok(())
@@ -469,15 +477,15 @@ impl Run for Unlink {
 }
 
 impl Unlink {
-    fn unlink(&self, target: &Path, dest: &Path) -> Result<()> {
-        if target.is_symlink() {
-            if let Ok(link) = target.read_link() {
-                if link == dest {
+    fn unlink(info: &LinkInfo) -> Result<()> {
+        if info.link.is_symlink() {
+            if let Ok(pointer) = info.link.read_link() {
+                if pointer == info.original {
                     println!(
                         "link {} points to nyx config folder, Removing",
-                        target.display(),
+                        info.link.display(),
                     );
-                    std::fs::remove_file(target)?;
+                    std::fs::remove_file(&info.link)?;
                 }
             }
         }
