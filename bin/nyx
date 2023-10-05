@@ -38,8 +38,7 @@ INTERNAL_ALIASES['up']="update"
 
 NIXARGS=(--experimental-features "nix-command flakes")
 NIXBUILDARGS=(
-  --option 'extra-substituters' 'https://cachix.cachix.org https://nix-community.cachix.org https://edeneast.cachix.org'
-  --option 'extra-trusted-public-keys' 'cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= edeneast.cachix.org-1:a4tKrKZgZXXXYhDytg/Z3YcjJ04oz5ormt0Ow6OpExc='
+  --accept-flake-config
 )
 
 declare -A TARGETS
