@@ -2,21 +2,25 @@
 
 set -e
 
-# color chart https://stackoverflow.com/a/5947802
-RED='\033[0;31m'
-GRN='\033[0;32m'
-YLO='\033[0;33m'
-BLU='\033[0;34m'
-# MTA='\033[0;35m'
-CYN='\033[0;36m'
-RST='\033[0m'
+# Stop script on NZEC
+set -e
+# By default cmd1 | cmd2 returns exit code of cmd2 regardless of cmd1 success
+# This is causing it to fail
+set -o pipefail
 
-[[ $(uname -s) == "Darwin" ]] && is_mac=true || is_mac=false
-
-if $is_mac; then
-  NYX_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." >/dev/null 2>&1 && pwd)"
-else
-  NYX_ROOT="$(dirname "$(dirname "$(readlink -f "$0")")")"
+# Setup some colors to use. These need to work in fairly limited shells, like the Ubuntu Docker container where there are only 8 colors.
+# See if stdout is a terminal
+if [ -t 1 ] && command -v tput >/dev/null; then
+  ncolors=$(tput colors || echo 0)
+  # color chart https://stackoverflow.com/a/5947802
+  if [ -n "$ncolors" ] && [ $ncolors -ge 8 ]; then
+    RED="$(tput setaf 1 || echo)"
+    GREEN="$(tput setaf 2 || echo)"
+    YELLOW="$(tput setaf 3 || echo)"
+    BLUE="$(tput setaf 4 || echo)"
+    CYAN="$(tput setaf 6 || echo)"
+  fi
+  RESET='\033[0m'
 fi
 
 # Setting platform specific information
@@ -358,20 +362,20 @@ EOF
       if [ -L "$tar" ]; then
         output=$(readlink "$tar")
         if [[ $output == "$src" ]]; then
-          color="$GRN"
+          color="$GREEN"
         else
-          [[ $output =~ ^/nix/store/.* ]] && color="$CYN" || color="$YLO"
+          [[ $output =~ ^/nix/store/.* ]] && color="$CYAN" || color="$YELLOW"
         fi
       else
         if [ -d "$tar" ] || [ -f "$tar" ]; then
           output="$tar"
           color="$RED"
         else
-          color="$BLU"
+          color="$BLUE"
           output="---"
         fi
       fi
-      printf "${color}%*s${RST}: %s\n" 10 "$key" " $output"
+      printf "${color}%*s${RESET}: %s\n" 10 "$key" " $output"
     done
 
     exit 0
@@ -820,7 +824,7 @@ EOF
 
 # shellcheck disable=SC2317
 function debug() {
-  if [ -n "$DEBUG" ]; then echo_e "${BLU}[DEBUG]: $*${RST}"; fi
+  if [ -n "$DEBUG" ]; then echo_e "${BLUE}[DEBUG]: $*${RESET}"; fi
 }
 
 # shellcheck disable=SC2317
@@ -830,12 +834,12 @@ function info() {
 
 # shellcheck disable=SC2317
 function warn() {
-  echo_e "${YLO}[WARN]: $*${RST}"
+  echo_e "${YELLOW}[WARN]: $*${RESET}"
 }
 
 # shellcheck disable=SC2317
 function error() {
-  echo_e "${RED}[ERROR]: $*${RST}" 1>&2
+  echo_e "${RED}[ERROR]: $*${RESET}" 1>&2
 }
 
 # shellcheck disable=SC2317
