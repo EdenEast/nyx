@@ -6,7 +6,6 @@ add_newline = false
 format = """
 $username\
 $hostname\
-$shlvl\
 $directory\
 $git_branch\
 $git_commit\
@@ -16,11 +15,17 @@ $hg_branch\
 $docker_context\
 $nix_shell\
 $status\
+$shlvl\
 $character\
 """
 
 # Change timeout of scanning files to 10 mili secs
 scan_timeout = 10
+
+[shlvl]
+disabled = false
+threshold = 3
+format = "[$shlvl]($style) "
 
 [character]
 success_symbol = "[➜](bold green)"
