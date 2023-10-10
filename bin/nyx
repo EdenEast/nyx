@@ -23,7 +23,7 @@ fi
 HOME_MANAGER_BACKUP_EXT="nbak"
 
 # shellcheck shell=bash
-INTERNAL_COMMANDS="^(build|check|fmt|gc|help|link|rollback|switch|test|update|unlink)$"
+INTERNAL_COMMANDS="^(build|check|fmt|gc|help|link|repl|rollback|switch|test|update|unlink)$"
 
 declare -A INTERNAL_ALIASES
 INTERNAL_ALIASES['b']="build"
@@ -420,6 +420,46 @@ EOF
   set -e
 }
 
+# shellcheck disable=SC2317
+function cmd_repl() {
+  set +e
+  local help_msg
+  IFS='' read -r -d '' help_msg <<EOF
+USAGE:
+  nyx repl [OPTIONS]
+
+Open nix repl with configuration flake loaded
+
+OPTIONS:
+  -h, --help      Show help message
+EOF
+  set -e
+
+  local -a args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [ -n "$CMD_HELP" ] && {
+    printf "%s\n" "$help_msg"
+    exit 1
+  }
+
+  (
+    # tmpfile="$(mktemp /tmp/nyx-repl-XXXXXX.nix)"
+    tmpfile="/tmp/nyx-repl.nix"
+    echo "(builtins.getFlake \"$NYX_ROOT\")" >"$tmpfile"
+    nix repl --file "$tmpfile" "${args[@]}"
+    rm "$tmpfile"
+  )
+}
+
+# shellcheck disable=SC2317
 function cmd_rollback() {
   set +e
   local help_msg
@@ -742,14 +782,16 @@ USAGE:
   nyx <COMMAND> [OPTIONS...]
 
 COMMANDS:
-  build  - Build target
-  check  - Execute flake check
-  fmt    - Execute formatters
-  gc     - Garbage collection and nix store optimization
-  link   - Symlink config locations in config/ to ~/.config
-  switch - Switch to configuration
-  update - Update flake inputs
-  unlink - Remove custom link from the \`link\` command
+  build    - Build target
+  check    - Execute flake check
+  fmt      - Execute formatters
+  gc       - Garbage collection and nix store optimization
+  link     - Symlink config locations in config/ to ~/.config
+  repl     - Open nix repl with configuration flake loaded
+  rollback - Rollback the current generation.
+  switch   - Switch to configuration
+  update   - Update flake inputs
+  unlink   - Remove custom link from the \`link\` command
 
 OPTIONS:
   -v, --verbose  - Output verbose information
