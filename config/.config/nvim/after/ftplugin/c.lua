@@ -5,3 +5,6 @@ vim.opt_local.expandtab = true
 
 -- Vim ftplugin sets `o` ... why? I dont want!
 vim.opt_local.formatoptions:remove("o")
+
+-- Use single line comments for comment motions
+vim.opt_local.commentstring = "// %s"
