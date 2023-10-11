@@ -51,6 +51,7 @@ in
         # Runs programs without installing them
         comma
         nix-index
+        tuxmux
       ];
     };
 

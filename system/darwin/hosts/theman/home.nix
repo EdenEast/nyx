@@ -15,6 +15,7 @@
     just
     comma
     nix-index
+    tuxmux
   ];
 
   # Manage home-manager with home-manager (inception)
