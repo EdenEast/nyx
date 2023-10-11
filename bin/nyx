@@ -70,6 +70,8 @@ TARGETS['wezterm']="$HOME/.config/wezterm"
 SOURCES['wezterm']="$NYX_ROOT/config/.config/wezterm"
 TARGETS['zellij']="$HOME/.config/zellij"
 SOURCES['zellij']="$NYX_ROOT/config/.config/zellij"
+TARGETS['zsh']="$HOME/.config/zsh"
+SOURCES['zsh']="$NYX_ROOT/config/.config/zsh"
 
 function main() {
   # Parse command line options
@@ -324,7 +326,11 @@ TARGETS:
   git
   nu
   nvim
+  shell
+  tmux
   wezterm
+  zellij
+  zsh
 
 OPTIONS:
   -h, --help      Show help message
@@ -555,38 +561,59 @@ EOF
   (
     cd "$NYX_ROOT"
 
-    # Making sure that the target builds before trying to unlink and switch
-    cmd_build "${NYX_ARGS[@]}"
+    local -a linked
+    for key in "${!TARGETS[@]}"; do
+      target="${TARGETS[$key]}"
+      src="${SOURCES[$key]}"
+      if [ -L "$target" ]; then
+        output="$(readlink "$target")"
+        if [[ $output != /nix/store/* ]]; then
+          linked+=("$src:$target")
+          echo rm "$target"
+          rm "$target"
+        fi
+      fi
+    done
 
-    # Since the build completed with no issues then it is safe to unlink
-    # and switch to the new config
-    cmd_unlink
+    function restore_links() {
+      code=$?
+      delimiter=":"
+      for link in "${linked[@]}"; do
+        parts=(${link//$delimiter/ })
+        echo ln -s ${parts[0]} ${parts[1]}
+        ln -s ${parts[0]} ${parts[1]}
+      done
+
+      if [ "$code" -eq 0 ]; then
+        exit "$code"
+      fi
+    }
 
     # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
       if $IS_MAC; then
         debug "Switching to defined target ${args[0]} on darwin system"
-        darwin-rebuild switch --flake ".#${args[0]}"
+        darwin-rebuild switch --flake ".#${args[0]}" || restore_links
       elif $IS_NIXOS; then
         debug "Switching to defined target ${args[0]} on nixos system"
-        sudo nixos-rebuild switch --flake ".#${args[0]}"
+        sudo nixos-rebuild switch --flake ".#${args[0]}" || restore_links
       else
         debug "Switching to defined target ${args[0]} on non nixos system"
-        ./result/activate
+        cmd_build "${NYX_ARGS[@]}" && ./result/activate || restore_links
       fi
     else
       if $IS_MAC; then
         debug "Darwin detected switching DarwinConfiguration for the host machine: $(hostname)"
-        darwin-rebuild switch --flake .
+        darwin-rebuild switch --flake . || restore_links
       elif $IS_NIXOS; then
         debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
-        sudo nixos-rebuild switch --flake . # TODO: How do force to use extra binary caches?
+        sudo nixos-rebuild switch --flake . || restore_links
       else
         debug "Nixos not detected, switching target based on \$USER: $USER"
         # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
         # infer then nix build will just run and build the default package.
         # TODO: This is wrong and should save what top target should be built for the machine.
-        ./result/activate
+        cmd_build "${NYX_ARGS[@]}" && ./result/activate || restore_links
 
         # # Could not infer and building the default package
         # debug "Could not infer target to build, building default package for the flake"
@@ -594,7 +621,7 @@ EOF
       fi
     fi
 
-    [ -n "$do_link" ] && cmd_link
+    [ -n "$do_link" ] && restore_links
   )
 }
 
