@@ -7,6 +7,21 @@
 # ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
 #
 
+function_profile=false
+command_profile=false
+
+if [[ $function_profile == true ]]; then
+    zmodload zsh/zprof
+fi
+
+if [[ $command_profile == true ]]; then
+    zmodload zsh/datetime
+    setopt promptsubst
+    PS4='+$EPOCHREALTIME %N:%i> '
+    exec 3>&2 2> startlog.$$
+    setopt xtrace prompt_subst
+fi
+
 autoload -Uz compinit
 compinit
 
@@ -30,3 +45,11 @@ fi
 # which must be the last line in the source file
 [[ -f $HOME/.local/share/zsh/nyx_zshrc ]] && . $HOME/.local/share/zsh/nyx_zshrc
 
+if [[ $function_profile == true ]]; then
+    zprof > startup-functions.log
+fi
+
+if [[ $command_profile == true ]]; then
+    unsetopt xtrace
+    exec 2>&3 3>&-
+fi
