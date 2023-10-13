@@ -9,7 +9,7 @@
 
 # Profile ---------------------------------------------------------------------
 function_profile=false
-command_profile=true
+command_profile=false
 
 if [[ $function_profile == true ]]; then
     zmodload zsh/zprof

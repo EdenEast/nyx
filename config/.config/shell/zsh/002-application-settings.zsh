@@ -1,5 +1,5 @@
 # if repo is installed then soure the work script
-if [ "$(command -v repo)"]; then
+if [ "$(command -v repo)" ]; then
   eval "$(repo init zsh --fzf)"
 fi
 

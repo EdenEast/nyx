@@ -22,3 +22,4 @@ fi
 [[ -f $HOME/.local/share/zsh/nyx_zprofile ]] && . $HOME/.local/share/zsh/nyx_zprofile
 [[ -f $HOME/.local/share/zsh/zprofile ]] && . $HOME/.local/share/zsh/zprofile
 
+source $HOME/.config/shell/000-gpg-ssh.sh
