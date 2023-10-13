@@ -1,9 +1,11 @@
 # if repo is installed then soure the work script
-[[ -x "$(command -v repo)" ]] && {
-    [ -x "$(command -v fzf)" ] && eval "$(repo init bash --fzf)" || eval "$(repo init bash)"
-}
+if [ "$(command -v repo)" ]; then
+  eval "$(repo init bash --fzf)"
+fi
 
 # if zoxide is insatlled then source helper scripts
-[[ -x "$(command -v zoxide)" ]] && {
-    eval "$(zoxide init bash)"
-}
+if [ "$(command -v zoxide)" ]; then
+  eval "$(zoxide init bash)"
+fi
+
+eval "$(wt source)"

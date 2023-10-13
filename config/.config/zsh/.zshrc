@@ -9,7 +9,7 @@
 
 # Profile ---------------------------------------------------------------------
 function_profile=false
-command_profile=false
+command_profile=true
 
 if [[ $function_profile == true ]]; then
     zmodload zsh/zprof
@@ -30,7 +30,6 @@ export ZSH_COMPDUMP=$HOME/.cache/zsh/zcompdump
 autoload -Uz compinit
 if [ ! -f $ZSH_COMPDUMP ] || [ "$(find $ZSH_COMPDUMP -mtime +1)" ]; then
     # Either the compdump file does not exist or is older then a day, regen
-    echo compinit -d "$ZSH_COMPDUMP"
     compinit -d "$ZSH_COMPDUMP"
 fi
 compinit -C -d $ZSH_COMPDUMP
