@@ -445,9 +445,10 @@ function cmd_repl() {
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE:
-  nyx repl [OPTIONS]
+  nyx repl [OPTIONS] [.]
 
-Open nix repl with configuration flake loaded
+Open nix repl with configuration flake loaded.
+If '.' is passed it will use the current dir's flake instead of NYX's
 
 OPTIONS:
   -h, --help      Show help message
@@ -470,8 +471,9 @@ EOF
   done
 
   (
+    [ "${args[0]}" = "." ] && flake="$(pwd)" || flake="$NYX_ROOT"
     tmpfile="/tmp/nyx-repl.nix"
-    echo "(builtins.getFlake \"$NYX_ROOT\")" >"$tmpfile"
+    echo "(builtins.getFlake \"$flake\")" >"$tmpfile"
     nix repl --file "$tmpfile" "${args[@]}"
     rm "$tmpfile"
   )
