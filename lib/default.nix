@@ -69,7 +69,7 @@ rec {
   # Top level derivation for just home-manager
   mkHome = name: { config ? name, user ? "eden", system ? "x86_64-linux" }:
     let
-      pkgs = inputs.self.pkgsBySystem."${system}";
+      pkgs = inputs.self.legacyPackages."${system}";
       userConf = import (strToFile user ../user);
       username = userConf.name;
       homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
@@ -121,7 +121,7 @@ rec {
   mkSystem = name: { config ? name, user ? "eden", system ? "x86_64-linux" }:
     nameValuePair name (
       let
-        pkgs = inputs.self.pkgsBySystem."${system}";
+        pkgs = inputs.self.legacyPackages."${system}";
         userConf = import (strToFile user ../user);
       in
       nixosSystem {
@@ -203,7 +203,7 @@ rec {
     nameValuePair name (
       let
         system = "x86_64-darwin";
-        pkgs = inputs.self.pkgsBySystem."${system}";
+        pkgs = inputs.self.legacyPackages."${system}";
         userConf = import (strToFile user ../user);
         nixConf = import ../nix/conf.nix;
       in
