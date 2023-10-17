@@ -7,7 +7,7 @@ return {
     config = function()
       require("nightfox").setup({
         options = {
-          module_default = false,
+          module_default = true,
           modules = {
             alpha = true,
             cmp = true,
@@ -16,6 +16,7 @@ return {
             gitgutter = true,
             gitsigns = true,
             illuminate = true,
+            lazy = true,
             leap = true,
             lsp_semantic_tokens = true,
             lsp_trouble = true,

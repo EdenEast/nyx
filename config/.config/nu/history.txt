@@ -1,0 +1,27 @@
+nu --version
+exit
+git status
+ls
+exit
+mkdir --helnp
+mkdir --help
+mkdir ~/.cache/nushell/modules
+starship init nu | save -f ~/.cache/nushell/modules/starship.nu
+use ~/.cache/nushell/modules/starship.nu 
+exit
+use ~/.cache/nushell/modules/starship.nu 
+echo $PATH
+echo $env.PATH
+exit
+echo $env.PATH
+nvim ~/.cache/nushell/modules/starship.nu
+nvim config/.config/starship/starship.toml
+exit
+cd 
+ls
+clear
+ls
+lf
+lf 
+nvim tm-seq
+exit

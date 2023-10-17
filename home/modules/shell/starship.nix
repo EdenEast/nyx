@@ -13,6 +13,7 @@ in
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
+      enableNushellIntegration = true;
       package = pkgs.starship;
     };
 
