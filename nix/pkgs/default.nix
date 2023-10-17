@@ -2,7 +2,7 @@ self: system:
 
 with self.lib;
 let
-  pkgs = self.pkgsBySystem."${system}";
+  pkgs = self.legacyPackages."${system}";
   dirs = filterAttrs
     (
       n: v: v != null && !(hasPrefix "_" n) && (v == "directory")

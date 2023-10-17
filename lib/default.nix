@@ -203,7 +203,7 @@ rec {
     nameValuePair name (
       let
         system = "x86_64-darwin";
-        pkgs = inputs.self.pkgsBySystem."${system}";
+        pkgs = inputs.self.legacyPackages."${system}";
         userConf = import (strToFile user ../user);
         nixConf = import ../nix/conf.nix;
       in
