@@ -18,10 +18,10 @@ keybinds {
     // adding back some bindings
     bind "Ctrl a" { SwitchToMode "Tmux"; }
 
-    bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
-    bind "Alt j" "Alt Down" { MoveFocus "Down"; }
-    bind "Alt k" "Alt Up" { MoveFocus "Up"; }
-    bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
+    bind "Ctrl h"  { MoveFocusOrTab "Left"; }
+    bind "Ctrl j"  { MoveFocus "Down"; }
+    bind "Ctrl k"  { MoveFocus "Up"; }
+    bind "Ctrl l"  { MoveFocusOrTab "Right"; }
   }
 
   // clear default mappings and add my prefered tmux mappings
