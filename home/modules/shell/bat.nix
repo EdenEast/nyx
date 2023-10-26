@@ -10,7 +10,6 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.bat ];
-    xdg.configFile."bat".source = ../../../config/.config/bat;
   };
 }
 
