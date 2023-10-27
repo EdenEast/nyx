@@ -18,6 +18,7 @@
         cc.enable = true;
         nix.enable = true;
         node.enable = true;
+        rust.enable = true;
       };
       shell = {
         direnv.enable = true;
