@@ -272,4 +272,30 @@ return {
     cmd = { "UndotreeToggle" },
     keys = { { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" } },
   },
+
+  {
+    "edeneast/harpoon",
+    keys = {
+      -- qwerty
+      { "<M-h>", function() require("harpoon.ui").nav_file(1) end, desc = "Harpoon 1" },
+      { "<M-j>", function() require("harpoon.ui").nav_file(2) end, desc = "Harpoon 2" },
+      { "<M-k>", function() require("harpoon.ui").nav_file(3) end, desc = "Harpoon 3" },
+      { "<M-l>", function() require("harpoon.ui").nav_file(4) end, desc = "Harpoon 3" },
+      -- colemak
+      { "<M-n>", function() require("harpoon.ui").nav_file(1) end, desc = "Harpoon 1" },
+      { "<M-e>", function() require("harpoon.ui").nav_file(2) end, desc = "Harpoon 2" },
+      { "<M-i>", function() require("harpoon.ui").nav_file(3) end, desc = "Harpoon 3" },
+      { "<M-o>", function() require("harpoon.ui").nav_file(4) end, desc = "Harpoon 4" },
+
+      { "<M-a>", function() require("harpoon.mark").add_file() end, desc = "Harpoon add" },
+      { "<leader>uh", function() require("harpoon.ui").toggle_quick_menu() end, desc = "Harpoon" },
+    },
+    config = function()
+      require("harpoon").setup({
+        menu = {
+          width = function() return math.max(60, math.floor(vim.api.nvim_win_get_width(0) * 0.8)) end,
+        },
+      })
+    end,
+  },
 }
