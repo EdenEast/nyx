@@ -218,12 +218,13 @@ EOF
 
 function cmd_help() {
   if [[ $1 =~ $INTERNAL_COMMANDS ]]; then
-    $1 '--help'
+    CMD_HELP=true
+    "cmd_$1" '--help'
   fi
 
   set +e
   local msg
-  IFS='' read -r -d '' msg <<EOF
+  IFS='' read -r -d '' help_msg <<EOF
 Utility script to work with git worktree's
 
 USAGE:
@@ -245,14 +246,14 @@ OPTIONS:
 EOF
   set -e
 
-  printf "%s\n" "$msg"
+  printf "%s\n" "$help_msg"
   exit 1
 }
 
 function cmd_list() {
   set +e
   local msg
-  IFS='' read -r -d '' msg <<EOF
+  IFS='' read -r -d '' help_msg <<EOF
 List worktrees
 
 USAGE:
@@ -284,7 +285,7 @@ EOF
 function cmd_new() {
   set +e
   local msg
-  IFS='' read -r -d '' msg <<EOF
+  IFS='' read -r -d '' help_msg <<EOF
 Create a new branch using worktrees
 
 USAGE:
@@ -330,7 +331,7 @@ EOF
 function cmd_remove() {
   set +e
   local msg
-  IFS='' read -r -d '' msg <<EOF
+  IFS='' read -r -d '' help_msg <<EOF
 Remove worktree
 
 USAGE:
@@ -385,7 +386,7 @@ EOF
 function cmd_root() {
   set +e
   local msg
-  IFS='' read -r -d '' msg <<EOF
+  IFS='' read -r -d '' help_msg <<EOF
 Return the root of the repository
 
 USAGE:
