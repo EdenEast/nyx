@@ -8,4 +8,4 @@ if [ "$(command -v zoxide)" ]; then
   eval "$(zoxide init bash)"
 fi
 
-eval "$(wt source)"
+eval "$(git-wt source)"

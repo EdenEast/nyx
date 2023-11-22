@@ -428,10 +428,10 @@ EOF
   cat <<EOF
 function wt() {
   if [[ "\$1" =~ ^\(switch\|s\)\$ ]]; then
-    SCRIPT="\$(command wt \$@)"
+    SCRIPT="\$(git-wt \$@)"
     [ \$? -eq 0 ] && eval "\$SCRIPT" || printf "\$SCRIPT"
   else
-    command wt \$@
+    git-wt \$@
   fi
 }
 
@@ -439,7 +439,7 @@ function wt() {
 #
 # To initialize wt, add this to your configuration (usually ~/.bashrc):
 #
-# [ -x "\$(command -v wt)" ] && eval "\$(wt source)"
+# [ -x "\$(command -v git-wt)" ] && eval "\$(git-wt source)"
 EOF
 }
 
