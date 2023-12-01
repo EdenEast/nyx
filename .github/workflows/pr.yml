@@ -1,13 +1,11 @@
 name: Pull Request
+permissions:
+  pull-requests: write
 on:
   pull_request:
-    # paths-ignore:
-    #   - "**.md"
-    #   - "**.adoc"
-    #   - "**.org"
-    #   - "**.norg"
-    #   - "bin/**"
-    #   - "docs/**"
+    paths:
+      - "**.nix"
+      - "flake.lock"
 
 jobs:
   build:
@@ -112,6 +110,7 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         if: ${{ !startswith(github.ref, 'dependabot') }}
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: ".#top.${{ matrix.target }}"
           message: |
             ### Report for `${{ matrix.target }}`
