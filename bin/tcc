@@ -42,7 +42,7 @@ case "$name" in
 esac
 
 if [[ -f $HOME/.cache/nvim/theme.txt ]]; then
-  echo "$name" >"$HOME/.cache/nvim/theme.txt"
+  echo "$name" >"$HOME/.cache/nvim/theme"
 fi
 
 sd '^(\s*color_scheme\s*=\s*").*(",?)' "\${1}${wt_name}\${2}" "$HOME/.local/share/wezterm/config.lua"
