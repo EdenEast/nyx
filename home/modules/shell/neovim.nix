@@ -28,9 +28,6 @@ in
       description = "List of language server packages";
       type = with types; listOf package;
       default = with pkgs; [
-        # cmake-language-server
-        # elmPackages.elm-language-server
-        efm-lsp
         marksman
         nodePackages.bash-language-server
         nodePackages.pyright
