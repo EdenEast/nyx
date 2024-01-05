@@ -8,7 +8,7 @@ return {
     },
     config = function()
       local dap = require("dap")
-      dap.set_log_level = "TRACE"
+      dap.set_log_level("TRACE")
 
       local modules = vim.api.nvim_get_runtime_file("lua/eden/mod/dap/adaptors/*.lua", true)
       for _, mod in ipairs(modules) do
