@@ -1,6 +1,7 @@
 {
   "LuaSnip": { "branch": "master", "commit": "3d2ad0c0fa25e4e272ade48a62a185ebd0fe26c1" },
   "alpha-nvim": { "branch": "main", "commit": "9e33db324b8bb7a147bce9ea5496686ee859461d" },
+  "biscuit": { "branch": "main", "commit": "c375565509e47dce6d693bfc7028b7f26dbf2bf7" },
   "caret.nvim": { "branch": "main", "commit": "405cbbbe674126bd216f62d77313e182a47c623f" },
   "catppuccin": { "branch": "main", "commit": "71b7a866e092bc2605d790c8d43c4aeb032d0a1c" },
   "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },

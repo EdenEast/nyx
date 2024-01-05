@@ -63,6 +63,11 @@ return {
   },
 
   {
+    "Biscuit-Colorscheme/nvim",
+    name = "biscuit",
+  },
+
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     config = function()
