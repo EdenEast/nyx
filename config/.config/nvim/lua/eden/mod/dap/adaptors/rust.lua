@@ -1,6 +1,7 @@
 local dap = require("dap")
 local dutils = require("dap.utils")
 local util = require("eden.mod.dap.util")
+local path = require("eden.core.path")
 
 local function rust_crate()
   local metadata_json = vim.fn.system("cargo metadata --format-version 1 --no-deps")
@@ -50,8 +51,25 @@ dap.configurations.rust = {
     name = "Debug Crate",
     type = "lldb_rust",
     request = "launch",
-    program = function() return rust_crate() end,
-    args = {},
+    cwd = "${workspaceFolder}",
+    stopOnEntry = true,
+    program = function()
+      local env_bin = vim.fn.environ()["RUST_DEBUG_BINARY"]
+      if env_bin then return path.join(vim.fn.getcwd(), env_bin) end
+      return rust_crate()
+    end,
+    args = function()
+      local args = vim.fn.environ()["RUST_DEBUG_ARGS"]
+      if args ~= nil then return vim.split(args, " ") end
+
+      local co = coroutine.running()
+      vim.ui.input({
+        prompt = "Args: ",
+        relative = "win",
+      }, function(input) coroutine.resume(co, vim.split(input or "", " ")) end)
+
+      return coroutine.yield()
+    end,
   },
   {
     -- If you get an "Operation not permitted" error using this, try disabling YAMA:
