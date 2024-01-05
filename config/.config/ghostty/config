@@ -1,0 +1,40 @@
+title = "Ghostty 👻"
+
+background-opacity = 0.9
+background-blur-radius = 30
+unfocused-split-opacity = 0.95
+
+font-family = JetBrains Mono
+# font-family = Hack Nerd Font Mono
+# font-family = UbuntuMono NF
+
+background = #080808
+foreground = #dddddd
+selection-background = #1c2f39
+selection-foreground = #dddddd
+cursor-color = #e6eaea
+
+# normal
+palette = 0=#393b44
+palette = 1=#ff837d
+palette = 2=#beff7a
+palette = 3=#fccb5e
+palette = 4=#6ccdfd
+palette = 5=#cb9efa
+palette = 6=#80ffd8
+palette = 7=#f0f0f0
+
+# bright
+palette = 8=#505360
+palette = 9=#ffb4b0
+palette = 10=#d7ffad
+palette = 11=#fddb90
+palette = 12=#9edefe
+palette = 13=#e5cffd
+palette = 14=#b3ffe8
+palette = 15=#ffffff
+
+# extended colors
+palette = 16=#ffbb7a
+
+# vim: ft=conf
