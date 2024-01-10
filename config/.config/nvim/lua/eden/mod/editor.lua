@@ -48,6 +48,7 @@ return {
     config = function()
       require("neo-tree").setup({
         filesystem = {
+          hide_dotfiles = false,
           bind_to_cwd = false,
           follow_current_file = true,
         },

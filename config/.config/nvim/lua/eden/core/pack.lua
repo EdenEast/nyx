@@ -38,6 +38,9 @@ require("lazy").setup("eden.mod", {
     patterns = { "edeneast", "EdenEast" },
     fallback = true,
   },
+  change_detection = {
+    notify = false,
+  },
   install = {
     colorscheme = { scheme, "habamax" },
   },
