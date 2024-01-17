@@ -84,9 +84,7 @@
         vm-dev = { };
       };
 
-      darwinConfigurations = mapAttrs' mkDarwin {
-        theman = { user = "work"; };
-      };
+      # darwinConfigurations = mapAttrs' mkDarwin { };
 
       # Convenience output that aggregates the outputs for home, nixos, and darwin configurations.
       # Also used in ci to build targets generally.

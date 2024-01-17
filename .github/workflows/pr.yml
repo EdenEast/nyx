@@ -23,8 +23,6 @@ jobs:
             target: sloth
           - os: ubuntu-latest
             target: eden
-          - os: macos-13
-            target: theman
 
     steps:
       - name: Create nix mount point
