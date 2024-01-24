@@ -8,3 +8,6 @@ vim.cmd("compiler nix")
 
 vim.keymap.set("n", "<localleader>c", "<cmd>make flake check<cr>", { desc = "Check" })
 vim.keymap.set("n", "<localleader>b", "<cmd>make build<cr>", { desc = "Build" })
+
+-- Use single line comments for comment motions
+vim.opt_local.commentstring = "# %s"
