@@ -25,6 +25,9 @@
     nushell-src.url = "github:nushell/nushell";
     nushell-src.flake = false;
 
+    ghostty-module.url = "github:clo4/ghostty-hm-module";
+    ghostty-module.inputs.nixpkgs.follows = "nixpkgs";
+
     # eww.url = "github:elkowar/eww";
   };
 
