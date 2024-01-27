@@ -71,7 +71,7 @@ in
       let
         package = if cfg.useNightly then neovim-nightly else neovim;
       in
-      [ package ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters ++ cfg.extraPkgs;
+      [ package xclip ] ++ cfg.lspServers ++ cfg.debugAdaptors ++ cfg.formatters ++ cfg.extraPkgs;
 
     nyx.modules.shell.vale.enable = true;
 
