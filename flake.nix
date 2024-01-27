@@ -81,6 +81,7 @@
       nixosConfigurations = mapAttrs' mkSystem {
         pride = { };
         sloth = { };
+        wrath = { };
         vm-dev = { };
       };
 
@@ -96,10 +97,7 @@
           hometop = genAttrs
             (builtins.attrNames inputs.self.homeManagerConfigurations)
             (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
-          darwintop = genAttrs
-            (builtins.attrNames inputs.self.darwinConfigurations)
-            (attr: inputs.self.darwinConfigurations.${attr}.system);
         in
-        nixtop // hometop // darwintop;
+        nixtop // hometop;
     };
 }
