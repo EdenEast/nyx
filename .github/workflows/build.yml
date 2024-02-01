@@ -19,6 +19,8 @@ jobs:
             target: sloth
           - os: ubuntu-latest
             target: eden
+          - os: ubuntu-latest
+            target: wrath
     runs-on: ${{ matrix.os }}
     steps:
       - name: Create nix mount point
