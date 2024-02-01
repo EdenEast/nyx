@@ -36,7 +36,7 @@ in
         enable = true;
         profiles = {
           home = {
-            inherit extensions;
+            # inherit extensions;
             id = 0;
             settings = defaultSettings // {
               "browser.urlbar.placeholderName" = "DuckDuckGo";
@@ -45,7 +45,7 @@ in
           };
 
           work = {
-            inherit extensions;
+            # inherit extensions;
             id = 1;
             settings = defaultSettings // {
               "browser.startup.homepage" = "about:blank";
