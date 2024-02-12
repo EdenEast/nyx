@@ -5,7 +5,7 @@ return {
     cmd = { "Git", "Gdiffsplit" },
     keys = {
       -- { "<leader>ga", "<cmd>Git add %<cr>", desc = "Add file" },
-      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Blame file" },
+      { "<leader>gb", "<cmd>Git blame -wCCC<cr>", desc = "Blame file" },
       { "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Diff file" },
     },
   },
