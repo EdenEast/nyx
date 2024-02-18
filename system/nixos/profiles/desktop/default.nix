@@ -25,20 +25,27 @@ in
   config = mkIf cfg.enable {
     services.printing.enable = true;
 
-    # Sound setting
-    sound.enable = true;
-
     environment.systemPackages = with pkgs; [
       pamixer
       firefox
     ];
 
+    # Enable sound with pipewire.
+    sound.enable = true;
     hardware = {
       pulseaudio = {
-        enable = true;
+        enable = false;
         support32Bit = true;
         package = pkgs.pulseaudioFull;
       };
+    };
+    security.rtkit.enable = true;
+    services.pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
     };
 
     # Desktop environment flavor
