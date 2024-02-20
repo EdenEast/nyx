@@ -12,6 +12,7 @@
       app = {
         alacritty.fontSize = 8;
         ghostty.enable = true;
+        obsidian.enable = true;
         wezterm.fontSize = 12;
         obs.enable = true;
       };
