@@ -63,8 +63,12 @@ rec {
       # TODO: Note sure where this should go
       home.sessionPath = [ "$HOME/.local/nyx/bin" "$XDG_BIN_HOME" ];
 
+
       home.stateVersion = "20.09";
-    };
+    } // (optionals inputs.nixpkgs.legacyPackages."${system}".stdenv.isLinux {
+      targets.genericLinux.enable = true;
+      xdg.mime.enable = true;
+    });
 
   # Top level derivation for just home-manager
   mkHome = name: { config ? name, user ? "eden", system ? "x86_64-linux" }:
