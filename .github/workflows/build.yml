@@ -28,7 +28,7 @@ jobs:
         run: sudo mkdir /nix
 
       - name: Maximize build space
-        uses: easimon/maximize-build-space@v9
+        uses: easimon/maximize-build-space@v10
         if: contains(matrix.os, 'ubuntu')
         with:
           root-reserve-mb: 512
