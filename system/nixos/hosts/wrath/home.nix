@@ -16,6 +16,10 @@
         wezterm.fontSize = 12;
         obs.enable = true;
       };
+      dev = {
+        cc.enable = true;
+        rust.enable = true;
+      };
       shell = {
         direnv.enable = true;
         gnupg = {
