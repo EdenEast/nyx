@@ -8,6 +8,11 @@ in
   options.nyx.modules.yubikey = {
     enable = mkEnableOption "yubikey support";
     istty = mkEnableOption "Set pinentry to curses if no display";
+    pinentryFlavor = mkOption {
+      type = types.nullOr (types.enum pkgs.pinentry.flavors);
+      default = null;
+      description = "Pinentry Flavor";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -19,7 +24,7 @@ in
     programs.gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
-      pinentryFlavor = if cfg.istty then "curses" else "qt";
+      pinentryFlavor = if cfg.pinentryFlavor != null then cfg.pinentryFlavor else if cfg.istty then "curses" else "qt";
     };
     # environment.shellInit = ''
     #   export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
