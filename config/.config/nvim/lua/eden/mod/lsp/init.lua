@@ -159,7 +159,6 @@ return {
           cwd = help.cache.by_bufnr(
             function(params) return util.root_pattern(".git", "stylua.toml")(params.bufname) end
           ),
-          extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
         },
         vale = {
           extra_args = { "--config", path.join(path.home, ".config", "vale", "config.ini") },
