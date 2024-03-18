@@ -18,6 +18,10 @@ _G.bench = function(label, f, iter)
   print(label, sum / iter / 1000000)
 end
 
+local path = require("eden.core.path")
+local local_path = path.join(path.datahome, "init.lua")
+if path.exists(local_path) then dofile(local_path) end
+
 require("eden.core.string")
 require("eden.core.clipboard")
 require("eden.core.filetype")
@@ -26,5 +30,7 @@ require("eden.core.options")
 require("eden.core.keymaps")
 local theme = require("eden.core.theme")
 theme.init()
+vim.cmd.doautoall("User", "EdenLocalPre")
 require("eden.core.pack")
 theme.set()
+vim.cmd.doautoall("User", "EdenLocalPost")
