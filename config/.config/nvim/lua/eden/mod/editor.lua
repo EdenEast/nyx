@@ -1,4 +1,4 @@
-return {
+local spec = {
   -- file explorer
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -92,14 +92,6 @@ return {
         desc = "Replace in files (Spectre)",
       },
     },
-  },
-
-  {
-    "epwalsh/obsidian.nvim",
-    lazy = true,
-    ft = "markdown",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function() require("obsidian").setup({}) end,
   },
 
   -- references
@@ -320,3 +312,32 @@ return {
     end,
   },
 }
+
+if vim.g.obsidian_workspace ~= nil then
+  -- Example:
+  -- vim.api.nvim_create_autocmd("User", {
+  --   group = vim.api.nvim_create_augroup("eden_local", { clear = true }),
+  --   pattern = "EdenLocalPre",
+  --   callback = function()
+  --     print("This is something else")
+  --     print("Again")
+  --     vim.g.obsidian_workspace = { {
+  --       name = "Codex",
+  --       path = "~/vaults/Codex/",
+  --     } }
+  --   end,
+  -- })
+  spec[#spec + 1] = {
+    "epwalsh/obsidian.nvim",
+    lazy = true,
+    ft = "markdown",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("obsidian").setup({
+        workspace = vim.g.obsidian_workspace,
+      })
+    end,
+  }
+end
+
+return spec
