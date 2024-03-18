@@ -1,4 +1,4 @@
 {
   name = "james.simpson";
-  email = "james.simpson@unity3d.com";
+  email = "james.simpson@thescore.com";
 }

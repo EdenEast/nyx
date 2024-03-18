@@ -48,7 +48,7 @@
   outputs = { self, ... }@inputs:
     with self.lib;
     let
-      systems = [ "x86_64-linux" "x86_64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
       foreachSystem = genAttrs systems;
       pkgsBySystem = foreachSystem (
         system:
@@ -91,7 +91,9 @@
         vm-dev = { };
       };
 
-      # darwinConfigurations = mapAttrs' mkDarwin { };
+      darwinConfigurations = mapAttrs' mkDarwin {
+        theman = { user = "work"; };
+      };
 
       # Convenience output that aggregates the outputs for home, nixos, and darwin configurations.
       # Also used in ci to build targets generally.
@@ -103,7 +105,10 @@
           hometop = genAttrs
             (builtins.attrNames inputs.self.homeManagerConfigurations)
             (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+          darwintop = genAttrs
+            (builtins.attrNames inputs.self.darwinConfigurations)
+            (attr: inputs.self.darwinConfigurations.${attr}.system);
         in
-        nixtop // hometop;
+        nixtop // hometop // darwintop;
     };
 }

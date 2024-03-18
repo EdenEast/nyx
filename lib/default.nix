@@ -17,8 +17,7 @@ rec {
   existsOrDefault = x: set: default: if hasAttr x set then getAttr x set else default;
 
   # Derivation agnostic settings for all types of top level derivations (nixos, home-manager && darwin).
-  mkUserHome = { config, system ? "x86_64-linux" }:
-    { ... }: {
+  mkUserHome = { config, system ? "x86_64-linux" }: {
       imports = [
         (import ../home/modules)
         (import ../home/profiles)
@@ -63,9 +62,8 @@ rec {
       # TODO: Note sure where this should go
       home.sessionPath = [ "$HOME/.local/nyx/bin" "$XDG_BIN_HOME" ];
 
-
       home.stateVersion = "20.09";
-    } // (optionals inputs.nixpkgs.legacyPackages."${system}".stdenv.isLinux {
+    } // (optionalAttrs inputs.nixpkgs.legacyPackages."${system}".stdenv.isLinux {
       targets.genericLinux.enable = true;
       xdg.mime.enable = true;
     });
@@ -206,7 +204,7 @@ rec {
   mkDarwin = name: { config ? name, user ? "eden" }:
     nameValuePair name (
       let
-        system = "x86_64-darwin";
+        system = "aarch64-darwin";
         pkgs = inputs.self.legacyPackages."${system}";
         userConf = import (strToFile user ../user);
         nixConf = import ../nix/conf.nix;
