@@ -14,8 +14,20 @@ local spec = {
         function() require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() }) end,
         desc = "Explorer NeoTree (cwd)",
       },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+      {
+        "<leader>e",
+        function()
+          require("neo-tree.command").execute({ toggle = true, reveal = true, dir = require("eden.util").get_root() })
+        end,
+        desc = "Explorer NeoTree (root dir)",
+        remap = true,
+      },
+      {
+        "<leader>E",
+        function() require("neo-tree.command").execute({ toggle = true, reveal = true, dir = vim.loop.cwd() }) end,
+        desc = "Explorer NeoTree (cwd)",
+        remap = true,
+      },
     },
     deactivate = function() vim.cmd([[Neotree close]]) end,
     init = function()
