@@ -113,7 +113,6 @@ return {
           },
         },
         pyright = {},
-        rnix = {},
         vimls = {},
       }
 

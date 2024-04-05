@@ -23,6 +23,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    nyx.modules.yubikey.pinentryPackage = pkgs.pinentry-qt;
+
     services.printing.enable = true;
 
     environment.systemPackages = with pkgs; [
@@ -51,7 +53,7 @@ in
     # Desktop environment flavor
     services.xserver = {
       enable = true;
-      layout = "us";
+      xkb.layout = "us";
       libinput = mkIf cfg.laptop {
         enable = true;
         touchpad = {
