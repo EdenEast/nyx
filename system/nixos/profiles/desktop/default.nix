@@ -53,7 +53,7 @@ in
     # Desktop environment flavor
     services.xserver = {
       enable = true;
-      layout = "us";
+      xkb.layout = "us";
       libinput = mkIf cfg.laptop {
         enable = true;
         touchpad = {
