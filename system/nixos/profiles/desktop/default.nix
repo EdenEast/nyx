@@ -23,6 +23,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    nyx.modules.yubikey.pinentryPackage = pkgs.pinentry-qt;
+
     services.printing.enable = true;
 
     environment.systemPackages = with pkgs; [
