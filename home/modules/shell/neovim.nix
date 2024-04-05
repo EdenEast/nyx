@@ -34,7 +34,6 @@ in
         nodePackages.typescript-language-server
         nodePackages.vim-language-server
         nodePackages.write-good
-        rnix-lsp
       ] ++ optionals pkgs.stdenv.isLinux [
         omnisharp-roslyn
         lua-language-server
