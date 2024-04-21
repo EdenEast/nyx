@@ -23,41 +23,41 @@ return {
       --   mode = { "i", "s" },
       -- },
 
-      -- Expansion key
-      -- This will expand the current item or jump to the next item within the snippet.
-      {
-        "<c-k>",
-        function()
-          local ls = require("luasnip")
-          if ls.expand_or_jumpable() then ls.expand_or_jump() end
-        end,
-        mode = { "i", "s" },
-        silent = true,
-      },
+      -- -- Expansion key
+      -- -- This will expand the current item or jump to the next item within the snippet.
+      -- {
+      --   "<c-k>",
+      --   function()
+      --     local ls = require("luasnip")
+      --     if ls.expand_or_jumpable() then ls.expand_or_jump() end
+      --   end,
+      --   mode = { "i", "s" },
+      --   silent = true,
+      -- },
 
-      -- Jump backwards key
-      -- This always moves to the previous item within the snippet
-      {
-        "<c-j>",
-        function()
-          local ls = require("luasnip")
-          if ls.jumpable(-1) then ls.jump(-1) end
-        end,
-        mode = { "i", "s" },
-        silent = true,
-      },
+      -- -- Jump backwards key
+      -- -- This always moves to the previous item within the snippet
+      -- {
+      --   "<c-j>",
+      --   function()
+      --     local ls = require("luasnip")
+      --     if ls.jumpable(-1) then ls.jump(-1) end
+      --   end,
+      --   mode = { "i", "s" },
+      --   silent = true,
+      -- },
 
-      -- Selecting within a list of options.
-      -- This is useful for choice nodes
-      {
-        "<c-l>",
-        function()
-          local ls = require("luasnip")
-          if ls.choice_active() then ls.change_choice(1) end
-        end,
-        mode = { "i", "s" },
-        silent = true,
-      },
+      -- -- Selecting within a list of options.
+      -- -- This is useful for choice nodes
+      -- {
+      --   "<c-l>",
+      --   function()
+      --     local ls = require("luasnip")
+      --     if ls.choice_active() then ls.change_choice(1) end
+      --   end,
+      --   mode = { "i", "s" },
+      --   silent = true,
+      -- },
     },
     config = function()
       local path = require("eden.core.path")
