@@ -67,6 +67,7 @@ return {
 
       local servers = {
         bashls = {},
+        clangd = {},
         rust_analyzer = {
           settings = {
             ["rust-analyzer"] = {
