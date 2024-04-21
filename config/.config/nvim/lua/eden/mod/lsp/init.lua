@@ -113,6 +113,7 @@ return {
             },
           },
         },
+        nixd = {},
         pyright = {},
         vimls = {},
       }

@@ -29,6 +29,7 @@ in
       type = with types; listOf package;
       default = with pkgs; [
         marksman
+        nixd
         nodePackages.bash-language-server
         nodePackages.pyright
         nodePackages.typescript-language-server
@@ -53,6 +54,7 @@ in
       description = "List of formatters and linters";
       type = with types; listOf package;
       default = with pkgs; [
+        alejandra
         stylua
         shfmt
         nixpkgs-fmt
