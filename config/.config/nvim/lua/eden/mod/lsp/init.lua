@@ -22,6 +22,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "lvimuser/lsp-inlayhints.nvim",
       "hrsh7th/cmp-nvim-lsp",
+      { "j-hui/fidget.nvim", opts = {} },
     },
     config = function()
       -- diagnostics
