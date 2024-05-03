@@ -11,7 +11,7 @@ in
 
   config = mkIf cfg.enable {
     fonts = {
-      packages = with pkgs; [
+      fonts = with pkgs; [
         (
           nerdfonts.override {
             fonts = [ "JetBrainsMono" "Hack" "Meslo" "UbuntuMono" ];
