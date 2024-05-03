@@ -1,3 +1,8 @@
+# flake-parts with nixpkgs-unstable:
+#   - https://sourcegraph.com/search?q=context:global+lang:nix+and+file:flake.nix+and+%22pkgs-unstable+%3D%22+and+%22flake-parts%22&patternType=keyword&sm=0
+#   - https://sourcegraph.com/github.com/mccurdyc/nixos-config@bc204c649fb3a8a4a48f4bf50205c436bf42fec2/-/blob/flake.nix
+#   - https://sourcegraph.com/github.com/stackbuilders/nixpkgs-terraform@14308101ad049053cc42b409b1e3e245fd707047/-/blob/flake.nix?L9:5-9:16
+#   - https://sourcegraph.com/github.com/semickolon/fak@a92846f06d0f82b35958f7a0871ee83384d405da/-/blob/flake.nix?L17:9-17:24
 {
   description = ''
     Nyx is the personal configuration. This repository holdes .dotfile configuration as well as both nix (with
@@ -5,33 +10,19 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    darwin.url = "github:lnl7/nix-darwin/master";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
-
     nur.url = "github:nix-community/nur";
-    nur.inputs.nixpkgs.follows = "nixpkgs";
-
-    flake-compat.url = "github:edolstra/flake-compat";
-    flake-compat.flake = false;
 
     neovim-flake.url = "github:neovim/neovim?dir=contrib";
     neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
-
-    nushell-src.url = "github:nushell/nushell";
-    nushell-src.flake = false;
-
-    ghostty-module.url = "github:clo4/ghostty-hm-module";
-    ghostty-module.inputs.nixpkgs.follows = "nixpkgs";
-
-    # eww.url = "github:elkowar/eww";
   };
 
   nixConfig = {
@@ -45,70 +36,59 @@
     ];
   };
 
-  outputs = { self, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-parts, systems, ... }@inputs:
     with self.lib;
     let
-      systems = [ "x86_64-linux" "aarch64-darwin" ];
-      foreachSystem = genAttrs systems;
-      pkgsBySystem = foreachSystem (
-        system:
-        import inputs.nixpkgs {
-          inherit system;
-          config = import ./nix/config.nix;
-          overlays = self.overlays."${system}";
-        }
-      );
+      mkPkgs = p: s: import p {
+        inherit s;
+        config = import ./nix/conf.nix;
+        # overlays = self.overlays."${s}";
+      };
+      mkStable = s: mkPkgs nixpkgs s;
+      mkUnstable = s: mkPkgs nixpkgs-unstable s;
     in
-    rec {
-      lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
+    flake-parts.lib.mkFlake
+      { inherit inputs; }
+      {
+        # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105
+        imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
+        systems = [ "aarch64-darwin" "x86_64-linux" ];
 
-      devShell = foreachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
+        flake = {
+          lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
 
-      templates = import ./nix/templates;
+          templates = import ./nix/templates;
 
-      legacyPackages = pkgsBySystem;
-      packages = foreachSystem (system: import ./nix/pkgs self system);
-      overlay = foreachSystem (system: _final: _prev: self.packages."${system}");
-      overlays = foreachSystem (
-        system: with inputs; let
-          ovs = attrValues (import ./nix/overlays self);
-        in
-        [
-          (self.overlay."${system}")
-          (nur.overlay)
-          # (_:_: { inherit (eww.packages."${system}") eww; })
-        ] ++ ovs
-      );
+          homeManagerConfigurations = mapAttrs' mkHome {
+            eden = { };
+          };
 
-      homeManagerConfigurations = mapAttrs' mkHome {
-        eden = { };
+          nixosConfigurations = mapAttrs' mkSystem {
+            pride = { };
+            sloth = { };
+            wrath = { };
+            vm-dev = { };
+          };
+
+          darwinConfigurations = mapAttrs' mkDarwin {
+            theman = { user = "work"; };
+          };
+        };
+        perSystem = { system, ... }:
+          let
+            pkgs = import inputs.nixpkgs { inherit system; config = import ./nix/conf.nix; };
+            pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config = import ./nix/conf.nix; };
+          in
+          {
+            inherit pkgs-unstable;
+            # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105
+            overlayAttrs = { inherit pkgs-unstable; };
+
+            formatter = pkgs.nixpkgs-fmt;
+
+            packages = import ./nix/pkgs self system;
+
+            devShells.default = import ./shell.nix { inherit pkgs pkgs-unstable; };
+          };
       };
-
-      nixosConfigurations = mapAttrs' mkSystem {
-        pride = { };
-        sloth = { };
-        wrath = { };
-        vm-dev = { };
-      };
-
-      darwinConfigurations = mapAttrs' mkDarwin {
-        theman = { user = "work"; };
-      };
-
-      # Convenience output that aggregates the outputs for home, nixos, and darwin configurations.
-      # Also used in ci to build targets generally.
-      top =
-        let
-          nixtop = genAttrs
-            (builtins.attrNames inputs.self.nixosConfigurations)
-            (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
-          hometop = genAttrs
-            (builtins.attrNames inputs.self.homeManagerConfigurations)
-            (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
-          darwintop = genAttrs
-            (builtins.attrNames inputs.self.darwinConfigurations)
-            (attr: inputs.self.darwinConfigurations.${attr}.system);
-        in
-        nixtop // hometop // darwintop;
-    };
 }

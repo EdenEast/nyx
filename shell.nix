@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> { }, ... }:
 let
   nixConf = import ./nix/conf.nix;
   options = [
