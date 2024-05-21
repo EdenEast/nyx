@@ -65,28 +65,30 @@
 
           nixosConfigurations = mapAttrs' mkSystem {
             pride = { };
-            sloth = { };
-            wrath = { };
-            vm-dev = { };
+            # sloth = { };
+            # wrath = { };
+            # vm-dev = { };
           };
 
           darwinConfigurations = mapAttrs' mkDarwin {
             theman = { user = "work"; };
           };
+
         };
-        perSystem = { system, ... }:
+        perSystem = { system, pkgs, pkgs-unstable, ... }:
           let
-            pkgs = import inputs.nixpkgs { inherit system; config = import ./nix/conf.nix; };
+            pkgs-stable = import inputs.nixpkgs { inherit system; config = import ./nix/conf.nix; };
             pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config = import ./nix/conf.nix; };
           in
           {
-            inherit pkgs-unstable;
+            _module.args = { inherit pkgs-unstable; };
+
             # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105
             overlayAttrs = { inherit pkgs-unstable; };
 
             formatter = pkgs.nixpkgs-fmt;
 
-            packages = import ./nix/pkgs self system;
+            packages = import ./nix/pkgs self pkgs-stable;
 
             devShells.default = import ./shell.nix { inherit pkgs pkgs-unstable; };
           };
