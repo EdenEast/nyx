@@ -183,7 +183,7 @@ function cmd_check() {
   local help_msg
   IFS='' read -r -d '' help_msg <<EOF
 USAGE:
-  nyx check
+  nyx check [target]
 
 Execute flake check output.
 
@@ -210,7 +210,21 @@ EOF
   (
     cd "$NYX_ROOT"
 
-    nix flake check
+    local -a name
+
+    if [[ ${#args[@]} -gt 0 ]]; then
+      name="${args[0]}"
+    else
+      name="$(hostname)"
+    fi
+
+    if $IS_MAC; then
+      nix path-info --derivation ".#darwinConfigurations.${name}.system"
+    elif $IS_NIXOS; then
+      nix path-info --derivation ".#nixosConfigurations.${name}.config.system.build.toplevel"
+    else
+      nix path-info --derivation ".#homeManagerConfigurations.${name}.activationPackage"
+    fi
   )
 }
 
