@@ -31,10 +31,10 @@ in
         marksman
         nixd
         nodePackages.bash-language-server
-        nodePackages.pyright
         nodePackages.typescript-language-server
         nodePackages.vim-language-server
         nodePackages.write-good
+        pyright
       ] ++ optionals pkgs.stdenv.isLinux [
         omnisharp-roslyn
         lua-language-server
