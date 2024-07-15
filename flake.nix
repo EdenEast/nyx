@@ -22,7 +22,7 @@
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
-    neovim-flake.url = "github:neovim/neovim?dir=contrib";
+    neovim-flake.url = "github:nix-community/neovim-nightly-overlay";
     neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
     nushell-src.url = "github:nushell/nushell";
