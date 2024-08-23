@@ -110,7 +110,12 @@ local spec = {
   {
     "RRethy/vim-illuminate",
     event = { "BufReadPost", "BufNewFile" },
-    opts = { delay = 200 },
+    opts = {
+      delay = 200,
+      filetypes_denylist = {
+        "regedit",
+      },
+    },
     config = function(_, opts)
       require("illuminate").configure(opts)
 

@@ -168,6 +168,7 @@ map(
 )
 
 map("n", "<leader>ul", "<cmd>Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>uq", function() require("eden.util.reg").edit() end, { desc = "Register" })
 
 -- Toggle options
 map("n", "<leader>ut", require("eden.core.theme").toggle, { desc = "Toggle transparency" })
