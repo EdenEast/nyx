@@ -260,6 +260,7 @@ return {
         { "<leader>g", group = "+git" },
         { "<leader>gh", group = "+hunks" },
         { "<leader>q", group = "+quit/session" },
+        { "<leader>q", group = "+register" },
         { "<leader>s", group = "+search" },
         { "<leader>sn", group = "+noice" },
         { "<leader>u", group = "+ui" },

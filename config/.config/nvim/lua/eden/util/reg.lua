@@ -23,6 +23,7 @@ function M.edit()
   local char = getchar()
 
   local buffer = M.create_edit_buffer(char)
+
   local winopts = get_winopts()
   vim.api.nvim_open_win(buffer, true, winopts)
   vim.api.nvim_win_set_buf(0, buffer)
@@ -53,7 +54,6 @@ function M.create_edit_buffer(register)
       local newcontent = buf_content:gsub("\\n", "\n")
       vim.fn.setreg(register, newcontent, regtype)
 
-      vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
       vim.api.nvim_win_close(0, true)
     end,
   })
