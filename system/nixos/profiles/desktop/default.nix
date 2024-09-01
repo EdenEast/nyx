@@ -50,9 +50,7 @@ in
     };
 
     # Desktop environment flavor
-    services.xserver = {
-      enable = true;
-      xkb.layout = "us";
+    services = {
       libinput = mkIf cfg.laptop {
         enable = true;
         touchpad = {
@@ -62,19 +60,24 @@ in
         };
       };
 
-      displayManager = {
-        lightdm.enable = cfg.flavor != "gnome";
-        gdm.enable = cfg.flavor == "gnome";
-        # session = [
-        #   {
-        #     name = "home-manager";
-        #     manage = "window";
-        #     start = ''
-        #       ${pkgs.runtimeShell} $HOME/.hm-xsession &
-        #       waitPID=$!
-        #     '';
-        #   }
-        # ];
+      xserver = {
+        enable = true;
+        xkb.layout = "us";
+
+        displayManager = {
+          lightdm.enable = cfg.flavor != "gnome";
+          gdm.enable = cfg.flavor == "gnome";
+          # session = [
+          #   {
+          #     name = "home-manager";
+          #     manage = "window";
+          #     start = ''
+          #       ${pkgs.runtimeShell} $HOME/.hm-xsession &
+          #       waitPID=$!
+          #     '';
+          #   }
+          # ];
+        };
       };
     };
 
