@@ -46,11 +46,14 @@ in
     environment.systemPackages = [ nvidia-offload ];
 
     services.xserver.videoDrivers = [ "nvidia" ];
-    hardware.nvidia.prime = {
-      offload.enable = true;
+    hardware.nvidia = {
+      open = true;
+      prime = {
+        offload.enable = true;
 
-      intelBusId = cfg.intelBusId;
-      nvidiaBusId = cfg.nvidiaBusId;
+        intelBusId = cfg.intelBusId;
+        nvidiaBusId = cfg.nvidiaBusId;
+      };
     };
   };
 }
