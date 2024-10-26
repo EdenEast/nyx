@@ -57,5 +57,5 @@
   hardware.keyboard.qmk.enable = true;
 
   programs.steam.enable = true;
-  hardware.graphics.enable32Bit = true;
+  # hardware.graphics.enable32Bit = true;
 }
