@@ -167,8 +167,15 @@ map(
   { desc = "Redraw / clear hlsearch / diff update" }
 )
 
-map("n", "<leader>ul", "<cmd>Lazy<cr>", { desc = "Lazy" })
+map("n", "<f2>", function()
+  vim.cmd.write()
+  vim.cmd.colorscheme(vim.g.colors_name)
+end, { desc = "Reload colorscheme" })
+
 map("n", "<leader>re", function() require("eden.util.reg").edit() end, { desc = "Edit" })
+map("n", "<leader>ul", "<cmd>Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>ui", "<cmd>Inspect<cr>", { desc = "Inspect" })
+map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
 
 -- Toggle options
 map("n", "<leader>ut", require("eden.core.theme").toggle, { desc = "Toggle transparency" })
