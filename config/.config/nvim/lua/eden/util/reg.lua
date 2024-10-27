@@ -18,9 +18,70 @@ local function getchar()
   return vim.fn.nr2char(i)
 end
 
-function M.edit()
-  print("Select register: ")
-  local char = getchar()
+local function create_register_list()
+  local registers = { '"', "-", "#", "=", "/", "*", "+", ":", ".", "%", "#" }
+  for i = 0, 9 do
+    table.insert(registers, tostring(i))
+  end
+  for i = 97, 122 do
+    table.insert(registers, string.char(i))
+  end
+  return registers
+end
+
+local function create_register_items()
+  local items = {}
+
+  local registers = create_register_list()
+  for _, register in ipairs(registers) do
+    local content = vim.fn.getreg(register)
+    local regtype = vim.fn.getregtype(register)
+
+    local entry = {
+      register = register,
+      content = content,
+      regtype = regtype,
+    }
+
+    table.insert(items, entry)
+  end
+
+  return items
+end
+
+local function save_data(file, data)
+  local content = vim.fn.json_encode(data)
+  local fd = io.open(file, "w")
+  if not fd then
+    vim.notify("Unable to open file for writing: " .. file)
+    return
+  end
+
+  fd:write(content)
+  io.close(fd)
+end
+
+local function load_data(file)
+  local fd = io.open(file, "r")
+  if not fd then
+    vim.notify("Unable to open file for reading: " .. file)
+    return {}
+  end
+
+  local content = fd:read("*a")
+  io.close(fd)
+
+  return vim.fn.json_decode(content)
+end
+
+function M.edit(reg)
+  local char
+  if not reg then
+    print("Select register: ")
+    char = getchar()
+  else
+    char = reg
+  end
 
   local buffer = M.create_edit_buffer(char)
 
@@ -60,6 +121,13 @@ function M.create_edit_buffer(register)
 
   return bufnr
 end
+
+-- local items = create_register_items()
+--
+-- vim.ui.select(items, {
+--   prompt = "Select register: ",
+--   format_item = function(item) return string.format([["%s  %s]], item.register, item.content) end,
+-- }, function(register, _) print(register) end)
 
 -- rename register
 -- save register
