@@ -26,6 +26,9 @@
     nushell-src.url = "github:nushell/nushell";
     nushell-src.flake = false;
 
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
     ghostty-module.url = "github:clo4/ghostty-hm-module";
 
     # eww.url = "github:elkowar/eww";
@@ -73,6 +76,7 @@
         [
           (self.overlay."${system}")
           (nur.overlay)
+          (import rust-overlay)
           # (_:_: { inherit (eww.packages."${system}") eww; })
         ] ++ ovs
       );
