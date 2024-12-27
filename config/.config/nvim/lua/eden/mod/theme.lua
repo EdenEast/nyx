@@ -63,9 +63,18 @@ return {
   },
 
   {
+    "edeneast/chroma.nvim",
+    lazy = false,
+    priority = 1000,
+    dev = true,
+  },
+
+  {
     "Biscuit-Colorscheme/nvim",
     name = "biscuit",
   },
+
+  { "catppuccin/nvim", name = "catppuccin" },
 
   {
     "catppuccin/nvim",
@@ -82,7 +91,5 @@ return {
     config = function() require("kanagawa").setup({}) end,
   },
 
-  {
-    "projekt0n/caret.nvim",
-  },
+  { "projekt0n/caret.nvim" },
 }
