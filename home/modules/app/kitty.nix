@@ -28,7 +28,8 @@ in
 
       settings =
         with config.nyx.modules.theme.colors; let
-          hex = x: "#${x}"; in
+          hex = x: "#${x}";
+        in
         {
           # Colors -------------------------------------------------------------
           background = hex bg;

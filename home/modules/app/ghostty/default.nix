@@ -34,6 +34,7 @@ in
         mouse-hide-while-typing = true;
 
         font-size = cfg.fontSize;
+        font-family = "Gohu";
 
         quit-after-last-window-closed = true;
       };
