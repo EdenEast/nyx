@@ -50,6 +50,7 @@
       xdg.enable = true;
       zoxide.enable = true;
       zsh.enable = true;
+      zellij.enable = true;
 
       gnupg = {
         enable = true;

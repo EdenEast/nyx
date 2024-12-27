@@ -31,6 +31,7 @@ in
         # A TUI file explorer
         # xplr
         # lookatme
+        smassh # Tui based typing test application
       ] ++ optionals pkgs.stdenv.isLinux [
         # Power consumption and management diagnosis tool.
         powertop
