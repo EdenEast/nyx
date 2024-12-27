@@ -328,6 +328,11 @@ local spec = {
       -- })
     end,
   },
+
+  {
+    "EdenEast/reg.nvim",
+    dev = true,
+  },
 }
 
 if vim.g.obsidian_workspace ~= nil then
