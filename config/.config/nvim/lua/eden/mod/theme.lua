@@ -1,3 +1,4 @@
+vim.g.catppuccin_debug = true
 return {
   {
     "EdenEast/nightfox.nvim",
@@ -64,9 +65,17 @@ return {
 
   {
     "edeneast/chroma.nvim",
-    lazy = false,
-    priority = 1000,
     dev = true,
+    priority = 1000,
+    lazy = false,
+    dev = true,
+    opts = {
+      plugins = {
+        telescope = {
+          style = "borderless",
+        },
+      },
+    },
   },
 
   {
@@ -86,10 +95,19 @@ return {
     end,
   },
 
+  { "neanias/everforest-nvim" },
   {
     "rebelot/kanagawa.nvim",
     config = function() require("kanagawa").setup({}) end,
   },
 
   { "projekt0n/caret.nvim" },
+  { "folke/tokyonight.nvim" },
+  { "projekt0n/caret.nvim" },
+  { "AlexvZyl/nordic.nvim" },
+  { "maxmx03/fluoromachine.nvim" },
+  { "xero/miasma.nvim" },
+  { "mellow-theme/mellow.nvim" },
+  { "Yazeed1s/oh-lucy.nvim" },
+  { "rose-pine/neovim", name = "rose-pine" },
 }

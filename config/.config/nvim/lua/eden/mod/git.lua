@@ -12,13 +12,17 @@ return {
 
   -- neogit
   {
-    "TimUntersberger/neogit",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+    },
+    -- version = "0.0.1",
     cmd = { "Neogit" },
     keys = {
       { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" },
     },
-    config = function() require("neogit").setup() end,
+    config = true,
   },
 
   -- git signs

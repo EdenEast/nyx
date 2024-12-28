@@ -77,6 +77,12 @@ return {
   },
 
   {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "echasnovski/mini.icons" },
+    opts = {},
+  },
+
+  {
     "tigion/nvim-asciidoc-preview",
     ft = { "asciidoc" },
     cmd = { "AsciiDocPreview" },
