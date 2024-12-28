@@ -61,6 +61,7 @@ return {
       end)
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+      capabilities.experimental = { localDocs = true } -- Enable local docs for rust-analyzer
 
       local lua_runtimepath = vim.split(package.path, ";")
       table.insert(lua_runtimepath, "lua/?.lua")
@@ -70,6 +71,28 @@ return {
         bashls = {},
         clangd = {},
         rust_analyzer = {
+          commands = {
+            RustOpenDocs = {
+              function()
+                -- https://sourcegraph.com/github.com/dmitmel/dotfiles/-/blob/nvim/dotfiles/lspconfigs/rust.lua?L189-191
+                -- https://sourcegraph.com/github.com/mrcjkb/rustaceanvim/-/blob/lua/rustaceanvim/commands/external_docs.lua
+                vim.lsp.buf_request(
+                  0,
+                  "experimental/externalDocs",
+                  vim.lsp.util.make_position_params(),
+                  function(_, response)
+                    if response then
+                      local url = response["local"] and response["local"]
+                        or response["web"] and response["web"]
+                        or response
+                      vim.ui.open(url)
+                    end
+                  end
+                )
+              end,
+              description = "Open documentation for the symbol under the cursor in default browser",
+            },
+          },
           settings = {
             ["rust-analyzer"] = {
               files = {
@@ -81,6 +104,11 @@ return {
                   "./node_modules/",
                   "./ci/",
                   "./docs/",
+                },
+              },
+              diagnostics = {
+                experimental = {
+                  enable = true,
                 },
               },
             },

@@ -25,3 +25,9 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 vim.keymap.set("n", "<localleader>t", "<cmd>make test -q<cr>", { desc = "Cargo test" })
 vim.keymap.set("n", "<localleader>b", "<cmd>make build<cr>", { desc = "Cargo build" })
 vim.keymap.set("n", "<localleader>c", "<cmd>make clippy -q<cr>", { desc = "Cargo clippy" })
+vim.keymap.set(
+  "n",
+  "<localleader>D",
+  "<cmd>RustOpenDocs<cr>",
+  { desc = "Open documentation for the symbol under the cursor in default browser" }
+)
