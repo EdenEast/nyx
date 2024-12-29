@@ -152,18 +152,18 @@ EOF
 
     # If a build target has been specified then tell nix build this target
     if [[ ${#args[@]} -gt 0 ]]; then
-      debug "target argument was passed to build. Building ${args[0]}"
+      info "target argument was passed to build. Building ${CYAN}${args[0]${RESET}}"
       nix build ".#top.${args[0]}" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
     else
       # There was no target passed to build so infer what do build
       if $IS_MAC; then
-        debug "Darwin detected building DarwinConfiguration for the host machine: $(hostname)"
+        info "Darwin detected building DarwinConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         darwin-rebuild build --flake .
       elif $IS_NIXOS; then
-        debug "Nixos detected building NixosConfiguration for the host machine: $(hostname)"
+        info "Nixos detected building NixosConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         sudo nixos-rebuild build --flake .
       else
-        debug "Nixos not detected, building target based on \$USER: $USER"
+        info "Nixos not detected, building target based on \$USER: ${CYAN}$USER${RESET}"
         # When not on nixos it is harder to infer what we are supposed to build for the platform if we cant
         # infer then nix build will just run and build the default package.
         # TODO: This is wrong and should save what top target should be built for the machine.
@@ -529,7 +529,7 @@ EOF
     if $IS_MAC; then
       sudo darwin-rebuild --rollback
     elif $IS_NIXOS; then
-      sudo nixos-rebuild --rollback
+      sudo nixos-rebuild switch --rollback
     else
       local current prev prev_store_path
       current="$(nix-env --list-generations --profile "/nix/var/nix/profiles/per-user/$USER/home-manager" | grep '(current)' | awk '{print $1}')"
@@ -608,24 +608,24 @@ EOF
     # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
       if $IS_MAC; then
-        debug "Switching to defined target ${args[0]} on darwin system"
+        info "Switching to defined target ${CYAN}${args[0]}${RESET} on darwin system"
         darwin-rebuild switch --flake ".#${args[0]}" || restore_links
       elif $IS_NIXOS; then
-        debug "Switching to defined target ${args[0]} on nixos system"
+        info "Switching to defined target ${CYAN}${args[0]}${RESET} on nixos system"
         sudo nixos-rebuild switch --flake ".#${args[0]}" || restore_links
       else
-        debug "Switching to defined target ${args[0]} on non nixos system"
+        info "Switching to defined target ${CYAN}${args[0]}${RESET} on non nixos system"
         cmd_build "${NYX_ARGS[@]}" && ./result/activate || restore_links
       fi
     else
       if $IS_MAC; then
-        debug "Darwin detected switching DarwinConfiguration for the host machine: $(hostname)"
+        info "Darwin detected switching DarwinConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         darwin-rebuild switch --flake . || restore_links
       elif $IS_NIXOS; then
-        debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
+        info "Nixos detected switching NixosConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         sudo nixos-rebuild switch --flake . || restore_links
       else
-        debug "Nixos not detected, switching target based on \$USER: $USER"
+        info "Nixos not detected, switching target based on \$USER: ${CYAN}$USER${RESET}"
         # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
         # infer then nix build will just run and build the default package.
         # TODO: This is wrong and should save what top target should be built for the machine.
@@ -688,24 +688,24 @@ EOF
     # Switch to new configuration
     if [[ ${#args[@]} -gt 0 ]]; then
       if $IS_MAC; then
-        debug "Switching to defined target ${args[0]} on darwin system"
+        debug "Switching to defined target ${CYAN}${args[0]}${RESET} on darwin system"
         darwin-rebuild activate --flake ".#${args[0]}"
       elif $IS_NIXOS; then
-        debug "Switching to defined target ${args[0]} on nixos system"
+        debug "Switching to defined target ${CYAN}${args[0]}${RESET} on nixos system"
         sudo nixos-rebuild test --flake ".#${args[0]}"
       else
-        debug "Switching to defined target ${args[0]} on non nixos system"
+        debug "Switching to defined target ${CYAN}${args[0]}${RESET} on non nixos system"
         ./result/activate
       fi
     else
       if $IS_MAC; then
-        debug "Darwin detected switching DarwinConfiguration for the host machine: $(hostname)"
+        debug "Darwin detected switching DarwinConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         darwin-rebuild activate --flake .
       elif $IS_NIXOS; then
-        debug "Nixos detected switching NixosConfiguration for the host machine: $(hostname)"
+        debug "Nixos detected switching NixosConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         sudo nixos-rebuild test --flake . # TODO: How do force to use extra binary caches?
       else
-        debug "Nixos not detected, switching target based on \$USER: $USER"
+        debug "Nixos not detected, switching target based on \$USER: ${CYAN}$USER${RESET}"
         # When not on nixos is is harder to infer what we are supposed to build for the platform if we cant
         # infer then nix build will just run and build the default package.
         # TODO: This is wrong and should save what top target should be built for the machine.
