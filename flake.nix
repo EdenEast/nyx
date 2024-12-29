@@ -29,7 +29,7 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
-    ghostty-module.url = "github:clo4/ghostty-hm-module";
+    ghostty.url  = "github:ghostty-org/ghostty";
 
     # eww.url = "github:elkowar/eww";
   };
