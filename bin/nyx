@@ -152,7 +152,7 @@ EOF
 
     # If a build target has been specified then tell nix build this target
     if [[ ${#args[@]} -gt 0 ]]; then
-      info "target argument was passed to build. Building ${CYAN}${args[0]${RESET}}"
+      info "target argument was passed to build. Building ${CYAN}${args[0]}${RESET}"
       nix build ".#top.${args[0]}" "${NIXARGS[@]}" "${NIXBUILDARGS[@]}"
     else
       # There was no target passed to build so infer what do build
