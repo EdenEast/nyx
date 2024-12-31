@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+function write-list() {
+  while [[ $# -gt 0 ]]; do
+    echo "$1"
+    shift
+  done
+}
+
+function get-character() {
+  local characters
+  characters=($(ls ~/.local/share/runelite-credentials | sed 's/-credentials.properties//g'))
+  if [[ " ${characters[*]} " =~ " ${1} " ]]; then
+    return "$1"
+  fi
+
+  local character query
+  [ -z "$1" ] && query="" || query="-q $1 --select-1"
+  character="$(write-list "${characters[@]}" | fzf --height 40% --reverse $query)"
+  echo "$character"
+}
+
+function main() {
+  local character
+  character="$(get-character "$1")"
+  if [ -z "$character" ]; then
+    return
+  fi
+
+  echo "Switching to $character"
+  local filepath="${HOME}/.local/share/runelite-credentials/${character}-credentials.properties"
+  cp -f "$filepath" ~/.runelite/credentials.properties
+}
+
+main "$@"
+
+# vim: et sw=2 ts=2 sts=2
