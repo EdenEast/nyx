@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 let cfg = config.nyx.profiles.common;
 in
 {
+  imports = [inputs.nix-index-database.hmModules.nix-index];
+
   options.nyx.profiles.common = { enable = mkEnableOption "common profile"; };
 
   config = mkIf cfg.enable {
@@ -49,8 +51,10 @@ in
         # Encrypted files in Git repositories
         git-crypt
         # Runs programs without installing them
-        comma
-        nix-index
+
+        # These are pulled using the home-manager moudle below
+        # comma
+        # nix-index
         tuxmux
       ];
     };
@@ -63,6 +67,8 @@ in
 
     # Install man output for any Nix packages.
     programs.man.enable = true;
+
+    programs.nix-index-database.comma.enable = true;
 
     nyx.modules = {
       shell.bash.enable = true;

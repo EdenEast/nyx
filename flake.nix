@@ -20,6 +20,9 @@
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
     neovim-flake.url = "github:nix-community/neovim-nightly-overlay";
     neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
