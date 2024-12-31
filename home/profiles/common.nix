@@ -51,10 +51,6 @@ in
         # Encrypted files in Git repositories
         git-crypt
         # Runs programs without installing them
-
-        # These are pulled using the home-manager moudle below
-        # comma
-        # nix-index
         tuxmux
       ];
     };

@@ -171,7 +171,6 @@ rec {
             }
           )
           (inputs.home-manager.nixosModules.home-manager)
-          (inputs.nix-index-database.nixosModules.nix-index)
           (
             {
               home-manager = {
@@ -213,7 +212,6 @@ rec {
       inputs.darwin.lib.darwinSystem {
         inherit system;
         modules = [
-          (inputs.nix-index-database.darwinModules.nix-index)
           (
             { pkgs, ... }: {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.

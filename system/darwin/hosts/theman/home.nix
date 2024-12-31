@@ -13,8 +13,6 @@
     dua
     vhs
     just
-    comma
-    nix-index
     tuxmux
   ];
 
