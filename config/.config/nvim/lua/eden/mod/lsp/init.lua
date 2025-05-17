@@ -57,6 +57,7 @@ return {
         require("eden.mod.lsp.format").on_attach(client, buffer)
         require("eden.mod.lsp.keymaps").on_attach(client, buffer)
         require("lsp-inlayhints").on_attach(client, buffer)
+        client.server_capabilities.semanticTokensProvider = nil
         -- TODO: lsp signature
       end)
 
@@ -145,6 +146,7 @@ return {
         nixd = {},
         pyright = {},
         vimls = {},
+        zls = {},
       }
 
       local mlsp = require("mason-lspconfig")

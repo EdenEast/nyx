@@ -77,6 +77,11 @@ return {
   },
 
   {
+<<<<<<< HEAD
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "echasnovski/mini.icons" },
+    opts = {},
+=======
     "OXY2DEV/markview.nvim",
     ft = "markdown",
     cmd = { "Markview" },
@@ -91,6 +96,7 @@ return {
     "iamcco/markdown-preview.nvim",
     ft = { "markdown", "vimwiki" },
     cmd = { "MarkdownPreview", "MarkdownPreviewToggle" },
+>>>>>>> 08d4be2 (wip)
   },
 
   {

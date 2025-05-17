@@ -18,55 +18,55 @@ rec {
 
   # Derivation agnostic settings for all types of top level derivations (nixos, home-manager && darwin).
   mkUserHome = { config, system ? "x86_64-linux" }: {
-      imports = [
-        (import ../home/modules)
-        (import ../home/profiles)
-        (import config)
-      ];
+    imports = [
+      (import ../home/modules)
+      (import ../home/profiles)
+      (import config)
+    ];
 
-      # For compatibility with nix-shell, nix-build, etc.
-      home.file.".nixpkgs".source = inputs.nixpkgs;
-      home.sessionVariables."NIX_PATH" =
-        "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
+    # For compatibility with nix-shell, nix-build, etc.
+    home.file.".nixpkgs".source = inputs.nixpkgs;
+    home.sessionVariables."NIX_PATH" =
+      "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
 
-      # Use the same Nix configuration for the user
-      xdg.configFile."nixpkgs/config.nix".source = ../nix/config.nix;
+    # Use the same Nix configuration for the user
+    xdg.configFile."nixpkgs/config.nix".source = ../nix/config.nix;
 
-      # Re-expose self and nixpkgs as flakes.
-      xdg.configFile."nix/registry.json".text = builtins.toJSON {
-        version = 2;
-        flakes =
-          let
-            toInput = input:
-              {
-                type = "path";
-                path = input.outPath;
-              } // (
-                filterAttrs
-                  (n: _: n == "lastModified" || n == "rev" || n == "revCount" || n == "narHash")
-                  input
-              );
-          in
-          [
+    # Re-expose self and nixpkgs as flakes.
+    xdg.configFile."nix/registry.json".text = builtins.toJSON {
+      version = 2;
+      flakes =
+        let
+          toInput = input:
             {
-              from = { id = "nyx"; type = "indirect"; };
-              to = toInput inputs.self;
-            }
-            {
-              from = { id = "nixpkgs"; type = "indirect"; };
-              to = toInput inputs.nixpkgs;
-            }
-          ];
-      };
+              type = "path";
+              path = input.outPath;
+            } // (
+              filterAttrs
+                (n: _: n == "lastModified" || n == "rev" || n == "revCount" || n == "narHash")
+                input
+            );
+        in
+        [
+          {
+            from = { id = "nyx"; type = "indirect"; };
+            to = toInput inputs.self;
+          }
+          {
+            from = { id = "nixpkgs"; type = "indirect"; };
+            to = toInput inputs.nixpkgs;
+          }
+        ];
+    };
 
-      # TODO: Note sure where this should go
-      home.sessionPath = [ "$HOME/.local/nyx/bin" "$XDG_BIN_HOME" ];
+    # TODO: Note sure where this should go
+    home.sessionPath = [ "$HOME/.local/nyx/bin" "$XDG_BIN_HOME" ];
 
-      home.stateVersion = "20.09";
-    } // (optionalAttrs inputs.nixpkgs.legacyPackages."${system}".stdenv.isLinux {
-      targets.genericLinux.enable = true;
-      xdg.mime.enable = true;
-    });
+    home.stateVersion = "20.09";
+  } // (optionalAttrs inputs.nixpkgs.legacyPackages."${system}".stdenv.isLinux {
+    targets.genericLinux.enable = true;
+    xdg.mime.enable = true;
+  });
 
   # Top level derivation for just home-manager
   mkHome = name: { config ? name, user ? "eden", system ? "x86_64-linux" }:
@@ -101,7 +101,6 @@ rec {
               '';
 
             nix = {
-              package = pkgs.nixVersions.stable;
               extraOptions = "experimental-features = nix-command flakes";
             };
 
@@ -148,7 +147,6 @@ rec {
             { pkgs, ... }: {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.
               nix = {
-                package = pkgs.nixVersions.stable;
                 extraOptions = "experimental-features = nix-command flakes";
               };
             }
@@ -220,7 +218,6 @@ rec {
                   substituters = nixConf.binaryCaches;
                   trusted-public-keys = nixConf.binaryCachePublicKeys;
                 };
-                package = pkgs.nixVersions.stable;
                 extraOptions = "experimental-features = nix-command flakes";
               };
               services.nix-daemon.enable = true;
