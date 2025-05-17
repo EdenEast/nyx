@@ -32,7 +32,7 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
-    ghostty.url  = "github:ghostty-org/ghostty";
+    ghostty.url = "github:ghostty-org/ghostty";
 
     # eww.url = "github:elkowar/eww";
   };
@@ -78,7 +78,7 @@
         in
         [
           (self.overlay."${system}")
-          (nur.overlay)
+          (nur.overlays.default)
           (import rust-overlay)
           # (_:_: { inherit (eww.packages."${system}") eww; })
         ] ++ ovs
