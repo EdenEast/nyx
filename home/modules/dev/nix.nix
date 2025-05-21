@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.dev.nix;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.dev.nix;
+in {
   options.nyx.modules.dev.nix = {
     enable = mkEnableOption "nix configuration";
   };

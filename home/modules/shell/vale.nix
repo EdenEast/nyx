@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.shell.vale;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.shell.vale;
+in {
   options.nyx.modules.shell.vale = {
     enable = mkEnableOption "vale configuration";
   };

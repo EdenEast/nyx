@@ -1,5 +1,10 @@
-{ lib, fetchFromGitHub, mkYarnPackage, makeWrapper, nodejs }:
-
+{
+  lib,
+  fetchFromGitHub,
+  mkYarnPackage,
+  makeWrapper,
+  nodejs,
+}:
 mkYarnPackage rec {
   pname = "prettierd";
   version = "0.18.0";
@@ -14,7 +19,7 @@ mkYarnPackage rec {
   yarnLock = ./yarn.lock;
   yarnNix = ./yarn.nix;
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [makeWrapper];
 
   buildPhase = ''
     yarn --offline build

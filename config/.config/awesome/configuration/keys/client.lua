@@ -11,119 +11,81 @@ local helpers = require("helpers")
 
 local client = gears.table.join(
   -- Move focused client by direction (hjkl)
-  awful.key({ mod, shft }, "h", function(c)
-    helpers.move_client_dwim(c, "left")
-  end, {
+  awful.key({ mod, shft }, "h", function(c) helpers.move_client_dwim(c, "left") end, {
     description = "move left",
     group = "",
   }),
-  awful.key({ mod, shft }, "j", function(c)
-    helpers.move_client_dwim(c, "down")
-  end, {
+  awful.key({ mod, shft }, "j", function(c) helpers.move_client_dwim(c, "down") end, {
     description = "move down",
     group = "",
   }),
-  awful.key({ mod, shft }, "k", function(c)
-    helpers.move_client_dwim(c, "up")
-  end, {
+  awful.key({ mod, shft }, "k", function(c) helpers.move_client_dwim(c, "up") end, {
     description = "move up",
     group = "",
   }),
-  awful.key({ mod, shft }, "l", function(c)
-    helpers.move_client_dwim(c, "right")
-  end, {
+  awful.key({ mod, shft }, "l", function(c) helpers.move_client_dwim(c, "right") end, {
     description = "move right",
     group = "",
   }),
 
   -- Move focused client by direction (arrows)
-  awful.key({ mod, shft }, "Left", function(c)
-    helpers.move_client_dwim(c, "left")
-  end, {
+  awful.key({ mod, shft }, "Left", function(c) helpers.move_client_dwim(c, "left") end, {
     description = "move left",
     group = "",
   }),
-  awful.key({ mod, shft }, "Down", function(c)
-    helpers.move_client_dwim(c, "down")
-  end, {
+  awful.key({ mod, shft }, "Down", function(c) helpers.move_client_dwim(c, "down") end, {
     description = "move down",
     group = "",
   }),
-  awful.key({ mod, shft }, "Up", function(c)
-    helpers.move_client_dwim(c, "up")
-  end, {
+  awful.key({ mod, shft }, "Up", function(c) helpers.move_client_dwim(c, "up") end, {
     description = "move up",
     group = "",
   }),
-  awful.key({ mod, shft }, "Down", function(c)
-    helpers.move_client_dwim(c, "right")
-  end, {
+  awful.key({ mod, shft }, "Down", function(c) helpers.move_client_dwim(c, "right") end, {
     description = "move right",
     group = "",
   }),
 
   -- Relative move floating windows (hjkl)
-  awful.key({ mod, shft, ctrl }, "h", function(c)
-    c:relative_move(dpi(-20), 0, 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "h", function(c) c:relative_move(dpi(-20), 0, 0, 0) end, {
     description = "move left",
     group = "",
   }),
-  awful.key({ mod, shft, ctrl }, "j", function(c)
-    c:relative_move(0, dpi(20), 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "j", function(c) c:relative_move(0, dpi(20), 0, 0) end, {
     description = "move down",
     group = "",
   }),
-  awful.key({ mod, shft, ctrl }, "k", function(c)
-    c:relative_move(0, dpi(-20), 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "k", function(c) c:relative_move(0, dpi(-20), 0, 0) end, {
     description = "move up",
     group = "",
   }),
-  awful.key({ mod, shft, ctrl }, "l", function(c)
-    c:relative_move(dpi(20), 0, 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "l", function(c) c:relative_move(dpi(20), 0, 0, 0) end, {
     description = "move right",
     group = "",
   }),
 
   -- Relative move floating windows (arrows)
-  awful.key({ mod, shft, ctrl }, "Left", function(c)
-    c:relative_move(dpi(-20), 0, 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "Left", function(c) c:relative_move(dpi(-20), 0, 0, 0) end, {
     description = "move left",
     group = "",
   }),
-  awful.key({ mod, shft, ctrl }, "Down", function(c)
-    c:relative_move(0, dpi(20), 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "Down", function(c) c:relative_move(0, dpi(20), 0, 0) end, {
     description = "move down",
     group = "",
   }),
-  awful.key({ mod, shft, ctrl }, "Up", function(c)
-    c:relative_move(0, dpi(-20), 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "Up", function(c) c:relative_move(0, dpi(-20), 0, 0) end, {
     description = "move up",
     group = "",
   }),
-  awful.key({ mod, shft, ctrl }, "Right", function(c)
-    c:relative_move(dpi(20), 0, 0, 0)
-  end, {
+  awful.key({ mod, shft, ctrl }, "Right", function(c) c:relative_move(dpi(20), 0, 0, 0) end, {
     description = "move right",
     group = "",
   }),
 
   -- Close client
-  awful.key({ mod }, "BackSpace", function(c)
-    c:kill()
-  end, { description = "close", group = "" }),
-  awful.key({ mod, shft }, "q", function(c)
-    c:kill()
-  end, { description = "close", group = "" }),
-  awful.key({ alt }, "F4", function(c)
-    c:kill()
-  end, { description = "close", group = "" }),
+  awful.key({ mod }, "BackSpace", function(c) c:kill() end, { description = "close", group = "" }),
+  awful.key({ mod, shft }, "q", function(c) c:kill() end, { description = "close", group = "" }),
+  awful.key({ alt }, "F4", function(c) c:kill() end, { description = "close", group = "" }),
 
   -- Fullscreen client
   awful.key({ mod }, "f", function(c)
@@ -168,9 +130,7 @@ local client = gears.table.join(
   }),
 
   -- Minimize client
-  awful.key({ mod }, "n", function(c)
-    c.minimized = true
-  end, { description = "minimize", group = "" }),
+  awful.key({ mod }, "n", function(c) c.minimized = true end, { description = "minimize", group = "" }),
 
   -- Maximize client
   awful.key({ mod }, "m", function(c)
@@ -198,12 +158,8 @@ local client = gears.table.join(
   -- Pin/sticky client
   -- Pin: keep on top
   -- Sticky: keep on all tags
-  awful.key({ mod, shft }, "p", function(c)
-    c.ontop = not c.ontop
-  end, { description = "pin client", group = "" }),
-  awful.key({ mod, ctrl }, "p", function(c)
-    c.sticky = not c.sticky
-  end, {
+  awful.key({ mod, shft }, "p", function(c) c.ontop = not c.ontop end, { description = "pin client", group = "" }),
+  awful.key({ mod, ctrl }, "p", function(c) c.sticky = not c.sticky end, {
     description = "sticky client",
     group = "",
   })

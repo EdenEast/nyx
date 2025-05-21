@@ -1,16 +1,15 @@
 # https://github.com/drduh/YubiKey-Guide/tree/de29a9e#nixos
-
-{ nixpkgs ? <nixpkgs>, system ? "x86_64-linux" }:
-
-let
-  config = { pkgs, ... }:
+{
+  system ? "x86_64-linux",
+}: let
+  config = {pkgs, ...}:
     with pkgs; {
-      imports = [ <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix> ];
+      imports = [<nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix>];
 
       boot.kernelPackages = linuxPackages_latest;
 
       services.pcscd.enable = true;
-      services.udev.packages = [ yubikey-personalization ];
+      services.udev.packages = [yubikey-personalization];
 
       environment.systemPackages = [
         # Gnupg packages
@@ -44,11 +43,10 @@ let
       };
     };
 
-  evalNixos = configuration: import <nixpkgs/nixos> {
-    inherit system configuration;
-  };
-
-in
-{
+  evalNixos = configuration:
+    import <nixpkgs/nixos> {
+      inherit system configuration;
+    };
+in {
   iso = (evalNixos config).config.system.build.isoImage;
 }

@@ -1,17 +1,17 @@
 # This file is normally automatically generated. Since we build a VM
 # and have full control over that hardware I can hardcode this into my
 # repository.
-{ pkgs, modulesPath, ... }:
-
 {
-  imports = [ ];
+  ...
+}: {
+  imports = [];
 
   boot = {
-    kernelModules = [ ];
-    extraModulePackages = [ ];
+    kernelModules = [];
+    extraModulePackages = [];
     initrd = {
-      availableKernelModules = [ "ata_piix" "mptspi" "uhci_hcd" "ehci_pci" "sd_mod" "sr_mod" ];
-      kernelModules = [ ];
+      availableKernelModules = ["ata_piix" "mptspi" "uhci_hcd" "ehci_pci" "sd_mod" "sr_mod"];
+      kernelModules = [];
     };
 
     # Use systemd-boot EFI boot loader
@@ -33,5 +33,5 @@
     };
   };
 
-  swapDevices = [ ];
+  swapDevices = [];
 }

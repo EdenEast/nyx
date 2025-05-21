@@ -9,18 +9,14 @@ require("configuration.apps")
 myawesomemenu = {
   {
     "hotkeys",
-    function()
-      hotkeys_popup.show_help(nil, awful.screen.focused())
-    end,
+    function() hotkeys_popup.show_help(nil, awful.screen.focused()) end,
   },
   { "manual", apps.terminal .. " -e man awesome" },
   { "edit config", apps.editor_cmd .. " " .. awesome.conffile },
   { "restart", awesome.restart },
   {
     "quit",
-    function()
-      awesome.quit()
-    end,
+    function() awesome.quit() end,
   },
 }
 

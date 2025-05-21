@@ -1,18 +1,22 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.nyx.modules.dev.node;
 
-  boolToString = v: if v then "true" else "false";
+  boolToString = v:
+    if v
+    then "true"
+    else "false";
 
   configHome = config.xdg.configHome;
   dataHome = config.xdg.dataHome;
   cacheHome = config.xdg.cacheHome;
-in
-{
+in {
   options.nyx.modules.dev.node = {
-
     enable = mkEnableOption "node configuration";
 
     registry = mkOption {
@@ -24,8 +28,7 @@ in
     strictSsl = mkOption {
       type = with types; nullOr bool;
       default = null;
-      description =
-        "Use SSL key validation when making requests to registry via https";
+      description = "Use SSL key validation when making requests to registry via https";
     };
 
     httpProxy = mkOption {
@@ -42,7 +45,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ nodejs yarn ];
+    home.packages = with pkgs; [nodejs yarn];
 
     home.sessionVariables = {
       NPM_CONFIG_USERCONFIG = "${configHome}/npm/config";
@@ -57,12 +60,12 @@ in
       prefix=${dataHome}/npm
       registry=${cfg.registry}
       ${optionalString (cfg.strictSsl != null)
-      "strict-ssl=${boolToString cfg.strictSsl}"}
+        "strict-ssl=${boolToString cfg.strictSsl}"}
       ${optionalString (cfg.httpProxy != "") "proxy=${cfg.httpProxy}"}
       ${optionalString (cfg.httpsProxy != "") "https-proxy=${cfg.httpsProxy}"}
     '';
 
     # npm and yarn will install into this location
-    home.sessionPath = [ "${dataHome}/npm/bin" ];
+    home.sessionPath = ["${dataHome}/npm/bin"];
   };
 }

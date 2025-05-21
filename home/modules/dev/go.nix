@@ -1,10 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let cfg = config.nyx.modules.dev.go;
-in
 {
-  options.nyx.modules.dev.go = { enable = mkEnableOption "go configuration"; };
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.dev.go;
+in {
+  options.nyx.modules.dev.go = {enable = mkEnableOption "go configuration";};
 
   config = mkIf cfg.enable {
     home = {
@@ -21,4 +24,3 @@ in
     };
   };
 }
-

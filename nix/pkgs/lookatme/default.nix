@@ -1,5 +1,8 @@
-{ lib, fetchFromGitHub, python3Packages }:
-
+{
+  lib,
+  fetchFromGitHub,
+  python3Packages,
+}:
 python3Packages.buildPythonApplication rec {
   name = "lookatme";
   version = "2.3.0";
@@ -12,7 +15,7 @@ python3Packages.buildPythonApplication rec {
     sha256 = "sha256-nTeCI1wFk8+5X7fROSmSIyydi0BzU7vvc+qJeQ+u4MM=";
   };
 
-  checkInputs = with python3Packages; [ pytest ];
+  checkInputs = with python3Packages; [pytest];
 
   propagatedBuildInputs = with python3Packages; [
     click
@@ -29,4 +32,3 @@ python3Packages.buildPythonApplication rec {
     license = lib.licenses.mit;
   };
 }
-

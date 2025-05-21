@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-
-{
-  imports = [ ./hardware.nix ];
+{pkgs, ...}: {
+  imports = [./hardware.nix];
 
   networking.interfaces.wlp3s0.useDHCP = true;
 

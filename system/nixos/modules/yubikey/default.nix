@@ -1,10 +1,12 @@
-{ config, inputs, lib, name, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.yubikey;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.yubikey;
+in {
   options.nyx.modules.yubikey = {
     enable = mkEnableOption "yubikey support";
     istty = mkEnableOption "Set pinentry to curses if no display";
@@ -35,7 +37,7 @@ in
       pcscd.enable = true;
 
       # Required for Yubikey device to work
-      udev.packages = with pkgs; [ yubikey-personalization libu2f-host ];
+      udev.packages = with pkgs; [yubikey-personalization libu2f-host];
     };
   };
 }

@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     rustup
     vhs
@@ -24,9 +22,11 @@
         direnv.enable = true;
         gnupg = {
           enable = true;
-          publicKeys = [{
-            key = ../../../../config/.gnupg/public.key;
-          }];
+          publicKeys = [
+            {
+              key = ../../../../config/.gnupg/public.key;
+            }
+          ];
         };
         # repo = let r = import ../../../../home/common/repo.nix; in
         #   {

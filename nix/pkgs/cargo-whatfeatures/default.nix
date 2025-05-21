@@ -1,5 +1,10 @@
-{ lib, rustPlatform, fetchFromGitHub, openssl, pkgconfig }:
-
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+  openssl,
+  pkgconfig,
+}:
 rustPlatform.buildRustPackage rec {
   pname = "cargo-whatfeatures";
   version = "0.9.6";
@@ -13,9 +18,9 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "nNV7UXjKZNFmTqW4H0qsNuBW9XOP2V9nfotewtI9mYE=";
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [pkgconfig];
 
-  buildInputs = [ openssl ];
+  buildInputs = [openssl];
 
   meta = with lib; {
     description = "List features for a specific crate";

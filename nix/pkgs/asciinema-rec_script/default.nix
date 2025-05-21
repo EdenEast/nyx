@@ -1,5 +1,8 @@
-{ lib, stdenv, bat, fetchFromGitHub }:
-
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+}:
 stdenv.mkDerivation rec {
   pname = "asciinema-rec_script";
   version = "0.10.0";

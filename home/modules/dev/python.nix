@@ -1,12 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.dev.python;
-  configHome = config.xdg.configHome;
-  dataHome = config.xdg.dataHome;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.dev.python;
+in {
   options.nyx.modules.dev.python = {
     enable = mkEnableOption "python configuration";
 
@@ -25,10 +25,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      python39
-      pipenv
-    ] ++ cfg.extraPackages;
+    home.packages = with pkgs;
+      [
+        python39
+        pipenv
+      ]
+      ++ cfg.extraPackages;
 
     # home.sessionVariables = {
     #   PIP_CONFIG_FILE = "${configHome}/pip/pip.conf";

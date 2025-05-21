@@ -1,10 +1,6 @@
-{ ... }:
-
-_final: prev:
-
-{
+{...}: _final: prev: {
   tmux = prev.tmux.overrideAttrs (
-    old: rec {
+    _old: rec {
       version = "3.3a";
       src = prev.fetchFromGitHub {
         owner = "tmux";
@@ -12,7 +8,7 @@ _final: prev:
         rev = "${version}";
         sha256 = "sha256-SygHxTe7N4y7SdzKixPFQvqRRL57Fm8zWYHfTpW+yVY=";
       };
-      patches = [ ];
+      patches = [];
     }
   );
 }

@@ -1,14 +1,14 @@
-{ ... }:
-
-{
+{...}: {
   nyx = {
     modules = {
       shell = {
         gnupg = {
           enable = true;
-          publicKeys = [{
-            key = ../../../../config/.gnupg/public.key;
-          }];
+          publicKeys = [
+            {
+              key = ../../../../config/.gnupg/public.key;
+            }
+          ];
         };
       };
     };

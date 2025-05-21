@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     rustup
     vhs
@@ -24,9 +22,11 @@
         direnv.enable = true;
         gnupg = {
           enable = true;
-          publicKeys = [{
-            key = ../../../../config/.gnupg/public.key;
-          }];
+          publicKeys = [
+            {
+              key = ../../../../config/.gnupg/public.key;
+            }
+          ];
         };
 
         repo = {
@@ -35,11 +35,11 @@
             nightfox = {
               name = "nightfox.nvim";
               remote = "ssh://git@github.com/edeneast/nightfox.nvim.git";
-              tags = [ "plugins" ];
+              tags = ["plugins"];
             };
             qmk = {
               remote = "ssh://git@github.com/edeneast/qmk.git";
-              tags = [ "keyboard" ];
+              tags = ["keyboard"];
             };
           };
           tags = {

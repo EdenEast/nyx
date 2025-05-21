@@ -1,7 +1,5 @@
-{ ... }:
-
-{
-  imports = [ ./hardware.nix ];
+{...}: {
+  imports = [./hardware.nix];
 
   virtualisation.vmware.guest.enable = true;
 

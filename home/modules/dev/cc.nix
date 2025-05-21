@@ -1,9 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let cfg = config.nyx.modules.dev.cc;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.dev.cc;
+in {
   options.nyx.modules.dev.cc = {
     enable = mkEnableOption "c/c++ configuration";
   };

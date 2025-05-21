@@ -1,9 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let cfg = config.nyx.modules.dev.dhall;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.dev.dhall;
+in {
   options.nyx.modules.dev.dhall = {
     enable = mkEnableOption "dhall configuration";
   };
@@ -17,4 +20,3 @@ in
     ];
   };
 }
-

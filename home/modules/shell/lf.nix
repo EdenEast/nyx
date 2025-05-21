@@ -1,15 +1,16 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.shell.lf;
-  additionalPkgs = with pkgs;
-    [
-      vimv # Batch rename files with vim
-      ueberzug
-    ];
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.shell.lf;
+  additionalPkgs = with pkgs; [
+    vimv # Batch rename files with vim
+    ueberzug
+  ];
+in {
   options.nyx.modules.shell.lf = {
     enable = mkEnableOption "lf configuration";
 
@@ -22,7 +23,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ] ++ additionalPkgs;
+    home.packages = [cfg.package] ++ additionalPkgs;
     xdg.configFile."lf" = {
       source = ../../../config/.config/lf;
       executable = true;

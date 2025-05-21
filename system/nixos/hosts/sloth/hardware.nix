@@ -1,15 +1,16 @@
-{ pkgs, modulesPath, ... }:
-
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  modulesPath,
+  ...
+}: {
+  imports = [(modulesPath + "/installer/scan/not-detected.nix")];
 
   # Hardware ------------------------------------------------------------------
 
   boot = {
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = ["kvm-intel"];
     initrd = {
-      availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" ];
-      kernelModules = [ ];
+      availableKernelModules = ["xhci_pci" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci"];
+      kernelModules = [];
     };
 
     loader = {
@@ -29,7 +30,7 @@
     };
   };
 
-  swapDevices = [{ device = "/dev/disk/by-label/swap"; }];
+  swapDevices = [{device = "/dev/disk/by-label/swap";}];
 
   # ---------------------------------------------------------------------------
 }

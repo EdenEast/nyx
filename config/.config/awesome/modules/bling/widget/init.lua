@@ -1,4 +1,4 @@
 return {
-    tag_preview = require(... .. ".tag_preview"),
-    task_preview = require(... .. ".task_preview")
+  tag_preview = require(... .. ".tag_preview"),
+  task_preview = require(... .. ".task_preview"),
 }

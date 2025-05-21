@@ -9,17 +9,17 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-        inherit (pkgs) lib;
-      in
-      rec {
-        devShells.default = pkgs.mkShell {
-          name = "name";
-          # inputsFrom = [];
-          # nativeBuildInputs = with pkgs; [ ];
-        };
-      });
+  outputs = {
+    nixpkgs,
+    flake-utils,
+  }:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {inherit system;};
+    in rec {
+      devShells.default = pkgs.mkShell {
+        name = "name";
+        # inputsFrom = [];
+        # nativeBuildInputs = with pkgs; [ ];
+      };
+    });
 }

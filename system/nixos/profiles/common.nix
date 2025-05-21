@@ -1,20 +1,22 @@
-{ config, inputs, lib, pkgs, ... }:
-
-with lib;
-let
-  nixConf = import ../../../nix/conf.nix;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  nixConf = import ../../../nix/conf.nix;
+in {
   config = {
     boot = {
       # Enable running aarch64 binaries using qemu.
-      binfmt.emulatedSystems = [ "aarch64-linux" ];
+      binfmt.emulatedSystems = ["aarch64-linux"];
 
       # Clean temporary directory on boot.
       tmp.cleanOnBoot = true;
 
       # Enable support for nfs and ntfs.
-      supportedFilesystems = [ "cifs" "ntfs" "nfs" ];
+      supportedFilesystems = ["cifs" "ntfs" "nfs"];
     };
 
     # This is deprecated. Use `networking.interface.<name>.useDHCP`
@@ -31,7 +33,7 @@ in
         # Save space by hardlinking store files
         auto-optimise-store = true;
 
-        allowed-users = [ "root" ];
+        allowed-users = ["root"];
       };
 
       gc = {

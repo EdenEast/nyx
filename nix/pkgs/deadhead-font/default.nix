@@ -1,11 +1,13 @@
-{ lib, stdenv }:
-
+{
+  lib,
+  stdenv,
+}:
 stdenv.mkDerivation {
   pname = "deadhead-font";
   version = "0.1.0";
   src = ./.;
 
-  phases = [ "unpackPhase" "installPhase" ];
+  phases = ["unpackPhase" "installPhase"];
 
   installPhase = ''
     mkdir -p $out/share/fonts/opentype

@@ -1,12 +1,17 @@
-{ lib, pkgs, config, username, ... }:
-
+{
+  lib,
+  pkgs,
+  config,
+  username,
+  ...
+}:
 pkgs.substituteAll {
   name = "syschdemd";
   src = ./syschdemd.sh;
   dir = "bin";
   isExecutable = true;
 
-  buildInputs = with pkgs; [ daemonize ];
+  buildInputs = with pkgs; [daemonize];
 
   inherit (pkgs) daemonize;
   inherit (config.security) wrapperDir;

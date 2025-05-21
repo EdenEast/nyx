@@ -21,96 +21,64 @@ local global = gears.table.join(
   -- Note: Movement of focused client is on in the client keys
 
   -- Move Focus with (hjkl)
-  awful.key({ mod }, "h", function()
-    helpers.move_focus(client.focus, "left")
-  end, {
+  awful.key({ mod }, "h", function() helpers.move_focus(client.focus, "left") end, {
     description = "focus left",
     group = "",
   }),
-  awful.key({ mod }, "j", function()
-    helpers.move_focus(client.focus, "down")
-  end, {
+  awful.key({ mod }, "j", function() helpers.move_focus(client.focus, "down") end, {
     description = "focus down",
     group = "",
   }),
-  awful.key({ mod }, "k", function()
-    helpers.move_focus(client.focus, "up")
-  end, {
+  awful.key({ mod }, "k", function() helpers.move_focus(client.focus, "up") end, {
     description = "focus up",
     group = "",
   }),
-  awful.key({ mod }, "l", function()
-    helpers.move_focus(client.focus, "right")
-  end, {
+  awful.key({ mod }, "l", function() helpers.move_focus(client.focus, "right") end, {
     description = "focus right",
     group = "",
   }),
 
   -- Move Focus with (arrows) useful when using colemak
-  awful.key({ mod }, "Left", function()
-    helpers.move_focus("left")
-  end, { description = "focus left", group = "" }),
-  awful.key({ mod }, "Down", function()
-    helpers.move_focus("down")
-  end, { description = "focus down", group = "" }),
-  awful.key({ mod }, "Up", function()
-    helpers.move_focus("up")
-  end, { description = "focus up", group = "" }),
-  awful.key({ mod }, "Right", function()
-    helpers.move_focus("right")
-  end, {
+  awful.key({ mod }, "Left", function() helpers.move_focus("left") end, { description = "focus left", group = "" }),
+  awful.key({ mod }, "Down", function() helpers.move_focus("down") end, { description = "focus down", group = "" }),
+  awful.key({ mod }, "Up", function() helpers.move_focus("up") end, { description = "focus up", group = "" }),
+  awful.key({ mod }, "Right", function() helpers.move_focus("right") end, {
     description = "focus right",
     group = "",
   }),
 
   -- Resize focused client or layout factor (hjkl)
-  awful.key({ mod, ctrl }, "h", function()
-    helpers.resize_dwim(client.focus, "left")
-  end, {
+  awful.key({ mod, ctrl }, "h", function() helpers.resize_dwim(client.focus, "left") end, {
     description = "resize left",
     group = "",
   }),
-  awful.key({ mod, ctrl }, "j", function()
-    helpers.resize_dwim(client.focus, "down")
-  end, {
+  awful.key({ mod, ctrl }, "j", function() helpers.resize_dwim(client.focus, "down") end, {
     description = "resize down",
     group = "",
   }),
-  awful.key({ mod, ctrl }, "k", function()
-    helpers.resize_dwim(client.focus, "up")
-  end, {
+  awful.key({ mod, ctrl }, "k", function() helpers.resize_dwim(client.focus, "up") end, {
     description = "resize up",
     group = "",
   }),
-  awful.key({ mod, ctrl }, "l", function()
-    helpers.resize_dwim(client.focus, "right")
-  end, {
+  awful.key({ mod, ctrl }, "l", function() helpers.resize_dwim(client.focus, "right") end, {
     description = "resize right",
     group = "",
   }),
 
   -- Resize focused client or layout factor (arrows)
-  awful.key({ mod, ctrl }, "Left", function()
-    helpers.resize_dwim(client.focus, "left")
-  end, {
+  awful.key({ mod, ctrl }, "Left", function() helpers.resize_dwim(client.focus, "left") end, {
     description = "resize left",
     group = "",
   }),
-  awful.key({ mod, ctrl }, "Down", function()
-    helpers.resize_dwim(client.focus, "down")
-  end, {
+  awful.key({ mod, ctrl }, "Down", function() helpers.resize_dwim(client.focus, "down") end, {
     description = "resize down",
     group = "",
   }),
-  awful.key({ mod, ctrl }, "Up", function()
-    helpers.resize_dwim(client.focus, "up")
-  end, {
+  awful.key({ mod, ctrl }, "Up", function() helpers.resize_dwim(client.focus, "up") end, {
     description = "resize up",
     group = "",
   }),
-  awful.key({ mod, ctrl }, "Right", function()
-    helpers.resize_dwim(client.focus, "right")
-  end, {
+  awful.key({ mod, ctrl }, "Right", function() helpers.resize_dwim(client.focus, "right") end, {
     description = "resize right",
     group = "",
   }),
@@ -121,9 +89,7 @@ local global = gears.table.join(
 
   -- Quit awesome
   -- TODO: change this to use an exit screen
-  awful.key({ mod, shft }, "x", function()
-    awesome.quit()
-  end, { description = "quit awesome", group = "" }),
+  awful.key({ mod, shft }, "x", function() awesome.quit() end, { description = "quit awesome", group = "" }),
   -- awful.key({}, 'XF86PowerOff',
   --   function() awesome.quit()  end,
   --   { description = 'quit awesome', group = '' }
@@ -139,15 +105,11 @@ local global = gears.table.join(
   }),
 
   -- Launchers
-  awful.key({ mod }, "Return", function()
-    awful.spawn(apps.terminal)
-  end, {
+  awful.key({ mod }, "Return", function() awful.spawn(apps.terminal) end, {
     description = "launch terminal",
     group = "launcher",
   }),
-  awful.key({ mod, shft }, "Return", function()
-    awful.spawn("rofi -show combi")
-  end, {
+  awful.key({ mod, shft }, "Return", function() awful.spawn("rofi -show combi") end, {
     description = "launch terminal",
     group = "launcher",
   }),
@@ -159,22 +121,16 @@ local global = gears.table.join(
     group = "launcher",
   }),
 
-  awful.key({ mod, shft }, "minus", function()
-    awful.tag.incgap(3, nil)
-  end, {
+  awful.key({ mod, shft }, "minus", function() awful.tag.incgap(3, nil) end, {
     description = "increase gaps for current tag",
     group = "launcher",
   }),
-  awful.key({ mod }, "minus", function()
-    awful.tag.incgap(-3, nil)
-  end, {
+  awful.key({ mod }, "minus", function() awful.tag.incgap(-3, nil) end, {
     description = "decrease gaps for current tag",
     group = "launcher",
   }),
 
-  awful.key({ mod }, "p", function()
-    awful.util.spawn_with_shell("sleep 0.5 && scrot -s")
-  end, {
+  awful.key({ mod }, "p", function() awful.util.spawn_with_shell("sleep 0.5 && scrot -s") end, {
     description = "take screenshot",
     group = "launcher",
   }),
@@ -246,9 +202,7 @@ local global = gears.table.join(
   }),
 
   -- Floating
-  awful.key({ mod, shft }, "s", function()
-    awful.layout.set(awful.layout.suit.floating)
-  end, {
+  awful.key({ mod, shft }, "s", function() awful.layout.set(awful.layout.suit.floating) end, {
     description = "set floating layout",
     group = "layout",
   }),
@@ -256,24 +210,18 @@ local global = gears.table.join(
   -- Restore minimized
   awful.key({ mod, shft }, "n", function()
     local c = awful.client.restore()
-    if c then
-      client.focus = c
-    end
+    if c then client.focus = c end
   end, {
     description = "restore minimized",
     group = "layout",
   }),
 
   -- Machi
-  awful.key({ mod }, ".", function()
-    machi.default_editor.start_interactive()
-  end, {
+  awful.key({ mod }, ".", function() machi.default_editor.start_interactive() end, {
     description = "edit current layout machi",
     group = "layout",
   }),
-  awful.key({ mod }, "/", function()
-    machi.switcher.start(client.focus)
-  end, {
+  awful.key({ mod }, "/", function() machi.switcher.start(client.focus) end, {
     description = "switch between windows machi",
     group = "layout",
   }),
@@ -285,15 +233,9 @@ local global = gears.table.join(
   -------------------------------------------------------
 
   -- Volume and mic
-  awful.key({}, "XF86AudioRaiseVolume", function()
-    awful.spawn.with_shell("pamixer -i 3")
-  end, {}),
-  awful.key({}, "XF86AudioLowerVolume", function()
-    awful.spawn.with_shell("pamixer -d 3")
-  end, {}),
-  awful.key({}, "XF86AudioMute", function()
-    awful.spawn.with_shell("pamixer -t")
-  end, {}),
+  awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn.with_shell("pamixer -i 3") end, {}),
+  awful.key({}, "XF86AudioLowerVolume", function() awful.spawn.with_shell("pamixer -d 3") end, {}),
+  awful.key({}, "XF86AudioMute", function() awful.spawn.with_shell("pamixer -t") end, {}),
   -- TODO:
   -- awful.key({}, "XF86AudioRecord", function()
   --   awful.spawn.with_shell('~/.script/wm/soundctl forward')
@@ -307,48 +249,24 @@ local global = gears.table.join(
   -- awful.key({}, "XF86AudioMedia", function()
   --   awful.spawn.with_shell('~/.script/wm/soundctl forward')
   -- end, {}),
-  awful.key({}, "XF86AudioPlay", function()
-    awful.spawn.with_shell("playerctl play-pause")
-  end, {}),
-  awful.key({}, "XF86AudioStop", function()
-    awful.spawn.with_shell("playerctl stop")
-  end, {}),
-  awful.key({}, "XF86AudioNext", function()
-    awful.spawn.with_shell("playerctl next")
-  end, {}),
-  awful.key({}, "XF86AudioPrev", function()
-    awful.spawn.with_shell("playerctl previous")
-  end, {}),
-  awful.key({}, "XF86AudioForward", function()
-    awful.spawn.with_shell("~/.script/wm/soundctl forward")
-  end, {}),
-  awful.key({}, "XF86AudioRewind", function()
-    awful.spawn.with_shell("~/.script/wm/soundctl backward")
-  end, {}),
+  awful.key({}, "XF86AudioPlay", function() awful.spawn.with_shell("playerctl play-pause") end, {}),
+  awful.key({}, "XF86AudioStop", function() awful.spawn.with_shell("playerctl stop") end, {}),
+  awful.key({}, "XF86AudioNext", function() awful.spawn.with_shell("playerctl next") end, {}),
+  awful.key({}, "XF86AudioPrev", function() awful.spawn.with_shell("playerctl previous") end, {}),
+  awful.key({}, "XF86AudioForward", function() awful.spawn.with_shell("~/.script/wm/soundctl forward") end, {}),
+  awful.key({}, "XF86AudioRewind", function() awful.spawn.with_shell("~/.script/wm/soundctl backward") end, {}),
 
   -- Display
-  awful.key({}, "XF86Display", function()
-    awful.spawn.with_shell("arandr")
-  end, {}),
-  awful.key({}, "XF86MonBrightnessUp", function()
-    awful.spawn.with_shell("brightnessctl s +5%")
-  end, {}),
-  awful.key({}, "XF86MonBrightnessDown", function()
-    awful.spawn.with_shell("brightnessctl s 5%-")
-  end, {}),
+  awful.key({}, "XF86Display", function() awful.spawn.with_shell("arandr") end, {}),
+  awful.key({}, "XF86MonBrightnessUp", function() awful.spawn.with_shell("brightnessctl s +5%") end, {}),
+  awful.key({}, "XF86MonBrightnessDown", function() awful.spawn.with_shell("brightnessctl s 5%-") end, {}),
 
   -- Power
-  awful.key({}, "XF86PowerOff", function()
-    awful.spawn.with_shell("~/.scripts/lockscreen.sh")
-  end, {}),
+  awful.key({}, "XF86PowerOff", function() awful.spawn.with_shell("~/.scripts/lockscreen.sh") end, {}),
   awful.key({}, "XF86Reload", awesome.restart, {}),
   awful.key({}, "XF86ScreenSaver", function() end, {}),
-  awful.key({}, "XF86Sleep", function()
-    awful.spawn.with_shell("~/.scripts/lockscreen.sh")
-  end, {}),
-  awful.key({}, "XF86Suspend", function()
-    awful.spawn.with_shell("~/.scripts/lockscreen.sh")
-  end, {})
+  awful.key({}, "XF86Sleep", function() awful.spawn.with_shell("~/.scripts/lockscreen.sh") end, {}),
+  awful.key({}, "XF86Suspend", function() awful.spawn.with_shell("~/.scripts/lockscreen.sh") end, {})
 
   -- awful.key({}, "XF86Close", function() end, {}),
   -- awful.key({}, "XF86Explorer", function() end, {}),
@@ -384,9 +302,7 @@ for i = 1, ntags do
     awful.key({ mod, ctrl }, "#" .. i + 9, function()
       local screen = awful.screen.focused()
       local tag = screen.tags[i]
-      if tag then
-        awful.tag.viewtoggle(tag)
-      end
+      if tag then awful.tag.viewtoggle(tag) end
     end, {
       description = "toggle tag #" .. i,
       group = "tag",
@@ -396,9 +312,7 @@ for i = 1, ntags do
     awful.key({ mod, shft }, "#" .. i + 9, function()
       if client.focus then
         local tag = client.focus.screen.tags[i]
-        if tag then
-          client.focus:move_to_tag(tag)
-        end
+        if tag then client.focus:move_to_tag(tag) end
       end
     end, {
       description = "move focused client to tag #" .. i,
@@ -423,9 +337,7 @@ for i = 1, ntags do
     awful.key({ mod, ctrl, shft }, "#" .. i + 9, function()
       if client.focus then
         local tag = client.focus.screen.tags[i]
-        if tag then
-          client.focus:toggle_tag(tag)
-        end
+        if tag then client.focus:toggle_tag(tag) end
       end
     end, {
       description = "toggle focused client on tag #" .. i,

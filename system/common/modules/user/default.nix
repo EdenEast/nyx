@@ -1,11 +1,14 @@
-{ config, self, system, user, ... }:
-
-with self.lib;
-let
+{
+  config,
+  self,
+  system,
+  user,
+  ...
+}:
+with self.lib; let
   cfg = config.nyx.modules.user;
   defaultName = existsOrDefault "name" user null;
-in
-{
+in {
   options.nyx.modules.user = {
     name = mkOption {
       type = types.str;
@@ -22,7 +25,10 @@ in
 
   config = mkMerge [
     (mkIf (cfg.home != null) {
-      home-manager.users."${cfg.name}" = mkUserHome { inherit system; config = cfg.home; };
+      home-manager.users."${cfg.name}" = mkUserHome {
+        inherit system;
+        config = cfg.home;
+      };
     })
 
     {

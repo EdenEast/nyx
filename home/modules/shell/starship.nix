@@ -1,9 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let cfg = config.nyx.modules.shell.starship;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.shell.starship;
+in {
   options.nyx.modules.shell.starship = {
     enable = mkEnableOption "starship configuration";
   };

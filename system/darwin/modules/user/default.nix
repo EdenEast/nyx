@@ -1,11 +1,13 @@
-{ config, pkgs, self, ... }:
-
-with self.lib;
-let
-  cfg = config.nyx.modules.user;
-in
 {
-  options.nyx.modules.user = { };
+  config,
+  pkgs,
+  self,
+  ...
+}:
+with self.lib; let
+  cfg = config.nyx.modules.user;
+in {
+  options.nyx.modules.user = {};
 
   config = mkMerge [
     {

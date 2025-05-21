@@ -1,8 +1,11 @@
 # https://nixos.wiki/wiki/Nvidia
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.nyx.modules.nvidia;
 
   nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
@@ -12,8 +15,7 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec -a "$0" "$@"
   '';
-in
-{
+in {
   options.nyx.modules.nvidia = {
     enable = mkEnableOption "Nvidia support";
 
@@ -43,9 +45,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ nvidia-offload ];
+    environment.systemPackages = [nvidia-offload];
 
-    services.xserver.videoDrivers = [ "nvidia" ];
+    services.xserver.videoDrivers = ["nvidia"];
     hardware.nvidia = {
       open = true;
       prime = {

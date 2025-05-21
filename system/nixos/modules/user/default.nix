@@ -1,14 +1,21 @@
-{ config, lib, pkgs, self, user, ... }:
-
-with self.lib;
-let
+{
+  config,
+  lib,
+  pkgs,
+  self,
+  user,
+  ...
+}:
+with self.lib; let
   cfg = config.nyx.modules.user;
 
   isPasswdCompatible = str: !(hasInfix ":" str || hasInfix "\n" str);
-  passwdEntry = type: lib.types.addCheck type isPasswdCompatible // {
-    name = "passwdEntry ${type.name}";
-    description = "${type.description}, not containing newlines or colons";
-  };
+  passwdEntry = type:
+    lib.types.addCheck type isPasswdCompatible
+    // {
+      name = "passwdEntry ${type.name}";
+      description = "${type.description}, not containing newlines or colons";
+    };
 
   defaultHashedPassword = existsOrDefault "hashedPassword" user null;
 
@@ -21,8 +28,7 @@ let
     "networmanager"
     "wheel"
   ];
-in
-{
+in {
   options.nyx.modules.user = {
     extraGroups = mkOption {
       type = types.listOf types.str;
@@ -55,7 +61,7 @@ in
         mutableUsers = false;
       };
 
-      nix.settings.trusted-users = [ "${cfg.name}" ];
+      nix.settings.trusted-users = ["${cfg.name}"];
     }
   ];
 }

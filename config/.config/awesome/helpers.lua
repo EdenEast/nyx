@@ -7,9 +7,7 @@ local dpi = xresources.apply_dpi
 local helpers = {}
 
 function helpers.move_focus(c, direction)
-  if not c then
-    return
-  end
+  if not c then return end
 
   local layout = awful.layout.getname(awful.layout.get(awful.screen.focused()))
   if layout == "max" then
@@ -22,9 +20,7 @@ function helpers.move_focus(c, direction)
     awful.client.focus.bydirection(direction)
   end
 
-  if c.focus then
-    c.focus:raise()
-  end
+  if c.focus then c.focus:raise() end
 end
 
 local direction_translate = {
@@ -124,9 +120,7 @@ function helpers.single_double_tap(single_tap_function, double_tap_function)
   double_tap_timer = gears.timer.start_new(0.20, function()
     double_tap_timer = nil
     -- naughty.notify({text = "We got a single tap"})
-    if single_tap_function then
-      single_tap_function()
-    end
+    if single_tap_function then single_tap_function() end
     return false
   end)
 end
@@ -134,9 +128,7 @@ end
 -- Given a `match` condition, returns an array with clients that match it, or
 -- just the first found client if `first_only` is true
 function helpers.find_clients(match, first_only)
-  local matcher = function(c)
-    return awful.rules.match(c, match)
-  end
+  local matcher = function(c) return awful.rules.match(c, match) end
 
   if first_only then
     for c in awful.client.iterate(matcher) do
@@ -155,9 +147,7 @@ end
 -- Given a `match` condition, calls the specified function `f_do` on all the
 -- clients that match it
 function helpers.find_clients_and_do(match, f_do)
-  local matcher = function(c)
-    return awful.rules.match(c, match)
-  end
+  local matcher = function(c) return awful.rules.match(c, match) end
 
   for c in awful.client.iterate(matcher) do
     f_do(c)
@@ -165,9 +155,7 @@ function helpers.find_clients_and_do(match, f_do)
 end
 
 function helpers.run_or_raise(match, move, spawn_cmd, spawn_args)
-  local matcher = function(c)
-    return awful.rules.match(c, match)
-  end
+  local matcher = function(c) return awful.rules.match(c, match) end
 
   -- Find and raise
   local found = false
@@ -184,9 +172,7 @@ function helpers.run_or_raise(match, move, spawn_cmd, spawn_args)
   end
 
   -- Spawn if not found
-  if not found then
-    awful.spawn(spawn_cmd, spawn_args)
-  end
+  if not found then awful.spawn(spawn_cmd, spawn_args) end
 end
 
 -- Run raise or minimize a client (scratchpad style)
@@ -231,9 +217,7 @@ end
 function helpers.remote_watch(command, interval, output_file, callback)
   local run_the_thing = function()
     -- Pass output to callback AND write it to file
-    awful.spawn.easy_async_with_shell(command .. " | tee " .. output_file, function(out)
-      callback(out)
-    end)
+    awful.spawn.easy_async_with_shell(command .. " | tee " .. output_file, function(out) callback(out) end)
   end
 
   local timer
@@ -256,9 +240,7 @@ function helpers.remote_watch(command, interval, output_file, callback)
           run_the_thing()
         else
           -- Pass the date saved in the file since it is fresh enough
-          awful.spawn.easy_async_with_shell("cat " .. output_file, function(out)
-            callback(out)
-          end)
+          awful.spawn.easy_async_with_shell("cat " .. output_file, function(out) callback(out) end)
 
           -- Schedule an update for when the remaining time to complete the interval passes
           timer:stop()

@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let cfg = config.nyx.modules.bluetooth;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.bluetooth;
+in {
   options.nyx.modules.bluetooth.enable = mkEnableOption "Bluetooth";
 
   config = mkIf cfg.enable {

@@ -1,14 +1,13 @@
 self: system:
-
-with self.lib;
-let
+with self.lib; let
   pkgs = self.legacyPackages."${system}";
-  dirs = filterAttrs
+  dirs =
+    filterAttrs
     (
       n: v: v != null && !(hasPrefix "_" n) && (v == "directory")
     )
     (builtins.readDir ./.);
-  paths = mapAttrs (name: value: "${toString ./.}/${name}") dirs;
-  result = mapAttrs (name: value: pkgs.callPackage value { }) paths;
+  paths = mapAttrs (name: _value: "${toString ./.}/${name}") dirs;
+  result = mapAttrs (_name: value: pkgs.callPackage value {}) paths;
 in
-result
+  result

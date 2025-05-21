@@ -1,5 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
-let
+{pkgs ? import <nixpkgs> {}}: let
   nixConf = import ./nix/conf.nix;
   options = [
     ''--option extra-trusted-substituters "${builtins.concatStringsSep " " nixConf.binaryCaches}"''
@@ -7,16 +6,16 @@ let
     ''--option experimental-features "nix-command flakes"''
   ];
 in
-pkgs.mkShell {
-  name = "nyx";
-  nativeBuildInputs = with pkgs; [
-    git
-    git-crypt
-  ];
+  pkgs.mkShell {
+    name = "nyx";
+    nativeBuildInputs = with pkgs; [
+      git
+      git-crypt
+    ];
 
-  shellHook = ''
+    shellHook = ''
       PATH=${pkgs.writeShellScriptBin "nix" ''
-      ${pkgs.nixVersions.stable}/bin/nix ${builtins.concatStringsSep " " options} "$@"
-    ''}/bin:$PATH
-  '';
-}
+        ${pkgs.nixVersions.stable}/bin/nix ${builtins.concatStringsSep " " options} "$@"
+      ''}/bin:$PATH
+    '';
+  }

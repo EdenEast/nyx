@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.shell.tmux;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.shell.tmux;
+in {
   options.nyx.modules.shell.tmux = {
     enable = mkEnableOption "tmux configuration";
   };
@@ -61,7 +63,6 @@ in
     };
   };
 }
-
 # extra plugins to look at
 # - https://github.com/rothgar/awesome-tmux
 #
@@ -69,3 +70,4 @@ in
 # - https://github.com/roosta/tmux-fuzzback
 # - https://github.com/whame/tmux-modal
 # - https://github.com/evnp/tmex
+

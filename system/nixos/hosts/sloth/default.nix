@@ -1,7 +1,5 @@
-{ ... }:
-
-{
-  imports = [ ./hardware.nix ];
+{...}: {
+  imports = [./hardware.nix];
 
   networking.enableIPv6 = true;
   networking.interfaces.enp0s25.useDHCP = true;

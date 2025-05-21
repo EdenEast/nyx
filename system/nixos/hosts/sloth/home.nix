@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   nyx = {
     modules = {
       # Set the default theme for this host
@@ -10,9 +8,11 @@
       shell = {
         gnupg = {
           enable = true;
-          publicKeys = [{
-            key = ../../../../config/.gnupg/public.key;
-          }];
+          publicKeys = [
+            {
+              key = ../../../../config/.gnupg/public.key;
+            }
+          ];
         };
       };
     };

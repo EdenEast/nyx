@@ -1,12 +1,16 @@
-{ config, lib, pkgs, inputs, ... }:
-
-with lib;
-let cfg = config.nyx.profiles.common;
-in
 {
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.profiles.common;
+in {
   imports = [inputs.nix-index-database.hmModules.nix-index];
 
-  options.nyx.profiles.common = { enable = mkEnableOption "common profile"; };
+  options.nyx.profiles.common = {enable = mkEnableOption "common profile";};
 
   config = mkIf cfg.enable {
     home = {

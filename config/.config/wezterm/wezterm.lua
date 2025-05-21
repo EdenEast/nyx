@@ -23,9 +23,7 @@ local function exists(name)
 end
 
 -- Load and execute file and return the resulting table
-local function load_file(name)
-  return exists(name) and dofile(name) or {}
-end
+local function load_file(name) return exists(name) and dofile(name) or {} end
 
 -- Extend a table with anohter table
 local function extend(...)
@@ -174,9 +172,7 @@ end
 if exists(theme_file) then
   local file = io.open(theme_file, "r")
   local name = file:read()
-  if name then
-    config.color_scheme = file:read()
-  end
+  if name then config.color_scheme = file:read() end
   file:close()
 end
 

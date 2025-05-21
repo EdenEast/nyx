@@ -1,12 +1,15 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.nyx.modules.shell.zsh;
 
   pluginsDir = xdg.cacheHome."zsh/plugins";
 
-  pluginModule = types.submodule ({ config, ... }: {
+  pluginModule = types.submodule ({config, ...}: {
     options = {
       src = mkOption {
         type = types.path;
@@ -33,9 +36,7 @@ let
 
     config.file = mkDefault "${config.name}.plugin.zsh";
   });
-
-in
-{
+in {
   options.nyx.modules.shell.zsh = {
     enable = mkEnableOption "zsh configuration";
 
@@ -59,7 +60,7 @@ in
 
     plugins = mkOption {
       type = types.listOf pluginModule;
-      default = [ ];
+      default = [];
       description = "Plugins to install and source";
       example = liternalExample ''
         [
@@ -89,8 +90,7 @@ in
     envExtra = mkOption {
       type = types.lines;
       default = "";
-      description =
-        "Extra commands that should be added to <filename>.zshenv</filename>.";
+      description = "Extra commands that should be added to <filename>.zshenv</filename>.";
     };
 
     profileExtra = mkOption {
@@ -115,7 +115,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
       home.packages = with pkgs;
-        [ zsh ] ++ optional cfg.enableCompletion nix-zsh-completions;
+        [zsh] ++ optional cfg.enableCompletion nix-zsh-completions;
     }
 
     {
@@ -128,16 +128,17 @@ in
         ${cfg.initExtra}
 
         ${concatStrings (map (plugin: ''
-          if [ -f "$HOME/${pluginsDir}/${plugin.name}/${plugin.file}"  ]; then
-            source "$HOME/${pluginsDir}/${plugin.name}/${plugin.file}"
-          fi
-        '') cfg.plugins)}
+            if [ -f "$HOME/${pluginsDir}/${plugin.name}/${plugin.file}"  ]; then
+              source "$HOME/${pluginsDir}/${plugin.name}/${plugin.file}"
+            fi
+          '')
+          cfg.plugins)}
 
         ${optionalString cfg.enableAutosuggestions
-        "source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"}
+          "source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"}
 
         ${optionalString cfg.enableSyntaxHighlighting
-        "source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"}
+          "source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"}
       '';
     }
 
@@ -149,13 +150,13 @@ in
       xdg.dataFile."zsh/nyx_zshenv".text = cfg.envExtra;
     })
 
-    (mkIf (cfg.plugins != [ ]) {
+    (mkIf (cfg.plugins != []) {
       nyx.modules.shell.zsh.enableCompletion = mkDefault true;
 
-      home.file = foldl' (a: b: a // b) { }
-        (map (plugin: { "${pluginsDir}/${plugin.name}".source = plugin.src; })
+      home.file =
+        foldl' (a: b: a // b) {}
+        (map (plugin: {"${pluginsDir}/${plugin.name}".source = plugin.src;})
           cfg.plugins);
     })
   ]);
 }
-

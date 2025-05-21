@@ -1,20 +1,21 @@
-{ lib, fetchCrate, rustPlatform }:
-
-let
+{
+  lib,
+  fetchCrate,
+  rustPlatform,
+}: let
   metadata = import ./metadata.nix;
 in
-rustPlatform.buildRustPackage rec {
-  inherit (metadata) pname version;
+  rustPlatform.buildRustPackage rec {
+    inherit (metadata) pname version;
 
-  src = fetchCrate metadata;
+    src = fetchCrate metadata;
 
-  cargoLock.lockFile = ./Cargo.lock;
+    cargoLock.lockFile = ./Cargo.lock;
 
-  meta = with lib; {
-    description = "A TUI file explorer";
-    homepage = "https://github.com/sayanarijit/xplr";
-    license = licenses.mit;
-    platforms = platforms.all;
-  };
-}
-
+    meta = with lib; {
+      description = "A TUI file explorer";
+      homepage = "https://github.com/sayanarijit/xplr";
+      license = licenses.mit;
+      platforms = platforms.all;
+    };
+  }

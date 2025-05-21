@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./cc.nix
     ./dhall.nix
@@ -12,4 +10,3 @@
     ./rust.nix
   ];
 }
-

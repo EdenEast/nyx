@@ -1,5 +1,8 @@
-{ lib, fetchFromGitHub, tmuxPlugins }:
-
+{
+  lib,
+  fetchFromGitHub,
+  tmuxPlugins,
+}:
 tmuxPlugins.mkTmuxPlugin rec {
   pluginName = "tmux-modal";
   version = "0.1.0";

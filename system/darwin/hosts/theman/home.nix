@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     bat
     bash
@@ -51,10 +49,12 @@
 
       gnupg = {
         enable = true;
-        publicKeys = [{
-          name = "personal.key";
-          key = ../../../../config/.gnupg/public.key;
-        }];
+        publicKeys = [
+          {
+            name = "personal.key";
+            key = ../../../../config/.gnupg/public.key;
+          }
+        ];
       };
     };
   };

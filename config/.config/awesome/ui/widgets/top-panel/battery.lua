@@ -29,9 +29,7 @@ local function worker(user_args)
   local warning_msg_text = args.warning_msg_text or "Battery is dying"
   local warning_msg_position = args.warning_msg_position or "bottom_right"
   local enable_battery_warning = args.enable_battery_warning
-  if enable_battery_warning == nil then
-    enable_battery_warning = true
-  end
+  if enable_battery_warning == nil then enable_battery_warning = true end
 
   local icon_widget = wibox.widget({
     font = font,
@@ -128,13 +126,9 @@ local function worker(user_args)
     end
     charge = charge / capacity
 
-    if show_current_level then
-      level_widget.text = string.format(" %d%%", charge)
-    end
+    if show_current_level then level_widget.text = string.format(" %d%%", charge) end
 
-    local function is_in_range(value, min, max)
-      return value >= min and value < max
-    end
+    local function is_in_range(value, min, max) return value >= min and value < max end
     if status == "Charging" then
       battery_icon = ""
     else
@@ -173,28 +167,18 @@ local function worker(user_args)
   end, icon_widget)
 
   if display_notification then
-    battery_widget:connect_signal("mouse::enter", function()
-      show_battery_status(batteryType)
-    end)
-    battery_widget:connect_signal("mouse::leave", function()
-      naughty.destroy(notification)
-    end)
+    battery_widget:connect_signal("mouse::enter", function() show_battery_status(batteryType) end)
+    battery_widget:connect_signal("mouse::leave", function() naughty.destroy(notification) end)
   elseif display_notification_onClick then
     battery_widget:connect_signal("button::press", function(_, _, _, button)
-      if button == 3 then
-        show_battery_status(batteryType)
-      end
+      if button == 3 then show_battery_status(batteryType) end
     end)
-    battery_widget:connect_signal("mouse::leave", function()
-      naughty.destroy(notification)
-    end)
+    battery_widget:connect_signal("mouse::leave", function() naughty.destroy(notification) end)
   end
 
   return wibox.container.margin(battery_widget, margin_left, margin_right)
 end
 
 return setmetatable(battery_widget, {
-  __call = function(_, ...)
-    return worker(...)
-  end,
+  __call = function(_, ...) return worker(...) end,
 })

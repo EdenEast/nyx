@@ -16,11 +16,11 @@ local equalarea = require(... .. ".equalarea")
 beautiful.layout_equalarea = equalarea.get_icon()
 
 local layout = {
-    mstab = mstab.layout,
-    centered = centered.layout,
-    vertical = vertical.layout,
-    horizontal = horizontal.layout,
-    equalarea = equalarea.layout
+  mstab = mstab.layout,
+  centered = centered.layout,
+  vertical = vertical.layout,
+  horizontal = horizontal.layout,
+  equalarea = equalarea.layout,
 }
 
 return layout

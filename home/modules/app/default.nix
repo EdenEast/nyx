@@ -1,5 +1,3 @@
-{ ... }:
-
-{
-  imports = [ ./ghostty ./alacritty.nix ./discord.nix ./firefox.nix ./kitty.nix ./obs.nix ./obsidian.nix ./wezterm.nix ];
+{...}: {
+  imports = [./ghostty ./alacritty.nix ./discord.nix ./firefox.nix ./kitty.nix ./obs.nix ./obsidian.nix ./wezterm.nix];
 }

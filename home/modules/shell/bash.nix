@@ -1,10 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.shell.bash;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.shell.bash;
+in {
   options.nyx.modules.shell.bash = {
     enable = mkEnableOption "bash configuration";
 

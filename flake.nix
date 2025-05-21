@@ -53,18 +53,17 @@
     ];
   };
 
-  outputs = { self, ... }@inputs:
-    with self.lib;
-    let
-      systems = [ "x86_64-linux" "aarch64-darwin" ];
+  outputs = {self, ...} @ inputs:
+    with self.lib; let
+      systems = ["x86_64-linux" "aarch64-darwin"];
       foreachSystem = genAttrs systems;
       pkgsBySystem = foreachSystem (
         system:
-        import inputs.nixpkgs {
-          inherit system;
-          config = import ./nix/config.nix;
-          overlays = self.overlays."${system}";
-        }
+          import inputs.nixpkgs {
+            inherit system;
+            config = import ./nix/config.nix;
+            overlays = self.overlays."${system}";
+          }
       );
 
       treefmtEval = foreachSystem (
@@ -98,46 +97,50 @@
       packages = foreachSystem (system: import ./nix/pkgs self system);
       overlay = foreachSystem (system: _final: _prev: self.packages."${system}");
       overlays = foreachSystem (
-        system: with inputs; let
-          ovs = attrValues (import ./nix/overlays self);
-        in
-        [
-          (self.overlay."${system}")
-          (nur.overlays.default)
-          (import rust-overlay)
-          # (_:_: { inherit (eww.packages."${system}") eww; })
-        ] ++ ovs
+        system:
+          with inputs; let
+            ovs = attrValues (import ./nix/overlays self);
+          in
+            [
+              (self.overlay."${system}")
+              (nur.overlays.default)
+              (import rust-overlay)
+              # (_:_: { inherit (eww.packages."${system}") eww; })
+            ]
+            ++ ovs
       );
 
       homeManagerConfigurations = mapAttrs' mkHome {
-        eden = { };
+        eden = {};
       };
 
       nixosConfigurations = mapAttrs' mkSystem {
-        pride = { };
-        sloth = { };
-        wrath = { };
-        vm-dev = { };
+        pride = {};
+        sloth = {};
+        wrath = {};
+        vm-dev = {};
       };
 
       darwinConfigurations = mapAttrs' mkDarwin {
-        theman = { user = "work"; };
+        theman = {user = "work";};
       };
 
       # Convenience output that aggregates the outputs for home, nixos, and darwin configurations.
       # Also used in ci to build targets generally.
-      top =
-        let
-          nixtop = genAttrs
-            (builtins.attrNames inputs.self.nixosConfigurations)
-            (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
-          hometop = genAttrs
-            (builtins.attrNames inputs.self.homeManagerConfigurations)
-            (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
-          darwintop = genAttrs
-            (builtins.attrNames inputs.self.darwinConfigurations)
-            (attr: inputs.self.darwinConfigurations.${attr}.system);
-        in
+      top = let
+        nixtop =
+          genAttrs
+          (builtins.attrNames inputs.self.nixosConfigurations)
+          (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
+        hometop =
+          genAttrs
+          (builtins.attrNames inputs.self.homeManagerConfigurations)
+          (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+        darwintop =
+          genAttrs
+          (builtins.attrNames inputs.self.darwinConfigurations)
+          (attr: inputs.self.darwinConfigurations.${attr}.system);
+      in
         nixtop // hometop // darwintop;
     };
 }

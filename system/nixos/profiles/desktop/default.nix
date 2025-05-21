@@ -1,13 +1,15 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.nyx.profiles.desktop;
 
-  wmList = [ "awesome" ];
-  deList = [ "gnome" "plasma5" ];
-in
-{
+  wmList = ["awesome"];
+  deList = ["gnome" "plasma5"];
+in {
   options.nyx.profiles.desktop = {
     laptop = mkOption {
       description = "Enable features for a laptop (trackpad, battery, etc...)";

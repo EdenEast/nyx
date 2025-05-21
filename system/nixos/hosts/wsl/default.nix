@@ -1,11 +1,13 @@
-{ config, lib, pkgs, modulesPath, ... }:
-
-with lib;
-let
-  username = "eden";
-  syschdemd = import ./syschdemd.nix { inherit lib pkgs config username; };
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  username = "eden";
+  syschdemd = import ./syschdemd.nix {inherit lib pkgs config username;};
+in {
   # WSL is closer to a container than anything else
   boot.isContainer = true;
 
@@ -27,7 +29,7 @@ in
   users.users.root = {
     shell = "${syschdemd}/bin/syschdemd";
     # Otherwise WSL fails to login as root with "initgroups failed 5"
-    extraGroups = [ "root" ];
+    extraGroups = ["root"];
   };
 
   # Don't allow emergency mode, because we don't have a console.

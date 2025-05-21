@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.nyx.modules.disk;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.nyx.modules.disk;
+in {
   options.nyx.modules.disk.enable = mkEnableOption "disk utilities and file managers";
 
   config = mkIf cfg.enable {
