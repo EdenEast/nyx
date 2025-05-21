@@ -20,6 +20,11 @@
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -61,11 +66,31 @@
           overlays = self.overlays."${system}";
         }
       );
-    in
-    rec {
-      lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
 
-      devShell = foreachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
+      treefmtEval = foreachSystem (
+        system:
+          inputs.treefmt-nix.lib.evalModule pkgsBySystem."${system}" {
+            projectRootFile = "flake.nix";
+            programs = {
+              deadnix.enable = true;
+              alejandra.enable = true;
+              stylua = {
+                enable = true;
+                settings = {
+                  indent_type = "Spaces";
+                  indent_width = 2;
+                  collapse_simple_statement = "Always";
+                };
+              };
+            };
+          }
+      );
+    in {
+      lib = import ./lib {inherit inputs;} // inputs.nixpkgs.lib;
+
+      devShell = foreachSystem (system: import ./shell.nix {pkgs = pkgsBySystem."${system}";});
+
+      formatter = foreachSystem (system: treefmtEval."${system}".config.build.wrapper);
 
       templates = import ./nix/templates;
 
