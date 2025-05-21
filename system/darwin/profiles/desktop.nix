@@ -12,14 +12,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    fonts = {
-      packages = with pkgs; [
-        (
-          nerdfonts.override {
-            fonts = ["JetBrainsMono" "Hack" "Gohu" "Meslo" "UbuntuMono"];
-          }
-        )
-      ];
-    };
+    fonts.packages = with pkgs.nerd-fonts; [
+      jetbrains-mono
+      hack
+      gohufont
+      meslo-lg
+      ubuntu-mono
+    ];
   };
 }

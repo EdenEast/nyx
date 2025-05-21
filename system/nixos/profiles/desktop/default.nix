@@ -34,21 +34,22 @@ in {
       firefox
     ];
 
-    # Enable sound with pipewire.
-    hardware = {
+    security.rtkit.enable = true;
+    services = {
+      # Enable sound with pipewire.
       pulseaudio = {
         enable = false;
         support32Bit = true;
         package = pkgs.pulseaudioFull;
       };
-    };
-    security.rtkit.enable = true;
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      jack.enable = true;
+
+      pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+        jack.enable = true;
+      };
     };
 
     # Desktop environment flavor
