@@ -12,7 +12,7 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-24.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     nur.url = "github:nix-community/nur";
@@ -38,8 +38,6 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     ghostty.url = "github:ghostty-org/ghostty";
-
-    # eww.url = "github:elkowar/eww";
   };
 
   nixConfig = {
@@ -105,7 +103,6 @@
               (self.overlay."${system}")
               (nur.overlays.default)
               (import rust-overlay)
-              # (_:_: { inherit (eww.packages."${system}") eww; })
             ]
             ++ ovs
       );

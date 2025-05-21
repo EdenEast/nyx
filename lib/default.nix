@@ -259,6 +259,7 @@ in rec {
                   # NOTE: Cannot pass name to home-manager as it passes `name` in to set the `hmModule`
                   {inherit inputs pkgs self system user;};
               };
+              system.stateVersion = 5;
             }
             (
               {config, ...}: {
