@@ -3,7 +3,7 @@
   rustPlatform,
   fetchFromGitHub,
   openssl,
-  pkgconfig,
+  pkg-config,
 }:
 rustPlatform.buildRustPackage rec {
   pname = "cargo-whatfeatures";
@@ -18,7 +18,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "nNV7UXjKZNFmTqW4H0qsNuBW9XOP2V9nfotewtI9mYE=";
 
-  nativeBuildInputs = [pkgconfig];
+  nativeBuildInputs = [pkg-config];
 
   buildInputs = [openssl];
 

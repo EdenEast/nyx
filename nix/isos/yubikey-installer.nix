@@ -1,7 +1,5 @@
 # https://github.com/drduh/YubiKey-Guide/tree/de29a9e#nixos
-{
-  system ? "x86_64-linux",
-}: let
+{system ? "x86_64-linux"}: let
   config = {pkgs, ...}:
     with pkgs; {
       imports = [<nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix>];

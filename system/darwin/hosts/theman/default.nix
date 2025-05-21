@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   nyx = {
     modules = {
       user.home = ./home.nix;
