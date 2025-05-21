@@ -101,7 +101,7 @@ rec {
               '';
 
             nix = {
-              package = pkgs.nixVersions.stable;
+              package = pkgs.nix;
               extraOptions = "experimental-features = nix-command flakes";
             };
 
@@ -148,7 +148,7 @@ rec {
             { pkgs, ... }: {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.
               nix = {
-                package = pkgs.nixVersions.stable;
+                package = pkgs.nix;
                 extraOptions = "experimental-features = nix-command flakes";
               };
             }
@@ -220,7 +220,7 @@ rec {
                   substituters = nixConf.binaryCaches;
                   trusted-public-keys = nixConf.binaryCachePublicKeys;
                 };
-                package = pkgs.nixVersions.stable;
+                package = pkgs.nix;
                 extraOptions = "experimental-features = nix-command flakes";
               };
               services.nix-daemon.enable = true;
