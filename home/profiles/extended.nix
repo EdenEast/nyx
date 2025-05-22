@@ -17,23 +17,12 @@ in {
         [
           # Bandwidth monitor and rate estimator.
           bmon
-          # Dump traffic on a network.
-          tcpdump
-          # A command-line tool to generate, analyze, convert and manipulate colors.
-          # pastel
-          # Tool for indexing, slicing, analyzing, splitting and joining CSV files.
-          xsv
           # Command line image viewer
           viu
           # Tool for discovering and probing hosts on a computer network
           arping
           # Recover dead disks :(
           ddrescue
-          # Hosted binary caches
-          cachix
-          # A TUI file explorer
-          # xplr
-          # lookatme
         ]
         ++ optionals pkgs.stdenv.isLinux [
           # Power consumption and management diagnosis tool.
