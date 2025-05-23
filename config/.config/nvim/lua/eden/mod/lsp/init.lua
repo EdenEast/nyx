@@ -16,11 +16,9 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      -- { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
       { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
-      "lvimuser/lsp-inlayhints.nvim",
       "hrsh7th/cmp-nvim-lsp",
       { "j-hui/fidget.nvim", opts = {} },
     },
@@ -38,26 +36,10 @@ return {
         severity_sort = true,
       })
 
-      -- inlay hints
-      require("lsp-inlayhints").setup({ -- « »
-        inlay_hints = {
-          max_len_align = true,
-          parameter_hints = {
-            prefix = "« ",
-          },
-          type_hints = {
-            prefix = "» ",
-          },
-          -- max_len_align = true,
-        },
-      })
-
       -- on attach
       on_attach(function(client, buffer)
         require("eden.mod.lsp.format").on_attach(client, buffer)
         require("eden.mod.lsp.keymaps").on_attach(client, buffer)
-        require("lsp-inlayhints").on_attach(client, buffer)
-        -- TODO: lsp signature
       end)
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -160,61 +142,6 @@ return {
       for server, _ in pairs(servers) do
         if not vim.tbl_contains(mason_installed_servers, server) then setup(server) end
       end
-
-      mlsp.setup_handlers({ setup })
-    end,
-  },
-
-  -- formatters
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "mason.nvim", "nvim-lua/plenary.nvim" },
-    config = function()
-      local path = require("eden.core.path")
-      local nls = require("null-ls")
-      local util = require("null-ls.utils")
-      local help = require("null-ls.helpers")
-
-      local diagnostic = nls.builtins.diagnostics
-      local formatting = nls.builtins.formatting
-      -- local hover = nls.builtins.hover
-      -- local actions = nls.builtins.code_actions
-
-      local with = {
-        shfmt = {
-          extra_args = { "-ci", "-i", "2", "-s" },
-        },
-        stylua = {
-          cwd = help.cache.by_bufnr(
-            function(params) return util.root_pattern(".git", "stylua.toml")(params.bufname) end
-          ),
-        },
-        vale = {
-          extra_args = { "--config", path.join(path.home, ".config", "vale", "config.ini") },
-          filetypes = { "asciidoc", "markdown", "text" },
-        },
-        write_good = {
-          filetypes = { "asciidoc", "markdown", "text" },
-        },
-      }
-
-      local sources = {
-        -- lua
-        formatting.stylua.with(with.stylua),
-
-        -- shell
-        diagnostic.shellcheck,
-        formatting.shfmt.with(with.shfmt),
-
-        -- text / markup
-        diagnostic.proselint,
-      }
-
-      nls.setup({
-        root_dir = util.root_pattern(".neoconf.json", ".git", ".root"),
-        sources = sources,
-      })
     end,
   },
 
