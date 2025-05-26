@@ -158,7 +158,7 @@ EOF
       # There was no target passed to build so infer what do build
       if $IS_MAC; then
         info "Darwin detected building DarwinConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
-        darwin-rebuild build --flake .
+        sudo darwin-rebuild build --flake .
       elif $IS_NIXOS; then
         info "Nixos detected building NixosConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         sudo nixos-rebuild build --flake .
@@ -609,7 +609,7 @@ EOF
     if [[ ${#args[@]} -gt 0 ]]; then
       if $IS_MAC; then
         info "Switching to defined target ${CYAN}${args[0]}${RESET} on darwin system"
-        darwin-rebuild switch --flake ".#${args[0]}" || restore_links
+        sudo darwin-rebuild switch --flake ".#${args[0]}" || restore_links
       elif $IS_NIXOS; then
         info "Switching to defined target ${CYAN}${args[0]}${RESET} on nixos system"
         sudo nixos-rebuild switch --flake ".#${args[0]}" || restore_links
@@ -620,7 +620,7 @@ EOF
     else
       if $IS_MAC; then
         info "Darwin detected switching DarwinConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
-        darwin-rebuild switch --flake . || restore_links
+        sudo darwin-rebuild switch --flake . || restore_links
       elif $IS_NIXOS; then
         info "Nixos detected switching NixosConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         sudo nixos-rebuild switch --flake . || restore_links
@@ -689,7 +689,7 @@ EOF
     if [[ ${#args[@]} -gt 0 ]]; then
       if $IS_MAC; then
         debug "Switching to defined target ${CYAN}${args[0]}${RESET} on darwin system"
-        darwin-rebuild activate --flake ".#${args[0]}"
+        sudo darwin-rebuild activate --flake ".#${args[0]}"
       elif $IS_NIXOS; then
         debug "Switching to defined target ${CYAN}${args[0]}${RESET} on nixos system"
         sudo nixos-rebuild test --flake ".#${args[0]}"
@@ -700,7 +700,7 @@ EOF
     else
       if $IS_MAC; then
         debug "Darwin detected switching DarwinConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
-        darwin-rebuild activate --flake .
+        sudo darwin-rebuild activate --flake .
       elif $IS_NIXOS; then
         debug "Nixos detected switching NixosConfiguration for the host machine: ${CYAN}$(hostname)${RESET}"
         sudo nixos-rebuild test --flake . # TODO: How do force to use extra binary caches?
