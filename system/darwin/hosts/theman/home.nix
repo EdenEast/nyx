@@ -12,6 +12,7 @@
     vhs
     just
     tuxmux
+    yazi
   ];
 
   # Manage home-manager with home-manager (inception)
