@@ -8,7 +8,7 @@
 with lib; let
   cfg = config.nyx.profiles.common;
 in {
-  imports = [inputs.nix-index-database.hmModules.nix-index];
+  imports = [inputs.nix-index-database.homeModules.nix-index];
 
   options.nyx.profiles.common = {enable = mkEnableOption "common profile";};
 
