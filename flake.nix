@@ -119,7 +119,6 @@
       };
 
       darwinConfigurations = mapAttrs' mkDarwin {
-        theman = {user = "work";};
       };
 
       # Convenience output that aggregates the outputs for home, nixos, and darwin configurations.
