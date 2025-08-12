@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Reference: https://github.com/meain/dotfiles/blob/64c9fcb00d0ce0ef3af96426cda84db5cd64f6e8/scripts/.local/bin/helpers/%2Cpopup-tmux
+
+# set -e
+
+CURRENT_PANE="$(tmux display-message -p -F "#{session_name}")"
+if echo "$CURRENT_PANE" | grep -q '^popup.*'; then
+    tmux detach-client
+else
+    if [ "$1" = "single" ]; then
+        tmux display-popup -d '#{pane_current_path}' -x100% -y0% -w100% -h50% -E "tmux attach -t 'popup-$CURRENT_PANE' || tmux new -s 'popup-$CURRENT_PANE'" || true
+    else
+        tmux display-popup -x100% -y0% -w100% -h50% -E "tmux attach -t popup-master || tmux new -s popup-master" || true
+    fi
+fi
