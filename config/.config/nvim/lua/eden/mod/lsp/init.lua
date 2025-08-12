@@ -38,26 +38,10 @@ return {
         severity_sort = true,
       })
 
-      -- inlay hints
-      require("lsp-inlayhints").setup({ -- « »
-        inlay_hints = {
-          max_len_align = true,
-          parameter_hints = {
-            prefix = "« ",
-          },
-          type_hints = {
-            prefix = "» ",
-          },
-          -- max_len_align = true,
-        },
-      })
-
       -- on attach
       on_attach(function(client, buffer)
-        require("eden.mod.lsp.format").on_attach(client, buffer)
         require("eden.mod.lsp.keymaps").on_attach(client, buffer)
-        require("lsp-inlayhints").on_attach(client, buffer)
-        -- TODO: lsp signature
+        require("eden.mod.lsp.inlayhints").on_attach(client, buffer)
       end)
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -166,57 +150,62 @@ return {
   },
 
   -- formatters
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "mason.nvim", "nvim-lua/plenary.nvim" },
-    config = function()
-      local path = require("eden.core.path")
-      local nls = require("null-ls")
-      local util = require("null-ls.utils")
-      local help = require("null-ls.helpers")
-
-      local diagnostic = nls.builtins.diagnostics
-      local formatting = nls.builtins.formatting
-      -- local hover = nls.builtins.hover
-      -- local actions = nls.builtins.code_actions
-
-      local with = {
-        shfmt = {
-          extra_args = { "-ci", "-i", "2", "-s" },
-        },
-        stylua = {
-          cwd = help.cache.by_bufnr(
-            function(params) return util.root_pattern(".git", "stylua.toml")(params.bufname) end
-          ),
-        },
-        vale = {
-          extra_args = { "--config", path.join(path.home, ".config", "vale", "config.ini") },
-          filetypes = { "asciidoc", "markdown", "text" },
-        },
-        write_good = {
-          filetypes = { "asciidoc", "markdown", "text" },
-        },
-      }
-
-      local sources = {
-        -- lua
-        formatting.stylua.with(with.stylua),
-
-        -- shell
-        diagnostic.shellcheck,
-        formatting.shfmt.with(with.shfmt),
-
-        -- text / markup
-        diagnostic.proselint,
-      }
-
-      nls.setup({
-        root_dir = util.root_pattern(".neoconf.json", ".git", ".root"),
-        sources = sources,
-      })
-    end,
+{
+  "stevearc/conform.nvim",
+  event = { "BufWritePre" },
+  keys = {
+    {
+      "<leader>uf",
+      function()
+        vim.g.autoformat = not vim.g.autoformat
+        vim.notify("Autoformat: " .. (vim.g.autoformat and "Enable" or "Disable"), vim.log.levels.INFO)
+      end,
+      desc = "Toggle Autoformat",
+    },
   },
+  before = function()
+    -- Use conform for gq.
+    vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    vim.g.autoformat = true
+  end,
+  config = function()
+    require("conform").setup({
+      notify_on_error = false,
+      default_format_opts = {
+        lsp_format = "fallback",
+      },
+      formatters_by_ft = {
+        c = { name = "clangd", timeout_ms = 500, lsp_format = "prefer" },
+        javascript = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+        javascriptreact = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+        json = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+        jsonc = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+        less = { "prettier" },
+        lua = { "stylua", lsp_format = "fallback" },
+        markdown = { "prettier" },
+        nix = { "alejandra", "nixfmt", stop_after_first = true },
+        rust = { name = "rust_analyzer", timeout_ms = 500, lsp_format = "prefer" },
+        scss = { "prettier" },
+        sh = { "shfmt" },
+        typescript = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+        typescriptreact = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+        -- For filetypes without a formatter:
+        ["_"] = { "trim_whitespace", "trim_newlines" },
+      },
+      format_on_save = function(bufnr)
+        if vim.g.skip_autoformat then
+          vim.g.skip_autoformat = false
+          return nil
+        end
+
+        -- Stop if we disabled auto-formatting.
+        if not vim.g.autoformat then return nil end
+
+        return { timeout_ms = 500 }
+      end,
+    })
+  end,
+},
 
   -- cmdline tools and lsp servers
   {

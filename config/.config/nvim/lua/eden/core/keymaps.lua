@@ -179,7 +179,6 @@ map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
 
 -- Toggle options
 map("n", "<leader>ut", require("eden.core.theme").toggle, { desc = "Toggle transparency" })
-map("n", "<leader>uf", require("eden.mod.lsp.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function() U.toggle("spell") end, { desc = "Toggle Spell" })
 map("n", "<leader>uw", function() U.toggle("wrap") end, { desc = "Toggle Word Wrap" })
 map("n", "<leader>ud", U.toggle_diagnostics, { desc = "Toggle Diagnostics" })

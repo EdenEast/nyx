@@ -1,6 +1,5 @@
 local M = {}
 
-local format = require("eden.mod.lsp.format").format
 
 M._keys = nil
 
@@ -24,8 +23,6 @@ function M.get()
       { "[e", M.diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
       { "]w", M.diagnostic_goto(true, "WARN"), desc = "Next Warning" },
       { "[w", M.diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
-      { "<leader>cf", format, desc = "Format Document", has = "documentFormatting" },
-      { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
       { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
       { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
       {
