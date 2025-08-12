@@ -75,7 +75,10 @@ in {
       shell.bat.enable = true;
       shell.git.enable = true;
       # shell.gnupg.enable = true;
-      shell.neovim.enable = true;
+      shell.neovim = {
+        enable = true;
+        useNightly = true;
+      };
       shell.nushell.enable = true;
       # shell.ssh.enable = true;
       shell.starship.enable = true;
