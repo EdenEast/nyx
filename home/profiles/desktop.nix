@@ -71,6 +71,7 @@ in {
       app.discord.enable = true;
       app.firefox.enable = true;
       app.wezterm.enable = true;
+      app.zen-browser.enable = true;
     };
   };
 }
