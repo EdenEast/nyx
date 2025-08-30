@@ -51,6 +51,9 @@ in {
       locate.enable = true;
     };
 
+    # Enable nix helper command line tool
+    programs.nh.enable = true;
+
     # List of bare minimal requirements for a system to have to bootstrap from
     environment.systemPackages = with pkgs; [
       curl

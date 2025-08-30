@@ -70,6 +70,8 @@ in {
 
     programs.nix-index-database.comma.enable = true;
 
+    programs.nh.enable = true;
+
     nyx.modules = {
       shell.bash.enable = true;
       shell.bat.enable = true;
