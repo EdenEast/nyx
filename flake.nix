@@ -38,6 +38,8 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser.inputs.home-manager.follows = "home-manager";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
     ghostty.url = "github:ghostty-org/ghostty";
   };
 
