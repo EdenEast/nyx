@@ -110,7 +110,7 @@
             ++ ovs
       );
 
-      homeManagerConfigurations = mapAttrs' mkHome {
+      homeConfigurations = mapAttrs' mkHome {
         eden = {};
       };
 
@@ -133,8 +133,8 @@
           (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
         hometop =
           genAttrs
-          (builtins.attrNames inputs.self.homeManagerConfigurations)
-          (attr: inputs.self.homeManagerConfigurations.${attr}.activationPackage);
+          (builtins.attrNames inputs.self.homeConfigurations)
+          (attr: inputs.self.homeConfigurations.${attr}.activationPackage);
         darwintop =
           genAttrs
           (builtins.attrNames inputs.self.darwinConfigurations)
