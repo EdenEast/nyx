@@ -48,8 +48,12 @@ in {
         fd
         # sed alternative
         sd
+        # find files with SQL-like queries
+        fselect
         # Interactive du with rm functionality
         dua
+        # more intuitive du
+        dust
         # A modern replacement for ps
         procs
         # Encrypted files in Git repositories
