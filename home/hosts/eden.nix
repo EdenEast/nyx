@@ -1,5 +1,9 @@
 {...}: {
   home.stateVersion = "20.09";
+  programs.nh = {
+    enable = true;
+    flake = "/home/eden/.local/nyx";
+  };
 
   nyx = {
     modules = {
