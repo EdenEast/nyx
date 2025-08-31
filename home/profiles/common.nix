@@ -88,6 +88,7 @@ in {
       shell.nushell.enable = true;
       # shell.ssh.enable = true;
       shell.starship.enable = true;
+      shell.yazi.enable = true;
       shell.xdg.enable = true;
     };
   };
