@@ -80,6 +80,7 @@ in {
       shell.bash.enable = true;
       shell.bat.enable = true;
       shell.git.enable = true;
+      shell.jujutsu.enable = true;
       # shell.gnupg.enable = true;
       shell.neovim = {
         enable = true;

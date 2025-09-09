@@ -7,6 +7,7 @@
     ./git.nix
     ./glow.nix
     ./gnupg.nix
+    ./jujutsu.nix
     ./keybase.nix
     ./lf.nix
     ./lorri.nix
