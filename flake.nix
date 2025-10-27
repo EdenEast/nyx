@@ -26,6 +26,7 @@
     systems.url = "github:nix-systems/default";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-root.url = "github:srid/flake-root";
+    flake-compat.url = "github:nixos/flake-compat";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,6 +37,11 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+
+    nvim-config = {
+      url = "github:EdenEast/nvim-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
@@ -43,11 +49,18 @@
       systems = import inputs.systems;
 
       imports = [
-        ./hosts
+        ./modules/flakes
+        ./modules/overlays
+        ./modules/packages
         inputs.git-hooks.flakeModule
         inputs.home-manager.flakeModules.home-manager
         inputs.treefmt-nix.flakeModule
       ];
+
+      # imports = with builtins;
+      #   map (fn: ./modules/${fn})
+      #   (attrNames (readDir ./modules))
+      #   ++ [./hosts];
     };
 
   nixConfig = {
