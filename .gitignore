@@ -7,3 +7,4 @@ symmetric.key
 config/.config/zsh/.zcompdump
 config/.config/zsh/.zsh_sessions/
 config/.config/nushell/history.txt
+*.qcow2

@@ -8,8 +8,8 @@
     # Package sets
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-stable-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
-    nixos-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-stable-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # Environment/system management
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -26,6 +26,8 @@
     systems.url = "github:nix-systems/default";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-root.url = "github:srid/flake-root";
+    flake-compat.url = "github:nixos/flake-compat";
+    nur.url = "github:nix-community/NUR";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,6 +38,21 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+
+    niri-flake = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nvim-config = {
+      url = "github:EdenEast/nvim-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
@@ -43,11 +60,18 @@
       systems = import inputs.systems;
 
       imports = [
-        ./hosts
+        ./modules/flakes
+        ./modules/overlays
+        ./modules/packages
         inputs.git-hooks.flakeModule
         inputs.home-manager.flakeModules.home-manager
         inputs.treefmt-nix.flakeModule
       ];
+
+      # imports = with builtins;
+      #   map (fn: ./modules/${fn})
+      #   (attrNames (readDir ./modules))
+      #   ++ [./hosts];
     };
 
   nixConfig = {

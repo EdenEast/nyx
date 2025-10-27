@@ -19,3 +19,14 @@
 │   └── snippets/            # Reusable configuration snippets
 └── overlays/                # Custom Nixpkgs overlays
 ```
+
+## Resources and References
+
+- [alyraffauf/nixcfg](https://github.com/alyraffauf/nixcfg)
+  - Very good modular structure based around flake-parts
+- [srid/nixos-config](https://github.com/srid/nixos-config)
+  - Flake-part structure using nixos-unified
+- [fmoda3/nix-config](https://github.com/fmoda3/nix-configs)
+  - Another flake-part module structure example
+- [calops/nix](https://github.com/calops/nix)
+  - Nix home and nixos configuration [blueprint](https://github.com/numtide/blueprint) and niri as a wm
