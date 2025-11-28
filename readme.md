@@ -1,54 +1,57 @@
 # Nyx
 
 [![Build](https://github.com/EdenEast/nyx/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/EdenEast/nyx/actions/workflows/build.yml)
-[![NixOS 21.05](https://img.shields.io/badge/NixOS-v21.05-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
+[![NixOS 25.05](https://img.shields.io/badge/NixOS-v25.05-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
 [![Licence](https://img.shields.io/badge/license-Unlicense-blue)](https://github.com/EdenEast/nyx/blob/main/LICENSE)
 
-This repository contains configuration for all my unix systems (NixOS, Linux and MacOS) written in [`nix`][nix].
-This repository also contains my dotfiles which are used on all the systems liked above as well as windows. On systems
-that support [`nix`][nix] my dotfiles are managed by [home-manager].
+This repository provides configuration files for all of my Unix-based systems, including NixOS, Linux, and macOS, using
+[`nix`][nix]. It also contains my dotfiles, which are shared across all these systems as well as Windows. On platforms
+that support [`nix`][nix], my dotfiles are managed with [home-manager].
 
 [nix]: https://nixos.org/
 [home-manager]: https://github.com/nix-community/home-manager
 
 ## Structure
 
-- `bin/` - Contains scripts that will be added to the `$PATH` variable
-  - `windows/` - Scripts that are user to setup my windows machines
-- `config/` - Contains `.dotfiles` for various applications. You can think of this as my `$HOME` directory
-- `home/` - Configuration for my user. This is where home-manager configurations lives
-  - `hosts/` - The definition of a home user. If same name as a `nixos/hosts` will be used by it
-  - `modules/` - A defined set of home modules that can be enabled in a `home/host`
-  - `profiles/` - A collection of module configurations grouped together to be used by a `home/host`
-  - `secrets/` - A folder of secrets used by the user
-- `lib/` - List of helper functions
-- `nix/` - Nix package manager configurations
-  - `isos` - Nix configuration that builds `iso` as output
-  - `overlays/` - Nix overlays
-  - `pkgs/` - Self packaged applications
-- `system` - Machine configuration for both `nixos` and `macos`
-  - `common` - Configuration that is common between `nixos` and `macos`
-    - `modules` - Common modules between the two operating systems
-    - `profiles` - Common profiles between the two operating systems
-  - `darwin` - MacOS machine configuration
-    - `hosts/` - The definition of a MacOS machine
-    - `modules/` - MacOS modules
-    - `profiles/` - A collection of module configurations
-    - `secrets/` - Secrets used for a machine host
-  - `nixos` - Nixos machine configuration
-    - `hosts/` - The definition of a nixos machine
-    - `modules/` - Nixos modules
-    - `profiles/` - A collection of module configurations
-    - `secrets/` - Secrets used for a machine host
-- `user` - Configuration values linked to a specific user
+```
+.
+├── flake.nix          # Main entry point
+├── bin                # Scripts added to $Path
+├── config             # Application configuration files used by home-manager or symlinked
+├── home               # Home-manager confiugrations root folder
+│   ├── common         # Common variables used accross hosts
+│   ├── hosts          # Home-manager standalone hosts (mainly non-nixos systems)
+│   ├── modules        # Home-manager modules
+│   └── profiles       # Home manager module configuration definition grouped by theme
+├── lib                # Flake's utility library
+├── nix                # Nixpkgs configurations
+│   ├── isos           # Configurations that build ISO's
+│   ├── overlays       # Nixpkgs Overlays
+│   ├── pkgs           # Nixpkgs package definitions
+│   └── templates      # Template defintions
+├── system             # Machine configurations for both nixos and darwin
+│   ├── common         # Shared defitions between nxios and darwin
+│   │   ├── modules    # Common module definitions between nixos and darwin
+│   │   └── profiles   # Common profile definitions between nixos and darwin
+│   ├── darwin         # MacOS machine confiugrations
+│   │   ├── hosts      # Host machine confiugrations
+│   │   ├── modules    # Darwin modules
+│   │   └── profiles   # Darwin profiles
+│   └── nixos          # NixOS machine confiugrations
+│       ├── hosts      # Host machine confiugrations
+│       ├── modules    # NixOS modules
+│       └── profiles   # NixOS profiles
+├── user               # Confiugration and variable defined for a specific user
+└── windows            # Scripts and configuration related to settings up windows machines
+```
+
 
 ## Dotfiles
 
-My `.dotfiles` can be found under `config/`. On systems managed by nix and this flake repository
-they are managed by `home-manager`. I `home-manager` to use the `config/` folder as the source for
-my configurations. This helps when I am on a machine that is not managed by nix (_cough windows
-cough_). On these machines I symlink the files in the `config/` folder into their respective
-locations. Some configurations of note:
+My `.dotfiles` are located in the `config/` directory. When using Nix and this flake repository, these files are managed
+automatically by `home-manager`, which sources configurations directly from the `config/` folder. This setup also makes
+it easy to use my configurations on systems not managed by Nix (such as Windows): I simply symlink the files from
+`config/` to their appropriate locations. Notable configurations include:
 
 - [Neovim](./config/.config/nvim)
 - [Git](./config/.config/git)
@@ -59,21 +62,22 @@ locations. Some configurations of note:
 
 | Configuration | Type   | Description                                      |
 | ------------- | ------ | ------------------------------------------------ |
-| [sloth]       | System | An old lenovo T530 Laptop                        |
+| [wrath]       | System | Framework Laptop 13 AMD 7640U                    |
 | [eden]        | Home   | Generic home config for non nixos machines (wsl) |
 | [pride]       | System | Asus UX331U notebook laptop                      |
+| [sloth]       | System | An old lenovo T530 Laptop                        |
 
-[sloth]: ./system/nixos/hosts/sloth
+[wrath]: ./system/nixos/hosts/wrath
 [eden]: ./home/hosts/eden.nix
 [pride]: ./system/nixos/hosts/pride
+[sloth]: ./system/nixos/hosts/sloth
 
 ## Ci/Cd
 
-I have github action workflows setup to continuously build my configurations and deploy the results
-to a binary cache server ([cachix]). Every week I have a workflow that creates a pull request with
-an updated flake lock file. The pr action will diff the changing packages between the current and
-updated lockfile changes. It will then also run a security issues with [vulnix]. A report is
-generated in the pr and I can accept the changes.
+I use GitHub Actions workflows to automatically build my configurations and deploy the results to a binary cache server
+via [cachix]. Twice a month, a workflow creates a pull request that updates the flake lock file. This pull request
+action compares the differences in packages between the current and updated lockfiles. It also runs a security scan using
+[vulnix]. The results, including a detailed report, are posted in the pull request so I can review and accept the changes.
 
 [cachix]: https://app.cachix.org/cache/edeneast
 [vulnix]: https://github.com/flyingcircusio/vulnix
@@ -143,3 +147,4 @@ I agree with [@hlissner][hlissner]. This is needed when nix [drives you to drink
     - (An idea is to use nixos-wsl and build my-own install iso with [usb kernal passthough](https://1-bit-wonder.github.io/blog/how-to-use-yubikey-with-wsl/How%20to%20use%20Yubikey%20with%20WSL%20via%20USB%20passthrough/))
 - [ ] Create wsl options, check this [commit](https://github.com/davidtwco/veritas/commit/62cf0dd3f30b117462e3c31682b602d6cde3bc6a)
 - [ ] Some sort of backup solution like [borgmatic](https://torsion.org/borgmatic/) [borgbackup](https://www.borgbackup.org/)
+- [ ] rewrite structure using a different framework like [flake-parts](https://github.com/hercules-ci/flake-parts) or [blueprints](https://github.com/numtide/blueprints)
