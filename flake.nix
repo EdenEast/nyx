@@ -28,8 +28,10 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    neovim-flake.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
+    nvim-config = {
+      url = "github:EdenEast/nvim-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nushell-src.url = "github:nushell/nushell";
     nushell-src.flake = false;
@@ -121,8 +123,9 @@
         vm-dev = {};
       };
 
-      darwinConfigurations = mapAttrs' mkDarwin {
-      };
+      darwinConfigurations =
+        mapAttrs' mkDarwin {
+        };
 
       # Convenience output that aggregates the outputs for home, nixos, and darwin configurations.
       # Also used in ci to build targets generally.

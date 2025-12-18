@@ -53,7 +53,7 @@ automatically by `home-manager`, which sources configurations directly from the 
 it easy to use my configurations on systems not managed by Nix (such as Windows): I simply symlink the files from
 `config/` to their appropriate locations. Notable configurations include:
 
-- [Neovim](./config/.config/nvim)
+- [Neovim](https://github.com/edeneast/nvim-config)
 - [Git](./config/.config/git)
 - [Awesome](./config/.config/awesome)
 - [Bash/Zsh](./config/.config/shell)
