@@ -16,7 +16,24 @@
 
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_US.UTF-8";
-  myNixOS.base.enable = true;
+  myNixOS = {
+    base.enable = true;
+    desktop.cosmic.enable = true;
+
+    profiles = {
+      audio.enable = true;
+      bluetooth.enable = true;
+      printing.enable = true;
+    };
+
+    programs = {
+      uutils.enable = true;
+    };
+
+    services = {
+      cosmic-greeter.enable = true;
+    };
+  };
 
   users.users.eden = {
     description = "EdenEast";
