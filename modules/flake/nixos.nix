@@ -9,6 +9,7 @@ in {
   flake = {
     nixosModules = {
       nixos = ../nixos;
+      snippets = ../snippets;
     };
 
     nixosConfigurations = mapDir ../../hosts/nixos (
@@ -23,7 +24,7 @@ in {
                 home-manager = {
                   useGlobalPkgs = lib.mkDefault true;
                   useUserPackages = lib.mkDefault true;
-                  extraSpecialArgs = {inherit self;};
+                  extraSpecialArgs = {inherit self inputs;};
                   backupFileExtension = "backup";
                 };
 
