@@ -14,14 +14,26 @@
         base.enable = true;
 
         programs = {
-          ghostty.enable = true;
-          git.enable = true;
-          jujutsu.enable = true;
-          neovim.enable = true;
+          git = {
+            name = "EdenEast";
+            email = "edenofest@gmail.com";
+            key = "5A038CEFD458DB47A6135B3F8316DECECB1A3F10";
+          };
           obsidian.enable = true;
-          starship.enable = true;
-          tmux.enable = true;
           zen.enable = true;
+        };
+
+        profiles.development.rust.enable = true;
+
+        services = {
+          gnupg = {
+            enable = true;
+            publicKeys = [
+              {
+                key = self.configDir + "/.gnupg/public.key";
+              }
+            ];
+          };
         };
       };
     };

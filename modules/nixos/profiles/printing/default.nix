@@ -12,5 +12,7 @@
       printing.enable = true;
       system-config-printer.enable = true;
     };
+
+    myNixOS.services.avahi.enable = true;
   };
 }
