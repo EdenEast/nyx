@@ -1,8 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     ./home.nix
     ./hardware.nix
@@ -16,38 +12,29 @@
 
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_US.UTF-8";
+
   myNixOS = {
     base.enable = true;
-    desktop.cosmic.enable = true;
+
+    desktop = {
+      cosmic.enable = true;
+      laptop = true;
+    };
 
     profiles = {
       audio.enable = true;
-      bluetooth.enable = true;
       printing.enable = true;
-    };
-
-    programs = {
-      uutils.enable = true;
+      gaming.enable = true;
     };
 
     services = {
       cosmic-greeter.enable = true;
+      yubikey.enable = true;
     };
   };
 
-  users.users.eden = {
-    description = "EdenEast";
-    isNormalUser = true;
-    initialPassword = "pass";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "docker"
-      "i2c"
-      "vboxusers"
-    ];
-    shell = pkgs.fish;
+  myUsers.eden = {
+    password = "$6$nF.UDyrpHmh6M$yKCw56auQ7Dm1FfvmQg6y3Y59mWsoiHJyAYhqF9e8nKjfeKwUoFocwHhogKUTq.A3hVe9S.smv7u1NLV/yPTd0";
+    enable = true;
   };
-
-  programs.fish.enable = true;
 }

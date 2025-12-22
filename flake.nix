@@ -37,9 +37,23 @@
       };
     };
 
+    # Precompiled nix-index database
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Key remapper for X11 and Wayland
+    xremap-flake = {
+      url = "github:xremap/nix-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        flake-parts.follows = "flake-parts";
+        # devshell.follows = "";
+        hyprland.follows = "";
+        # crane.follows = "";
+      };
     };
 
     nvim-config = {
