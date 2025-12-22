@@ -31,5 +31,7 @@
         ninja
       ];
     };
+
+    myHome.profiles.development.enable = true;
   };
 }

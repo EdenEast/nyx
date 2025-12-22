@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: {
   options.myHome.programs.tmux.enable = lib.mkEnableOption "tmux";
@@ -41,15 +42,15 @@
       '';
     };
 
-    # xdg.configFile."tmux/scripts" = {
-    #   source = ../../../../config/.config/tmux/scripts;
-    #   recursive = true;
-    #   executable = true;
-    # };
-    # xdg.configFile."tmux/conf" = {
-    #   source = ../../../../config/.config/tmux/conf;
-    #   recursive = true;
-    #   executable = true;
-    # };
+    xdg.configFile."tmux/scripts" = {
+      source = self.configDir + "/.config/tmux/scripts";
+      recursive = true;
+      executable = true;
+    };
+    xdg.configFile."tmux/conf" = {
+      source = self.configDir + "/.config/tmux/conf";
+      recursive = true;
+      executable = true;
+    };
   };
 }

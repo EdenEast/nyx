@@ -28,5 +28,7 @@
         pipenv
       ]
       ++ cfg.extraPackages;
+
+    myHome.profiles.development.enable = true;
   };
 }

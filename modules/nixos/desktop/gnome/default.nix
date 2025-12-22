@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   options.myNixOS.desktop.gnome.enable = lib.mkEnableOption "GNOME desktop environment";
@@ -14,6 +15,9 @@
 
     services.desktopManager.gnome.enable = true;
     system.nixos.tags = ["gnome"];
-    # myNixOS.desktop.enable = true;
+    myNixOS = {
+      desktop.enable = true;
+      services.yubikey.pinentry = pkgs.pinentry-gnome3;
+    };
   };
 }

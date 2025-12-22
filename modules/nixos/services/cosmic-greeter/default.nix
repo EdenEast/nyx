@@ -8,7 +8,7 @@
   config = lib.mkIf config.myNixOS.services.cosmic-greeter.enable {
     security.pam.services = {
       cosmic-greeter = {
-        enableGnomeKeyring = true;
+        # enableGnomeKeyring = true;
         gnupg.enable = true;
         kwallet.enable = true;
       };

@@ -3,6 +3,20 @@
 in {
   flake.lib =
     rec {
+      # pruneAttr recursively removes attributes with null values from a set.
+      # It traverses nested attribute sets, returning a set with all nulls pruned.
+      # Usage: pruneAttr { a = null; b = { c = null; d = 1; }; } => { b = { d = 1; }; }
+      pruneAttrs = attrs:
+        lib.filterAttrs (_: v: v != null) (
+          lib.mapAttrs (
+            _: v:
+              if builtins.isAttrs v
+              then pruneAttrs v
+              else v
+          )
+          attrs
+        );
+
       # Given a directory path, returns an attribute set mapping names to either directories or .nix files within
       # that directory. Nix files take precidence over directories. Entries starting with '_' are ignored.
       #

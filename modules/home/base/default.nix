@@ -26,6 +26,7 @@
         man-pages
         man-pages-posix
         stdman
+        bat
         # grep alternative.
         ripgrep
         # ls alternative.
@@ -53,6 +54,25 @@
 
     # Install man output for any Nix packages.
     programs.man.enable = true;
+
     programs.nix-index-database.comma.enable = true;
+    programs.nix-index = {
+      enable = true;
+      enableFishIntegration = true;
+      enableZshIntegration = true;
+    };
+
+    myHome.programs = {
+      ghostty.enable = true;
+      git.enable = true;
+      fish.enable = true;
+      fzf.enable = true;
+      jujutsu.enable = true;
+      neovim.enable = true;
+      starship.enable = true;
+      tmux.enable = true;
+      yazi.enable = true;
+      zen.enable = true;
+    };
   };
 }

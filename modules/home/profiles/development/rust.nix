@@ -21,5 +21,7 @@
         "$CARGO_HOME/bin"
       ];
     };
+
+    myHome.profiles.development.enable = true;
   };
 }
