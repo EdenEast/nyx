@@ -46,7 +46,7 @@
         touchpad = lib.optionalAttrs config.myNixOS.desktop.laptop {
           tapping = true;
           naturalScrolling = true;
-          # disableWhileTyping = true; # if palm rejection is failing
+          disableWhileTyping = true; # if palm rejection is failing
         };
       };
     };
