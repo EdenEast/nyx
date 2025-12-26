@@ -13,7 +13,7 @@
 ├── hosts/            # Machine configuration entry point
 │   ├── home/         # Standalone home hosts
 │   └── nixos/        # Nixos hosts
-└── modules/          # Modular
+└── modules/          # Modules
     ├── flake/        # Main entry point into the flake
     │   ├── home.nix  # Home-manager configuration setup
     │   ├── lib.nix   # Main library

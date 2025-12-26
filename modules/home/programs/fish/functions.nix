@@ -7,15 +7,6 @@
     mkdir -p $argv[1] && cd $argv[1]
   '';
 
-  # git = ''
-  #   if test (count $argv) -ne 1
-  #     command git status -s
-  #     return 0
-  #   end
-  #
-  #   command git $argv
-  # '';
-
   # Process killer by name
   killall-fuzzy = ''
     if test (count $argv) -eq 0

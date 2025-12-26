@@ -15,9 +15,4 @@
   ls = "eza --group-directories-first --color=auto -l";
   lt = "eza --group-directories-first --color=auto --tree";
   tree = "eza -T";
-
-  # Safety nets
-  rm = "rm -i";
-  cp = "cp -i";
-  mv = "mv -i";
 }
