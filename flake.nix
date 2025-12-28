@@ -50,14 +50,18 @@
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
         flake-parts.follows = "flake-parts";
-        # devshell.follows = "";
         hyprland.follows = "";
-        # crane.follows = "";
       };
     };
 
     nvim-config = {
       url = "github:EdenEast/nvim-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Niri window manager
+    niri-src = {
+      url = "github:yalter/niri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
