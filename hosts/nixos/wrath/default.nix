@@ -17,8 +17,16 @@
     base.enable = true;
 
     desktop = {
-      cosmic.enable = true;
       laptop = true;
+      cosmic.enable = true;
+      niri = {
+        enable = true;
+        laptopMonitor = ''
+          output "eDP-1" {
+            scale 1.25
+          }
+        '';
+      };
     };
 
     profiles = {

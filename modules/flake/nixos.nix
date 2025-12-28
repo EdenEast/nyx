@@ -13,7 +13,9 @@ in {
     };
 
     nixosConfigurations = mapDir ../../hosts/nixos (
-      name: value:
+      name: value: let
+        hostName = name;
+      in
         inputs.nixpkgs.lib.nixosSystem {
           modules =
             [
@@ -25,7 +27,7 @@ in {
                 home-manager = {
                   useGlobalPkgs = lib.mkDefault true;
                   useUserPackages = lib.mkDefault true;
-                  extraSpecialArgs = {inherit self inputs;};
+                  extraSpecialArgs = {inherit self inputs hostName;};
                   backupFileExtension = "backup";
                 };
 
@@ -41,7 +43,7 @@ in {
             ]
             ++ builtins.attrValues self.nixosModules;
 
-          specialArgs = {inherit self inputs;};
+          specialArgs = {inherit self inputs hostName;};
         }
     );
   };
