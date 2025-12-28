@@ -20,8 +20,9 @@
   config = lib.mkIf config.myNixOS.desktop.enable {
     environment = {
       sessionVariables.NIXOS_OZONE_WL = "1";
-      systemPackages = [
-        pkgs.wl-clipboard
+      systemPackages = with pkgs; [
+        wl-clipboard
+        mpv
       ];
     };
 
