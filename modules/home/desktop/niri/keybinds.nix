@@ -6,12 +6,13 @@
 
     // === Application Launcher ===
     Mod+T hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
+    Mod+Return hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
     Mod+D hotkey-overlay-title="Application Launcher:" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // === Custom Application Launchers ===
-    Mod+N { spawn "obsidian"; }
-    Mod+B { spawn "zen"; }
+    Mod+Shift+O { spawn "obsidian"; }
+    Mod+Shift+B { spawn "zen"; }
 
     // === Window Management ===
     Mod+Q repeat=false { close-window; }
@@ -20,7 +21,6 @@
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
     Mod+O repeat=false { toggle-overview; }
-
 
     Mod+Left  { focus-column-left; }
     Mod+Down  { focus-window-down; }
