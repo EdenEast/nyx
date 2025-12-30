@@ -16,22 +16,6 @@
     supersectionType = attrsOf (either multipleType sectionType);
   in
     attrsOf supersectionType;
-
-  signModule = types.submodule {
-    options = {
-      key = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        description = "The default GPG signing key fingerprint.";
-      };
-
-      signByDefault = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether commits should be signed by default.";
-      };
-    };
-  };
 in {
   options.myHome.programs.git = {
     enable = lib.mkEnableOption "git version control";
@@ -102,8 +86,7 @@ in {
     myHome.programs.git.iniContent =
       {
         user = {
-          email = cfg.email;
-          name = cfg.name;
+          inherit (cfg) email name;
           signingKey = cfg.key;
         };
         gpg.program = lib.getExe pkgs.gnupg;

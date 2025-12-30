@@ -1,4 +1,4 @@
-{...}: {
+_: {
   mkcd = ''
     if test (count $argv) -ne 1
       echo "Usage: mkcd <directory>"

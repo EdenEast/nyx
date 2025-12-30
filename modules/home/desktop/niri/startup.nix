@@ -1,4 +1,4 @@
-{...}:
+_:
 # kdl
 ''
   spawn-at-startup "mako"
