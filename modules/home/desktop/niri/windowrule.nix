@@ -1,4 +1,4 @@
-{...}:
+_:
 # kdl
 ''
   // Global window styling

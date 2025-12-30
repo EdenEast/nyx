@@ -4,8 +4,8 @@
   pkgs,
   ...
 }: let
+  inherit (config.programs.gnupg) package;
   cfg = config.myNixOS.services.yubikey;
-  package = config.programs.gnupg.package;
 in {
   options.myNixOS.services.yubikey = {
     enable = lib.mkEnableOption "gdm display manager";

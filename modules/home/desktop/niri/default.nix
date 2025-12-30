@@ -40,7 +40,7 @@ in {
           lib.pipe entries [
             (lib.filterAttrs (name: _: name != "default"))
             (lib.mapAttrs (_: value: import value.path {}))
-            (builtins.attrValues)
+            builtins.attrValues
           ]))
         ++ cfg.monitors
         ++ lib.lists.optional (cfg.laptopMonitor != null) cfg.laptopMonitor;

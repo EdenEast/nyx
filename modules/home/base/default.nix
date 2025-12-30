@@ -46,20 +46,22 @@
       ];
     };
 
-    # Manage home-manager with home-manager (inception)
-    programs.home-manager.enable = true;
-
     # Install home-manager manpages.
     manual.manpages.enable = true;
 
-    # Install man output for any Nix packages.
-    programs.man.enable = true;
+    programs = {
+      # Manage home-manager with home-manager (inception)
+      home-manager.enable = true;
 
-    programs.nix-index-database.comma.enable = true;
-    programs.nix-index = {
-      enable = true;
-      enableFishIntegration = true;
-      enableZshIntegration = true;
+      # Install man output for any Nix packages.
+      man.enable = true;
+
+      nix-index-database.comma.enable = true;
+      nix-index = {
+        enable = true;
+        enableFishIntegration = true;
+        enableZshIntegration = true;
+      };
     };
 
     myHome.programs = {
