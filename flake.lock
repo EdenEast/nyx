@@ -728,11 +728,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1766290001,
-        "narHash": "sha256-S7vIvZIf5FfmefYOM/7ykaZpo+5yZjiqwyj8SxTDHYc=",
+        "lastModified": 1767070242,
+        "narHash": "sha256-zLEyzWhFC4e278Y/MKLVpMOtK9RDDUpPaha9Qt/5JHg=",
         "owner": "EdenEast",
         "repo": "nvim-config",
-        "rev": "4c83e4368a399653d00fb16ec0de10597bc6229e",
+        "rev": "fc5244de0f291019e10f3d360632be823b391d4d",
         "type": "github"
       },
       "original": {
