@@ -19,7 +19,7 @@ Some notable areas for others would be:
 
 ## Structure
 
-```
+```plaintext
 .
 ├── flake.nix         # Main entry point
 ├── config/           # Application files used by home-manager or symlinked
