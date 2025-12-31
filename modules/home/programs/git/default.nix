@@ -16,6 +16,8 @@
     supersectionType = attrsOf (either multipleType sectionType);
   in
     attrsOf supersectionType;
+
+  git-wt = pkgs.writeShellScriptBin "git-wt" (builtins.readFile ./git-wt);
 in {
   options.myHome.programs.git = {
     enable = lib.mkEnableOption "git version control";
@@ -56,6 +58,7 @@ in {
         git-open
         git-crypt
         git-graph
+        git-wt
       ];
 
       sessionPath = ["${config.xdg.configHome}/git/bin"];
