@@ -3,6 +3,7 @@
     imports = [
       self.homeModules.default
     ];
+
     config = {
       home = {
         homeDirectory = "/home/eden";

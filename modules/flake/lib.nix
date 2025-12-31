@@ -3,46 +3,6 @@
 in {
   flake.lib =
     rec {
-      opt = with opt; {
-        float-or-int = lib.types.either lib.types.float lib.types.int;
-
-        required = type: lib.types.mkOption {inherit type;};
-        nullable = type: optional (lib.types.nullOr type) null;
-        optional = type: default: lib.types.mkOption {inherit type default;};
-        readonly = type: value: optional type value // {readOnly = true;};
-
-        attrs = type: optional (lib.types.attrsOf type) {};
-        list = type: optional (lib.types.listOf type) [];
-        record = record' null;
-        record' = description: options:
-          lib.types.types.submoduleWith {
-            inherit description;
-            shorthandOnlyDefinesConfig = true;
-            modules = [
-              {inherit options;}
-            ];
-          };
-
-        attrs-record = attrs-record' null;
-        attrs-record' = description: opts:
-          attrs (
-            if builtins.isFunction opts
-            then
-              lib.types.submoduleWith {
-                inherit description;
-                shorthandOnlyDefinesConfig = true;
-                modules = [
-                  (
-                    {name, ...}: {
-                      options = opts name;
-                    }
-                  )
-                ];
-              }
-            else record' description opts
-          );
-      };
-
       # pruneAttr recursively removes attributes with null values from a set.
       # It traverses nested attribute sets, returning a set with all nulls pruned.
       # Usage: pruneAttr { a = null; b = { c = null; d = 1; }; } => { b = { d = 1; }; }
