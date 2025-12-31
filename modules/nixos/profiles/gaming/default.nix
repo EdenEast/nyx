@@ -11,6 +11,7 @@
 
     environment.systemPackages = with pkgs; [
       heroic
+      runelite
     ];
 
     myNixOS.programs.steam.enable = true;
