@@ -12,6 +12,8 @@
     environment.systemPackages = with pkgs; [
       heroic
       runelite
+      switch-runelite
+      (pkgs.writeShellScriptBin "switch-runelite" (builtins.readFile ./switch-runelite))
     ];
 
     myNixOS.programs.steam.enable = true;
