@@ -13,10 +13,25 @@
       shellAliases = import ./aliases.nix;
       functions = import ./functions.nix {inherit pkgs lib;};
 
-      interactiveShellInit = ''
-        set -g fish_greeting
-      '';
+      interactiveShellInit = let
+        localDataPath = lib.strings.concatStringsSep "/" [
+          config.home.homeDirectory
+          config.xdg.dataFile."fish/config.fish".target
+        ];
+      in
+        # fish
+        ''
+          set -g fish_greeting
+
+          # escape hatch from nix for experimentations
+          if test ${localDataPath}
+            source ${localDataPath}
+          end
+        '';
     };
+
+    # Required to be defined to be callable but disabling so file does not get generated
+    xdg.dataFile."fish/config.fish".enable = false;
 
     home.packages = with pkgs; [
       fishPlugins.fzf-fish
