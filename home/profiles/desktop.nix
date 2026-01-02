@@ -28,7 +28,6 @@ in {
         lm_sensors
         rofi
         networkmanagerapplet
-        synergy
         xdotool
         # eww
         deadhead-font

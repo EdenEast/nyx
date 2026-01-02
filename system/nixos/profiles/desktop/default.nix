@@ -8,7 +8,7 @@ with lib; let
   cfg = config.nyx.profiles.desktop;
 
   wmList = ["awesome"];
-  deList = ["gnome" "plasma5"];
+  deList = ["gnome" "plasma6"];
 in {
   options.nyx.profiles.desktop = {
     laptop = mkOption {
@@ -63,30 +63,23 @@ in {
         };
       };
 
+      displayManager = {
+        gdm.enable = cfg.flavor == "gnome";
+      };
+
       xserver = {
         enable = true;
         xkb.layout = "us";
 
         displayManager = {
           lightdm.enable = cfg.flavor != "gnome";
-          gdm.enable = cfg.flavor == "gnome";
-          # session = [
-          #   {
-          #     name = "home-manager";
-          #     manage = "window";
-          #     start = ''
-          #       ${pkgs.runtimeShell} $HOME/.hm-xsession &
-          #       waitPID=$!
-          #     '';
-          #   }
-          # ];
         };
       };
     };
 
-    services.xserver.desktopManager = mkIf (elem "${cfg.flavor}" deList) {
+    services.desktopManager = mkIf (elem "${cfg.flavor}" deList) {
       gnome.enable = mkIf (cfg.flavor == "gnome") true;
-      plasma5.enable = mkIf (cfg.flavor == "plasma5") true;
+      plasma6.enable = mkIf (cfg.flavor == "plasma6") true;
     };
 
     services.xserver.windowManager = mkIf (elem "${cfg.flavor}" wmList) {
