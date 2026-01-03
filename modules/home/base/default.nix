@@ -50,11 +50,21 @@
     manual.manpages.enable = true;
 
     programs = {
+      direnv = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
+        nix-direnv.enable = true;
+        silent = true;
+      };
+
       # Manage home-manager with home-manager (inception)
       home-manager.enable = true;
 
       # Install man output for any Nix packages.
       man.enable = true;
+
+      nh.enable = true;
 
       nix-index-database.comma.enable = true;
       nix-index = {
@@ -65,16 +75,15 @@
     };
 
     myHome.programs = {
-      ghostty.enable = true;
-      git.enable = true;
-      fish.enable = true;
-      fzf.enable = true;
-      jujutsu.enable = true;
-      neovim.enable = true;
-      starship.enable = true;
-      tmux.enable = true;
-      yazi.enable = true;
-      zen.enable = true;
+      ghostty.enable = lib.mkDefault true;
+      git.enable = lib.mkDefault true;
+      fzf.enable = lib.mkDefault true;
+      jujutsu.enable = lib.mkDefault true;
+      neovim.enable = lib.mkDefault true;
+      starship.enable = lib.mkDefault true;
+      tmux.enable = lib.mkDefault true;
+      yazi.enable = lib.mkDefault true;
+      zen.enable = lib.mkDefault true;
     };
   };
 }

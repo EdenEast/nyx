@@ -4,7 +4,13 @@
   pkgs,
   ...
 }: {
-  options.myHome.programs.fish.enable = lib.mkEnableOption "fish shell";
+  options.myHome.programs.fish = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = config.programs.fish.enable;
+      description = "fish shell";
+    };
+  };
 
   config = lib.mkIf config.myHome.programs.fish.enable {
     programs.fish = {

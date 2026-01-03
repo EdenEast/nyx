@@ -17,6 +17,10 @@
       just
       # Codebase statistics.
       tokei
+      # command-line JSON processor
+      jq
+      # TUI playground to experiment with jq
+      jqp
     ];
   };
 }
