@@ -55,16 +55,6 @@
 
     programs = {
       dconf.enable = true;
-
-      direnv = {
-        enable = true;
-        enableBashIntegration = true;
-        enableFishIntegration = true;
-        enableZshIntegration = true;
-        nix-direnv.enable = true;
-        silent = true;
-      };
-
       git.enable = true;
       nh.enable = true;
     };
