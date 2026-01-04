@@ -2,7 +2,10 @@
   home.stateVersion = "25.11";
 
   myHome = {
-    base.enable = true;
+    base = {
+      enable = true;
+      shells.wsl = true;
+    };
 
     programs = {
       git = {
@@ -12,10 +15,7 @@
       };
 
       fish.enable = true;
-      zsh = {
-        enable = true;
-        wsl = true;
-      };
+      zsh.enable = true;
 
       ghostty.enable = false;
       zen.enable = false;
