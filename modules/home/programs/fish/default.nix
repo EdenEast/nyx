@@ -3,12 +3,22 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  dataFilePath = path:
+    lib.strings.concatStringsSep "/" [
+      config.home.homeDirectory
+      config.xdg.dataFile."${path}".target
+    ];
+in {
   options.myHome.programs.fish = {
+    # FIXME: This option should not be necessary and should be able to use `config.programs.fish.enable` instead however
+    # this currently does not work as fish is set as the user's default shell and enabled in the nixos module and the
+    # value is not passed or reconized by the home-manager module. Meaning that if it is set in the nixos module it
+    # would not be enabled in the home-manager module
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = config.programs.fish.enable;
-      description = "fish shell";
+      default = false;
+      description = "Enable fish shell and related configuration.";
     };
   };
 
@@ -16,14 +26,11 @@
     programs.fish = {
       enable = true;
 
-      shellAliases = import ./aliases.nix;
+      shellAliases = import ../../base/shells/aliases.nix;
       functions = import ./functions.nix {inherit pkgs lib;};
 
       interactiveShellInit = let
-        localDataPath = lib.strings.concatStringsSep "/" [
-          config.home.homeDirectory
-          config.xdg.dataFile."fish/config.fish".target
-        ];
+        localDataPath = dataFilePath "fish/config.fish";
       in
         # fish
         ''

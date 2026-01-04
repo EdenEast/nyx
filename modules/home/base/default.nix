@@ -5,7 +5,10 @@
   inputs,
   ...
 }: {
-  imports = [inputs.nix-index-database.homeModules.nix-index];
+  imports = [
+    ./shells
+    inputs.nix-index-database.homeModules.nix-index
+  ];
 
   options.myHome.base = {
     enable = lib.mkEnableOption "base system configuration";
