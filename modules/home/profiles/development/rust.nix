@@ -18,7 +18,7 @@
       };
 
       sessionPath = [
-        "$CARGO_HOME/bin"
+        "${config.xdg.dataHome}/cargo/bin"
       ];
     };
 
