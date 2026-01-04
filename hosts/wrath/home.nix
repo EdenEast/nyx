@@ -1,8 +1,6 @@
 {self, ...}: {
   home-manager.users.eden = {
-    imports = [
-      self.homeModules.default
-    ];
+    imports = builtins.attrValues self.homeModules;
 
     config = {
       home = {

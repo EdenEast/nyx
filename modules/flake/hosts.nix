@@ -101,7 +101,7 @@
             modules = [
               path
               {
-                imports = [self.homeModules.default];
+                imports = builtins.attrValues self.homeModules;
                 home = {inherit username homeDirectory;};
               }
             ];
@@ -144,6 +144,7 @@ in {
   flake = {
     homeModules = {
       default = ../home;
+      snippets = ../snippets;
     };
 
     nixosModules = {
