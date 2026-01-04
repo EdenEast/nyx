@@ -3,13 +3,7 @@
   lib,
   self,
   ...
-}: let
-  dataFilePath = path:
-    lib.strings.concatStringsSep "/" [
-      config.home.homeDirectory
-      config.xdg.dataFile."${path}".target
-    ];
-in {
+}: {
   options.myHome.programs.zsh = {
     # FIXME: This option should not be necessary and should be able to use `config.programs.zsh.enable` instead however
     # this currently does not work as zsh is set as the user's default shell and enabled in the nixos module and the
@@ -33,30 +27,34 @@ in {
 
         shellAliases = import ../../base/shells/aliases.nix;
 
+        # make sure the dot files conform to
+        dotDir = "${config.xdg.configHome}/zsh";
+
         profileExtra = lib.mkAfter ''
-          source "${dataFilePath "zsh/zprofile"}"
+          if [ -f "${config.xdg.dataHome}/zsh/zprofile" ]; then
+            source "${config.xdg.dataHome}/zsh/zprofile"
+          fi
         '';
 
         loginExtra = lib.mkAfter ''
-          source "${dataFilePath "zsh/zlogin"}"
+          if [ -f "${config.xdg.dataHome}/zsh/zlogin" ]; then
+            source "${config.xdg.dataHome}/zsh/zlogin"
+          fi
         '';
 
         initContent = lib.mkAfter ''
-          source "${dataFilePath "zsh/zshrc"}"
+          if [ -f "${config.xdg.dataHome}/zsh/zshrc" ]; then
+            source "${config.xdg.dataHome}/zsh/zshrc"
+          fi
         '';
-      };
-
-      # Required to be defined to be callable but disabling so file does not get generated
-      xdg.dataFile = {
-        "zsh/zprofile".enable = false;
-        "zsh/zlogin".enable = false;
-        "zsh/zshrc".enable = false;
       };
     }
 
     (lib.mkIf config.myHome.base.shells.wsl {
-      programs.zsh.profileExtra = ''
-        source "${dataFilePath "zsh/wsl2-ssh-pageant.sh"}"
+      # Ths should be right at the end as we want info defined in ${dataFile}/zsh/zprofile
+      # to be defined before this is called
+      programs.zsh.profileExtra = lib.mkOrder 3000 ''
+        source "${config.xdg.dataHome}/zsh/wsl2-ssh-pageant.sh"
       '';
 
       xdg.dataFile."zsh/wsl2-ssh-pageant.sh".source =

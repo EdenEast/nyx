@@ -3,13 +3,7 @@
   lib,
   pkgs,
   ...
-}: let
-  dataFilePath = path:
-    lib.strings.concatStringsSep "/" [
-      config.home.homeDirectory
-      config.xdg.dataFile."${path}".target
-    ];
-in {
+}: {
   options.myHome.programs.fish = {
     # FIXME: This option should not be necessary and should be able to use `config.programs.fish.enable` instead however
     # this currently does not work as fish is set as the user's default shell and enabled in the nixos module and the
@@ -30,14 +24,14 @@ in {
       functions = import ./functions.nix {inherit pkgs lib;};
 
       interactiveShellInit = let
-        localDataPath = dataFilePath "fish/config.fish";
+        localDataPath = "${config.xdg.dataHome}/fish/config.fish";
       in
         # fish
         ''
           set -g fish_greeting
 
           # escape hatch from nix for experimentations
-          if test ${localDataPath}
+          if test -f ${localDataPath}
             source ${localDataPath}
           end
         '';
