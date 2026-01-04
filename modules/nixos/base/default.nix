@@ -11,9 +11,6 @@
 
   config = lib.mkIf config.myNixOS.base.enable {
     boot = {
-      # Enable running aarch64 binaries using qemu.
-      binfmt.emulatedSystems = ["aarch64-linux"];
-
       # Clean temporary directory on boot.
       tmp.cleanOnBoot = true;
 
