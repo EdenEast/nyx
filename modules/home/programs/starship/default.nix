@@ -9,6 +9,7 @@
   config = lib.mkIf config.myHome.programs.starship.enable {
     programs.starship = {
       enable = true;
+      configPath = "${config.xdg.configHome}/starship/starship.toml";
       enableBashIntegration = true;
       enableFishIntegration = true;
       enableZshIntegration = true;
