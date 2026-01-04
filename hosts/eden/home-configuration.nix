@@ -1,5 +1,15 @@
-{self, ...}: {
+{
+  config,
+  pkgs,
+  self,
+  ...
+}: {
   home.stateVersion = "25.11";
+
+  nix = {
+    inherit (config.mySnippets.nix) settings;
+    package = pkgs.nix;
+  };
 
   myHome = {
     base = {
