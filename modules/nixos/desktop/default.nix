@@ -33,11 +33,15 @@
     # ];
 
     fonts.packages = with pkgs.nerd-fonts; [
+      # mono fonts
       jetbrains-mono
       hack
-      gohufont
-      meslo-lg
       ubuntu-mono
+
+      # terminal pixel
+      departure-mono
+      envy-code-r
+      terminess-ttf
     ];
 
     services = {
