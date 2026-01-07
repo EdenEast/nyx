@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   ...
 }: {
@@ -51,9 +52,12 @@
     }
 
     (lib.mkIf config.myHome.base.shells.wsl {
-      # Ths should be right at the end as we want info defined in ${dataFile}/zsh/zprofile
-      # to be defined before this is called
-      programs.zsh.profileExtra = lib.mkOrder 3000 ''
+      home.packages = with pkgs; [
+        iproute2
+        socat
+      ];
+
+      programs.zsh.profileExtra = lib.mkAfter ''
         source "${config.xdg.dataHome}/zsh/wsl2-ssh-pageant.sh"
       '';
 

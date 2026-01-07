@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   ...
 }: {
@@ -40,6 +41,11 @@
     }
 
     (lib.mkIf config.myHome.base.shells.wsl {
+      home.packages = with pkgs; [
+        iproute2
+        socat
+      ];
+
       programs.bash.profileExtra = ''
         source "${config.xdg.dataHome}/bash/wsl2-ssh-pageant.sh"
       '';
