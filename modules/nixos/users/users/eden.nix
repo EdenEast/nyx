@@ -12,5 +12,7 @@
 
       uid = 1000;
     };
+
+    nix.settings.trusted-users = ["eden"];
   };
 }

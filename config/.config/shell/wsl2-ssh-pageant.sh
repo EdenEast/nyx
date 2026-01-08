@@ -1,4 +1,4 @@
-windows_destination="/mnt/c/Users/Public/Downloads/wsl2-ssh-pageant.exe"
+windows_destination="/mnt/c/Users/Public/wsl2-ssh-pageant.exe"
 linux_destination="$HOME/.ssh/wsl2-ssh-pageant.exe"
 if [ ! -x "$linux_destination" ]; then
   curl -O "$windows_destination" "https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/latest/download/wsl2-ssh-pageant.exe"

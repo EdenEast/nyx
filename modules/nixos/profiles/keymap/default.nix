@@ -12,9 +12,12 @@
     enable = lib.mkEnableOption "Remap keyboard";
   };
 
-  config = lib.mkIf config.myNixOS.profiles.keymap.enable {
+  # config = lib.mkIf config.myNixOS.profiles.keymap.enable {
+  config = {
     services.xremap = {
-      enable = true;
+      # There is a warning when the default value is used. If this is set to false you need
+      # to actually set it and not use the default value
+      enable = config.myNixOS.profiles.keymap.enable;
       config = {
         modmap = [
           {

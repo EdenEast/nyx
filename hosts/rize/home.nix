@@ -10,19 +10,24 @@
       };
 
       myHome = {
-        base.enable = true;
+        base = {
+          enable = true;
+          shells.wsl = true;
+        };
 
         programs = {
-          fish.enable = true;
-          ghostty.enable = true;
           git = {
             name = "EdenEast";
             email = "edenofest@gmail.com";
             key = "5A038CEFD458DB47A6135B3F8316DECECB1A3F10";
           };
-          obsidian.enable = true;
-          zen.enable = true;
+
+          fish.enable = true;
           zsh.enable = true;
+
+          # This is wsl so dont need applications
+          ghostty.enable = false;
+          zen.enable = false;
         };
 
         profiles.development.rust.enable = true;

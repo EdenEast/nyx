@@ -29,8 +29,9 @@
         neovim
       ];
 
-      sessionVariables = {
+      variables = {
         EDITOR = "nvim";
+        VISUAL = "nvim";
       };
 
       variables = {
@@ -56,7 +57,7 @@
       nh.enable = true;
     };
 
-    networking.networkmanager.enable = true;
+    networking.networkmanager.enable = lib.mkDefault true;
 
     security = {
       polkit.enable = true;
@@ -80,11 +81,6 @@
     system.configurationRevision = self.rev or self.dirtyRev or null;
 
     myNixOS = {
-      profiles = {
-        bluetooth.enable = lib.mkDefault true;
-        keymap.enable = lib.mkDefault true;
-      };
-
       programs = {
         nix.enable = lib.mkDefault true;
         uutils.enable = lib.mkDefault true;

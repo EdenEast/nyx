@@ -56,13 +56,19 @@
       programs.fish.shellInitLast =
         # fish
         ''
-          set windows_destination /mnt/c/Users/Public/Downloads/wsl2-ssh-pageant.exe
+          set windows_destination /mnt/c/Users/Public/wsl2-ssh-pageant.exe
           set linux_destination $HOME/.ssh/wsl2-ssh-pageant.exe
 
           if not test -x $linux_destination
-              curl -O $windows_destination https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/latest/download/wsl2-ssh-pageant.exe
+            if not test -x $windows_destination then
+              echo "downloading 'wsl2-ssh-pageant' to $windows_destination"
+              curl -o $windows_destination https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/latest/download/wsl2-ssh-pageant.exe
               chmod +x $windows_destination
-              ln -s $windows_destination $linux_destination
+            end
+            if test -L $linux_destination
+              rm $linux_destination
+            end
+            ln -s $windows_destination $linux_destination
           end
 
           # Handle ssh socket

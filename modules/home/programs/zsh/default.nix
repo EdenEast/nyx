@@ -33,19 +33,28 @@
 
         profileExtra = lib.mkAfter ''
           if [ -f "${config.xdg.dataHome}/zsh/zprofile" ]; then
+            echo source "${config.xdg.dataHome}/zsh/zprofile"
             source "${config.xdg.dataHome}/zsh/zprofile"
+          else
+            echo not "${config.xdg.dataHome}/zsh/zprofile"
           fi
         '';
 
         loginExtra = lib.mkAfter ''
           if [ -f "${config.xdg.dataHome}/zsh/zlogin" ]; then
+            echo source "${config.xdg.dataHome}/zsh/zlogin"
             source "${config.xdg.dataHome}/zsh/zlogin"
+          else
+            echo not "${config.xdg.dataHome}/zsh/zlogin"
           fi
         '';
 
         initContent = lib.mkAfter ''
           if [ -f "${config.xdg.dataHome}/zsh/zshrc" ]; then
+            echo source "${config.xdg.dataHome}/zsh/zshrc"
             source "${config.xdg.dataHome}/zsh/zshrc"
+          else
+            echo not "${config.xdg.dataHome}/zsh/zshrc"
           fi
         '';
       };
@@ -57,12 +66,12 @@
         socat
       ];
 
-      programs.zsh.profileExtra = lib.mkAfter ''
-        source "${config.xdg.dataHome}/zsh/wsl2-ssh-pageant.sh"
+      programs.zsh.initContent = lib.mkAfter ''
+        source "${config.xdg.dataHome}/zsh/wsl2-ssh-pageant"
       '';
 
-      xdg.dataFile."zsh/wsl2-ssh-pageant.sh".source =
-        self.configDir + "/.config/shell/wsl2-ssh-pageant.sh";
+      xdg.dataFile."zsh/wsl2-ssh-pageant".source =
+        self.configDir + "/.config/shell/wsl2-ssh-pageant";
     })
   ]);
 }
