@@ -11,12 +11,43 @@ determined by the type of configuration entry point found.
 | Darwin       | `darwin-configuration.nix`               | `darwinConfigurations` |
 | Home-Manager | `home-configuration.nix` + `system.nix`  | `homeConfigurations`   |
 
+---
+
 ## 📂 Directory Structure
 
 The `hosts/` directory is organized as follows:
 
+<!-- eza --tree --level 1 --only-dirs ./hosts -->
 ```plaintext
-hosts/
-├── eden/    # HP Omnibook Ultra Flip 14
-└── wrath/   # Framework 13
+hosts
+└── wrath   # Framework 13
+```
+
+---
+
+## Example Standalone Home Manager Host
+
+As there is no current example of a standalone home-manager host configuration here is a base example:
+
+```nix
+# ./hosts/<user>/home-configuration.nix
+{
+  config,
+  pkgs,
+  ...
+}: {
+  home.stateVersion = "25.11";
+
+  nix = {
+    inherit (config.mySnippets.nix) settings;
+    package = pkgs.nix;
+  };
+
+  myHome = {
+    base.enable = true;
+  };
+}
+
+# ./hosts/<user>/system.nix
+"x86_64-linux"
 ```

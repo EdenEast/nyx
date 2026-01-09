@@ -56,8 +56,7 @@ and modular setup based on [flake-parts](https://flake.parts/) which has been a 
 
 ## Todo
 
-- [ ] Runelite
 - [ ] Nushell
 - [ ] hyperland desktop setup
-- [ ] nixos-wsl and standalone home-manager
+- [ ] nixos-wsl
 - [ ] Some sort of backup solution like [borgmatic](https://torsion.org/borgmatic/) [borgbackup](https://www.borgbackup.org/) or drive
