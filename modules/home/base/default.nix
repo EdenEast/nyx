@@ -87,6 +87,7 @@
       tmux.enable = lib.mkDefault true;
       yazi.enable = lib.mkDefault true;
       zen.enable = lib.mkDefault true;
+      zoxide.enable = lib.mkDefault true;
     };
   };
 }
