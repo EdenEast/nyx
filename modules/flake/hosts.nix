@@ -24,9 +24,9 @@
 
               {
                 nixpkgs = {
-                  # overlays = [
-                  #   self.overlays.default
-                  # ];
+                  overlays = [
+                    self.overlays.default
+                  ];
 
                   config.allowUnfree = true;
                 };
@@ -56,9 +56,9 @@
             inputs.home-manager.darwinModules.home-manager
             {
               nixpkgs = {
-                # overlays = [
-                #   self.overlays.default
-                # ];
+                overlays = [
+                  self.overlays.default
+                ];
 
                 config.allowUnfree = true;
               };
@@ -85,9 +85,9 @@
           system = import ((builtins.dirOf path) + "/system.nix");
           pkgs = import inputs.nixpkgs {
             inherit system;
-            # overlays = [
-            #   self.overlays.default
-            # ];
+            overlays = [
+              self.overlays.default
+            ];
 
             config.allowUnfree = true;
           };
