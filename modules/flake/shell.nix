@@ -8,7 +8,6 @@ _: {
       inputsFrom = [config.flake-root.devShell];
       name = "nyx";
       packages = with pkgs; [
-        git
         git-crypt
         nh
         watchexec

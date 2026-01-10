@@ -18,6 +18,14 @@
     attrsOf supersectionType;
 
   git-wt = pkgs.writeShellScriptBin "git-wt" (builtins.readFile ./git-wt);
+
+  git-wrapper = pkgs.writeShellScriptBin "git" ''
+    if [ $# -eq 0 ]; then
+      ${lib.getExe pkgs.git} status -s
+    else
+      ${lib.getExe pkgs.git} "$@"
+    fi
+  '';
 in {
   options.myHome.programs.git = {
     enable = lib.mkEnableOption "git version control";
@@ -72,6 +80,7 @@ in {
 
       git = {
         enable = true;
+        package = git-wrapper;
         lfs.enable = true;
       };
 
