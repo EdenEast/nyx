@@ -11,11 +11,10 @@ are built upon.
 
 Some notable areas for others would be:
 
-| Area | Description |
-| -----: | :----- |
-| [Neovim](https://github.com/edeneast/nvim-config) | Self contained neovim flake |
-| [Git](./config/.config/git) | Highly customized and documented git configuration and extensions |
-
+| Area                                              | Description                                                       |
+| ---:                                              | :---                                                              |
+| [Neovim](https://github.com/edeneast/nvim-config) | Self contained neovim flake                                       |
+| [Git](./config/.config/git)                       | Highly customized and documented git configuration and extensions |
 
 ## Structure
 
@@ -24,17 +23,17 @@ Some notable areas for others would be:
 ├── flake.nix         # Main entry point
 ├── config/           # Application files used by home-manager or symlinked
 ├── hosts/            # Machine configuration entry point
-│   ├── home/         # Standalone home hosts
-│   └── nixos/        # Nixos hosts
-└── modules/          # Modules
-    ├── flake/        # Main entry point into the flake
-    │   ├── home.nix  # Home-manager configuration setup
-    │   ├── lib.nix   # Main library
-    │   ├── nixos.nix # Nixos-specific
-    │   └── ...       # Other flake components
-    ├── home/         # Home-manager modules
-    ├── nixos/        # NixOS-specific modules
-    └── snippets/     # Reusable configuration snippets
+├── modules/          # Modules
+│   ├── flake/        # Main entry point into the flake
+│   │   ├── actions/  # Github action definitions
+│   │   ├── hosts.nix # Nixos, Darwin and Home Manager library definitions
+│   │   ├── lib.nix   # Main library
+│   │   └── ...       # Other flake components
+│   ├── home/         # Home-manager modules
+│   ├── nixos/        # NixOS-specific modules
+│   └── snippets/     # Reusable configuration snippets
+├── overlays/         # Package overlay definitions
+└── packages/         # Custom package definitions
 ```
 
 ## Resources, References and Acknowledgements
