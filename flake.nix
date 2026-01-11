@@ -5,9 +5,6 @@
   inputs = {
     # Package sets
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-stable-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
-    nixos-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # Environment/system management
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -25,7 +22,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-root.url = "github:srid/flake-root";
     flake-compat.url = "github:nixos/flake-compat";
-    nur.url = "github:nix-community/NUR";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,6 +39,7 @@
       url = "github:cachix/git-hooks.nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
       };
     };
 
@@ -65,7 +62,11 @@
 
     nvim-config = {
       url = "github:EdenEast/nvim-config";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-root.follows = "flake-root";
+        flake-parts.follows = "flake-parts";
+      };
     };
 
     # Niri window manager
