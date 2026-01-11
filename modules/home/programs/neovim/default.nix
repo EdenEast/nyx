@@ -5,7 +5,7 @@
   inputs,
   ...
 }: {
-  options.myHome.programs.neovim = {
+  options.my.home.programs.neovim = {
     enable = lib.mkEnableOption "neovim editor";
 
     useNightly = lib.mkOption {
@@ -20,14 +20,14 @@
     };
   };
 
-  config = lib.mkIf config.myHome.programs.neovim.enable {
+  config = lib.mkIf config.my.home.programs.neovim.enable {
     # home.packages = [
-    #   config.myHome.programs.neovim.package
+    #   config.my.home.programs.neovim.package
     # ];
     home.packages = let
       nvim-packages = inputs.nvim-config.packages.${pkgs.stdenv.hostPlatform.system};
       package =
-        if config.myHome.programs.neovim.useNightly
+        if config.my.home.programs.neovim.useNightly
         then nvim-packages.nightly
         else nvim-packages.stable;
     in [package];

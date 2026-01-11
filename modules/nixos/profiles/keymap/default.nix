@@ -8,11 +8,11 @@
     inputs.xremap-flake.nixosModules.default
   ];
 
-  options.myNixOS.profiles.keymap = {
+  options.my.nixos.profiles.keymap = {
     enable = lib.mkEnableOption "Remap keyboard";
   };
 
-  config = lib.mkIf config.myNixOS.profiles.keymap.enable {
+  config = lib.mkIf config.my.nixos.profiles.keymap.enable {
     services.xremap = {
       enable = true;
       config = {

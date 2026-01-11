@@ -6,9 +6,9 @@
   self,
   ...
 }: let
-  cfg = config.myHome.desktop.niri;
+  cfg = config.my.home.desktop.niri;
 in {
-  options.myHome.desktop.niri = {
+  options.my.home.desktop.niri = {
     enable = lib.mkEnableOption "niri desktop environment";
 
     laptopMonitor = lib.mkOption {
@@ -24,7 +24,7 @@ in {
     };
   };
 
-  config = lib.mkIf config.myHome.desktop.niri.enable {
+  config = lib.mkIf config.my.home.desktop.niri.enable {
     home.packages = with pkgs; [
       fuzzel
       mako
@@ -71,6 +71,6 @@ in {
         include optional=true "${config.home.homeDirectory}/${config.xdg.dataFile."niri/config.kdl".target}"
       '';
 
-    myHome.services.dms.enable = true;
+    my.home.services.dms.enable = true;
   };
 }

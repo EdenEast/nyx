@@ -3,9 +3,9 @@
   lib,
   ...
 }: {
-  options.myNixOS.profiles.printing.enable = lib.mkEnableOption "printing support";
+  options.my.nixos.profiles.printing.enable = lib.mkEnableOption "printing support";
 
-  config = lib.mkIf config.myNixOS.profiles.printing.enable {
+  config = lib.mkIf config.my.nixos.profiles.printing.enable {
     programs.system-config-printer.enable = true;
 
     services = {
@@ -13,6 +13,6 @@
       system-config-printer.enable = true;
     };
 
-    myNixOS.services.avahi.enable = true;
+    my.nixos.services.avahi.enable = true;
   };
 }

@@ -3,9 +3,9 @@
   lib,
   ...
 }: {
-  options.myNixOS.profiles.audio.enable = lib.mkEnableOption "audio support";
+  options.my.nixos.profiles.audio.enable = lib.mkEnableOption "audio support";
 
-  config = lib.mkIf config.myNixOS.profiles.audio.enable {
+  config = lib.mkIf config.my.nixos.profiles.audio.enable {
     security.rtkit.enable = true;
 
     services = {

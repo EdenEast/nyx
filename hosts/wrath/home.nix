@@ -9,7 +9,7 @@
         username = "eden";
       };
 
-      myHome = {
+      my.home = {
         base.enable = true;
 
         programs = {

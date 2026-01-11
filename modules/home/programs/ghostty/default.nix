@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myHome.programs.ghostty.enable = lib.mkEnableOption "ghostty terminal emulator";
+  options.my.home.programs.ghostty.enable = lib.mkEnableOption "ghostty terminal emulator";
 
-  config = lib.mkIf config.myHome.programs.ghostty.enable {
+  config = lib.mkIf config.my.home.programs.ghostty.enable {
     programs.ghostty = {
       enable = true;
       package = lib.mkIf pkgs.stdenv.isDarwin pkgs.ghostty-bin;

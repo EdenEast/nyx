@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.myHome.services.gnupg;
+  cfg = config.my.home.services.gnupg;
 
   publicKeyType = types.submodule {
     options = {
@@ -39,7 +39,7 @@ with lib; let
     )
     (listToAttrs (map (x: nameValuePair x.name x) list));
 in {
-  options.myHome.services.gnupg = {
+  options.my.home.services.gnupg = {
     enable = lib.mkEnableOption "gnupg";
 
     publicKeys = mkOption {

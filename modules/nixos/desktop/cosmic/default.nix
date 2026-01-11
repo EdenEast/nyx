@@ -3,17 +3,17 @@
   lib,
   ...
 }: {
-  options.myNixOS.desktop.cosmic.enable = lib.mkEnableOption "COSMIC desktop environment";
+  options.my.nixos.desktop.cosmic.enable = lib.mkEnableOption "COSMIC desktop environment";
 
-  config = lib.mkIf config.myNixOS.desktop.cosmic.enable {
+  config = lib.mkIf config.my.nixos.desktop.cosmic.enable {
     # home-manager.sharedModules = [
     #   {
-    #     config.myHome.desktop.cosmic.enable = true;
+    #     config.my.home.desktop.cosmic.enable = true;
     #   }
     # ];
 
     services.desktopManager.cosmic.enable = true;
     system.nixos.tags = ["cosmic"];
-    myNixOS.desktop.enable = true;
+    my.nixos.desktop.enable = true;
   };
 }

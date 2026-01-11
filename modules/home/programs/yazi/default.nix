@@ -3,9 +3,9 @@
   lib,
   ...
 }: {
-  options.myHome.programs.yazi.enable = lib.mkEnableOption "terminal explorer";
+  options.my.home.programs.yazi.enable = lib.mkEnableOption "terminal explorer";
 
-  config = lib.mkIf config.myHome.programs.yazi.enable {
+  config = lib.mkIf config.my.home.programs.yazi.enable {
     programs.yazi = {
       enable = true;
       enableFishIntegration = true;

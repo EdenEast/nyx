@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myNixOS.profiles.gaming.enable = lib.mkEnableOption "gaming optimizations";
+  options.my.nixos.profiles.gaming.enable = lib.mkEnableOption "gaming optimizations";
 
-  config = lib.mkIf config.myNixOS.profiles.gaming.enable {
+  config = lib.mkIf config.my.nixos.profiles.gaming.enable {
     boot.kernelModules = ["ntsync"];
 
     environment.systemPackages = with pkgs; [
@@ -15,6 +15,6 @@
       (pkgs.writeShellScriptBin "switch-runelite" (builtins.readFile ./switch-runelite))
     ];
 
-    myNixOS.programs.steam.enable = true;
+    my.nixos.programs.steam.enable = true;
   };
 }

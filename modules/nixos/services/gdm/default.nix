@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  options.myNixOS.services.gdm = {
+  options.my.nixos.services.gdm = {
     enable = lib.mkEnableOption "gdm display manager";
 
     autoLogin = lib.mkOption {
@@ -13,7 +13,7 @@
     };
   };
 
-  config = lib.mkIf config.myNixOS.services.gdm.enable {
+  config = lib.mkIf config.my.nixos.services.gdm.enable {
     security.pam.services.gdm = {
       # enableGnomeKeyring = true;
       fprintAuth = false;
@@ -22,9 +22,9 @@
     };
 
     services.displayManager = {
-      autoLogin = lib.mkIf (config.myNixOS.services.gdm.autoLogin != null) {
+      autoLogin = lib.mkIf (config.my.nixos.services.gdm.autoLogin != null) {
         enable = true;
-        user = config.myNixOS.services.gdm.autoLogin;
+        user = config.my.nixos.services.gdm.autoLogin;
       };
 
       gdm.enable = true;

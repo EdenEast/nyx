@@ -7,9 +7,9 @@
 }: {
   imports = self.lib.importsAllNixFiles ./.;
 
-  options.myHome.profiles.development.enable = lib.mkEnableOption "base development";
+  options.my.home.profiles.development.enable = lib.mkEnableOption "base development";
 
-  config = lib.mkIf config.myHome.profiles.development.enable {
+  config = lib.mkIf config.my.home.profiles.development.enable {
     home.packages = with pkgs; [
       # Benchmarking.
       hyperfine

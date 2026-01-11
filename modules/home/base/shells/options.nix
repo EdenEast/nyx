@@ -1,5 +1,5 @@
 {lib, ...}: {
-  options.myHome.base.shells = {
+  options.my.home.base.shells = {
     wsl = lib.mkOption {
       type = lib.types.bool;
       default = false;

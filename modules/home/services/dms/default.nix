@@ -8,11 +8,11 @@
     inputs.dankMaterialShell.homeModules.dankMaterialShell.default
   ];
 
-  options.myHome.services.dms = {
+  options.my.home.services.dms = {
     enable = lib.mkEnableOption "Dank material quick shell";
   };
 
-  config = lib.mkIf config.myHome.services.dms.enable {
+  config = lib.mkIf config.my.home.services.dms.enable {
     programs.dankMaterialShell = {
       enable = true;
 

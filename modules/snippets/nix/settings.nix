@@ -1,6 +1,6 @@
 {lib, ...}: {
   options = {
-    mySnippets.nix.settings = lib.mkOption {
+    my.snippets.nix.settings = lib.mkOption {
       type = lib.types.attrs;
       description = "Default nix settings shared across machines.";
 

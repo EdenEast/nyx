@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myHome.programs.jujutsu.enable = lib.mkEnableOption "jujutsu version control";
+  options.my.home.programs.jujutsu.enable = lib.mkEnableOption "jujutsu version control";
 
-  config = lib.mkIf config.myHome.programs.jujutsu.enable {
+  config = lib.mkIf config.my.home.programs.jujutsu.enable {
     home.packages = with pkgs; [
       jujutsu
       jjui

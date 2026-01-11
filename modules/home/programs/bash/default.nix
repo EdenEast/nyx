@@ -5,7 +5,7 @@
   self,
   ...
 }: {
-  options.myHome.programs.bash = {
+  options.my.home.programs.bash = {
     # FIXME: This option should not be necessary and should be able to use `config.programs.bash.enable` instead however
     # this currently does not work as bash is set as the user's default shell and enabled in the nixos module and the
     # value is not passed or reconized by the home-manager module. Meaning that if it is set in the nixos module it
@@ -17,7 +17,7 @@
     };
   };
 
-  config = lib.mkIf config.myHome.programs.bash.enable (lib.mkMerge [
+  config = lib.mkIf config.my.home.programs.bash.enable (lib.mkMerge [
     {
       programs.bash = {
         enable = true;
@@ -40,7 +40,7 @@
       };
     }
 
-    (lib.mkIf config.myHome.base.shells.wsl {
+    (lib.mkIf config.my.home.base.shells.wsl {
       home.packages = with pkgs; [
         iproute2
         socat

@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myNixOS.profiles.bluetooth.enable = lib.mkEnableOption "bluetooth support";
+  options.my.nixos.profiles.bluetooth.enable = lib.mkEnableOption "bluetooth support";
 
-  config = lib.mkIf config.myNixOS.profiles.bluetooth.enable {
+  config = lib.mkIf config.my.nixos.profiles.bluetooth.enable {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;

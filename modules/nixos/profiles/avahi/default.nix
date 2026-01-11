@@ -3,9 +3,9 @@
   lib,
   ...
 }: {
-  options.myNixOS.services.avahi.enable = lib.mkEnableOption "avahi networking";
+  options.my.nixos.services.avahi.enable = lib.mkEnableOption "avahi networking";
 
-  config = lib.mkIf config.myNixOS.services.avahi.enable {
+  config = lib.mkIf config.my.nixos.services.avahi.enable {
     services.avahi = {
       enable = true;
       nssmdns4 = true;

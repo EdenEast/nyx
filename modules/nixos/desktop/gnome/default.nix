@@ -4,18 +4,18 @@
   pkgs,
   ...
 }: {
-  options.myNixOS.desktop.gnome.enable = lib.mkEnableOption "GNOME desktop environment";
+  options.my.nixos.desktop.gnome.enable = lib.mkEnableOption "GNOME desktop environment";
 
-  config = lib.mkIf config.myNixOS.desktop.gnome.enable {
+  config = lib.mkIf config.my.nixos.desktop.gnome.enable {
     # home-manager.sharedModules = [
     #   {
-    #     config.myHome.desktop.gnome.enable = true;
+    #     config.my.home.desktop.gnome.enable = true;
     #   }
     # ];
 
     services.desktopManager.gnome.enable = true;
     system.nixos.tags = ["gnome"];
-    myNixOS = {
+    my.nixos = {
       desktop.enable = true;
       services.yubikey.pinentry = pkgs.pinentry-gnome3;
     };

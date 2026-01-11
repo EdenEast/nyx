@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: {
-  options.myHome.profiles.development.python = {
+  options.my.home.profiles.development.python = {
     enable = lib.mkEnableOption "rust development";
 
     extraPackages = lib.mkOption {
@@ -21,7 +21,7 @@
     };
   };
 
-  config = lib.mkIf config.myHome.profiles.development.python.enable {
+  config = lib.mkIf config.my.home.profiles.development.python.enable {
     home.packages = with pkgs;
       [
         python313
@@ -29,6 +29,6 @@
       ]
       ++ cfg.extraPackages;
 
-    myHome.profiles.development.enable = true;
+    my.home.profiles.development.enable = true;
   };
 }
