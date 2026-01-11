@@ -1,5 +1,31 @@
 {
   "nodes": {
+    "actions-nix": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "git-hooks": [
+          "git-hooks-nix"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767301609,
+        "narHash": "sha256-cpNJM/giuMngZtZb2GaSaUusY5dNkWg0D9LQbC/Ma7Q=",
+        "owner": "nialov",
+        "repo": "actions.nix",
+        "rev": "06ca0ab39bd0b2e467e35d5bab3a72311374be5c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nialov",
+        "repo": "actions.nix",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1766194365,
@@ -765,6 +791,7 @@
     },
     "root": {
       "inputs": {
+        "actions-nix": "actions-nix",
         "dankMaterialShell": "dankMaterialShell",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
