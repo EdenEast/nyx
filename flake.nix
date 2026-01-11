@@ -30,6 +30,15 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    actions-nix = {
+      url = "github:nialov/actions.nix";
+
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        git-hooks.follows = "git-hooks-nix";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs = {
