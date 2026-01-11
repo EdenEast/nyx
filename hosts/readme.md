@@ -39,11 +39,11 @@ As there is no current example of a standalone home-manager host configuration h
   home.stateVersion = "25.11";
 
   nix = {
-    inherit (config.mySnippets.nix) settings;
+    inherit (config.my.snippets.nix) settings;
     package = pkgs.nix;
   };
 
-  myHome = {
+  my.home = {
     base.enable = true;
   };
 }

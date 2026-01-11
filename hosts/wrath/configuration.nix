@@ -13,36 +13,38 @@
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  myNixOS = {
-    base.enable = true;
+  my = {
+    nixos = {
+      base.enable = true;
 
-    desktop = {
-      laptop = true;
-      cosmic.enable = true;
-      niri = {
-        enable = true;
-        laptopMonitor = ''
-          output "eDP-1" {
-            scale 1.25
-          }
-        '';
+      desktop = {
+        laptop = true;
+        cosmic.enable = true;
+        niri = {
+          enable = true;
+          laptopMonitor = ''
+            output "eDP-1" {
+              scale 1.25
+            }
+          '';
+        };
+      };
+
+      profiles = {
+        audio.enable = true;
+        printing.enable = true;
+        gaming.enable = true;
+      };
+
+      services = {
+        cosmic-greeter.enable = true;
+        yubikey.enable = true;
       };
     };
 
-    profiles = {
-      audio.enable = true;
-      printing.enable = true;
-      gaming.enable = true;
+    users.eden = {
+      password = "$6$nF.UDyrpHmh6M$yKCw56auQ7Dm1FfvmQg6y3Y59mWsoiHJyAYhqF9e8nKjfeKwUoFocwHhogKUTq.A3hVe9S.smv7u1NLV/yPTd0";
+      enable = true;
     };
-
-    services = {
-      cosmic-greeter.enable = true;
-      yubikey.enable = true;
-    };
-  };
-
-  myUsers.eden = {
-    password = "$6$nF.UDyrpHmh6M$yKCw56auQ7Dm1FfvmQg6y3Y59mWsoiHJyAYhqF9e8nKjfeKwUoFocwHhogKUTq.A3hVe9S.smv7u1NLV/yPTd0";
-    enable = true;
   };
 }

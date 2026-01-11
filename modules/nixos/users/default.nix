@@ -11,7 +11,7 @@
     ]
     ++ self.lib.importsAllNixFiles ./users;
 
-  config = lib.mkIf (config.myUsers.root.enable or config.myUsers.eden.enable) {
+  config = lib.mkIf (config.my.users.root.enable or config.my.users.eden.enable) {
     programs.fish.enable = true;
 
     users = {

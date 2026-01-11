@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myHome.programs.obsidian.enable = lib.mkEnableOption "note taking";
+  options.my.home.programs.obsidian.enable = lib.mkEnableOption "note taking";
 
-  config = lib.mkIf config.myHome.programs.obsidian.enable {
+  config = lib.mkIf config.my.home.programs.obsidian.enable {
     home.packages = with pkgs; [
       obsidian
     ];

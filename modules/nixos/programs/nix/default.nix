@@ -3,9 +3,9 @@
   lib,
   ...
 }: {
-  options.myNixOS.programs.nix.enable = lib.mkEnableOption "sane nix configuration";
+  options.my.nixos.programs.nix.enable = lib.mkEnableOption "sane nix configuration";
 
-  config = lib.mkIf config.myNixOS.programs.nix.enable {
+  config = lib.mkIf config.my.nixos.programs.nix.enable {
     nix = {
       channel.enable = false;
       distributedBuilds = true;
@@ -31,7 +31,7 @@
         randomizedDelaySec = "60min";
       };
 
-      inherit (config.mySnippets.nix) settings;
+      inherit (config.my.snippets.nix) settings;
     };
 
     programs.nix-ld.enable = true;

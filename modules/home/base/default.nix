@@ -10,11 +10,11 @@
     inputs.nix-index-database.homeModules.nix-index
   ];
 
-  options.myHome.base = {
+  options.my.home.base = {
     enable = lib.mkEnableOption "base system configuration";
   };
 
-  config = lib.mkIf config.myHome.base.enable {
+  config = lib.mkIf config.my.home.base.enable {
     home = {
       packages = with pkgs; [
         # Collection of useful tools that aren't coreutils.
@@ -77,7 +77,7 @@
       };
     };
 
-    myHome.programs = {
+    my.home.programs = {
       ghostty.enable = lib.mkDefault true;
       git.enable = lib.mkDefault true;
       fzf.enable = lib.mkDefault true;

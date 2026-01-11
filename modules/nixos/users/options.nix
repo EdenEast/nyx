@@ -3,7 +3,7 @@
   self,
   ...
 }: {
-  options.myUsers = let
+  options.my.users = let
     mkUser = user: {
       enable = lib.mkEnableOption "${user}.";
 

@@ -7,7 +7,7 @@
 }: {
   imports = self.lib.importsAllNixFiles ./.;
 
-  options.myNixOS.desktop = {
+  options.my.nixos.desktop = {
     enable = lib.mkEnableOption "minimal graphical desktop configuration";
 
     laptop = lib.mkOption {
@@ -17,7 +17,7 @@
     };
   };
 
-  config = lib.mkIf config.myNixOS.desktop.enable {
+  config = lib.mkIf config.my.nixos.desktop.enable {
     environment = {
       sessionVariables.NIXOS_OZONE_WL = "1";
       systemPackages = with pkgs; [
@@ -28,7 +28,7 @@
 
     # home-manager.sharedModules = [
     #   {
-    #     config.myHome.desktop.enable = true;
+    #     config.my.home.desktop.enable = true;
     #   }
     # ];
 
@@ -48,7 +48,7 @@
       gvfs.enable = true; # Mount, trash, etc.
       libinput = {
         enable = true;
-        touchpad = lib.optionalAttrs config.myNixOS.desktop.laptop {
+        touchpad = lib.optionalAttrs config.my.nixos.desktop.laptop {
           tapping = true;
           naturalScrolling = true;
           disableWhileTyping = true; # if palm rejection is failing
@@ -56,6 +56,6 @@
       };
     };
 
-    myNixOS.services.yubikey.pinentry = lib.mkDefault pkgs.pinentry-qt;
+    my.nixos.services.yubikey.pinentry = lib.mkDefault pkgs.pinentry-qt;
   };
 }

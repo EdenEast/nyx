@@ -5,9 +5,9 @@
   ...
 }: let
   inherit (config.programs.gnupg) package;
-  cfg = config.myNixOS.services.yubikey;
+  cfg = config.my.nixos.services.yubikey;
 in {
-  options.myNixOS.services.yubikey = {
+  options.my.nixos.services.yubikey = {
     enable = lib.mkEnableOption "gdm display manager";
     pinentry = lib.mkOption {
       type = lib.types.nullOr lib.types.package;
@@ -15,7 +15,7 @@ in {
     };
   };
 
-  config = lib.mkIf config.myNixOS.services.yubikey.enable {
+  config = lib.mkIf config.my.nixos.services.yubikey.enable {
     programs.gnupg.agent = {
       enable = true;
       enableSSHSupport = true;

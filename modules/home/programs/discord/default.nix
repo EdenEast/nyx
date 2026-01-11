@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myHome.programs.discord.enable = lib.mkEnableOption "discord app";
+  options.my.home.programs.discord.enable = lib.mkEnableOption "discord app";
 
-  config = lib.mkIf config.myHome.programs.discord.enable {
+  config = lib.mkIf config.my.home.programs.discord.enable {
     home.packages = with pkgs; [
       discord
     ];

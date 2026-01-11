@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: {
-  options.myNixOS.desktop.niri = {
+  options.my.nixos.desktop.niri = {
     enable = lib.mkEnableOption "niri desktop environment";
 
     laptopMonitor = lib.mkOption {
@@ -21,13 +21,13 @@
     };
   };
 
-  config = lib.mkIf config.myNixOS.desktop.niri.enable {
+  config = lib.mkIf config.my.nixos.desktop.niri.enable {
     home-manager.sharedModules = [
       {
-        myHome.desktop.niri = {
+        my.home.desktop.niri = {
           enable = true;
-          inherit (config.myNixOS.desktop.niri) laptopMonitor;
-          inherit (config.myNixOS.desktop.niri) monitors;
+          inherit (config.my.nixos.desktop.niri) laptopMonitor;
+          inherit (config.my.nixos.desktop.niri) monitors;
         };
       }
     ];
@@ -42,6 +42,6 @@
     };
 
     system.nixos.tags = ["niri"];
-    myNixOS.desktop.enable = true;
+    my.nixos.desktop.enable = true;
   };
 }

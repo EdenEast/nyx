@@ -5,11 +5,11 @@
   self,
   ...
 }: {
-  options.myNixOS.base = {
+  options.my.nixos.base = {
     enable = lib.mkEnableOption "base system configuration";
   };
 
-  config = lib.mkIf config.myNixOS.base.enable {
+  config = lib.mkIf config.my.nixos.base.enable {
     boot = {
       # Clean temporary directory on boot.
       tmp.cleanOnBoot = true;
@@ -34,8 +34,8 @@
       };
 
       variables = {
-        inherit (config.myNixOS) FLAKE;
-        NH_FLAKE = config.myNixOS.FLAKE;
+        inherit (config.my.nixos) FLAKE;
+        NH_FLAKE = config.my.nixos.FLAKE;
       };
     };
 
@@ -79,7 +79,7 @@
 
     system.configurationRevision = self.rev or self.dirtyRev or null;
 
-    myNixOS = {
+    my.nixos = {
       profiles = {
         bluetooth.enable = lib.mkDefault true;
         keymap.enable = lib.mkDefault true;

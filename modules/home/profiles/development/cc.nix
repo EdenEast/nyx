@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myHome.profiles.development.cc.enable = lib.mkEnableOption "rust development";
+  options.my.home.profiles.development.cc.enable = lib.mkEnableOption "rust development";
 
-  config = lib.mkIf config.myHome.profiles.development.cc.enable {
+  config = lib.mkIf config.my.home.profiles.development.cc.enable {
     home = {
       packages = with pkgs; [
         # clang compiler
@@ -32,6 +32,6 @@
       ];
     };
 
-    myHome.profiles.development.enable = true;
+    my.home.profiles.development.enable = true;
   };
 }

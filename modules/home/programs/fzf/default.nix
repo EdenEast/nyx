@@ -3,9 +3,9 @@
   lib,
   ...
 }: {
-  options.myHome.programs.fzf.enable = lib.mkEnableOption "shell prompt";
+  options.my.home.programs.fzf.enable = lib.mkEnableOption "shell prompt";
 
-  config = lib.mkIf config.myHome.programs.fzf.enable {
+  config = lib.mkIf config.my.home.programs.fzf.enable {
     programs.fzf = {
       enable = true;
       changeDirWidgetCommand = "fd --type d --hidden --follow --exclude .git";

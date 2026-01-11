@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.myHome.programs.starship.enable = lib.mkEnableOption "shell prompt";
+  options.my.home.programs.starship.enable = lib.mkEnableOption "shell prompt";
 
-  config = lib.mkIf config.myHome.programs.starship.enable {
+  config = lib.mkIf config.my.home.programs.starship.enable {
     programs.starship = {
       enable = true;
       configPath = "${config.xdg.configHome}/starship/starship.toml";

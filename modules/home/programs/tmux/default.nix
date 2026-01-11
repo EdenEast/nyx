@@ -5,9 +5,9 @@
   self,
   ...
 }: {
-  options.myHome.programs.tmux.enable = lib.mkEnableOption "tmux";
+  options.my.home.programs.tmux.enable = lib.mkEnableOption "tmux";
 
-  config = lib.mkIf config.myHome.programs.tmux.enable {
+  config = lib.mkIf config.my.home.programs.tmux.enable {
     programs.tmux = {
       enable = true;
       aggressiveResize = true;

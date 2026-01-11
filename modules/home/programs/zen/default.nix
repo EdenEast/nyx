@@ -8,9 +8,9 @@
     inputs.zen-browser.homeModules.beta
   ];
 
-  options.myHome.programs.zen.enable = lib.mkEnableOption "zen web browser";
+  options.my.home.programs.zen.enable = lib.mkEnableOption "zen web browser";
 
-  config = lib.mkIf config.myHome.programs.zen.enable {
+  config = lib.mkIf config.my.home.programs.zen.enable {
     programs.zen-browser.enable = true;
   };
 }

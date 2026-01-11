@@ -3,9 +3,9 @@
   lib,
   ...
 }: {
-  options.myNixOS.services.cosmic-greeter.enable = lib.mkEnableOption "cosmic greeter display manager";
+  options.my.nixos.services.cosmic-greeter.enable = lib.mkEnableOption "cosmic greeter display manager";
 
-  config = lib.mkIf config.myNixOS.services.cosmic-greeter.enable {
+  config = lib.mkIf config.my.nixos.services.cosmic-greeter.enable {
     security.pam.services = {
       cosmic-greeter = {
         # enableGnomeKeyring = true;

@@ -7,7 +7,7 @@
 }: let
   inherit (lib) mkOption types;
 
-  cfg = config.myHome.programs.git;
+  cfg = config.my.home.programs.git;
 
   gitIniType = with types; let
     primitiveType = nullOr (either str (either bool int));
@@ -27,7 +27,7 @@
     fi
   '';
 in {
-  options.myHome.programs.git = {
+  options.my.home.programs.git = {
     enable = lib.mkEnableOption "git version control";
 
     name = mkOption {
@@ -60,7 +60,7 @@ in {
     };
   };
 
-  config = lib.mkIf config.myHome.programs.git.enable {
+  config = lib.mkIf config.my.home.programs.git.enable {
     home = {
       packages = with pkgs; [
         git-open
@@ -95,7 +95,7 @@ in {
 
     xdg.dataFile."git/nyx-gen".text = lib.generators.toGitINI (self.lib.pruneAttrs cfg.iniContent);
 
-    myHome.programs.git.iniContent =
+    my.home.programs.git.iniContent =
       {
         user = {
           inherit (cfg) email name;
