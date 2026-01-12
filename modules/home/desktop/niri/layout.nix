@@ -8,7 +8,10 @@ _:
 
     touchpad {
       tap
+      dwt
       natural-scroll
+      tap-button-map "left-right-middle"
+      click-method "clickfinger"
     }
 
     focus-follows-mouse
