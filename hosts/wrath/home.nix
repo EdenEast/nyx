@@ -16,11 +16,14 @@
           fish.enable = true;
           nushell.enable = true;
           zsh.enable = true;
+
           git = {
             name = "EdenEast";
             email = "edenofest@gmail.com";
             key = "5A038CEFD458DB47A6135B3F8316DECECB1A3F10";
           };
+
+          spotify.enable = true;
           obsidian.enable = true;
           zen.enable = true;
         };
