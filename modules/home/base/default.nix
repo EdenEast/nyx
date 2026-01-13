@@ -78,7 +78,6 @@
     };
 
     my.home.programs = {
-      ghostty.enable = lib.mkDefault true;
       git.enable = lib.mkDefault true;
       fzf.enable = lib.mkDefault true;
       jujutsu.enable = lib.mkDefault true;
@@ -86,7 +85,6 @@
       starship.enable = lib.mkDefault true;
       tmux.enable = lib.mkDefault true;
       yazi.enable = lib.mkDefault true;
-      zen.enable = lib.mkDefault true;
       zoxide.enable = lib.mkDefault true;
     };
   };

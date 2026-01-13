@@ -71,6 +71,7 @@ in {
         include optional=true "${config.home.homeDirectory}/${config.xdg.dataFile."niri/config.kdl".target}"
       '';
 
+    my.home.desktop.enable = true;
     my.home.services.dms.enable = true;
   };
 }
