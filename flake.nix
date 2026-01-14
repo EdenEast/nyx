@@ -9,6 +9,13 @@
 
     # Environment/system management
     nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixos-wsl = {
+      url = "github:nix-community/nixos-wsl";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+      };
+    };
     nix-darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";

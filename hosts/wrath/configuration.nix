@@ -32,8 +32,10 @@
 
       profiles = {
         audio.enable = true;
-        printing.enable = true;
+        bluetooth.enable = true;
         gaming.enable = true;
+        keymap.enable = true;
+        printing.enable = true;
       };
 
       services = {
