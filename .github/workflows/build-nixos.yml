@@ -7,6 +7,24 @@ concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
 jobs:
+  build-rize:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 1
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@main
+    - name: Cachix
+      uses: cachix/cachix-action@master
+      with:
+        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        name: edeneast
+    - name: Build rize
+      run: nix build --accept-flake-config --print-out-paths --show-trace .#nixosConfigurations.rize.config.system.build.toplevel
   build-wrath:
     runs-on: ubuntu-latest
     steps:
