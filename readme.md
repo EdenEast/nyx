@@ -1,6 +1,5 @@
 # Nyx
 
-[![Build](https://github.com/EdenEast/nyx/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/EdenEast/nyx/actions/workflows/build.yml)
 [![NixOS 25.11](https://img.shields.io/badge/NixOS-v25.11-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
 [![Licence](https://img.shields.io/badge/license-Unlicense-blue)](https://github.com/EdenEast/nyx/blob/main/LICENSE)
 

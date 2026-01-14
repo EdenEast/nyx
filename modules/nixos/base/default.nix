@@ -26,16 +26,14 @@
         libnotify
         lm_sensors
         vim
-        neovim
       ];
-
-      sessionVariables = {
-        EDITOR = "nvim";
-      };
 
       variables = {
         inherit (config.my.nixos) FLAKE;
         NH_FLAKE = config.my.nixos.FLAKE;
+
+        EDITOR = "vim";
+        VISUAL = "vim";
       };
     };
 
@@ -80,11 +78,6 @@
     system.configurationRevision = self.rev or self.dirtyRev or null;
 
     my.nixos = {
-      profiles = {
-        bluetooth.enable = lib.mkDefault true;
-        keymap.enable = lib.mkDefault true;
-      };
-
       programs = {
         nix.enable = lib.mkDefault true;
         uutils.enable = lib.mkDefault true;

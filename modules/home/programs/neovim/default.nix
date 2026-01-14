@@ -21,15 +21,19 @@
   };
 
   config = lib.mkIf config.my.home.programs.neovim.enable {
-    # home.packages = [
-    #   config.my.home.programs.neovim.package
-    # ];
-    home.packages = let
-      nvim-packages = inputs.nvim-config.packages.${pkgs.stdenv.hostPlatform.system};
-      package =
-        if config.my.home.programs.neovim.useNightly
-        then nvim-packages.nightly
-        else nvim-packages.stable;
-    in [package];
+    home = {
+      packages = let
+        nvim-packages = inputs.nvim-config.packages.${pkgs.stdenv.hostPlatform.system};
+        package =
+          if config.my.home.programs.neovim.useNightly
+          then nvim-packages.nightly
+          else nvim-packages.stable;
+      in [package];
+
+      sessionVariables = {
+        EDITOR = "nvim";
+        VISUAL = "nvim";
+      };
+    };
   };
 }
