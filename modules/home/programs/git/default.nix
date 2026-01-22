@@ -20,11 +20,34 @@
   git-wt = pkgs.writeShellScriptBin "git-wt" (builtins.readFile ./git-wt);
 
   git-wrapper = pkgs.writeShellScriptBin "git" ''
-    if [ $# -eq 0 ]; then
-      ${lib.getExe pkgs.git} status -s
-    else
+    function main() {
+
+      if [ $# -eq 0 ]; then
+        ${lib.getExe pkgs.git} status -s
+        return
+      fi
+
+    ${
+      if cfg.wsl
+      then
+        # bash
+        ''
+          # List of commands to check
+          local wsl_commands=("clone" "commit" "fetch" "push" "pull" "remote")
+          for cmd in ${"\${wsl_commands[@]}"}; do
+            if [ "$1" = "$cmd" ]; then
+              git.exe "$@"
+              return
+            fi
+          done
+        ''
+      else ""
+    }
+
       ${lib.getExe pkgs.git} "$@"
-    fi
+    }
+
+    main "$@"
   '';
 in {
   options.my.home.programs.git = {
@@ -40,6 +63,12 @@ in {
       type = types.nullOr types.str;
       default = null;
       description = "Default user email to use.";
+    };
+
+    wsl = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Update wrapper script with wsl support";
     };
 
     key = mkOption {

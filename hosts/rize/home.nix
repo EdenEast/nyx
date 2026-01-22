@@ -21,17 +21,7 @@
             name = "EdenEast";
             email = "edenofest@gmail.com";
             key = "5A038CEFD458DB47A6135B3F8316DECECB1A3F10";
-          };
-        };
-
-        services = {
-          gnupg = {
-            enable = true;
-            publicKeys = [
-              {
-                key = self.configDir + "/.gnupg/public.key";
-              }
-            ];
+            wsl = true;
           };
         };
       };
