@@ -32,6 +32,7 @@ in {
 
     # Ensure that we dont enable network manager because we are on wsl
     networking.networkmanager.enable = lib.mkForce false;
+    hardware.graphics.enable = lib.mkForce false;
 
     my.nixos.programs.nix.enable = true;
   };
