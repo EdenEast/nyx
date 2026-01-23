@@ -24,7 +24,7 @@ _: {
         runs-on = "ubuntu-latest";
         steps = [
           {
-            uses = "actions/checkout@v5";
+            uses = "actions/checkout@v6";
             "with" = {fetch-depth = 1;};
           }
           {uses = "DeterminateSystems/nix-installer-action@main";}
