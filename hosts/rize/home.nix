@@ -17,6 +17,8 @@
           nushell.enable = true;
           zsh.enable = true;
 
+          neovim.useNightly = true;
+
           git = {
             name = "EdenEast";
             email = "edenofest@gmail.com";
@@ -24,6 +26,8 @@
             wsl = true;
           };
         };
+
+        profiles.development.rust.enable = true;
       };
     };
   };

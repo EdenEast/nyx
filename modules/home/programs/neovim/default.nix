@@ -13,11 +13,6 @@
       type = with lib.types; bool;
       default = false;
     };
-
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = inputs.nvim-config.packages.${pkgs.stdenv.hostPlatform.system}.nightly;
-    };
   };
 
   config = lib.mkIf config.my.home.programs.neovim.enable {
