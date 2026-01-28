@@ -99,6 +99,10 @@ in {
       ];
 
       sessionPath = ["${config.xdg.configHome}/git/bin"];
+
+      shellAliases = {
+        gg = lib.mkIf cfg.wsl "git.exe";
+      };
     };
 
     programs = {
