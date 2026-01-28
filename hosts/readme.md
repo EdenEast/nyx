@@ -20,7 +20,8 @@ The `hosts/` directory is organized as follows:
 <!-- eza --tree --level 1 --only-dirs ./hosts -->
 ```plaintext
 hosts
-└── wrath   # Framework 13
+├── rize   # nixos-wsl2
+└── wrath  # Framework 13
 ```
 
 ---
