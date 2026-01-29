@@ -82,6 +82,7 @@
       fzf.enable = lib.mkDefault true;
       jujutsu.enable = lib.mkDefault true;
       neovim.enable = lib.mkDefault true;
+      sesh.enable = lib.mkDefault true;
       starship.enable = lib.mkDefault true;
       tmux.enable = lib.mkDefault true;
       yazi.enable = lib.mkDefault true;
