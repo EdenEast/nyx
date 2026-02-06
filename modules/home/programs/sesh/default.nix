@@ -5,7 +5,24 @@
   ...
 }: let
   cfg = config.my.home.programs.sesh;
-  commonAlias = "${cfg.package} connect $(${cfg.package} list -id | ${pkgs.gum} filter --limit 1 --no-sort --fuzzy --placeholder 'Pick a sesh' --height 40 --prompt='⚡')";
+
+  commonInitFunction =
+    # sh
+    ''
+      function s() {
+        local value=""
+        if [ $# -gt 0 ]; then
+          value="--value \"$@\""
+        fi
+
+        local selected=$(${lib.getExe cfg.package} list -id | ${lib.getExe pkgs.gum} filter --limit 1 \
+          --no-sort --fuzzy $value --placeholder "Pick a sesh"  --select-if-one --height 40 --prompt="⚡")
+
+        if [ -n "$selected" ]; then
+          ${lib.getExe cfg.package} connect "$selected"
+        fi
+      }
+    '';
 in {
   options.my.home.programs.sesh = {
     enable = lib.mkEnableOption "tmux session manager";
@@ -20,9 +37,22 @@ in {
         enableTmuxIntegration = false;
       };
 
-      bash.shellAliases.s = commonAlias;
-      zsh.shellAliases.s = commonAlias;
-      fish.shellAliases.s = ''${lib.getExe cfg.package} connect (${lib.getExe cfg.package} list -id | ${lib.getExe pkgs.gum} filter --limit 1 --fuzzy --no-sort --placeholder "Pick a sesh" --height 40 --prompt="⚡")'';
+      bash.initExtra = commonInitFunction;
+      zsh.initContent = commonInitFunction;
+      fish.functions.s =
+        # fish
+        ''
+          if test (count $argv) -gt 0
+            set value "--value \"$argv\""
+          end
+
+          set selected (${lib.getExe cfg.package} list -id |  ${lib.getExe pkgs.gum} filter --limit 1 \
+            --no-sort --fuzzy $value --placeholder "Pick a sesh" --select-if-one --height 40 --prompt="⚡")
+
+          if test -n "$selected"
+            ${lib.getExe cfg.package} connect $selected
+          end
+        '';
     };
   };
 }
