@@ -4,7 +4,7 @@
   self,
   ...
 }: {
-  imports = self.lib.importsAllNixFiles ./.;
+  imports = self.lib.fs.scanPaths ./.;
 
   options.my.home.desktop.enable = lib.mkEnableOption "Base desktop";
 

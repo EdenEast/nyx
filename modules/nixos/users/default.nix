@@ -9,7 +9,7 @@
     [
       ./options.nix
     ]
-    ++ self.lib.importsAllNixFiles ./users;
+    ++ self.lib.fs.scanPaths ./users;
 
   config = lib.mkIf (config.my.users.root.enable or config.my.users.eden.enable) {
     programs.fish.enable = true;

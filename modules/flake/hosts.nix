@@ -5,66 +5,30 @@
   lib,
   ...
 }: let
-  inherit (self.lib) importDir;
+  hosts = let
+    loadDefaultFn = {} @ inputs:
+      inputs;
+    loadDefault = hostname: path: loadDefaultFn (import path {inherit self inputs hostname;});
 
-  hosts = importDir ../../hosts (
-    entries: let
-      loadDefaultFn = {} @ inputs:
-        inputs;
-      loadDefault = hostname: path: loadDefaultFn (import path {inherit self inputs hostname;});
-
-      # Allows `pkgs.stable.<package>`
-      stable-overlay = _final: prev: {
-        stable = import inputs.nixpkgs-stable {
-          inherit (prev.stdenv.hostPlatform) system;
-          config.allowUnfree = true;
-          overlays = [self.overlays.default];
-        };
+    # Allows `pkgs.stable.<package>`
+    stable-overlay = _final: prev: {
+      stable = import inputs.nixpkgs-stable {
+        inherit (prev.stdenv.hostPlatform) system;
+        config.allowUnfree = true;
+        overlays = [self.overlays.default];
       };
+    };
 
-      loadNixOS = hostname: path: {
-        class = "nixos";
-        value = inputs.nixpkgs.lib.nixosSystem {
-          modules =
-            [
-              path
-              inputs.home-manager.nixosModules.home-manager
-              inputs.nixos-wsl.nixosModules.default
-              inputs.nix-index-database.nixosModules.nix-index
-
-              {
-                nixpkgs = {
-                  overlays = [
-                    self.overlays.default
-                    stable-overlay
-                  ];
-
-                  config.allowUnfree = true;
-                };
-
-                home-manager = {
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  backupFileExtension = "backup";
-                  extraSpecialArgs = {
-                    inherit self inputs hostname;
-                  };
-                };
-              }
-            ]
-            ++ builtins.attrValues self.nixosModules;
-          specialArgs = {
-            inherit inputs self hostname;
-          };
-        };
-      };
-
-      loadNixDarwin = hostname: path: {
-        class = "nix-darwin";
-        value = inputs.nix-darwin.lib.darwinSystem {
-          modules = [
+    loadNixOS = hostname: path: {
+      class = "nixos";
+      value = inputs.nixpkgs.lib.nixosSystem {
+        modules =
+          [
             path
-            inputs.home-manager.darwinModules.home-manager
+            inputs.home-manager.nixosModules.home-manager
+            inputs.nixos-wsl.nixosModules.default
+            inputs.nix-index-database.nixosModules.nix-index
+
             {
               nixpkgs = {
                 overlays = [
@@ -84,62 +48,94 @@
                 };
               };
             }
-          ];
-          specialArgs = {
-            inherit inputs self hostname;
-          };
+          ]
+          ++ builtins.attrValues self.nixosModules;
+        specialArgs = {
+          inherit inputs self hostname;
         };
       };
+    };
 
-      loadHome = username: path: {
-        class = "home-manager";
-        value = let
-          system = import ((builtins.dirOf path) + "/system.nix");
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = [
-              self.overlays.default
-              stable-overlay
-            ];
+    loadNixDarwin = hostname: path: {
+      class = "nix-darwin";
+      value = inputs.nix-darwin.lib.darwinSystem {
+        modules = [
+          path
+          inputs.home-manager.darwinModules.home-manager
+          {
+            nixpkgs = {
+              overlays = [
+                self.overlays.default
+                stable-overlay
+              ];
 
-            config.allowUnfree = true;
-          };
-          homeDirectory =
-            if pkgs.stdenv.isDarwin
-            then "/Users/${username}"
-            else "/home/${username}";
-        in
-          inputs.home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            modules = [
-              path
-              {
-                imports = builtins.attrValues self.homeModules;
-                home = {inherit username homeDirectory;};
-              }
-            ];
-
-            extraSpecialArgs = {
-              inherit inputs self username;
+              config.allowUnfree = true;
             };
-          };
+
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              extraSpecialArgs = {
+                inherit self inputs hostname;
+              };
+            };
+          }
+        ];
+        specialArgs = {
+          inherit inputs self hostname;
+        };
       };
+    };
 
-      loadHost = name: value:
-        if builtins.pathExists (value.path + "/default.nix")
-        then loadDefault name (value.path + "/default.nix")
-        else if builtins.pathExists (value.path + "/configuration.nix")
-        then loadNixOS name (value.path + "/configuration.nix")
-        else if builtins.pathExists (value.path + "/darwin-configuration.nix")
-        then loadNixDarwin name (value.path + "/darwin-configuration.nix")
-        else if builtins.pathExists (value.path + "/home-configuration.nix")
-        then loadHome name (value.path + "/home-configuration.nix")
-        else throw "host '${name}' does not have a configuration";
+    loadHome = username: path: {
+      class = "home-manager";
+      value = let
+        system = import ((builtins.dirOf path) + "/system.nix");
+        pkgs = import inputs.nixpkgs {
+          inherit system;
+          overlays = [
+            self.overlays.default
+            stable-overlay
+          ];
 
-      hostsOrNull = lib.mapAttrs loadHost entries;
-    in
-      lib.filterAttrs (_n: v: v != null) hostsOrNull
-  );
+          config.allowUnfree = true;
+        };
+        homeDirectory =
+          if pkgs.stdenv.isDarwin
+          then "/Users/${username}"
+          else "/home/${username}";
+      in
+        inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            path
+            {
+              imports = builtins.attrValues self.homeModules;
+              home = {inherit username homeDirectory;};
+            }
+          ];
+
+          extraSpecialArgs = {
+            inherit inputs self username;
+          };
+        };
+    };
+
+    loadHost = name: value:
+      if builtins.pathExists (value + "/default.nix")
+      then loadDefault name (value + "/default.nix")
+      else if builtins.pathExists (value + "/configuration.nix")
+      then loadNixOS name (value + "/configuration.nix")
+      else if builtins.pathExists (value + "/darwin-configuration.nix")
+      then loadNixDarwin name (value + "/darwin-configuration.nix")
+      else if builtins.pathExis (value + "/home-configuration.nix")
+      then loadHome name (value + "/home-configuration.nix")
+      else throw "host '${name}' does not have a configuration";
+
+    hostsOrNull = lib.mapAttrs loadHost (self.lib.fs.scanAttrs ../../hosts);
+  in
+    lib.filterAttrs (_n: v: v != null) hostsOrNull;
 
   hostsByCategory = lib.mapAttrs (_: hosts: lib.listToAttrs hosts) (
     builtins.groupBy (
