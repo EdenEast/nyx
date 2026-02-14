@@ -5,7 +5,7 @@
   self,
   ...
 }: {
-  imports = self.lib.importsAllNixFiles ./.;
+  imports = self.lib.fs.scanPaths ./.;
 
   options.my.home.profiles.development.enable = lib.mkEnableOption "base development";
 

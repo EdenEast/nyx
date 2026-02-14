@@ -5,7 +5,7 @@
   self,
   ...
 }: {
-  imports = self.lib.importsAllNixFiles ./.;
+  imports = self.lib.fs.scanPaths ./.;
 
   options.my.nixos.desktop = {
     enable = lib.mkEnableOption "minimal graphical desktop configuration";

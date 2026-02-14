@@ -34,5 +34,5 @@
 
       root.enable = lib.mkEnableOption "root user configuration." // {default = true;};
     }
-    // self.lib.mapDir ./users (name: _: mkUser name);
+    // self.lib.fs.importMapAttrs ./users {} (name: _: mkUser name);
 }

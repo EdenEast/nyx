@@ -36,12 +36,7 @@ in {
     xdg.dataFile."niri/config.kdl".enable = false;
     xdg.configFile."niri/config.kdl".text = let
       content =
-        (self.lib.importDir ./. (entries:
-          lib.pipe entries [
-            (lib.filterAttrs (name: _: name != "default"))
-            (lib.mapAttrs (_: value: import value.path {}))
-            builtins.attrValues
-          ]))
+        builtins.attrValues (self.lib.fs.importAttrs ./. {})
         ++ cfg.monitors
         ++ lib.lists.optional (cfg.laptopMonitor != null) cfg.laptopMonitor;
     in

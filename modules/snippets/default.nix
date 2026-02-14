@@ -1,3 +1,3 @@
 {self, ...}: {
-  imports = self.lib.importsAllNixFiles ./.;
+  imports = self.lib.fs.scanPaths ./.;
 }

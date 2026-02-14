@@ -3,7 +3,7 @@
   self,
   ...
 }: {
-  imports = self.lib.importsAllNixFiles ./.;
+  imports = self.lib.fs.scanPaths ./.;
 
   options.my.nixos.FLAKE = lib.mkOption {
     type = lib.types.str;
