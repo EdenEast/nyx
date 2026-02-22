@@ -50,6 +50,10 @@
         flake-compat.follows = "flake-compat";
       };
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Precompiled nix-index database
     nix-index-database = {
@@ -113,6 +117,7 @@
     };
 
   nixConfig = {
+    accept-flake-config = true;
     extra-substituters = [
       "https://edeneast.cachix.org"
       "https://nix-community.cachix.org"

@@ -15,9 +15,10 @@
         modules =
           [
             path
+            inputs.disko.nixosModules.disko
             inputs.home-manager.nixosModules.home-manager
-            inputs.nixos-wsl.nixosModules.default
             inputs.nix-index-database.nixosModules.nix-index
+            inputs.nixos-wsl.nixosModules.default
 
             {
               nixpkgs = {

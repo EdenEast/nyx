@@ -26,14 +26,15 @@
         libnotify
         lm_sensors
         vim
+        neovim
       ];
 
       variables = {
         inherit (config.my.nixos) FLAKE;
         NH_FLAKE = config.my.nixos.FLAKE;
 
-        EDITOR = "vim";
-        VISUAL = "vim";
+        EDITOR = "nvim";
+        VISUAL = "nvim";
       };
     };
 
