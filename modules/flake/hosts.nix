@@ -6,18 +6,8 @@
   ...
 }: let
   hosts = let
-    loadDefaultFn = {} @ inputs:
-      inputs;
+    loadDefaultFn = {} @ inputs: inputs;
     loadDefault = hostname: path: loadDefaultFn (import path {inherit self inputs hostname;});
-
-    # Allows `pkgs.stable.<package>`
-    stable-overlay = _final: prev: {
-      stable = import inputs.nixpkgs-stable {
-        inherit (prev.stdenv.hostPlatform) system;
-        config.allowUnfree = true;
-        overlays = [self.overlays.default];
-      };
-    };
 
     loadNixOS = hostname: path: {
       class = "nixos";
@@ -33,7 +23,6 @@
               nixpkgs = {
                 overlays = [
                   self.overlays.default
-                  stable-overlay
                 ];
 
                 config.allowUnfree = true;
@@ -66,7 +55,6 @@
             nixpkgs = {
               overlays = [
                 self.overlays.default
-                stable-overlay
               ];
 
               config.allowUnfree = true;
@@ -96,7 +84,6 @@
           inherit system;
           overlays = [
             self.overlays.default
-            stable-overlay
           ];
 
           config.allowUnfree = true;
