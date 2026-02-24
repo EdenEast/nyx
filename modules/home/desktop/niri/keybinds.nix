@@ -12,7 +12,7 @@ _:
 
     // === Custom Application Launchers ===
     Mod+Shift+O { spawn "obsidian"; }
-    Mod+Shift+B { spawn "zen"; }
+    Mod+Shift+B { spawn "zen-beta"; }
 
     // === Window Management ===
     Mod+Q repeat=false { close-window; }
