@@ -22,9 +22,6 @@ in {
       pinentryPackage = cfg.pinentry;
     };
 
-    # ensure that the ssh agent does not start and is used by gpgconf
-    programs.ssh.startAgent = false;
-
     environment = {
       shellInit = ''
         export GPG_TTY="$(tty)"
