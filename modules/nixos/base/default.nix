@@ -83,6 +83,8 @@
         nix.enable = lib.mkDefault true;
         uutils.enable = lib.mkDefault true;
       };
+
+      services.openssh.enable = lib.mkDefault true;
     };
   };
 }

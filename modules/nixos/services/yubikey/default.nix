@@ -8,7 +8,7 @@
   cfg = config.my.nixos.services.yubikey;
 in {
   options.my.nixos.services.yubikey = {
-    enable = lib.mkEnableOption "gdm display manager";
+    enable = lib.mkEnableOption "Yubikey support for gpg and ssh-agent";
     pinentry = lib.mkOption {
       type = lib.types.nullOr lib.types.package;
       default = pkgs.pinentry-tty;
