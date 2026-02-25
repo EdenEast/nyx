@@ -153,8 +153,9 @@ in {
       snippets = ../snippets;
     };
 
-    homeConfigurations = lib.mapAttrs (_: x: x.value) (hostsByCategory.homeConfigurations or {});
+    diskoConfigurations = self.lib.fs.scanAttrs ../disko;
     darwinConfigurations = lib.mapAttrs (_: x: x.value) (hostsByCategory.darwinConfigurations or {});
+    homeConfigurations = lib.mapAttrs (_: x: x.value) (hostsByCategory.homeConfigurations or {});
     nixosConfigurations = lib.mapAttrs (_: x: x.value) (hostsByCategory.nixosConfigurations or {});
   };
 }
