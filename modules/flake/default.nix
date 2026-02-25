@@ -10,5 +10,6 @@
   flake = {
     root = ../..;
     configDir = ../../config;
+    secretsDir = ../../secrets;
   };
 }

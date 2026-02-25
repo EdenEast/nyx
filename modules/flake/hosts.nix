@@ -19,6 +19,7 @@
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.nixos-wsl.nixosModules.default
+            inputs.ragenix.nixosModules.default
 
             {
               nixpkgs = {
@@ -52,6 +53,8 @@
         modules = [
           path
           inputs.home-manager.darwinModules.home-manager
+          inputs.ragenix.darwinModules.default
+
           {
             nixpkgs = {
               overlays = [
@@ -85,6 +88,7 @@
           inherit system;
           overlays = [
             self.overlays.default
+            inputs.ragenix.homeManagerModules.default
           ];
 
           config.allowUnfree = true;

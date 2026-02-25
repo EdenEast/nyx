@@ -32,7 +32,8 @@ Some notable areas for others would be:
 │   ├── nixos/        # NixOS-specific modules
 │   └── snippets/     # Reusable configuration snippets
 ├── overlays/         # Package overlay definitions
-└── packages/         # Custom package definitions
+├── packages/         # Custom package definitions
+└── secrets/          # Secret management
 ```
 
 ## Resources, References and Acknowledgements
@@ -52,8 +53,6 @@ and modular setup based on [flake-parts](https://flake.parts/) which has been a 
 - [reo101/rix101](https://github.com/reo101/rix101)
   - Modular configuration based on flake-parts with automatic overlay extraction
   - Secrets management with [agenix-rekey](https://github.com/oddlama/agenix-rekey)
-- [spikespaz/dotfiles](https://github.com/spikespaz/dotfiles)
-  - Simple example setup of agenix
 - [notthebee/nix-config](https://git.notthebe.ee/notthebee/nix-config)
   - Example homelab setup with NixOS
 

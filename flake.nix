@@ -28,6 +28,10 @@
     # Nix libraries
     systems.url = "github:nix-systems/default";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
     flake-root.url = "github:srid/flake-root";
     flake-compat.url = "github:nixos/flake-compat";
     treefmt-nix = {
@@ -48,6 +52,25 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-compat.follows = "flake-compat";
+      };
+    };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = "nix-darwin";
+        home-manager.follows = "home-manager";
+        systems.follows = "systems";
+      };
+    };
+    ragenix = {
+      url = "github:yaxitech/ragenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        agenix.follows = "agenix";
+        flake-utils.follows = "flake-utils";
+        crane.follows = "crane";
+        rust-overlay.follows = "rust-overlay";
       };
     };
     disko = {
@@ -103,6 +126,13 @@
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Dev deps
+    crane.url = "github:ipetkov/crane";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

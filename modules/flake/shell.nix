@@ -2,6 +2,7 @@ _: {
   perSystem = {
     config,
     pkgs,
+    inputs',
     ...
   }: {
     devShells.default = pkgs.mkShell {
@@ -11,6 +12,7 @@ _: {
         git-crypt
         nh
         watchexec
+        inputs'.ragenix.packages.default
       ];
     };
   };
