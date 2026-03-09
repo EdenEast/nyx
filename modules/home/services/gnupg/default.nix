@@ -11,7 +11,7 @@ with lib; let
     options = {
       name = mkOption {
         type = types.str;
-        default = "public.key";
+        default = "public.asc";
         description = "Name of gpg key";
       };
 
@@ -33,7 +33,7 @@ with lib; let
     mapAttrs'
     (
       name: value:
-        nameValuePair ".gnupg/${name}" {
+        nameValuePair ".gnupg/public-keys.d/${name}" {
           source = value.key;
         }
     )
@@ -70,7 +70,7 @@ in {
               no-comments = true;
               no-emit-version = true;
               no-greeting = true;
-              keyid-format = "0xlong";
+              keyid-format = "long";
               list-options = "show-uid-validity";
               verify-options = "show-uid-validity";
               with-fingerprint = true;

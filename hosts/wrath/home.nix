@@ -20,7 +20,7 @@
           git = {
             name = "EdenEast";
             email = "edenofest@gmail.com";
-            key = "5A038CEFD458DB47A6135B3F8316DECECB1A3F10";
+            key = "33FE803816CE6F0774145B13425E167F5B8FF416";
           };
 
           neovim.useNightly = true;
@@ -36,7 +36,7 @@
             enable = true;
             publicKeys = [
               {
-                key = self.configDir + "/.gnupg/public.key";
+                key = self.configDir + "/.gnupg/public.asc";
               }
             ];
           };
