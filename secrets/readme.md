@@ -23,3 +23,7 @@ Once the public key has been added to `./publickeys/root_${$HOSTNAME}.pub` you c
 ```bash
 ragenix --rekey
 ```
+
+### Optional user ssh key
+
+Generate a new user SSH key and copy the public key to `./publickeys/$USER_$HOSTNAME.pub` to enable password login.
