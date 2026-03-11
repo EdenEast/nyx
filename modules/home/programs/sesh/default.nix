@@ -42,12 +42,20 @@ in {
       fish.functions.s =
         # fish
         ''
+          set extra_args
           if test (count $argv) -gt 0
-            set value "--value \"$argv\""
+              set extra_args --value $argv[1]
           end
 
-          set selected (${lib.getExe cfg.package} list -id |  ${lib.getExe pkgs.gum} filter --limit 1 \
-            --no-sort --fuzzy $value --placeholder "Pick a sesh" --select-if-one --height 40 --prompt="⚡")
+          set selected (
+            ${lib.getExe cfg.package} list -id \
+                | ${lib.getExe pkgs.gum} filter --select-if-one --no-sort --fuzzy \
+                    --placeholder "Pick a sesh" \
+                    --limit 1 \
+                    --height 40 \
+                    --prompt "⚡" \
+                    $extra_args \
+          )
 
           if test -n "$selected"
             ${lib.getExe cfg.package} connect $selected
