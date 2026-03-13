@@ -2,6 +2,7 @@
   imports = [
     ./home.nix
     ./hardware.nix
+    ./secrets.nix
     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
   ];
 
@@ -41,6 +42,10 @@
       services = {
         cosmic-greeter.enable = true;
         yubikey.enable = true;
+        tailscale = {
+          enable = true;
+          operator = "eden";
+        };
       };
     };
 
