@@ -1,0 +1,48 @@
+{self, ...}: {
+  imports = [
+    ./hardware.nix
+    ./secrets.nix
+    self.diskoConfigurations.btrfs-subvolumes
+  ];
+
+  # Base system definitions
+  networking.hostName = "thor";
+  system.stateVersion = "25.11";
+
+  time.timeZone = "America/Toronto";
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  # https://sourcegraph.com/r/github.com/orangci/dots/-/blob/modules/server/cloudflared.nix
+  # services.cloudflared = {
+  #   enable = true;
+  #   tunnels = {
+  #     "b5a5b920-3160-4bfc-86b0-1c27d89231b6" = {
+  #       credentialsFile = config.age.secrets.cloudflared-matrix.path;
+  #       default = "http_status:404";
+  #       ingress = {
+  #         "matrix.edeneast.xyz" = "http://localhost:8008";
+  #       };
+  #     };
+  #   };
+  # };
+
+  my = {
+    disko.installDrive = "/dev/sdd";
+    nixos = {
+      base.enable = true;
+
+      profiles = {
+        keymap.enable = true;
+      };
+
+      services = {
+        tailscale.enable = true;
+      };
+    };
+
+    users.eden = {
+      password = "$6$nF.UDyrpHmh6M$yKCw56auQ7Dm1FfvmQg6y3Y59mWsoiHJyAYhqF9e8nKjfeKwUoFocwHhogKUTq.A3hVe9S.smv7u1NLV/yPTd0";
+      enable = true;
+    };
+  };
+}

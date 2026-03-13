@@ -13,7 +13,7 @@
     assertions = [
       {
         assertion = config.my.disko.installDrive != "";
-        message = "config.myDisko.installDrive cannot be empty.";
+        message = "config.my.disko.installDrive cannot be empty.";
       }
     ];
 
