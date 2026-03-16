@@ -12,9 +12,9 @@
       isNormalUser = true;
 
       openssh.authorizedKeys.keyFiles =
-        lib.map (file: "${self.secretsDir}/public-keys/${file}")
+        lib.map (file: "${self.secretsDir}/publicKeys/${file}")
         (lib.filter (file: lib.hasPrefix "eden_" file)
-          (builtins.attrNames (builtins.readDir "${self.secretsDir}/public-keys")));
+          (builtins.attrNames (builtins.readDir "${self.secretsDir}/publicKeys")));
 
       uid = 1000;
     };

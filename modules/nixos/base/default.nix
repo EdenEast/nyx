@@ -53,6 +53,7 @@
       dconf.enable = true;
       git.enable = true;
       nh.enable = true;
+      ssh.knownHosts = config.my.snippets.ssh.knownHosts;
     };
 
     networking.networkmanager.enable = true;

@@ -5,8 +5,8 @@ let
     map (file: builtins.readFile "${path}/${file}")
     (builtins.filter f (builtins.attrNames (builtins.readDir path)));
 
-  systems = mkList ./public-keys isRoot;
-  users = mkList ./public-keys isUser;
+  systems = mkList ./publicKeys isRoot;
+  users = mkList ./publicKeys isUser;
   keys = systems ++ users;
 in {
   "tailscale-auth.age".publicKeys = keys;
