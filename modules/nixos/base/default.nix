@@ -7,6 +7,11 @@
 }: {
   options.my.nixos.base = {
     enable = lib.mkEnableOption "base system configuration";
+    editor = lib.mkOption {
+      type = lib.types.package;
+      description = "Default editor package";
+      default = pkgs.neovim;
+    };
   };
 
   config = lib.mkIf config.my.nixos.base.enable {
@@ -26,7 +31,7 @@
         libnotify
         lm_sensors
         vim
-        neovim
+        config.my.nixos.base.editor
       ];
 
       variables = {
@@ -54,6 +59,13 @@
       git.enable = true;
       nh.enable = true;
       ssh.knownHosts = config.my.snippets.ssh.knownHosts;
+
+      nix-index-database.comma.enable = true;
+      nix-index = {
+        enable = true;
+        enableFishIntegration = true;
+        enableZshIntegration = true;
+      };
     };
 
     networking.networkmanager.enable = true;

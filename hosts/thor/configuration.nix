@@ -1,4 +1,8 @@
-_: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ./hardware.nix
     ./secrets.nix
@@ -13,13 +17,20 @@ _: {
 
   my = {
     nixos = {
-      base.enable = true;
+      base = {
+        enable = true;
+        editor = inputs.nvim-config.packages.${pkgs.stdenv.hostPlatform.system}.stable;
+      };
 
       profiles = {
         keymap.enable = true;
       };
 
       services = {
+        audiobookshelf = {
+          enable = true;
+          tailscale.enable = true;
+        };
         tailscale.enable = true;
       };
     };
