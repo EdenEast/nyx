@@ -36,6 +36,14 @@ in {
 
     # Accept DNS from Tailscale (MagicDNS)
     services.resolved.enable = true;
+    networking = {
+      search = [config.my.snippets.tailnet.name];
+      nameservers = [
+        "100.100.100.100"
+        "8.8.8.8"
+        "1.1.1.1"
+      ];
+    };
 
     services.tailscale = {
       inherit (cfg) authKeyFile;
