@@ -3,22 +3,54 @@
   lib,
   ...
 }: let
+  inherit (lib) types mkOption;
   cfg = config.my.nixos.services.tailscale;
 in {
   options.my.nixos.services.tailscale = {
     enable = lib.mkEnableOption "Tailscale VPN service";
 
-    authKeyFile = lib.mkOption {
+    authKeyFile = mkOption {
       description = "Key file to use for authentication";
       default = config.age.secrets.tailscaleAuthKey.path or null;
-      type = lib.types.nullOr lib.types.path;
+      type = types.nullOr types.path;
     };
 
-    operator = lib.mkOption {
+    kind = mkOption {
+      description = "Define type of node and enable required features";
+      default = "both";
+      type = types.enum ["none" "client" "server" "both"];
+    };
+
+    operator = mkOption {
       description = "Tailscale operator name";
       default = null;
-      type = lib.types.nullOr lib.types.str;
+      type = types.nullOr types.str;
     };
+
+    exitnode = mkOption {
+      description = "Advertize this node as an exit node";
+      default = false;
+      type = types.bool;
+    };
+
+    acceptRoutes = mkOption {
+      description = "Accept routes from the Tailscale network";
+      type = types.bool;
+      default = false;
+    };
+
+    advertiseRoutes = mkOption {
+      description = "Advertise routes to the Tailscale network ie. subnet routing";
+      type = types.nullOr types.str;
+      example = "192.168.1.0/24";
+      default = null;
+    };
+
+    # advertiseTags = mkOption {
+    #   description = "Advertise tags to the Tailscale network";
+    #   type = types.list types.str;
+    #   default = "tag:nixos";
+    # };
   };
 
   config = lib.mkIf cfg.enable {
@@ -28,11 +60,6 @@ in {
         message = "config.tailscale.authKeyFile cannot be null.";
       }
     ];
-
-    networking.firewall = {
-      allowedUDPPorts = [config.services.tailscale.port];
-      trustedInterfaces = [config.services.tailscale.interfaceName];
-    };
 
     # Accept DNS from Tailscale (MagicDNS)
     services.resolved.enable = true;
@@ -53,8 +80,14 @@ in {
         ["--ssh"]
         ++ lib.optional (cfg.operator != null) "--operator ${cfg.operator}";
 
+      extraSetFlags =
+        lib.optional cfg.exitnode "--advertise-exit-node"
+        ++ lib.optional cfg.acceptRoutes "--accept-routes"
+        # ++ lib.optional (cfg.advertiseTags) "--advertise-tags=${cfg.advertiseTags}"
+        ++ lib.optional (cfg.advertiseRoutes != null) "--advertise-routes=${cfg.advertiseRoutes}";
+
       openFirewall = true;
-      useRoutingFeatures = "both";
+      useRoutingFeatures = cfg.kind;
     };
   };
 }

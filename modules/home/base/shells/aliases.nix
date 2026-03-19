@@ -3,6 +3,7 @@
   g = "git";
   t = "tux";
   v = "nvim";
+  ts = "tailscale";
 
   # Directory navigation
   ".." = "cd ..";
