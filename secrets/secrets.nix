@@ -10,4 +10,5 @@ let
   keys = systems ++ users;
 in {
   "tailscale-auth.age".publicKeys = keys;
+  "cloudflare-dns-credentials.age".publicKeys = keys;
 }

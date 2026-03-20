@@ -12,6 +12,12 @@
       description = "Default editor package";
       default = pkgs.neovim;
     };
+
+    domain = lib.mkOption {
+      description = "Base domain name to be used to access the homelab services via Caddy reverse proxy";
+      type = lib.types.str;
+      default = "";
+    };
   };
 
   config = lib.mkIf config.my.nixos.base.enable {

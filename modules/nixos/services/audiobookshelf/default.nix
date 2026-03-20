@@ -5,13 +5,14 @@
   ...
 }: let
   cfg = config.my.nixos.services.audiobookshelf;
+  domain = config.my.nixos.base.domain;
 in {
   options.my.nixos.services.audiobookshelf = {
     enable = lib.mkEnableOption "Enable the audiobookshelf service";
 
     port = lib.mkOption {
       description = "The TCP port Audiobookshelf will listen on.";
-      default = 8000;
+      default = 8555;
       type = lib.types.port;
     };
 
@@ -34,7 +35,7 @@ in {
     services = {
       audiobookshelf = {
         enable = true;
-        port = 8555;
+        inherit (cfg) port;
         openFirewall = true;
       };
 
@@ -61,6 +62,21 @@ in {
         ExecStop = "${pkgs.tailscale}/bin/tailscale serve clear \
             svc:${cfg.tailscale.name}";
       };
+    };
+
+    # services.nginx.virtualHosts."audiobookshelf.ts.${domain}" = {
+    #   # enableACME = true;
+    #   # forceSSL = true;
+    #   locations."/" = {
+    #     proxyPass = "http://127.0.0.1:${toString cfg.port}";
+    #   };
+    # };
+
+    services.caddy.virtualHosts."audiobookshelf.ts.${domain}" = lib.mkIf cfg.enable {
+      useACMEHost = "edeneast.xyz";
+      extraConfig = ''
+        reverse_proxy http://127.0.0.1:${toString cfg.port}
+      '';
     };
   };
 }

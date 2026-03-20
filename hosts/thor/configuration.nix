@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   ...
@@ -20,6 +21,7 @@
       base = {
         enable = true;
         editor = inputs.nvim-config.packages.${pkgs.stdenv.hostPlatform.system}.stable;
+        domain = "edeneast.xyz";
       };
 
       profiles = {
@@ -31,7 +33,12 @@
           enable = true;
           tailscale.enable = true;
         };
-        tailscale.enable = true;
+        acme.credentials = config.age.secrets.cloudflareDnsCredentials.path;
+        caddy.enable = true;
+        tailscale = {
+          enable = true;
+          exitnode = true;
+        };
       };
     };
 
