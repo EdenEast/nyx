@@ -23,6 +23,7 @@
             key = "33FE803816CE6F0774145B13425E167F5B8FF416";
           };
 
+          claude.enable = true;
           neovim.useNightly = true;
           spotify.enable = true;
           obsidian.enable = true;
