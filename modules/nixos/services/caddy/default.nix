@@ -13,6 +13,12 @@ in {
       type = types.bool;
       default = false;
     };
+
+    credentials = lib.mkOption {
+      description = "DNS credentials from provider";
+      type = types.nullOr types.path;
+      default = null;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -24,13 +30,34 @@ in {
           `config.my.nixos.base.domain`
         '';
       }
+      {
+        assertion = cfg.credentials != null;
+        message = ''
+          Missing credentials for DNS provider.
+          `config.my.nixos.services.caddy.credentials`
+        '';
+      }
     ];
 
-    services.caddy = {
-      enable = true;
-      globalConfig = ''
-        auto_https off
-      '';
+    # TODO: https://github.com/tailscale/tailscale/issues/7650
+    # There currently is an issue with now CNAME's are resolved on some operating system (everything other than mac and
+    # ios). This caused the name server to be tailscale's instead of cloudflare and failing to get the certs. To solve
+    # this issue I have to point cloudflare DNS record to an A record pointing to the tailscale ip address of the server
+    security.acme = {
+      acceptTerms = true;
+      defaults.email = "edenofest@gmail.com";
+      certs."${domain}" = {
+        inherit domain;
+        group = config.services.caddy.group;
+        reloadServices = ["caddy.service"];
+        extraDomainNames = ["*.${domain}" "*.ts.${domain}"];
+        dnsProvider = "cloudflare";
+        dnsResolver = "1.1.1.1:53";
+        dnsPropagationCheck = true;
+        environmentFile = cfg.credentials;
+      };
     };
+
+    services.caddy.enable = true;
   };
 }

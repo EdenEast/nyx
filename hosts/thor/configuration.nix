@@ -33,8 +33,10 @@
           enable = true;
           tailscale.enable = true;
         };
-        acme.credentials = config.age.secrets.cloudflareDnsCredentials.path;
-        caddy.enable = true;
+        caddy = {
+          enable = true;
+          credentials = config.age.secrets.cloudflareDnsCredentials.path;
+        };
         tailscale = {
           enable = true;
           exitnode = true;

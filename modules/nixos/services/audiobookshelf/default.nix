@@ -64,16 +64,8 @@ in {
       };
     };
 
-    # services.nginx.virtualHosts."audiobookshelf.ts.${domain}" = {
-    #   # enableACME = true;
-    #   # forceSSL = true;
-    #   locations."/" = {
-    #     proxyPass = "http://127.0.0.1:${toString cfg.port}";
-    #   };
-    # };
-
     services.caddy.virtualHosts."audiobookshelf.ts.${domain}" = lib.mkIf cfg.enable {
-      useACMEHost = "edeneast.xyz";
+      useACMEHost = domain;
       extraConfig = ''
         reverse_proxy http://127.0.0.1:${toString cfg.port}
       '';
