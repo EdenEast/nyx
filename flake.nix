@@ -40,7 +40,6 @@
     };
     actions-nix = {
       url = "github:nialov/actions.nix";
-
       inputs = {
         flake-parts.follows = "flake-parts";
         git-hooks.follows = "git-hooks-nix";
@@ -127,6 +126,14 @@
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    golink = {
+      url = "github:tailscale/golink";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
     };
 
     # Dev deps

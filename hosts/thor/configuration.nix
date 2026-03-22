@@ -24,10 +24,6 @@
         domain = "edeneast.xyz";
       };
 
-      profiles = {
-        keymap.enable = true;
-      };
-
       services = {
         audiobookshelf = {
           enable = true;
@@ -37,6 +33,7 @@
           enable = true;
           credentials = config.age.secrets.cloudflareDnsCredentials.path;
         };
+        golink.enable = true;
         tailscale = {
           enable = true;
           exitnode = true;

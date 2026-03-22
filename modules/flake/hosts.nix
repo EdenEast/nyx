@@ -16,6 +16,7 @@
           [
             path
             inputs.disko.nixosModules.disko
+            inputs.golink.nixosModules.default
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.nixos-wsl.nixosModules.default

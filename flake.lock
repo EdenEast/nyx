@@ -371,6 +371,29 @@
         "type": "github"
       }
     },
+    "golink": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773672598,
+        "narHash": "sha256-KGTJbI93PpMr1+IWg/PGKaeYSHXNASOWU7LC9WxVC38=",
+        "owner": "tailscale",
+        "repo": "golink",
+        "rev": "968b7e19bf6515d8593a9d3b0f37f6fe809f4b35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tailscale",
+        "repo": "golink",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -778,6 +801,7 @@
         "flake-root": "flake-root",
         "flake-utils": "flake-utils",
         "git-hooks-nix": "git-hooks-nix",
+        "golink": "golink",
         "home-manager": "home-manager",
         "niri-src": "niri-src",
         "nix-darwin": "nix-darwin",
