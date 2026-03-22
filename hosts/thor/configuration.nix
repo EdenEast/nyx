@@ -25,10 +25,7 @@
       };
 
       services = {
-        audiobookshelf = {
-          enable = true;
-          tailscale.enable = true;
-        };
+        audiobookshelf.enable = true;
         caddy = {
           enable = true;
           credentials = config.age.secrets.cloudflareDnsCredentials.path;

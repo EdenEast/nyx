@@ -19,7 +19,7 @@ in {
     tailscale = {
       enable = lib.mkOption {
         description = "Enable tailscale service";
-        default = false;
+        default = config.services.tailscale.enable;
         type = lib.types.bool;
       };
 
