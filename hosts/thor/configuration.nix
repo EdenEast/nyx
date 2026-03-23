@@ -18,10 +18,10 @@
 
   my = {
     nixos = {
+      server.domain = "edeneast.xyz";
       base = {
         enable = true;
         editor = inputs.nvim-config.packages.${pkgs.stdenv.hostPlatform.system}.stable;
-        domain = "edeneast.xyz";
       };
 
       services = {

@@ -3,8 +3,8 @@
     tailscaleAuthKey.file = ../../secrets/tailscale-auth.age;
     cloudflareDnsCredentials.file = ../../secrets/cloudflare-dns-credentials.age;
     golinkAuthKey = {
+      inherit (config.services.golink) group;
       file = ../../secrets/tailscale-auth.age;
-      group = config.services.golink.group;
       owner = config.services.golink.user;
     };
   };

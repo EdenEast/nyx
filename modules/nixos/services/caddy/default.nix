@@ -4,8 +4,8 @@
   ...
 }: let
   inherit (lib) types mkOption;
+  inherit (config.my.nixos.server) domain;
   cfg = config.my.nixos.services.caddy;
-  domain = config.my.nixos.base.domain;
 in {
   options.my.nixos.services.caddy = {
     enable = mkOption {
@@ -27,7 +27,7 @@ in {
         assertion = domain != "";
         message = ''
           Base domain must be defined for caddy.
-          `config.my.nixos.base.domain`
+          `config.my.nixos.server.domain`
         '';
       }
       {
@@ -48,7 +48,8 @@ in {
       defaults.email = "edenofest@gmail.com";
       certs."${domain}" = {
         inherit domain;
-        group = config.services.caddy.group;
+        inherit (config.services.caddy) group;
+
         reloadServices = ["caddy.service"];
         extraDomainNames = ["*.${domain}" "*.ts.${domain}"];
         dnsProvider = "cloudflare";

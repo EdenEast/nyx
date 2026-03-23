@@ -4,8 +4,8 @@
   pkgs,
   ...
 }: let
+  inherit (config.my.nixos.server) domain;
   cfg = config.my.nixos.services.audiobookshelf;
-  domain = config.my.nixos.base.domain;
 in {
   options.my.nixos.services.audiobookshelf = {
     enable = lib.mkEnableOption "Enable the audiobookshelf service";
