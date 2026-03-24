@@ -57,12 +57,13 @@ in {
         Type = "oneshot";
         RemainAfterExit = true;
 
-        ExecStart = "${pkgs.tailscale}/bin/tailscale serve \
-            --service=svc:${cfg.tailscale.name} \
-            --https=443 \
-            http://localhost:${toString cfg.port}";
-        ExecStop = "${pkgs.tailscale}/bin/tailscale serve clear \
-            svc:${cfg.tailscale.name}";
+        ExecStart = lib.strings.concatStringsSep " " [
+          "${pkgs.tailscale}/bin/tailscale serve"
+          "--service=svc:${cfg.tailscale.name}"
+          "--https=443"
+          "http://localhost:${toString cfg.port}"
+        ];
+        ExecStop = "${pkgs.tailscale}/bin/tailscale serve clear svc:${cfg.tailscale.name}";
       };
     };
 
