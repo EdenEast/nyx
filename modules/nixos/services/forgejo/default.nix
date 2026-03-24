@@ -26,7 +26,7 @@ in {
 
       name = lib.mkOption {
         description = "Name of the forgejo service";
-        default = "forgejo";
+        default = "git";
         type = lib.types.str;
       };
     };
