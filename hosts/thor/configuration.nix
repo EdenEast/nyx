@@ -31,6 +31,7 @@
           credentials = config.age.secrets.cloudflareDnsCredentials.path;
         };
         golink.enable = true;
+        forgejo.enable = true;
         tailscale = {
           enable = true;
           exitnode = true;
