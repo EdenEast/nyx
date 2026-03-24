@@ -32,6 +32,7 @@
         };
         golink.enable = true;
         forgejo.enable = true;
+        searxng.enable = true;
         tailscale = {
           enable = true;
           exitnode = true;
