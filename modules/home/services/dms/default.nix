@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    inputs.dankMaterialShell.homeModules.dankMaterialShell.default
+    inputs.dankMaterialShell.homeModules.dank-material-shell
   ];
 
   options.my.home.services.dms = {
@@ -13,7 +13,7 @@
   };
 
   config = lib.mkIf config.my.home.services.dms.enable {
-    programs.dankMaterialShell = {
+    programs.dank-material-shell = {
       enable = true;
 
       # Core features
