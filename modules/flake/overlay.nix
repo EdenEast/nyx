@@ -31,6 +31,11 @@
         inherit system;
         config.allowUnfree = true;
       };
+
+      master = import inputs.nixpkgs-master {
+        inherit system;
+        config.allowUnfree = true;
+      };
     };
   in
     overlays // channels;

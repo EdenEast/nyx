@@ -614,6 +614,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1774455777,
+        "narHash": "sha256-2PZVKsMZQmyMIxhBnE5LMsYaxaDsBM6GqEoxpWU3G9w=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "181338416426e8633d66c7079996aff8f977f300",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1774244481,
@@ -737,6 +753,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",
         "nvim-config": "nvim-config",
         "ragenix": "ragenix",

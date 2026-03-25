@@ -9,6 +9,7 @@
     ));
 
   perSystem = {pkgs, ...}: {
+    legacyPackages = pkgs;
     packages = {
       space-sanitize = pkgs.writeShellScriptBin "space-sanitize" ''
         # Loop through files with spaces in their names
