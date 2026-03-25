@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  server = config.my.nixos.server;
+  inherit (config.my.nixos) server;
   domain = "git.ts.${server.domain}";
   cfg = config.my.nixos.services.forgejo;
 in {

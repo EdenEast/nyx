@@ -5,8 +5,8 @@
   ...
 }: let
   cfg = config.my.nixos.services.searxng;
-  server = config.my.nixos.server;
-  tailnet = config.my.snippets.tailnet;
+  inherit (config.my.nixos) server;
+  inherit (config.my.snippets) tailnet;
 in {
   options.my.nixos.services.searxng = {
     enable = lib.mkEnableOption "Enable the searxng service";
