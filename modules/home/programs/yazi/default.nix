@@ -11,6 +11,9 @@
       enableFishIntegration = true;
       enableNushellIntegration = true;
       enableZshIntegration = true;
+
+      # Silence warning faor legacy wrapper ()
+      shellWrapperName = "yy";
     };
   };
 }

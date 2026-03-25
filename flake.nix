@@ -6,6 +6,7 @@
     # Package sets
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
 
     # Environment/system management
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -88,9 +89,7 @@
       url = "github:xremap/nix-flake";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
         flake-parts.follows = "flake-parts";
-        hyprland.follows = "";
       };
     };
 
