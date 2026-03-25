@@ -10,21 +10,6 @@ in {
   options.my.nixos.services.immich = {
     enable = lib.mkEnableOption "Self-hosted photo and video management solution";
 
-    user = lib.mkOption {
-      default = server.user;
-      type = lib.types.str;
-      description = ''
-        User to run the Immich container as
-      '';
-    };
-    group = lib.mkOption {
-      default = server.group;
-      type = lib.types.str;
-      description = ''
-        Group to run the Immich container as
-      '';
-    };
-
     port = lib.mkOption {
       description = "The TCP port Immich will listen on.";
       default = 2283;
@@ -59,12 +44,12 @@ in {
   config = lib.mkIf cfg.enable {
     services.immich = {
       enable = true;
-      inherit (cfg) group port;
+      inherit (cfg) port;
       openFirewall = true;
       mediaLocation = lib.mkIf (cfg.mediaDir != null) cfg.mediaDir;
     };
 
-    systemd.tmpfiles.rules = lib.mkIf (cfg.mediaDir != null) ["d ${cfg.mediaDir} 0775 immich ${cfg.group} - -"];
+    # systemd.tmpfiles.rules = lib.mkIf (cfg.mediaDir != null) ["d ${cfg.mediaDir} 0775 immich ${cfg.group} - -"];
     users.users.immich.extraGroups = [
       "video"
       "render"

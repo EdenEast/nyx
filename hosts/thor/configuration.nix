@@ -32,6 +32,10 @@
         };
         golink.enable = true;
         forgejo.enable = true;
+        immich = {
+          enable = true;
+          mediaDir = "/data/photos/immich";
+        };
         searxng.enable = true;
         tailscale = {
           enable = true;
