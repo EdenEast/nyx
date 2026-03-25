@@ -5,55 +5,57 @@
   ...
 }: let
   inherit (config.my.nixos) server;
-  cfg = config.my.nixos.services.immich;
+  cfg = config.my.nixos.services.paperless;
 in {
-  options.my.nixos.services.immich = {
-    enable = lib.mkEnableOption "Self-hosted photo and video management solution";
-
-    port = lib.mkOption {
-      description = "The TCP port Immich will listen on.";
-      default = 2283;
-      type = lib.types.port;
-    };
-
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "photos.ts.${server.domain}";
-    };
+  options.my.nixos.services.paperless = {
+    enable = lib.mkEnableOption "Paperless service";
 
     mediaDir = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
+      description = "Directory to store the Paperless document";
+      type = lib.types.str;
+      default = "";
+    };
+
+    consumptionDir = lib.mkOption {
+      description = "Directory to import new documents";
+      type = lib.types.str;
+      default = "";
+    };
+
+    passwordFile = lib.mkOption {
+      type = lib.types.path;
     };
 
     tailscale = {
       enable = lib.mkOption {
         description = "Enable tailscale service";
-        default = config.services.tailscale.enable;
         type = lib.types.bool;
+        default = config.services.tailscale.enable;
       };
 
       name = lib.mkOption {
         description = "Name of the immich service";
-        default = "photos";
         type = lib.types.str;
+        default = "photos";
       };
     };
   };
 
   config = lib.mkIf cfg.enable {
-    services.immich = {
+    services.paperless = {
       enable = true;
-      inherit (cfg) port;
-      openFirewall = true;
-      mediaLocation = lib.mkIf (cfg.mediaDir != null) cfg.mediaDir;
-    };
+      mediaDir = lib.mkIf (cfg.mediaDir != "") cfg.mediaDir;
+      consumptionDir = lib.mkIf (cfg.consumptionDir != "") cfg.consumptionDir;
+      consumptionDirIsPublic = true;
 
-    # systemd.tmpfiles.rules = lib.mkIf (cfg.mediaDir != null) ["d ${cfg.mediaDir} 0775 immich ${cfg.group} - -"];
-    users.users.immich.extraGroups = [
-      "video"
-      "render"
-    ];
+      settings = {
+        PAPERLESS_URL = "";
+        PAPERLESS_CONSUMER_IGNORE_PATTERN = [
+          ".DS_STORE/*"
+          "desktop.ini"
+        ];
+      };
+    };
 
     systemd.services.immich-tailscale-serve = lib.mkIf cfg.tailscale.enable {
       description = "Tailscale Service proxy for immich";
