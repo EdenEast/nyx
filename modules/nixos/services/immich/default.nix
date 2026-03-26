@@ -59,7 +59,7 @@ in {
       description = "Tailscale Service proxy for immich";
       wantedBy = ["multi-user.target"];
       after = [
-        "immich.service"
+        "immich-server.service"
         "tailscaled.service"
       ];
 
