@@ -30,12 +30,18 @@
           enable = true;
           credentials = config.age.secrets.cloudflareDnsCredentials.path;
         };
+        cloudflared = {
+          enable = true;
+          credentialsFile = config.age.secrets.cloudflareTunnel.path;
+          tunnelId = "78c6c286-8ea2-47e4-ada4-b55edd869b7a";
+        };
         golink.enable = true;
         forgejo.enable = true;
         immich = {
           enable = true;
           mediaDir = "/data/photos/immich";
         };
+        send.enable = true;
         searxng.enable = true;
         tailscale = {
           enable = true;

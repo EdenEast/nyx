@@ -7,5 +7,6 @@
       file = ../../secrets/tailscale-auth.age;
       owner = config.services.golink.user;
     };
+    cloudflareTunnel.file = ../../secrets/cloudflare-tunnel-credentials.age;
   };
 }

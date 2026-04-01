@@ -11,4 +11,5 @@ let
 in {
   "tailscale-auth.age".publicKeys = keys;
   "cloudflare-dns-credentials.age".publicKeys = keys;
+  "cloudflare-tunnel-credentials.age".publicKeys = keys;
 }
