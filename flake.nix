@@ -43,11 +43,11 @@
       url = "github:nialov/actions.nix";
       inputs = {
         flake-parts.follows = "flake-parts";
-        git-hooks.follows = "git-hooks-nix";
+        git-hooks.follows = "git-hooks";
         nixpkgs.follows = "nixpkgs";
       };
     };
-    git-hooks-nix = {
+    git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
@@ -68,8 +68,8 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         agenix.follows = "agenix";
-        flake-utils.follows = "flake-utils";
         crane.follows = "crane";
+        flake-utils.follows = "flake-utils";
         rust-overlay.follows = "rust-overlay";
       };
     };
@@ -97,8 +97,12 @@
       url = "github:EdenEast/nvim-config";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-root.follows = "flake-root";
         flake-parts.follows = "flake-parts";
+        flake-root.follows = "flake-root";
+        git-hooks.follows = "git-hooks";
+        rust-overlay.follows = "rust-overlay";
+        systems.follows = "systems";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 
