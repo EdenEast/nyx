@@ -36,6 +36,7 @@ in {
     services = {
       forgejo = {
         enable = true;
+        package = pkgs.forgejo; # Use the non lts version of forgejo
         settings.server = {
           ROOT_URL = "https://${domain}";
           PROTOCAL = "https";
