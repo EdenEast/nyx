@@ -12,6 +12,7 @@ _: {
         git-crypt
         nh
         watchexec
+        inputs'.colmena.packages.colmena
         inputs'.ragenix.packages.default
       ];
     };

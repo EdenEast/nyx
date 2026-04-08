@@ -5,29 +5,33 @@
   lib,
   ...
 }: let
+  nixosModules =
+    [
+      inputs.disko.nixosModules.disko
+      inputs.golink.nixosModules.default
+      inputs.home-manager.nixosModules.home-manager
+      inputs.nix-index-database.nixosModules.nix-index
+      inputs.nixos-wsl.nixosModules.default
+      inputs.ragenix.nixosModules.default
+    ]
+    ++ builtins.attrValues self.nixosModules;
+
   hosts = let
     loadDefaultFn = {} @ inputs: inputs;
     loadDefault = hostname: path: loadDefaultFn (import path {inherit self inputs hostname;});
 
     loadNixOS = hostname: path: {
+      path = builtins.dirOf path;
       class = "nixos";
       value = inputs.nixpkgs.lib.nixosSystem {
         modules =
           [
             path
-            inputs.disko.nixosModules.disko
-            inputs.golink.nixosModules.default
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.nixos-wsl.nixosModules.default
-            inputs.ragenix.nixosModules.default
-
             {
               nixpkgs = {
                 overlays = [
                   self.overlays.default
                 ];
-
                 config.allowUnfree = true;
               };
 
@@ -41,7 +45,7 @@
               };
             }
           ]
-          ++ builtins.attrValues self.nixosModules;
+          ++ nixosModules;
         specialArgs = {
           inherit inputs self hostname;
         };
@@ -49,6 +53,7 @@
     };
 
     loadNixDarwin = hostname: path: {
+      path = builtins.dirOf path;
       class = "nix-darwin";
       value = inputs.nix-darwin.lib.darwinSystem {
         modules = [
@@ -82,6 +87,7 @@
     };
 
     loadHome = username: path: {
+      path = builtins.dirOf path;
       class = "home-manager";
       value = let
         system = import ((builtins.dirOf path) + "/system.nix");
@@ -142,8 +148,52 @@
         else throw "host '${x.name}' of class '${x.value.class or "unknown"}' not supported"
     ) (lib.attrsToList hosts)
   );
+
+  hiveNodes = lib.mapAttrs (hostname: value: {
+    imports =
+      [
+        (value.path + "/configuration.nix")
+        (value.path + "/hive.nix")
+      ]
+      ++ nixosModules;
+
+    nixpkgs = {
+      overlays = [
+        self.overlays.default
+      ];
+      config.allowUnfree = true;
+    };
+
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      backupFileExtension = "backup";
+      extraSpecialArgs = {
+        inherit self inputs hostname;
+      };
+    };
+
+    _module.args.hostname = hostname;
+  }) (lib.filterAttrs (_: value: value.class == "nixos" && (builtins.pathExists (value.path + "/hive.nix"))) hosts);
+
+  colmena =
+    {
+      meta = {
+        allowApplyAll = false;
+        nixpkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          overlays = [self.overlays.default];
+          config.allowUnfree = true;
+        };
+        specialArgs = {inherit self inputs;};
+      };
+    }
+    // hiveNodes;
 in {
   flake = {
+    inherit colmena;
+    colmenaHive = inputs.colmena.lib.makeHive colmena;
+
     homeModules = {
       default = ../home;
       snippets = ../snippets;

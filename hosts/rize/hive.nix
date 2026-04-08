@@ -1,0 +1,5 @@
+{hostname, ...}: {
+  deployment = {
+    targetHost = hostname;
+  };
+}
