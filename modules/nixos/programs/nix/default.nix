@@ -1,12 +1,14 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   options.my.nixos.programs.nix.enable = lib.mkEnableOption "sane nix configuration";
 
   config = lib.mkIf config.my.nixos.programs.nix.enable {
     nix = {
+      package = pkgs.master.nix;
       channel.enable = false;
       distributedBuilds = true;
 
