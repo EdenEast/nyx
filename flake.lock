@@ -397,16 +397,15 @@
     },
     "mnw": {
       "locked": {
-        "lastModified": 1771487289,
-        "narHash": "sha256-w3lcaOdGGy1uXk1JTpKV8382L5JZSZxfZTBG9HLVr7k=",
-        "owner": "EdenEast",
+        "lastModified": 1776530647,
+        "narHash": "sha256-AHM3wNuC5zzGaygnovHqFUI0YJR1Jj7ZgK9D9m7cgMQ=",
+        "owner": "Gerg-L",
         "repo": "mnw",
-        "rev": "d36ad3e767bbc29d8add6dd81d3dd9679f349721",
+        "rev": "54f7ad6e34f4e44e0260a5140af7726a4792dece",
         "type": "github"
       },
       "original": {
-        "owner": "EdenEast",
-        "ref": "dev",
+        "owner": "Gerg-L",
         "repo": "mnw",
         "type": "github"
       }
@@ -424,11 +423,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774310655,
-        "narHash": "sha256-wKLJ5XMA1x3rcJOckqp0VC6QkJ9IKJwANG37VMbYxvw=",
+        "lastModified": 1776643520,
+        "narHash": "sha256-O6lIvHkvuYNG7WovtyOGu+Z1vYkr/DB2YDF6PchsT/A=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "0fcef258e524f08cdcaaa163c37f14b892f6fd88",
+        "rev": "4a27c9c5416c624fc35ec0607a9f7ddeb59e7c99",
         "type": "github"
       },
       "original": {
@@ -440,11 +439,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1774309203,
-        "narHash": "sha256-iCxl6+jjAXSLmmoYjbgO6k2/hm/a2EVxMW44oCA1GWs=",
+        "lastModified": 1776639951,
+        "narHash": "sha256-R/STk7D50lC0W6DTu/L+U3IYbd/IJFgikGdwrHbJXU4=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "1de1c08210076edbdc23fba86d9ffff25b54cbd8",
+        "rev": "5f6abd34f5c12534df0d79ee3507d40106ad505d",
         "type": "github"
       },
       "original": {
@@ -665,11 +664,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775710161,
-        "narHash": "sha256-e/8s01XDMmWXtyFQjYSBA7pC0qnVYpD71h0JjOfC5sA=",
+        "lastModified": 1776657786,
+        "narHash": "sha256-9u2vr7pFRGNUVTAKfzHpnLai7nu+/tGMN1+OvM/5zHk=",
         "owner": "EdenEast",
         "repo": "nvim-config",
-        "rev": "d7db6dbe15340247d0a1f0e3f578b15442b83fac",
+        "rev": "4f2dcc0c9264cbbc8eaaf2688513eb0fac9d0881",
         "type": "github"
       },
       "original": {

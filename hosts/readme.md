@@ -20,13 +20,69 @@ The `hosts/` directory is organized as follows:
 <!-- eza --tree --level 1 --only-dirs ./hosts -->
 ```plaintext
 hosts
-├── rize   # nixos-wsl2
+├── rize   # NixOS-wsl2
+├── thor   # Homelab
 └── wrath  # Framework 13
 ```
 
 ---
 
-## Example Standalone Home Manager Host
+## 🐝 Colmena Hive
+
+[Colmena](https://github.com/zhaofengli/colmena) is used for deploying NixOS configurations to remote hosts. A NixOS
+host is automatically included in the colmena hive if its host directory contains a `hive.nix` file.
+
+### How it works
+
+The flake builds the hive by filtering all NixOS hosts that have a `hive.nix`, then merging each host's
+`configuration.nix` and `hive.nix` into a colmena node. The `hive.nix` receives `hostname` as a special argument
+(set from the directory name) alongside the standard NixOS module arguments.
+
+### Adding a host to the hive
+
+Create a `hive.nix` in the host's directory:
+
+```nix
+# ./hosts/<hostname>/hive.nix
+{hostname, ...}: {
+  deployment = {
+    targetHost = hostname;
+  };
+}
+```
+
+The `targetHost` is the address colmena will SSH into. Using `hostname` assumes the hostname resolves via DNS or
+`/etc/hosts`. Override it with an IP or fully-qualified domain name if needed:
+
+```nix
+{...}: {
+  deployment = {
+    targetHost = "192.168.1.10";
+    targetUser = "root"; # defaults to current user if omitted
+  };
+}
+```
+
+### Deploying
+
+```bash
+# Deploy all hive hosts
+colmena apply
+
+# Deploy a specific host
+colmena apply --on <hostname>
+
+# Build without deploying
+colmena build
+```
+
+`meta.allowApplyAll` is set to `false`, so `colmena apply` requires an explicit `--on <hostname>` or `--on @<tag>`
+selector — a bare `colmena apply` will error. This prevents accidental mass deployments.
+
+
+---
+
+## 🏠 Example Standalone Home Manager Host
 
 As there is no current example of a standalone home-manager host configuration here is a base example:
 
@@ -53,7 +109,7 @@ As there is no current example of a standalone home-manager host configuration h
 "x86_64-linux"
 ```
 
-## Provisioning New Device
+## 💻 Provisioning New Device
 
 To add a new device to this configuration, follow these steps:
 
