@@ -72,6 +72,7 @@ in {
       ];
     };
 
+    # TODO: https://github.com/tailscale/tailscale/issues/18381
     services.tailscale = {
       inherit (cfg) authKeyFile;
       enable = true;

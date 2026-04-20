@@ -17,6 +17,12 @@ in {
       type = lib.types.port;
     };
 
+    sshPort = lib.mkOption {
+      description = "The TCP port forgejo's built-in SSH server will listen on.";
+      default = 2222;
+      type = lib.types.port;
+    };
+
     tailscale = {
       enable = lib.mkOption {
         description = "Enable tailscale service";
@@ -39,9 +45,14 @@ in {
         package = pkgs.forgejo; # Use the non lts version of forgejo
         settings.server = {
           ROOT_URL = "https://${domain}";
-          PROTOCAL = "https";
+          PROTOCOL = "http";
           DOMAIN = domain;
           HTTP_PORT = cfg.port;
+          START_SSH_SERVER = true;
+          SSH_LISTEN_PORT = cfg.sshPort;
+          SSH_PORT = cfg.sshPort;
+          SSH_DOMAIN = "thor.${config.my.snippets.tailnet.name}";
+          SSH_USER = config.services.forgejo.user;
         };
       };
     };
@@ -74,5 +85,7 @@ in {
         reverse_proxy http://127.0.0.1:${toString cfg.port}
       '';
     };
+
+    networking.firewall.allowedTCPPorts = [cfg.sshPort];
   };
 }
