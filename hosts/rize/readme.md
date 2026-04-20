@@ -2,7 +2,7 @@
 
 ## Overview
 
-NixOS WSL2 systme for Custom ATX desktop.
+NixOS WSL2 system for Custom ATX desktop.
 
 ---
 

@@ -20,9 +20,9 @@ The `hosts/` directory is organized as follows:
 <!-- eza --tree --level 1 --only-dirs ./hosts -->
 ```plaintext
 hosts
-├── rize   # NixOS-wsl2
-├── thor   # Homelab
-└── wrath  # Framework 13
+├── rize   # AMD Ryzen 8 7900 desktop (NixOS-WSL2)
+├── thor   # Intel i7-3770s desktop repurposed as homelab server
+└── wrath  # Framework 13 AMD Ryzen 5 7640U laptop
 ```
 
 ---
@@ -116,6 +116,7 @@ To add a new device to this configuration, follow these steps:
 1. **Create Host Configuration**:
     - Duplicate an existing host directory within `hosts/` and rename it to the new device's hostname.
     - Modify the `configuration.nix` and other relevant Nix modules (e.g., `disko.nix`, `hardware.nix`, `home.nix`) to match the new device's specifications.
+    - Add a `hive.nix` to enroll the host in the colmena hive for remote deployment (see [Colmena Hive](#-colmena-hive)).
     - Track new host files in flake git repository.
 
 

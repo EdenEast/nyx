@@ -1,8 +1,8 @@
-# Wrath
+# Thor
 
 ## Overview
 
-Old desktop server
+Old desktop server repurposed as a homelab
 
 ---
 
