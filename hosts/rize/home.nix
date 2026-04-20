@@ -17,6 +17,7 @@
           nushell.enable = true;
           zsh.enable = true;
 
+          claude.enable = true;
           neovim.useNightly = true;
 
           git = {
