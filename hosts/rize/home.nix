@@ -21,12 +21,14 @@
           neovim.useNightly = true;
 
           git = {
+            enable = true;
             name = "EdenEast";
             email = "edenofest@gmail.com";
-            key = "5A038CEFD458DB47A6135B3F8316DECECB1A3F10";
-            wsl = true;
+            key = "33FE803816CE6F0774145B13425E167F5B8FF416";
           };
         };
+
+        services.gnupg.enable = true;
 
         profiles.development.rust.enable = true;
       };

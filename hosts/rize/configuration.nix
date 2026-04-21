@@ -1,4 +1,4 @@
-_: {
+{pkgs, ...}: {
   imports = [
     ./home.nix
   ];
@@ -17,6 +17,11 @@ _: {
       profiles.wsl = {
         enable = true;
         defaultUser = "eden";
+      };
+      services.yubikey = {
+        enable = true;
+        pinentry = pkgs.pinentry-qt;
+        wsl.enable = true;
       };
     };
 
