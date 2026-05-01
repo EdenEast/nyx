@@ -43,6 +43,23 @@
     fi
   '';
 
+  attachScript = pkgs.writeShellScript "yubikey-wsl-attach" ''
+    ${findUsbipd}
+    [[ -z "$usbipd" ]] && exit 0
+
+    line=$("$usbipd" list 2>/dev/null | grep -i "1050:") || true
+    [[ -z "$line" ]] && exit 0
+
+    echo "$line" | grep -qi "Attached" && exit 0
+    busid=$(echo "$line" | awk '{print $1}')
+
+    if echo "$line" | grep -qi "Not shared"; then
+      "$usbipd" bind --busid "$busid"
+    fi
+
+    "$usbipd" attach --wsl --busid "$busid"
+  '';
+
   detachScript = pkgs.writeShellScript "yubikey-wsl-detach" ''
     ${findUsbipd}
     [[ -z "$usbipd" ]] && exit 0
@@ -115,7 +132,8 @@ in {
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
-          ExecStart = "${pkgs.coreutils}/bin/true";
+          # ExecStart = "${pkgs.coreutils}/bin/true";
+          ExecStart = attachScript;
           ExecStop = detachScript;
           # Include common Windows paths so usbipd.exe is reachable at shutdown
           Environment = "PATH=/run/wrappers/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/usr/bin:/bin:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Program Files/usbipd-win";
