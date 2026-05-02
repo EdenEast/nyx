@@ -27,8 +27,8 @@
         (lib.filterAttrs (name: _: name != "render-workflows"))
         lib.attrNames
       ];
-    in
-      lib.listToAttrs (map
+
+      packageJobs = lib.listToAttrs (map
         (name: {
           name = "build-package-${name}";
           value = {
@@ -54,5 +54,31 @@
           };
         })
         packages);
+
+      shellJob = {
+        "build-shell" = {
+          runs-on = "ubuntu-latest";
+          steps = [
+            {
+              uses = "actions/checkout@v6";
+              "with" = {fetch-depth = 1;};
+            }
+            {uses = "DeterminateSystems/nix-installer-action@main";}
+            {
+              uses = "cachix/cachix-action@master";
+              "with" = {
+                name = "edeneast";
+                authToken = "\${{ secrets.CACHIX_AUTH_TOKEN }}";
+              };
+            }
+            {
+              name = "Build development shell environment";
+              run = ''nix develop --accept-flake-config --print-out-paths --show-trace --command "echo done"'';
+            }
+          ];
+        };
+      };
+    in
+      packageJobs // shellJob;
   };
 }
