@@ -73,7 +73,11 @@
             }
             {
               name = "Build development shell environment";
-              run = ''nix develop --accept-flake-config --print-out-paths --show-trace --command "echo done"'';
+              run = "nix develop --accept-flake-config --show-trace --profile ./dev-shell-profile --command true";
+            }
+            {
+              name = "Cache development shell environment";
+              run = "cachix push edeneast ./dev-shell-profile";
             }
           ];
         };
