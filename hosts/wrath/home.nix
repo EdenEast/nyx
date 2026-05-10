@@ -24,6 +24,8 @@
           };
 
           claude.enable = true;
+          pi.enable = true;
+
           neovim.useNightly = true;
           spotify.enable = true;
           obsidian.enable = true;
