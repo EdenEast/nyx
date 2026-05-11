@@ -34,6 +34,8 @@
         set -sg escape-time 5                    # delay shorter
         set -sg history-limit 50000              # increase scrollback
         set -g mouse on                          # enable mouse mode
+        set -g extended-keys on
+        set -g extended-keys-format csi-u
 
         source-file ~/.config/tmux/conf/keybindings.conf
 
