@@ -111,7 +111,10 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfg.wsl.enable) {
-      environment.systemPackages = [toggleScript];
+      environment.systemPackages = [
+        toggleScript
+        pkgs.kmod
+      ];
 
       services = {
         # nixos-wsl disables udev, but we need it for YubiKey USB device permissions
