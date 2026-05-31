@@ -1,6 +1,7 @@
 {
   e = "$EDITOR";
   g = "git";
+  k = "kubectl";
   t = "tux";
   v = "nvim";
   ts = "tailscale";
