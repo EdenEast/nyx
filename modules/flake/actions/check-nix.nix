@@ -32,7 +32,7 @@
             {uses = "DeterminateSystems/nix-installer-action@main";}
             {
               name = "Check flake evaluation";
-              run = "nix -Lv flake check";
+              run = "nix -Lv flake check --accept-flake-config";
             }
           ];
         };

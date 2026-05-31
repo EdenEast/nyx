@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 1
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Check flake evaluation
-      run: nix -Lv flake check
+      run: nix -Lv flake check --accept-flake-config
 name: check-nix
 'on':
   pull_request: {}
