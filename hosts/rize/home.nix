@@ -18,6 +18,7 @@
           zsh.enable = true;
 
           claude.enable = true;
+          pi.enable = true;
           neovim.useNightly = true;
 
           git = {

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   ...
 }: {
@@ -11,12 +12,12 @@
   config = lib.mkIf config.my.home.programs.pi.enable {
     home = {
       packages = [
-        pkgs.master.pi-coding-agent
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
       ];
 
-      sessionVariables = {
-        PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
-      };
+      # sessionVariables = {
+      #   PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
+      # };
     };
   };
 }

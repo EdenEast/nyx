@@ -86,6 +86,15 @@
         flake-compat.follows = "flake-compat";
       };
     };
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        systems.follows = "systems";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
 
     # Precompiled nix-index database
     nix-index-database = {
