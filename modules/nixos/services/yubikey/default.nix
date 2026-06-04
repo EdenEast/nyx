@@ -8,39 +8,118 @@
   cfg = config.my.nixos.services.yubikey;
 
   findUsbipd = ''
-    usbipd="$(which usbipd.exe)"
+    usbipd="$(command -v usbipd.exe || true)"
   '';
 
-  toggleScript = pkgs.writeShellScriptBin "toggle-yubikey" ''
+  yubiScript = pkgs.writeShellScriptBin "yubi" ''
     set -euo pipefail
 
-    ${findUsbipd}
-    if [[ -z "$usbipd" ]]; then
-      echo "error: usbipd.exe not found. Install usbipd-win on Windows." >&2
-      exit 1
-    fi
+    usage() {
+      cat <<EOF
+    Usage: yubi <command>
 
-    line=$("$usbipd" list 2>/dev/null | grep -i "1050:") || true
-    if [[ -z "$line" ]]; then
-      echo "YubiKey not found. Is it plugged in?" >&2
-      exit 1
-    fi
+    Commands:
+      status          Show the YubiKey usbipd state
+      attach          Attach the YubiKey to WSL
+      detach          Detach the YubiKey from WSL
+      toggle          Attach if detached; detach if attached
+    EOF
+    }
 
-    busid=$(echo "$line" | awk '{print $1}')
+    find_yubikey() {
+      ${findUsbipd}
+      if [[ -z "$usbipd" ]]; then
+        echo "error: usbipd.exe not found. Install usbipd-win on Windows." >&2
+        exit 1
+      fi
 
-    if echo "$line" | grep -qi "Attached"; then
-      echo "Detaching YubiKey (bus $busid) from WSL..."
-      "$usbipd" detach --busid "$busid"
-      echo "Done. YubiKey returned to Windows."
-    else
-      if echo "$line" | grep -qi "Not shared"; then
+      line=$("$usbipd" list 2>/dev/null | grep -i "1050:" | head -n 1 || true)
+      if [[ -z "$line" ]]; then
+        echo "YubiKey not found. Is it plugged in?" >&2
+        exit 1
+      fi
+
+      busid=$(echo "$line" | awk '{print $1}')
+    }
+
+    is_attached() {
+      echo "$line" | grep -qi "Attached"
+    }
+
+    is_not_shared() {
+      echo "$line" | grep -qi "Not shared"
+    }
+
+    status() {
+      find_yubikey
+
+      if is_attached; then
+        echo "YubiKey status: attached to WSL (bus $busid)"
+      elif is_not_shared; then
+        echo "YubiKey status: not shared with WSL (bus $busid)"
+      else
+        echo "YubiKey status: shared with WSL, not attached (bus $busid)"
+      fi
+    }
+
+    attach() {
+      find_yubikey
+
+      if is_attached; then
+        echo "YubiKey already attached to WSL (bus $busid)."
+        exit 0
+      fi
+
+      if is_not_shared; then
         echo "Binding YubiKey (may require Windows admin elevation)..."
         "$usbipd" bind --busid "$busid"
       fi
+
       echo "Attaching YubiKey (bus $busid) to WSL..."
       "$usbipd" attach --wsl --busid "$busid"
       echo "Done. YubiKey available in WSL."
+    }
+
+    detach() {
+      find_yubikey
+
+      if ! is_attached; then
+        echo "YubiKey already detached from WSL (bus $busid)."
+        exit 0
+      fi
+
+      echo "Detaching YubiKey (bus $busid) from WSL..."
+      "$usbipd" detach --busid "$busid"
+      echo "Done. YubiKey returned to Windows."
+    }
+
+    toggle() {
+      find_yubikey
+
+      if is_attached; then
+        detach
+      else
+        attach
+      fi
+    }
+
+    if [[ $# -ne 1 ]]; then
+      usage >&2
+      exit 2
     fi
+
+    case "$1" in
+      status) status ;;
+      attach) attach ;;
+      detach) detach ;;
+      toggle) toggle ;;
+      -h | --help | help) usage ;;
+      *)
+        echo "error: unknown command: $1" >&2
+        usage >&2
+        exit 2
+        ;;
+    esac
   '';
 
   attachScript = pkgs.writeShellScript "yubikey-wsl-attach" ''
@@ -112,7 +191,7 @@ in {
 
     (lib.mkIf (cfg.enable && cfg.wsl.enable) {
       environment.systemPackages = [
-        toggleScript
+        yubiScript
         pkgs.kmod
       ];
 
