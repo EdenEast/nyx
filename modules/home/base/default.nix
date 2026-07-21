@@ -46,6 +46,8 @@
         dust
         # A modern replacement for ps
         procs
+        # which command that follows symlinks
+        fwhich
       ];
     };
 

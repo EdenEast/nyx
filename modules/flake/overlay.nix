@@ -10,16 +10,14 @@
   ...
 }: {
   flake.overlays.default = final: prev: let
-    inherit (final.stdenv.hostPlatform) system;
+    inherit (prev.stdenv.hostPlatform) system;
 
     overlays = lib.pipe (self.lib.fs.scanAttrs ../../overlays) [
       (lib.mapAttrs (_: value: import value {inherit inputs self;} final prev))
       (lib.concatMapAttrs (_: v: v))
     ];
 
-    # TODO: Have to find a way to define packages in the overlay as trying to use packages
-    # via `self` causes a infinite recusion.
-    # packages = self.packages.${prev.stdenv.hostPlatform.system};
+    packages = self.packages.${system} or {};
 
     channels = {
       stable = import inputs.nixpkgs-stable {
@@ -38,5 +36,5 @@
       };
     };
   in
-    overlays // channels;
+    overlays // packages // channels;
 }

@@ -20,6 +20,7 @@ function usage() {
 function main() {
   local follow_links_flag=false
   local all_links_flags=false
+  local executable=""
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
