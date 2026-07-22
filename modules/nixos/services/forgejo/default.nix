@@ -17,6 +17,12 @@ in {
       type = lib.types.port;
     };
 
+    sshDomain = lib.mkOption {
+      description = "The SSH domain url to use";
+      default = "git.${config.my.snippets.tailnet.name}";
+      type = lib.types.str;
+    };
+
     sshPort = lib.mkOption {
       description = "The TCP port forgejo's built-in SSH server will listen on.";
       default = 2222;
@@ -51,7 +57,7 @@ in {
           START_SSH_SERVER = true;
           SSH_LISTEN_PORT = cfg.sshPort;
           SSH_PORT = cfg.sshPort;
-          SSH_DOMAIN = "thor.${config.my.snippets.tailnet.name}";
+          SSH_DOMAIN = cfg.sshDomain;
           SSH_USER = config.services.forgejo.user;
         };
       };

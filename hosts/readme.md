@@ -21,7 +21,6 @@ The `hosts/` directory is organized as follows:
 ```plaintext
 hosts
 ├── rize   # AMD Ryzen 8 7900 desktop (NixOS-WSL2)
-├── thor   # Intel i7-3770s desktop repurposed as homelab server
 └── wrath  # Framework 13 AMD Ryzen 5 7640U laptop
 ```
 
