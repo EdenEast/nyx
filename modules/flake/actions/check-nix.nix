@@ -26,7 +26,7 @@
           runs-on = system;
           steps = [
             {
-              uses = "actions/checkout@v6";
+              uses = "actions/checkout@v7";
               "with" = {fetch-depth = 1;};
             }
             {uses = "DeterminateSystems/nix-installer-action@main";}

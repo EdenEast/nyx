@@ -35,7 +35,7 @@
             }
             {
               name = "Checkout";
-              uses = "actions/checkout@v6";
+              uses = "actions/checkout@v7";
               "with" = {fetch-depth = 1;};
             }
             {
