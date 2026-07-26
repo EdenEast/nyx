@@ -18,7 +18,10 @@
           zsh.enable = true;
 
           claude.enable = true;
-          pi.enable = true;
+          pi = {
+            enable = true;
+            useBun = false;
+          };
           neovim.useNightly = true;
 
           git = {
