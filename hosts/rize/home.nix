@@ -13,6 +13,10 @@
         username = "eden";
       };
 
+      home.packages = with pkgs; [
+        postplan
+      ];
+
       my.home = {
         base.enable = true;
 
