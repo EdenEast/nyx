@@ -96,6 +96,7 @@ in {
         git-crypt
         git-graph
         git-wt
+        gh
       ];
 
       sessionPath = ["${config.xdg.configHome}/git/bin"];
