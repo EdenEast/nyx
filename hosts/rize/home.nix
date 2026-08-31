@@ -1,4 +1,8 @@
-{self, ...}: {
+{
+  self,
+  pkgs,
+  ...
+}: {
   home-manager.users.eden = {
     imports = builtins.attrValues self.homeModules;
 
@@ -17,7 +21,8 @@
           nushell.enable = true;
           zsh.enable = true;
 
-          claude.enable = true;
+          # claude.enable = true;
+          codex.enable = true;
           pi = {
             enable = true;
             useBun = false;
@@ -34,7 +39,11 @@
 
         services.gnupg.enable = true;
 
-        profiles.development.rust.enable = true;
+        profiles.development = {
+          node.enable = true;
+          python.enable = true;
+          rust.enable = true;
+        };
       };
     };
   };

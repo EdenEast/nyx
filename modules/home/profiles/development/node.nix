@@ -9,7 +9,7 @@
   config = lib.mkIf config.my.home.profiles.development.node.enable {
     home = {
       packages = with pkgs; [
-        nodePackages_latest.nodejs
+        nodejs
       ];
     };
 

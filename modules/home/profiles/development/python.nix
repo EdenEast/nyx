@@ -3,7 +3,9 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  cfg = config.my.home.profiles.development.python;
+in {
   options.my.home.profiles.development.python = {
     enable = lib.mkEnableOption "rust development";
 
@@ -11,11 +13,7 @@
       description = "List of extra packages to be installed";
       type = with lib.types; listOf package;
       default = with pkgs.python313Packages; [
-        black
-        jedi
         pip
-        poetry
-        pylint
         setuptools
       ];
     };
@@ -24,7 +22,7 @@
   config = lib.mkIf config.my.home.profiles.development.python.enable {
     home.packages = with pkgs;
       [
-        python313
+        python314
         pipenv
       ]
       ++ cfg.extraPackages;
