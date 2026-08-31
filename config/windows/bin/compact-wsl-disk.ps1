@@ -40,6 +40,7 @@ $files = @()
 $wsl_folders = @(
     # WSL OSes from the Windows Store
     "$env:LOCALAPPDATA\Packages",
+    "$env:LOCALAPPDATA\wsl",
     # The Docker WSL files
     "$env:LOCALAPPDATA\Docker"
 )
@@ -54,7 +55,7 @@ if (Test-Path env:WSL_FOLDERS) {
 
 # Find the files in all the authorized folders
 foreach ($wsl_folder in $wsl_folders) {
-    Get-ChildItem -Recurse -Path $wsl_folder -Filter "ext4.vhdx" -ErrorAction SilentlyContinue | ForEach-Object {
+    Get-ChildItem -Recurse -Path $wsl_folder -ErrorAction SilentlyContinue | where { $_.Extension -eq ".vhdx" } | ForEach-Object {
         $FullPath = $PSItem.FullName
         Write-Output "- Found EXT4 disk: $FullPath"
         $files += ${PSItem}
