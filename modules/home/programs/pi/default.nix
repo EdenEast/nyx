@@ -21,6 +21,7 @@ in {
       packages = [
         ((pkgs.callPackage (inputs.llm-agents + /packages/pi/package.nix) {
             inherit (cfg) useBun;
+            formatelf = pkgs.formatelf;
             # llm-agents.nix defines this helper in its package scope, but it is
             # not exported. The Node build does not need the HOME workaround for
             # its version check, so an inert input is enough here.
