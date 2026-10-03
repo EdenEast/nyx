@@ -1,4 +1,8 @@
-{self, ...}: {
+{
+  pkgs,
+  self,
+  ...
+}: {
   home-manager.users.eden = {
     imports = builtins.attrValues self.homeModules;
 
@@ -7,6 +11,15 @@
         homeDirectory = "/home/eden";
         stateVersion = "25.11";
         username = "eden";
+
+        # Agent CLIs release faster than nixpkgs. npm owns these executables in
+        # ~/.local, while Nix continues to provide their pinned Node runtime.
+        packages = [
+          pkgs.agent-tools-update
+          pkgs.nodejs_24
+        ];
+        sessionPath = ["$HOME/.local/bin"];
+        sessionVariables.NPM_CONFIG_PREFIX = "$HOME/.local";
       };
 
       my.home = {
@@ -23,9 +36,11 @@
             key = "33FE803816CE6F0774145B13425E167F5B8FF416";
           };
 
-          claude.enable = true;
-          codex.enable = true;
-          pi.enable = true;
+          # Install these outside the Nix store so their upstream releases can
+          # be updated without rebuilding the machine configuration.
+          claude.enable = false;
+          codex.enable = false;
+          pi.enable = false;
 
           neovim.useNightly = true;
           discord.enable = true;

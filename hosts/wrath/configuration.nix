@@ -24,10 +24,12 @@
     pkgs.simple-scan
   ];
 
-  # programs.appimage = {
-  #   enable = true;
-  #   binfmt = true;
-  # };
+  # Fast-moving desktop applications can install and update writable AppImages
+  # outside the Nix store.
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
 
   # Printer and scanner
   hardware.sane = {
