@@ -7,6 +7,19 @@ concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
 jobs:
+  build-package-agent-tools-update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 1
+    - uses: DeterminateSystems/nix-installer-action@main
+    - uses: cachix/cachix-action@master
+      with:
+        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        name: edeneast
+    - name: Build package agent-tools-update
+      run: nix build --accept-flake-config --print-out-paths --show-trace .#packages.x86_64-linux.agent-tools-update
   build-package-fwhich:
     runs-on: ubuntu-latest
     steps:
@@ -20,6 +33,19 @@ jobs:
         name: edeneast
     - name: Build package fwhich
       run: nix build --accept-flake-config --print-out-paths --show-trace .#packages.x86_64-linux.fwhich
+  build-package-jagex-launcher:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 1
+    - uses: DeterminateSystems/nix-installer-action@main
+    - uses: cachix/cachix-action@master
+      with:
+        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        name: edeneast
+    - name: Build package jagex-launcher
+      run: nix build --accept-flake-config --print-out-paths --show-trace .#packages.x86_64-linux.jagex-launcher
   build-package-postplan:
     runs-on: ubuntu-latest
     steps:
