@@ -410,6 +410,26 @@
         "type": "github"
       }
     },
+    "jagex-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789469258,
+        "narHash": "sha256-/19ZggpLx3Sln4Vvm/vrtEq6xtrICFDA/NK0r9+ckJQ=",
+        "owner": "kurtmorris",
+        "repo": "jagex-launcher-flake",
+        "rev": "bf6810ef5174b33d55231ddad9fb307d32a608a9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kurtmorris",
+        "repo": "jagex-launcher-flake",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -800,6 +820,7 @@
         "git-hooks": "git-hooks",
         "golink": "golink",
         "home-manager": "home-manager",
+        "jagex-launcher": "jagex-launcher",
         "llm-agents": "llm-agents",
         "niri-src": "niri-src",
         "nix-darwin": "nix-darwin",

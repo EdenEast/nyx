@@ -157,6 +157,11 @@
       };
     };
 
+    jagex-launcher = {
+      url = "github:kurtmorris/jagex-launcher-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Dev deps
     crane.url = "github:ipetkov/crane";
     rust-overlay = {

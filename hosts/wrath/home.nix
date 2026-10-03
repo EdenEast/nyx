@@ -24,15 +24,20 @@
           };
 
           claude.enable = true;
+          codex.enable = true;
           pi.enable = true;
 
           neovim.useNightly = true;
+          discord.enable = true;
           spotify.enable = true;
           obsidian.enable = true;
           zen.enable = true;
         };
 
-        profiles.development.rust.enable = true;
+        profiles = {
+          development.rust.enable = true;
+          gaming.runescape.enable = true;
+        };
 
         services = {
           gnupg = {

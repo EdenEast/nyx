@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ./home.nix
     ./hardware.nix
@@ -14,21 +18,49 @@
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_US.UTF-8";
 
+  environment.systemPackages = [
+    pkgs.jagex-launcher
+    pkgs.libreoffice
+    pkgs.simple-scan
+  ];
+
+  # programs.appimage = {
+  #   enable = true;
+  #   binfmt = true;
+  # };
+
+  # Printer and scanner
+  hardware.sane = {
+    enable = true;
+    extraBackends = [pkgs.sane-airscan];
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  users.users.eden.extraGroups = [
+    "scanner"
+    "ip"
+  ];
+
   my = {
     nixos = {
       base.enable = true;
 
       desktop = {
         laptop = true;
-        cosmic.enable = true;
-        niri = {
-          enable = true;
-          laptopMonitor = ''
-            output "eDP-1" {
-              scale 1.25
-            }
-          '';
-        };
+        kde.enable = true;
+        # niri = {
+        #   enable = true;
+        #   laptopMonitor = ''
+        #     output "eDP-1" {
+        #       scale 1.25
+        #     }
+        #   '';
+        # };
       };
 
       profiles = {

@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   # If I use self.lib to import this I get infinate recursion.
   imports = with lib;
     map (fn: ./${fn})
@@ -11,6 +15,8 @@
   perSystem = {pkgs, ...}: {
     legacyPackages = pkgs;
     packages = {
+      jagex-launcher = inputs.jagex-launcher.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
       space-sanitize = pkgs.writeShellScriptBin "space-sanitize" ''
         # Loop through files with spaces in their names
         for file in *' '*; do

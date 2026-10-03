@@ -2,8 +2,11 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: {
+  imports = self.lib.fs.scanPaths ./.;
+
   options.my.nixos.profiles.gaming.enable = lib.mkEnableOption "gaming optimizations";
 
   config = lib.mkIf config.my.nixos.profiles.gaming.enable {
