@@ -56,12 +56,7 @@
     };
     agenix = {
       url = "github:ryantm/agenix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        darwin.follows = "nix-darwin";
-        home-manager.follows = "home-manager";
-        systems.follows = "systems";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     ragenix = {
       url = "github:yaxitech/ragenix";
@@ -82,8 +77,6 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         stable.follows = "nixpkgs-stable";
-        flake-utils.follows = "flake-utils";
-        flake-compat.follows = "flake-compat";
       };
     };
     llm-agents = {
