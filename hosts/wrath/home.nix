@@ -3,6 +3,10 @@
   self,
   ...
 }: {
+  # GUI applications such as T3 Code inherit the display-manager PATH rather
+  # than Home Manager's shell PATH. Keep mutable agent CLIs visible to both.
+  environment.localBinInPath = true;
+
   home-manager.users.eden = {
     imports = builtins.attrValues self.homeModules;
 

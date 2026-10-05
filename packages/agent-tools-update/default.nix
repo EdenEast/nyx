@@ -15,6 +15,7 @@ _: {
       ];
       text = ''
         export NPM_CONFIG_PREFIX="''${NPM_CONFIG_PREFIX:-$HOME/.local}"
+        export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
 
         current_step="starting"
         on_error() {
@@ -37,6 +38,11 @@ _: {
 
         step "[2/5] Updating Codex"
         npm install --global @openai/codex@latest
+        if [[ ! -x "$NPM_CONFIG_PREFIX/bin/codex" ]]; then
+          echo "Codex installed without an executable at $NPM_CONFIG_PREFIX/bin/codex." >&2
+          exit 1
+        fi
+        "$NPM_CONFIG_PREFIX/bin/codex" --version
 
         step "[3/5] Updating Pi"
         npm install --global @earendil-works/pi-coding-agent@latest
@@ -135,6 +141,7 @@ _: {
     launcher = pkgs.writeShellApplication {
       name = "t3-code-desktop";
       text = ''
+        export PATH="$HOME/.local/bin:$PATH"
         app="$HOME/.local/opt/t3-code/T3-Code.AppImage"
         if [[ ! -x "$app" ]]; then
           echo "T3 Code Desktop is not installed. Run agent-tools-update first." >&2
