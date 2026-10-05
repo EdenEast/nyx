@@ -77,12 +77,10 @@ in {
       inherit (cfg) authKeyFile;
       enable = true;
 
-      extraUpFlags =
-        ["--ssh"]
-        ++ lib.optional (cfg.operator != null) "--operator ${cfg.operator}";
-
       extraSetFlags =
-        lib.optional cfg.exitnode "--advertise-exit-node"
+        ["--ssh"]
+        ++ lib.optional (cfg.operator != null) "--operator=${cfg.operator}"
+        ++ lib.optional cfg.exitnode "--advertise-exit-node"
         ++ lib.optional cfg.acceptRoutes "--accept-routes"
         # ++ lib.optional (cfg.advertiseTags) "--advertise-tags=${cfg.advertiseTags}"
         ++ lib.optional (cfg.advertiseRoutes != null) "--advertise-routes=${cfg.advertiseRoutes}";
