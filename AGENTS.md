@@ -1,5 +1,3 @@
-# Repository guidance
-
 ## Generating action workflows
 
 If one of the following conditions are met ensure that you trigger nix-actions to regenerated the github action workflows.
