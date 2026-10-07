@@ -1,7 +1,7 @@
 {
   disko.devices.disk.main = {
     type = "disk";
-    device = "/dev/disk/by-id/ata-M4-CT128M4SSD2_000000001224090D56BE";
+    device = "/dev/disk/by-id/ata-CT1000BX500SSD1_2532E9C88DC5";
     content = {
       type = "gpt";
       partitions = {

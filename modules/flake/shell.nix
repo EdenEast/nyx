@@ -17,7 +17,7 @@
         else
           case "$subcmd" in
             build)
-              colmena build --on "$target" "$subcmd" "$@"
+              colmena build --on "$target" "$@"
               ;;
             *)
               colmena apply --on "$target" "$subcmd" "$@"

@@ -9,16 +9,19 @@ used legacy BIOS with GRUB. Its README lists an Intel i7-3770S, 16 GB RAM,
 a 128 GB SSD, and two 1 TB HDDs. GRUB targeted the Crucial SSD at
 `/dev/disk/by-id/ata-M4-CT128M4SSD2_000000001224090D56BE`.
 
-This configuration uses that boot mode and disk path. Verify the disk is still
-present before installing. `disko.nix` defines ext4 root and FAT32 `/boot`,
-matching the old disk definition. Generate the actual hardware configuration
-on the desktop before installing. The previous `/data` mount and homelab
+This configuration uses legacy BIOS and the replacement 1 TB Crucial BX500 SSD
+at `/dev/disk/by-id/ata-CT1000BX500SSD1_2532E9C88DC5`. Verify that this path
+points to the intended SSD before installing. `disko.nix` defines ext4 root
+and FAT32 `/boot`. The hardware configuration was generated on Thor with
+`--no-filesystems`. The previous `/data` mount and homelab
 services are not enabled in this development host.
 
 ## Prepare the configuration
 
 The `eden` account accepts the public keys in `secrets/publicKeys/eden_*.pub`.
-Currently that includes `eden_wrath.pub`. Confirm you have its private key on
+Currently that includes `eden_wrath.pub`. Thor also authorizes the setup
+client's hardware-backed `eden@rize` public key in `configuration.nix`.
+Confirm you have an authorized private key on
 your connecting machine, or add your client's public key to that directory
 with the same naming pattern. Never copy the client's private key to the server.
 
@@ -150,4 +153,34 @@ Rebuild from that checkout with:
 
 ```bash
 sudo nixos-rebuild switch --flake .#thor
+```
+
+## Deploy with Colmena
+
+Colmena connects to Thor as `eden` and uses passwordless sudo for activation.
+From another machine with an authorized SSH key, build or copy the configuration
+with:
+
+```bash
+nix develop --command thor build
+nix develop --command thor push
+```
+
+Before activating the configuration that imports `secrets.nix`, encrypt the
+Tailscale auth secret for Thor's SSH host key. On a machine that can already
+decrypt the secrets, such as Wrath, run from its checkout:
+
+```bash
+nix develop
+ssh eden@thor 'sudo cat /etc/ssh/ssh_host_ed25519_key.pub' > secrets/publicKeys/root_thor.pub
+git add secrets/publicKeys/root_thor.pub
+cd secrets
+ragenix --rekey
+```
+
+Bring the new public key and rekeyed secrets back to the deploying checkout,
+then activate with:
+
+```bash
+nix develop --command thor switch
 ```
