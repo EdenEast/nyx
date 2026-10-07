@@ -11,6 +11,13 @@
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_US.UTF-8";
 
+  # Fast-moving desktop applications can install and update writable AppImages
+  # outside the Nix store.
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   my = {
     nixos = {
       base.enable = true;

@@ -11,11 +11,12 @@
         homeDirectory = "/home/eden";
         stateVersion = "25.11";
         username = "eden";
-      };
 
-      home.packages = with pkgs; [
-        postplan
-      ];
+        packages = with pkgs; [
+          agent-tools-update
+          postplan
+        ];
+      };
 
       my.home = {
         base.enable = true;
@@ -26,11 +27,11 @@
           zsh.enable = true;
 
           # claude.enable = true;
-          codex.enable = true;
-          pi = {
-            enable = true;
-            useBun = false;
-          };
+          # codex.enable = true;
+          # pi = {
+          #   enable = true;
+          #   useBun = false;
+          # };
           neovim.useNightly = true;
 
           git = {
