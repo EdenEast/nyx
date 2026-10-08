@@ -43,6 +43,18 @@
 
     my.home = {
       base.enable = true;
+      services.obsidian-sync = {
+        enable = true;
+        deviceName = "thor";
+        remoteVault = "codex";
+        vaultPath = "/home/eden/vaults/codex";
+        configs = [
+          "core-plugin"
+          "core-plugin-data"
+          "community-plugin"
+          "community-plugin-data"
+        ];
+      };
       services.gnupg.enable = true;
       programs = {
         fish.enable = true;

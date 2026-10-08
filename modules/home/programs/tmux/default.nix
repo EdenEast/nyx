@@ -34,6 +34,9 @@
         set -sg escape-time 5                    # delay shorter
         set -sg history-limit 50000              # increase scrollback
         set -g mouse on                          # enable mouse mode
+        # Let applications such as Pi copy to the local clipboard over SSH.
+        set -s set-clipboard on
+        set -as terminal-features ",xterm-ghostty:clipboard"
         set -g extended-keys on
         set -g extended-keys-format csi-u
 

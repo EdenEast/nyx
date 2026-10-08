@@ -1,5 +1,6 @@
 {lib, ...}: {
   imports = [
+    ./backup.nix
     ./disko.nix
     ./hardware.nix
     ./home.nix
@@ -35,6 +36,7 @@
   users.users.eden.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINaVyoWBnLFIPWE4L2FdfPH//j+/+YgCmc6jJYme7AwZ eden@rize"
   ];
+  users.users.eden.linger = true;
 
   my = {
     nixos = {

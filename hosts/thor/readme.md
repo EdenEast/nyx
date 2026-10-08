@@ -42,6 +42,46 @@ Install or update Claude Code, Codex, and Pi with:
 agent-tools-update
 ```
 
+## Obsidian Sync
+
+Obsidian Headless is installed through Nix. The user service syncs
+`~/vaults/codex` continuously, including after SSH disconnects and at boot.
+It stays inactive until setup completes. Notes and all attachment types sync
+bidirectionally, along with core and community plugins and their settings.
+General application, appearance, and hotkey settings are excluded.
+
+Back up your existing vault before first use, then run as `eden` on Thor:
+
+```bash
+ob login
+ob sync-list-remote
+obsidian-sync-setup
+```
+
+Setup prompts for authentication and the vault encryption password, performs
+the first sync, then starts the service. Credentials and sync state remain in
+the home directory, outside the Nix store. Edit notes with any terminal editor.
+
+```bash
+systemctl --user status obsidian-sync
+journalctl --user -u obsidian-sync -f
+ob sync-status --path ~/vaults/codex
+ob sync-config --path ~/vaults/codex
+```
+
+For a temporary deployment without changing the boot configuration:
+
+```bash
+nix develop --command colmena apply-local --sudo --node thor test
+```
+
+## Obsidian backups
+
+Thor's Restic configuration backs up the vault hourly to TrueNAS over SFTP.
+See [backup setup and recovery](./backup.md) for NAS account setup, credentials,
+activation, verification, and restoring notes. NAS provisioning and a verified
+SSH host key are required before backups can run.
+
 ## Rebuild
 
 From `~/.local/nyx` on Thor:
