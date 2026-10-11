@@ -41,6 +41,8 @@
       # Required to be defined to be callable but disabling so file does not get generated
       xdg.dataFile."fish/config.fish".enable = false;
 
+      xdg.configFile."fish/conf.d/00-t3-terminal-compat.fish".source = ./t3-terminal-compat.fish;
+
       home.packages = with pkgs; [
         fishPlugins.fzf-fish
         fishPlugins.colored-man-pages
