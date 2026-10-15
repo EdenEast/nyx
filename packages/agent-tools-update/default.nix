@@ -47,12 +47,12 @@ _: {
         step "[3/5] Updating Pi"
         npm install --global @earendil-works/pi-coding-agent@latest
 
-        step "[4/5] Updating T3 Code CLI"
+        step "[4/5] Updating T3 Code CLI (nightly)"
         if [[ -x "$HOME/.local/bin/t3" ]]; then
-          "$HOME/.local/bin/t3" update
+          "$HOME/.local/bin/t3" update --channel nightly
         else
           echo "T3 Code CLI is not installed. Downloading the official installer..."
-          curl --fail --silent --show-error --location https://t3.codes/install.sh | sh
+          curl --fail --silent --show-error --location https://t3.codes/install.sh | T3CODE_CHANNEL=nightly sh
         fi
 
         if [[ "$(uname -s)" != Linux ]]; then
@@ -72,9 +72,12 @@ _: {
         esac
 
         step "[5/5] Updating T3 Code Desktop"
-        echo "Querying the latest stable GitHub release..."
-        release_json="$(curl --fail --silent --show-error --location \
-          https://api.github.com/repos/pingdotgg/t3code/releases/latest)"
+        echo "Querying the latest nightly GitHub release..."
+        releases_json="$(curl --fail --silent --show-error --location \
+          'https://api.github.com/repos/pingdotgg/t3code/releases?per_page=100')"
+        release_json="$(jq --exit-status \
+          'first(.[] | select(.draft == false and (.tag_name | test("^v[0-9]+[.][0-9]+[.][0-9]+-nightly[.]"))))' \
+          <<<"$releases_json")"
         release_tag="$(jq --exit-status --raw-output '.tag_name' <<<"$release_json")"
         asset_url="$(jq --exit-status --raw-output --arg suffix "$appimage_suffix" \
           '.assets[] | select(.name | endswith($suffix)) | .browser_download_url' \

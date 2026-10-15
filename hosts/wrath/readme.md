@@ -45,7 +45,8 @@ agent-tools-update
 ```
 
 The command installs the latest Claude Code, Codex, and Pi npm packages. It also
-installs or updates the T3 Code CLI and the current T3 Code Desktop AppImage.
+installs or updates the T3 Code CLI and T3 Code Desktop AppImage from the nightly
+release channel.
 Existing credentials and application data remain in their normal home-directory
 locations.
 
