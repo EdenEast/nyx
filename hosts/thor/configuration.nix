@@ -1,5 +1,6 @@
 {lib, ...}: {
   imports = [
+    ./agent-subscription-ping.nix
     ./backup.nix
     ./disko.nix
     ./hardware.nix

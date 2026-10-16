@@ -15,6 +15,7 @@
       # ~/.local, while Nix continues to provide their pinned Node runtime.
       packages = with pkgs; [
         agent-tools-update
+        postplan
         nodejs_24
       ];
       sessionPath = ["$HOME/.local/bin"];
