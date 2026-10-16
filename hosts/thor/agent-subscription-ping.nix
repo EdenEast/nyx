@@ -1,8 +1,8 @@
 {pkgs, ...}: {
   systemd.user = {
     services.chatgpt-ping = {
-      Unit.Description = "Start a ChatGPT usage window with a minimal Pi prompt";
-      Service = {
+      description = "Start a ChatGPT usage window with a minimal Pi prompt";
+      serviceConfig = {
         Type = "oneshot";
         WorkingDirectory = "%h";
         Environment = ["PATH=${pkgs.nodejs_24}/bin:${pkgs.coreutils}/bin"];
@@ -26,13 +26,13 @@
       };
     };
     timers.chatgpt-ping = {
-      Unit.Description = "Ping ChatGPT every five hours";
-      Timer = {
+      description = "Ping ChatGPT every five hours";
+      timerConfig = {
         OnStartupSec = "5min";
         OnUnitActiveSec = "5h";
         Unit = "chatgpt-ping.service";
       };
-      Install.WantedBy = ["timers.target"];
+      wantedBy = ["timers.target"];
     };
   };
 }
