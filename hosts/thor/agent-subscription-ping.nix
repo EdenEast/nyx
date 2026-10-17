@@ -50,21 +50,21 @@
         '');
       };
     };
-    timers.claude-ping = {
-      description = "Ping Claude every five hours";
-      timerConfig = {
-        OnStartupSec = "5min";
-        OnUnitActiveSec = "5h";
-        Unit = "claude-ping.service";
+    # One timer fires both pings so the usage windows stay aligned.
+    services.agent-subscription-ping = {
+      description = "Start ChatGPT and Claude usage windows together";
+      wants = ["chatgpt-ping.service" "claude-ping.service"];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.coreutils}/bin/true";
       };
-      wantedBy = ["timers.target"];
     };
-    timers.chatgpt-ping = {
-      description = "Ping ChatGPT every five hours";
+    timers.agent-subscription-ping = {
+      description = "Ping ChatGPT and Claude every five hours";
       timerConfig = {
         OnStartupSec = "5min";
         OnUnitActiveSec = "5h";
-        Unit = "chatgpt-ping.service";
+        Unit = "agent-subscription-ping.service";
       };
       wantedBy = ["timers.target"];
     };
