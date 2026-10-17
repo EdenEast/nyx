@@ -25,6 +25,40 @@
         '');
       };
     };
+    services.claude-ping = {
+      description = "Start a Claude usage window with a minimal Claude Code prompt";
+      serviceConfig = {
+        Type = "oneshot";
+        WorkingDirectory = "%h";
+        Environment = ["PATH=${pkgs.nodejs_24}/bin:${pkgs.coreutils}/bin"];
+        TimeoutStartSec = "2min";
+        ExecStart = toString (pkgs.writeShellScript "claude-ping" ''
+          # Require subscription OAuth; never fall back to paid API usage.
+          unset ANTHROPIC_API_KEY ANTHROPIC_AUTH_TOKEN
+          export CLAUDE_CODE_SAFE_MODE=1
+          if ! "$HOME/.local/bin/claude" auth status --json | \
+            ${pkgs.jq}/bin/jq -e '.loggedIn == true and .authMethod == "claude.ai" and .apiProvider == "firstParty"' >/dev/null; then
+            echo 'Log in with your Claude subscription using claude auth login first.' >&2
+            exit 1
+          fi
+          exec "$HOME/.local/bin/claude" \
+            --model claude-haiku-5-5 --effort low \
+            --print --no-session-persistence --tools "" \
+            --disable-slash-commands --strict-mcp-config \
+            --system-prompt 'Reply to the prompt with only OK.' \
+            'ping'
+        '');
+      };
+    };
+    timers.claude-ping = {
+      description = "Ping Claude every five hours";
+      timerConfig = {
+        OnStartupSec = "5min";
+        OnUnitActiveSec = "5h";
+        Unit = "claude-ping.service";
+      };
+      wantedBy = ["timers.target"];
+    };
     timers.chatgpt-ping = {
       description = "Ping ChatGPT every five hours";
       timerConfig = {
