@@ -19,7 +19,11 @@
         nodejs_24
       ];
       sessionPath = ["$HOME/.local/bin"];
-      sessionVariables.NPM_CONFIG_PREFIX = "$HOME/.local";
+      # Services such as T3 Code do not source Home Manager's shell variables.
+      # npm must know its writable prefix even when NPM_CONFIG_PREFIX is unset.
+      file.".npmrc".text = ''
+        prefix=/home/eden/.local
+      '';
     };
 
     # Keep both agents local to Thor. Pinentry prompts in the SSH terminal.
