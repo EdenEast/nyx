@@ -9,6 +9,7 @@
   config = lib.mkIf config.my.home.profiles.development.rust.enable {
     home = {
       packages = with pkgs; [
+        clang
         rustup
       ];
 
