@@ -1,0 +1,492 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: EdenEast <edenofest@gmail.com>
+Date: Wed, 21 Oct 2026 11:23:53 -0400
+Subject: [PATCH] feat: trust identical .envrc files in git worktrees
+
+Add a `git_worktrees` option to the `[whitelist]` section of
+direnv.toml. When enabled, an .envrc file in a linked git worktree is
+allowed if it is byte-for-byte identical to the .envrc file at the same
+relative path in the main worktree, and that file is allowed.
+
+direnv keys trust on the absolute path of the .envrc file, so every new
+worktree needs its own `direnv allow` even when nothing changed. This
+option removes that step while still asking for approval when a branch
+changes its .envrc.
+
+Trust does not chain: the main worktree file is checked against the
+deny list, allow list and path whitelists only.
+---
+ internal/cmd/config.go            |   9 +-
+ internal/cmd/git_worktree.go      |  85 ++++++++++++++
+ internal/cmd/git_worktree_test.go | 186 ++++++++++++++++++++++++++++++
+ internal/cmd/rc.go                |  43 +++++++
+ man/direnv.toml.1                 |  23 +++-
+ man/direnv.toml.1.md              |  20 +++-
+ 6 files changed, 362 insertions(+), 4 deletions(-)
+ create mode 100644 internal/cmd/git_worktree.go
+ create mode 100644 internal/cmd/git_worktree_test.go
+
+diff --git a/internal/cmd/config.go b/internal/cmd/config.go
+index e16cefc..7b41d2d 100644
+--- a/internal/cmd/config.go
++++ b/internal/cmd/config.go
+@@ -34,6 +34,8 @@ type Config struct {
+ 	WarnTimeout     time.Duration
+ 	WhitelistPrefix []string
+ 	WhitelistExact  map[string]bool
++	// Trust identical RC files in linked git worktrees. See matchesAllowedMainWorktreeRC.
++	WhitelistGitWorktrees bool
+ }
+ 
+ type tomlDuration struct {
+@@ -65,8 +67,9 @@ type tomlGlobal struct {
+ }
+ 
+ type tomlWhitelist struct {
+-	Prefix []string `toml:"prefix"`
+-	Exact  []string `toml:"exact"`
++	Prefix       []string `toml:"prefix"`
++	Exact        []string `toml:"exact"`
++	GitWorktrees bool     `toml:"git_worktrees"`
+ }
+ 
+ // Expand a path string prefixed with ~/ to the current user's home directory.
+@@ -182,6 +185,8 @@ func LoadConfig(env Env) (config *Config, err error) {
+ 			config.WhitelistExact[expandTildePath(path)] = true
+ 		}
+ 
++		config.WhitelistGitWorktrees = tomlConf.Whitelist.GitWorktrees
++
+ 		if tomlConf.SkipDotenv {
+ 			logError(config, "skip_dotenv has been inverted to load_dotenv.")
+ 		}
+diff --git a/internal/cmd/git_worktree.go b/internal/cmd/git_worktree.go
+new file mode 100644
+index 0000000..dc954fa
+--- /dev/null
++++ b/internal/cmd/git_worktree.go
+@@ -0,0 +1,85 @@
++package cmd
++
++import (
++	"os"
++	"path/filepath"
++	"strings"
++)
++
++// mainWorktreePath maps a path inside a linked git worktree to the same
++// relative path inside the main worktree.
++//
++// A linked worktree has a ".git" file containing "gitdir: <dir>". That
++// directory holds a "commondir" file pointing at the shared ".git" directory,
++// whose parent is the main worktree. The second result is false when path is
++// not inside a linked worktree, or when the repository has no main worktree,
++// such as a bare repository.
++func mainWorktreePath(path string) (string, bool) {
++	path, err := filepath.Abs(path)
++	if err != nil {
++		return "", false
++	}
++
++	for _, dir := range eachDir(filepath.Dir(path)) {
++		info, err := os.Lstat(filepath.Join(dir, ".git"))
++		if err != nil {
++			continue
++		}
++		if !info.Mode().IsRegular() {
++			// A ".git" directory means this is a main worktree or a plain
++			// repository, not a linked worktree.
++			return "", false
++		}
++
++		mainRoot, ok := linkedWorktreeMainRoot(dir)
++		if !ok {
++			return "", false
++		}
++
++		rel, err := filepath.Rel(dir, path)
++		if err != nil {
++			return "", false
++		}
++
++		return filepath.Join(mainRoot, rel), true
++	}
++
++	return "", false
++}
++
++// linkedWorktreeMainRoot returns the main worktree of the linked worktree
++// whose root is root.
++func linkedWorktreeMainRoot(root string) (string, bool) {
++	gitDir, ok := readGitPointer(filepath.Join(root, ".git"), "gitdir: ", root)
++	if !ok {
++		return "", false
++	}
++
++	// Submodules also use a ".git" file but have no "commondir".
++	commonDir, ok := readGitPointer(filepath.Join(gitDir, "commondir"), "", gitDir)
++	if !ok || filepath.Base(commonDir) != ".git" {
++		return "", false
++	}
++
++	return filepath.Dir(commonDir), true
++}
++
++// readGitPointer reads a git file that holds a single path after prefix.
++// Relative paths are resolved against base.
++func readGitPointer(file, prefix, base string) (string, bool) {
++	content, err := os.ReadFile(file)
++	if err != nil {
++		return "", false
++	}
++
++	target, ok := strings.CutPrefix(strings.TrimSpace(string(content)), prefix)
++	if !ok || target == "" {
++		return "", false
++	}
++
++	if !filepath.IsAbs(target) {
++		target = filepath.Join(base, target)
++	}
++
++	return filepath.Clean(target), true
++}
+diff --git a/internal/cmd/git_worktree_test.go b/internal/cmd/git_worktree_test.go
+new file mode 100644
+index 0000000..c34fd2c
+--- /dev/null
++++ b/internal/cmd/git_worktree_test.go
+@@ -0,0 +1,186 @@
++package cmd
++
++import (
++	"os"
++	"os/exec"
++	"path/filepath"
++	"testing"
++)
++
++const testEnvrc = "use flake\n"
++
++// worktreeFixture is a main worktree with one linked worktree, laid out the
++// way `git worktree add` writes it.
++type worktreeFixture struct {
++	config   *Config
++	main     string
++	worktree string
++}
++
++func newWorktreeFixture(t *testing.T) worktreeFixture {
++	t.Helper()
++	tmp := t.TempDir()
++	f := worktreeFixture{
++		config:   &Config{DataDir: filepath.Join(tmp, "data"), WhitelistGitWorktrees: true},
++		main:     filepath.Join(tmp, "main"),
++		worktree: filepath.Join(tmp, "worktrees", "feature"),
++	}
++
++	adminDir := filepath.Join(f.main, ".git", "worktrees", "feature")
++	writeFile(t, filepath.Join(adminDir, "commondir"), "../..\n")
++	writeFile(t, filepath.Join(f.worktree, ".git"), "gitdir: "+adminDir+"\n")
++	return f
++}
++
++func writeFile(t *testing.T, path, content string) {
++	t.Helper()
++	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
++		t.Fatal(err)
++	}
++	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
++		t.Fatal(err)
++	}
++}
++
++func rcAt(t *testing.T, path string, config *Config) *RC {
++	t.Helper()
++	rc, err := RCFromPath(path, config)
++	if err != nil {
++		t.Fatal(err)
++	}
++	return rc
++}
++
++func allowRC(t *testing.T, path string, config *Config) {
++	t.Helper()
++	if err := rcAt(t, path, config).Allow(); err != nil {
++		t.Fatal(err)
++	}
++}
++
++func TestGitWorktreeTrust(t *testing.T) {
++	tests := []struct {
++		name         string
++		disabled     bool
++		subdir       string
++		mainContent  string
++		allowMain    bool
++		denyMain     bool
++		denyWorktree bool
++		want         AllowStatus
++	}{
++		{name: "identical and main allowed", mainContent: testEnvrc, allowMain: true, want: Allowed},
++		{name: "identical in subdirectory", subdir: "sub", mainContent: testEnvrc, allowMain: true, want: Allowed},
++		{name: "option disabled", disabled: true, mainContent: testEnvrc, allowMain: true, want: NotAllowed},
++		{name: "contents differ", mainContent: "use nix\n", allowMain: true, want: NotAllowed},
++		{name: "main not allowed", mainContent: testEnvrc, want: NotAllowed},
++		{name: "main denied", mainContent: testEnvrc, denyMain: true, want: NotAllowed},
++		{name: "worktree denied", mainContent: testEnvrc, allowMain: true, denyWorktree: true, want: Denied},
++	}
++
++	for _, tt := range tests {
++		t.Run(tt.name, func(t *testing.T) {
++			f := newWorktreeFixture(t)
++			f.config.WhitelistGitWorktrees = !tt.disabled
++			mainRC := filepath.Join(f.main, tt.subdir, ".envrc")
++			worktreeRC := filepath.Join(f.worktree, tt.subdir, ".envrc")
++			writeFile(t, mainRC, tt.mainContent)
++			writeFile(t, worktreeRC, testEnvrc)
++
++			if tt.allowMain {
++				allowRC(t, mainRC, f.config)
++			}
++			if tt.denyMain {
++				if err := rcAt(t, mainRC, f.config).Deny(); err != nil {
++					t.Fatal(err)
++				}
++			}
++			if tt.denyWorktree {
++				if err := rcAt(t, worktreeRC, f.config).Deny(); err != nil {
++					t.Fatal(err)
++				}
++			}
++
++			if got := rcAt(t, worktreeRC, f.config).Allowed(); got != tt.want {
++				t.Errorf("Allowed() = %d, want %d", got, tt.want)
++			}
++		})
++	}
++}
++
++func TestGitWorktreeTrustDoesNotChain(t *testing.T) {
++	// main/nested is itself a linked worktree of upstream, so its RC is only
++	// trusted indirectly. That indirect trust must not pass on to
++	// worktree/nested.
++	f := newWorktreeFixture(t)
++	upstream := filepath.Join(filepath.Dir(f.main), "upstream")
++	nested := filepath.Join(f.main, "nested")
++	adminDir := filepath.Join(upstream, ".git", "worktrees", "nested")
++	writeFile(t, filepath.Join(adminDir, "commondir"), "../..\n")
++	writeFile(t, filepath.Join(nested, ".git"), "gitdir: "+adminDir+"\n")
++
++	writeFile(t, filepath.Join(upstream, ".envrc"), testEnvrc)
++	writeFile(t, filepath.Join(nested, ".envrc"), testEnvrc)
++	writeFile(t, filepath.Join(f.worktree, "nested", ".envrc"), testEnvrc)
++	allowRC(t, filepath.Join(upstream, ".envrc"), f.config)
++
++	if got := rcAt(t, filepath.Join(nested, ".envrc"), f.config).Allowed(); got != Allowed {
++		t.Fatalf("main/nested Allowed() = %d, want %d", got, Allowed)
++	}
++	if got := rcAt(t, filepath.Join(f.worktree, "nested", ".envrc"), f.config).Allowed(); got != NotAllowed {
++		t.Errorf("worktree/nested Allowed() = %d, want %d", got, NotAllowed)
++	}
++}
++
++func TestGitWorktreeTrustIgnoresSubmodules(t *testing.T) {
++	tmp := t.TempDir()
++	super := filepath.Join(tmp, "super")
++	sub := filepath.Join(super, "sub")
++
++	if err := os.MkdirAll(filepath.Join(super, ".git", "modules", "sub"), 0o755); err != nil {
++		t.Fatal(err)
++	}
++	writeFile(t, filepath.Join(sub, ".git"), "gitdir: ../.git/modules/sub\n")
++	writeFile(t, filepath.Join(super, "sub", ".envrc"), testEnvrc)
++
++	if _, ok := mainWorktreePath(filepath.Join(sub, ".envrc")); ok {
++		t.Error("submodule was treated as a linked worktree")
++	}
++}
++
++func TestGitWorktreeTrustWithGit(t *testing.T) {
++	if _, err := exec.LookPath("git"); err != nil {
++		t.Skip("git not found")
++	}
++
++	tmp := t.TempDir()
++	config := &Config{DataDir: filepath.Join(tmp, "data"), WhitelistGitWorktrees: true}
++	main := filepath.Join(tmp, "main")
++	worktree := filepath.Join(tmp, "feature")
++
++	writeFile(t, filepath.Join(main, ".envrc"), testEnvrc)
++	git := func(args ...string) {
++		t.Helper()
++		cmd := exec.Command("git", append([]string{"-C", main}, args...)...)
++		cmd.Env = append(os.Environ(),
++			"GIT_CONFIG_GLOBAL=/dev/null", "GIT_CONFIG_NOSYSTEM=1",
++			"GIT_AUTHOR_NAME=t", "GIT_AUTHOR_EMAIL=t@t", "GIT_COMMITTER_NAME=t", "GIT_COMMITTER_EMAIL=t@t")
++		if out, err := cmd.CombinedOutput(); err != nil {
++			t.Fatalf("git %v: %v\n%s", args, err, out)
++		}
++	}
++	git("init", "-q")
++	git("add", ".envrc")
++	git("commit", "-q", "-m", "init")
++	git("worktree", "add", "-q", worktree)
++
++	worktreeRC := filepath.Join(worktree, ".envrc")
++	if got := rcAt(t, worktreeRC, config).Allowed(); got != NotAllowed {
++		t.Fatalf("before allowing main: Allowed() = %d, want %d", got, NotAllowed)
++	}
++
++	allowRC(t, filepath.Join(main, ".envrc"), config)
++	if got := rcAt(t, worktreeRC, config).Allowed(); got != Allowed {
++		t.Errorf("after allowing main: Allowed() = %d, want %d", got, Allowed)
++	}
++}
+diff --git a/internal/cmd/rc.go b/internal/cmd/rc.go
+index 4167ecf..29e8b7f 100644
+--- a/internal/cmd/rc.go
++++ b/internal/cmd/rc.go
+@@ -1,6 +1,7 @@
+ package cmd
+ 
+ import (
++	"bytes"
+ 	"context"
+ 	"crypto/sha256"
+ 	"errors"
+@@ -153,6 +154,21 @@ const (
+ 
+ // Allowed checks if the RC file has been granted loading
+ func (rc *RC) Allowed() AllowStatus {
++	status := rc.allowedDirectly()
++	if status != NotAllowed || !rc.config.WhitelistGitWorktrees {
++		return status
++	}
++
++	if rc.matchesAllowedMainWorktreeRC() {
++		return Allowed
++	}
++
++	return NotAllowed
++}
++
++// allowedDirectly checks the deny list, allow list and whitelists for this
++// RC file only.
++func (rc *RC) allowedDirectly() AllowStatus {
+ 	_, err := os.Stat(rc.denyPath)
+ 
+ 	if err == nil {
+@@ -188,6 +204,33 @@ func (rc *RC) Allowed() AllowStatus {
+ 	return NotAllowed
+ }
+ 
++// matchesAllowedMainWorktreeRC reports whether the RC file lives in a linked
++// git worktree and is identical to the RC file at the same relative path in
++// the main worktree, which must itself be allowed. The main RC file is checked
++// with allowedDirectly so that trust never chains from one worktree to another.
++func (rc *RC) matchesAllowedMainWorktreeRC() bool {
++	mainPath, ok := mainWorktreePath(rc.path)
++	if !ok {
++		return false
++	}
++
++	content, err := os.ReadFile(rc.path)
++	if err != nil {
++		return false
++	}
++	mainContent, err := os.ReadFile(mainPath)
++	if err != nil || !bytes.Equal(content, mainContent) {
++		return false
++	}
++
++	mainRC, err := RCFromPath(mainPath, rc.config)
++	if err != nil {
++		return false
++	}
++
++	return mainRC.allowedDirectly() == Allowed
++}
++
+ // Path returns the path to the RC file
+ func (rc *RC) Path() string {
+ 	return rc.path
+diff --git a/man/direnv.toml.1 b/man/direnv.toml.1
+index 26f0209..f7742a3 100644
+--- a/man/direnv.toml.1
++++ b/man/direnv.toml.1
+@@ -100,7 +100,7 @@ direnv >= 2.36.0 is required
+ Specifying whitelist directives marks specific directory hierarchies or specific directories as "trusted" -- direnv will evaluate any matching .envrc files regardless of whether they have been specifically allowed. \fBThis feature should be used with great care\fP, as anyone with the ability to write files to that directory (including collaborators on VCS repositories) will be able to execute arbitrary code on your computer.
+ 
+ .PP
+-There are two types of whitelist directives supported:
++There are three types of whitelist directives supported:
+ 
+ .SS \fBprefix\fR
+ Accepts an array of strings. If any of the strings in this list are a prefix of an .envrc file's absolute path, that file will be implicitly allowed, regardless of contents or past usage of \fBdirenv allow\fR or \fBdirenv deny\fR\&.
+@@ -158,6 +158,27 @@ In this example, the following .envrc files will not be implicitly allowed (alth
+ .IP \(bu 2
+ \fB~/code/.envrc\fR
+ 
++.SS \fBgit_worktrees\fR
++Accepts a boolean, and defaults to \fBfalse\fR\&. When enabled, an .envrc file inside a linked git worktree (created with \fBgit worktree add\fR) is implicitly allowed when both of these are true:
++.IP \(bu 2
++It is byte-for-byte identical to the .envrc file at the same relative path in the main worktree.
++.IP \(bu 2
++That main worktree .envrc file has been allowed with \fBdirenv allow\fR, or by a \fBprefix\fR or \fBexact\fR whitelist.
++
++.PP
++This avoids running \fBdirenv allow\fR again in every new worktree, while still asking for approval when a branch changes its .envrc. A \fBdirenv deny\fR on the main worktree .envrc file, or on the worktree .envrc file itself, is respected. Trust is not passed on from one linked worktree to another, and bare repositories have no main worktree, so their linked worktrees are not covered.
++
++.PP
++Only the .envrc file is compared. Files it loads, such as a \fBflake.nix\fR used by \fBuse flake\fR, can still differ between branches.
++
++.PP
++Example:
++
++.EX
++[whitelist]
++git_worktrees = true
++.EE
++
+ .SH COPYRIGHT
+ MIT licence - Copyright (C) 2019 @zimbatm and contributors
+ 
+diff --git a/man/direnv.toml.1.md b/man/direnv.toml.1.md
+index 37bd697..06cbca6 100644
+--- a/man/direnv.toml.1.md
++++ b/man/direnv.toml.1.md
+@@ -86,7 +86,7 @@ A Regexp that can be used to filter out some of the logs.
+ 
+ Specifying whitelist directives marks specific directory hierarchies or specific directories as "trusted" -- direnv will evaluate any matching .envrc files regardless of whether they have been specifically allowed. **This feature should be used with great care**, as anyone with the ability to write files to that directory (including collaborators on VCS repositories) will be able to execute arbitrary code on your computer.
+ 
+-There are two types of whitelist directives supported:
++There are three types of whitelist directives supported:
+ 
+ ### `prefix`
+ 
+@@ -133,6 +133,24 @@ In this example, the following .envrc files will not be implicitly allowed (alth
+ * `/home/user/code/project-b/subproject-c/.envrc`
+ * `~/code/.envrc`
+ 
++### `git_worktrees`
++
++Accepts a boolean, and defaults to `false`. When enabled, an .envrc file inside a linked git worktree (created with `git worktree add`) is implicitly allowed when both of these are true:
++
++* It is byte-for-byte identical to the .envrc file at the same relative path in the main worktree.
++* That main worktree .envrc file has been allowed with `direnv allow`, or by a `prefix` or `exact` whitelist.
++
++This avoids running `direnv allow` again in every new worktree, while still asking for approval when a branch changes its .envrc. A `direnv deny` on the main worktree .envrc file, or on the worktree .envrc file itself, is respected. Trust is not passed on from one linked worktree to another, and bare repositories have no main worktree, so their linked worktrees are not covered.
++
++Only the .envrc file is compared. Files it loads, such as a `flake.nix` used by `use flake`, can still differ between branches.
++
++Example:
++
++```toml
++[whitelist]
++git_worktrees = true
++```
++
+ COPYRIGHT
+ ---------
+ 

@@ -61,6 +61,9 @@
         enableZshIntegration = true;
         nix-direnv.enable = true;
         silent = true;
+        # Trust a worktree's .envrc when it matches the allowed one in the main checkout.
+        # Needs the patch in overlays/direnv.
+        config.whitelist.git_worktrees = true;
       };
 
       # Manage home-manager with home-manager (inception)
