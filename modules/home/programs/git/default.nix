@@ -97,6 +97,7 @@ in {
         git-graph
         git-wt
         gh
+        forgejo-cli
       ];
 
       sessionPath = ["${config.xdg.configHome}/git/bin"];
