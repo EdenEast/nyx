@@ -17,6 +17,7 @@
         agent-tools-update
         postplan
         nodejs_24
+        chromium
       ];
       sessionPath = ["$HOME/.local/bin"];
       # Services such as T3 Code do not source Home Manager's shell variables.
