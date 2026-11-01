@@ -10,5 +10,8 @@ _: _final: prev: {
 
     # The patch edits a man page source, so make regenerates the man page.
     nativeBuildInputs = (old.nativeBuildInputs or []) ++ [prev.go-md2man];
+
+    # Exercise the patch against real git worktrees instead of skipping that test.
+    nativeCheckInputs = (old.nativeCheckInputs or []) ++ [prev.git];
   });
 }

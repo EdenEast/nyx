@@ -19,10 +19,10 @@ deny list, allow list and path whitelists only.
  internal/cmd/config.go            |   9 +-
  internal/cmd/git_worktree.go      |  85 ++++++++++++++
  internal/cmd/git_worktree_test.go | 186 ++++++++++++++++++++++++++++++
- internal/cmd/rc.go                |  43 +++++++
+ internal/cmd/rc.go                |  42 +++++++
  man/direnv.toml.1                 |  23 +++-
  man/direnv.toml.1.md              |  20 +++-
- 6 files changed, 362 insertions(+), 4 deletions(-)
+ 6 files changed, 361 insertions(+), 4 deletions(-)
  create mode 100644 internal/cmd/git_worktree.go
  create mode 100644 internal/cmd/git_worktree_test.go
 
@@ -347,15 +347,7 @@ diff --git a/internal/cmd/rc.go b/internal/cmd/rc.go
 index 4167ecf..29e8b7f 100644
 --- a/internal/cmd/rc.go
 +++ b/internal/cmd/rc.go
-@@ -1,6 +1,7 @@
- package cmd
- 
- import (
-+	"bytes"
- 	"context"
- 	"crypto/sha256"
- 	"errors"
-@@ -153,6 +154,21 @@ const (
+@@ -155,6 +155,21 @@ const (
  
  // Allowed checks if the RC file has been granted loading
  func (rc *RC) Allowed() AllowStatus {
@@ -377,7 +369,7 @@ index 4167ecf..29e8b7f 100644
  	_, err := os.Stat(rc.denyPath)
  
  	if err == nil {
-@@ -188,6 +204,33 @@ func (rc *RC) Allowed() AllowStatus {
+@@ -190,6 +205,33 @@ func (rc *RC) Allowed() AllowStatus {
  	return NotAllowed
  }
  
