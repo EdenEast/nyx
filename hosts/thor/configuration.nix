@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./agent-subscription-ping.nix
     ./backup.nix
@@ -14,6 +18,27 @@
 
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_US.UTF-8";
+
+  # T3 downloads its own Chrome for Testing headless shell; it does not use
+  # Home Manager's Chromium. Supply its runtime libraries without a desktop.
+  programs.nix-ld.libraries = with pkgs; [
+    alsa-lib
+    at-spi2-core
+    dbus
+    expat
+    glib
+    libgbm
+    libx11
+    libxcb
+    libxcomposite
+    libxdamage
+    libxext
+    libxfixes
+    libxkbcommon
+    libxrandr
+    nspr
+    nss
+  ];
 
   # Disko's BIOS boot partition sets GRUB's target to the disk in disko.nix.
   boot.loader.grub.enable = true;

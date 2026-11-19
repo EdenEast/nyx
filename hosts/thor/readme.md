@@ -42,6 +42,36 @@ Install or update Claude Code, Codex, and Pi with:
 agent-tools-update
 ```
 
+## T3 headless browser
+
+T3 downloads a pinned Chrome for Testing headless shell under
+`~/.t3/tools/chrome-headless-shell`. It does not use the Chromium installed by
+Home Manager. No desktop environment or display server is needed.
+
+`configuration.nix` adds that shell's runtime dependencies to Thor's existing
+`programs.nix-ld.libraries`. The default nix-ld libraries already include
+systemd's `libudev`; `at-spi2-core` supplies ATK and the AT-SPI bridge libraries.
+Thor's existing Fontconfig setup supplies fonts.
+
+After an authorized NixOS activation, retry `html_preview` in T3. Do not run
+the suggested `sudo t3 browser setup` distro installer on NixOS. To check the
+browser directly, substitute the version T3 has installed:
+
+```bash
+browser="$HOME/.t3/tools/chrome-headless-shell/linux64/<version>/chrome-headless-shell"
+"$browser" --version
+work=$(mktemp -d)
+env -u DISPLAY -u WAYLAND_DISPLAY "$browser" \
+  --headless --disable-gpu --user-data-dir="$work/profile" \
+  --screenshot="$work/preview.png" --window-size=728,300 \
+  'data:text/html,<html><body><h1>Thor headless preview</h1></body></html>'
+```
+
+This uses an isolated temporary profile and leaves a PNG in `$work`. Keep the
+sandbox enabled; `--no-sandbox` is not a fix for missing shared libraries.
+Activation changes the system-wide nix-ld library path and requires separate
+approval. Building or evaluating the configuration alone does not activate it.
+
 ## Obsidian Sync
 
 Obsidian Headless is installed through Nix. The user service syncs
